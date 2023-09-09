@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>LOGIN</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <app-field-input formControlName="login" label="Login" placeholder="login" showValidationErrorMessage="true"></app-field-input>
+    <app-field-password formControlName="senha" label="Senha" placeholder="senha"></app-field-password>
+    
+    <app-button type="submit"> Submit </app-button>
+  </form>
+</ion-content>

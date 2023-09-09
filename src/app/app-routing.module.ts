@@ -8,7 +8,7 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 */
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: 'mensagem', pathMatch: 'full' },
   {
     path: 'home',
     loadChildren: () => import('./modules/example-feature/example-feature.module').then((m) => m.HomePageModule),
@@ -29,11 +29,18 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(
-    [{
-      path: '',
-      component: FooterComponent,
-      children:routes,
-    }],
+    [
+      { path: '', redirectTo: 'login', pathMatch: 'full' },
+      {
+        path: 'login',
+        loadChildren: () => import('./modules/login/login.module').then((m) => m.LoginModule)
+      },
+      {
+        path: 'app',
+        component: FooterComponent,
+        children:routes,
+      }
+    ],
     { preloadingStrategy: PreloadAllModules })],
   exports: [RouterModule],
 })
