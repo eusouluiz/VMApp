@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { FooterComponent } from './shared/components/footer/footer.component';
 
 /*
   Please check the article below for understanding how to structure modules
@@ -12,10 +13,28 @@ const routes: Routes = [
     path: 'home',
     loadChildren: () => import('./modules/example-feature/example-feature.module').then((m) => m.HomePageModule),
   },
+  {
+    path: 'cadastro',
+    loadChildren: () => import('./modules/cadastro/cadastro.module').then((m) => m.CadastroModule),
+  },
+  {
+    path: 'mensagem',
+    loadChildren: () => import('./modules/mensagem/mensagem.module').then((m) => m.MensagemModule),
+  },
+  {
+    path: 'aviso',
+    loadChildren: () => import('./modules/aviso/aviso.module').then((m) => m.AvisoModule),
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
+  imports: [RouterModule.forRoot(
+    [{
+      path: '',
+      component: FooterComponent,
+      children:routes,
+    }],
+    { preloadingStrategy: PreloadAllModules })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
