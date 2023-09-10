@@ -14,8 +14,8 @@ const routes: Routes = [
     loadChildren: () => import('./modules/example-feature/example-feature.module').then((m) => m.HomePageModule),
   },
   {
-    path: 'cadastro',
-    loadChildren: () => import('./modules/cadastro/cadastro.module').then((m) => m.CadastroModule),
+    path: 'gerenciamento',
+    loadChildren: () => import('./modules/gerenciamento/gerenciamento.module').then((m) => m.GerenciamentoModule),
   },
   {
     path: 'mensagem',
