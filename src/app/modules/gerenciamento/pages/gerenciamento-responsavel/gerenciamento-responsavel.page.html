@@ -4,6 +4,71 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content class="ion-padding">
+  <ion-accordion-group [multiple]=true [value]="responsaveis[0].nome">
+    <div *ngFor="let responsavel of responsaveis">
+      <ion-accordion [value]=responsavel.nome>
+        <ion-item slot="header" color="light">
+          <ion-label>{{responsavel.nome}}</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content" 
+          style="background-color: lightgray;">
+          <ion-row size="12">
+            <ion-col size="12" size-md="6" size-lg="6">
+              <h6 class="c-field__label">Nome</h6>
+              <ion-input class="c-field__input" fill="outline" [value]="responsavel.nome" disabled="true"></ion-input>
+            </ion-col>
+            <ion-col size="12" size-md="6" size-lg="6">
+              <h6 class="c-field__label">Telefone</h6>
+              <ion-input class="c-field__input" fill="outline" [value]="responsavel.telefone" disabled="true"></ion-input>
+            </ion-col>
+          </ion-row>
+          <hr>
+          <ion-row>
+            <h3 style="margin-left: 5px; font-weight: bold;">Responsável por:</h3>
+            <table mat-table [dataSource]="responsavel.alunos" class="mat-elevation-z8" style="width: 100%;">
+              <ng-container matColumnDef="nome">
+                <th mat-header-cell *matHeaderCellDef>Nome</th>
+                <td mat-cell *matCellDef="let aluno">{{aluno.nome}}</td>
+              </ng-container>
+              <ng-container matColumnDef="turma">
+                <th mat-header-cell *matHeaderCellDef>Turma</th>
+                <td mat-cell *matCellDef="let aluno">{{aluno.turma}}</td>
+              </ng-container>
+              <ng-container matColumnDef="acao">
+                <th mat-header-cell *matHeaderCellDef aria-label="row actions"></th>
+                <td mat-cell *matCellDef="let aluno">
+                  <div style="text-align: end;">
+                    <button mat-mini-fab style="background-color: #3880ff; color: white;">
+                      <ion-icon name="information" style="font-size: 24px;"></ion-icon>
+                    </button>
+                  </div>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="colunasAluno"></tr>
+              <tr mat-row *matRowDef="let row; columns: colunasAluno;"></tr>
+            </table>
+          </ion-row>
+          <hr>
+          <ion-row size="12">
+            <ion-col size="auto">
+              <button mat-mini-fab style="background-color: #3880ff; color: white;">
+                <ion-icon name="trash"></ion-icon>
+              </button>
+            </ion-col>
+            <ion-col size="auto" style="margin-left: auto;">
+              <button mat-mini-fab style="background-color: #3880ff; color: white;">
+                <ion-icon name="pencil"></ion-icon>
+              </button>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-accordion>
+    </div>
+  </ion-accordion-group>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

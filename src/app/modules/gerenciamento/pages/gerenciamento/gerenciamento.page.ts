@@ -13,7 +13,7 @@ export class GerenciamentoPage implements OnInit {
   ngOnInit() {
   }
 
-  public redirecionaPara(rota: String){
+  public navegaPara(rota: String){
     if (rota.substring(0, 1) !== '/') {
       rota = '/' + rota
     }

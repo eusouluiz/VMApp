@@ -10,6 +10,9 @@ import { GerenciamentoAlunoPage } from './pages/gerenciamento-aluno/gerenciament
 import { GerenciamentoTurmaPage } from './pages/gerenciamento-turma/gerenciamento-turma.page';
 import { GerenciamentoFuncionarioPage } from './pages/gerenciamento-funcionario/gerenciamento-funcionario.page';
 import { GerenciamentoCargoPage } from './pages/gerenciamento-cargo/gerenciamento-cargo.page';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatTableModule } from '@angular/material/table'
+import { MatButtonModule } from '@angular/material/button'
 
 
 @NgModule({
@@ -21,8 +24,12 @@ import { GerenciamentoCargoPage } from './pages/gerenciamento-cargo/gerenciament
   imports: [
     CommonModule,
     GerenciamentoRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
     SharedModule,
     IonicModule,
+    MatTableModule,
+    MatButtonModule,
   ]
 })
 export class GerenciamentoModule { }
