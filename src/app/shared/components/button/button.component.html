@@ -5,7 +5,8 @@
   [class.c-btn--outline]="isOutline"
   [class.c-btn--clear]="isClear"
   [class.c-btn--inverted]="isInverted"
-  [disabled]="disabled">
+  [disabled]="disabled"
+  [type]="type">
   <span *ngIf="loading" class="c-btn__loading">
     <img *ngIf="!isInverted && !disabled" src="../../../../assets/images/loading/loading-white.svg" />
     <img *ngIf="!isInverted && disabled" src="../../../../assets/images/loading/loading-gray.svg" />
