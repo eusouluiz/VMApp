@@ -6,6 +6,7 @@ import { GerenciamentoPage } from './pages/gerenciamento/gerenciamento.page';
 import { GerenciamentoAlunoPage } from './pages/gerenciamento-aluno/gerenciamento-aluno.page';
 import { GerenciamentoFuncionarioPage } from './pages/gerenciamento-funcionario/gerenciamento-funcionario.page';
 import { GerenciamentoCargoPage } from './pages/gerenciamento-cargo/gerenciamento-cargo.page';
+import { GerenciamentoResponsavelDetalhesPage } from './pages/gerenciamento-responsavel-detalhes/gerenciamento-responsavel-detalhes.page';
 
 const routes: Routes = [
   {path: '', component: GerenciamentoPage},
@@ -14,6 +15,7 @@ const routes: Routes = [
   {path: 'turma', component: GerenciamentoTurmaPage},
   {path: 'funcionario', component: GerenciamentoFuncionarioPage},
   {path: 'cargo', component: GerenciamentoCargoPage},
+  {path: 'responsavel/:id/detalhes', component: GerenciamentoResponsavelDetalhesPage},
 ];
 
 @NgModule({
@@ -22,7 +24,8 @@ const routes: Routes = [
 })
 export class GerenciamentoRoutingModule { 
   static components = [
-    GerenciamentoPage, GerenciamentoResponsavelPage,
+    GerenciamentoPage, 
+    GerenciamentoResponsavelPage, GerenciamentoResponsavelDetalhesPage,
     GerenciamentoAlunoPage, GerenciamentoTurmaPage,
     GerenciamentoFuncionarioPage, GerenciamentoCargoPage,
   ]

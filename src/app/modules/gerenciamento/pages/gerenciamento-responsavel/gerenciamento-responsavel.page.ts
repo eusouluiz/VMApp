@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 
 
@@ -16,10 +17,38 @@ export interface Responsavel {
   alunos: Aluno[]
 }
 
-const ALUNO_DATA: Aluno[] = [
-  {nome: 'aluno1', turma: 'turma1'},
-  {nome: 'aluno2', turma: 'turma2'},
+var a1: Aluno = {nome: 'aluno1', turma: 'turma1'}
+var a2: Aluno = {nome: 'aluno2', turma: 'turma2'}
+
+var RESPONSAVEL_DATA: Responsavel[] = [
+  {
+    idResponsavel: 0,
+    idUsuario: 0,
+    nome: 'Carlos r1',
+    cpf: '123.456.789-00',
+    telefone: '(41) 98822-2527',
+    alunos: [a1, a2]
+  },
+  {
+    idResponsavel: 1,
+    idUsuario: 1,
+    nome: 'Gabriel r2',
+    cpf: '987.654.321-99',
+    telefone: '(00) 12345-6789',
+    alunos: [a1]
+  },
+  {
+    idResponsavel: 2,
+    idUsuario: 2,
+    nome: 'Felipe r3',
+    cpf: '333.666.999-369',
+    telefone: '(12) 34567-8900',
+    alunos: [a2]
+  }
 ]
+
+const r = [{nome:'a', telefone:'1'}, {nome:'b', telefone:'2'}]
+
 
 @Component({
   selector: 'app-gerenciamento-responsavel',
@@ -28,8 +57,8 @@ const ALUNO_DATA: Aluno[] = [
 })
 export class GerenciamentoResponsavelPage implements OnInit {
 
-  colunasAluno: string[] = ['nome', 'turma', 'acao']
-
+  colunasResponsavel: string[] = ['nome', 'telefone']
+  dataSource = new MatTableDataSource(RESPONSAVEL_DATA)
   responsaveis: any
 
   constructor(
@@ -39,42 +68,16 @@ export class GerenciamentoResponsavelPage implements OnInit {
 
   ngOnInit() {
 
-    var a1: Aluno = {nome: 'aluno1', turma: 'turma1'}
-    var a2: Aluno = {nome: 'aluno2', turma: 'turma2'}
-
-    var r1: Responsavel = {
-      idResponsavel: 0,
-      idUsuario: 0,
-      nome: 'Carlos r1',
-      cpf: '123.456.789-00',
-      telefone: '(41) 98822-2527',
-      alunos: [a1, a2]
-    }
-    var r2: Responsavel = {
-      idResponsavel: 1,
-      idUsuario: 1,
-      nome: 'Gabriel r2',
-      cpf: '987.654.321-99',
-      telefone: '(00) 12345-6789',
-      alunos: [a1]
-    }
-    var r3: Responsavel = {
-      idResponsavel: 2,
-      idUsuario: 2,
-      nome: 'Felipe r3',
-      cpf: '333.666.999-369',
-      telefone: '(12) 34567-8900',
-      alunos: [a2]
-    }
-
-    this.responsaveis = [r1, r2, r3]
+    this.responsaveis = RESPONSAVEL_DATA
   }
 
-  public navegaPara(rota: String){
-    if (rota.substring(0, 1) !== '/') {
-      rota = '/' + rota
-    }
-    const caminho: String = '/app/gerenciamento/responsavel' + rota
+  filtro(event: Event){
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  public navegarDetalheResponsavel(responsavel: Responsavel){
+    const caminho: String = '/app/gerenciamento/responsavel/' + responsavel.idResponsavel + '/detalhes'
     this.router.navigate([caminho])
   }
 

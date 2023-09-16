@@ -12,12 +12,16 @@ import { GerenciamentoFuncionarioPage } from './pages/gerenciamento-funcionario/
 import { GerenciamentoCargoPage } from './pages/gerenciamento-cargo/gerenciamento-cargo.page';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table'
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button'
-
+// import { provideAnimations} from '@angular/platform-browser/animations'
+import { GerenciamentoResponsavelDetalhesPage } from './pages/gerenciamento-responsavel-detalhes/gerenciamento-responsavel-detalhes.page';
 
 @NgModule({
   declarations: [
-    GerenciamentoPage, GerenciamentoResponsavelPage,
+    GerenciamentoPage, 
+    GerenciamentoResponsavelPage, GerenciamentoResponsavelDetalhesPage,
     GerenciamentoAlunoPage, GerenciamentoTurmaPage,
     GerenciamentoFuncionarioPage, GerenciamentoCargoPage,
   ],
@@ -29,6 +33,8 @@ import { MatButtonModule } from '@angular/material/button'
     SharedModule,
     IonicModule,
     MatTableModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatButtonModule,
   ]
 })
