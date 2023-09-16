@@ -127,6 +127,12 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
   cancelar(){
     console.log('cancelado')
     this.modo = 'detalhes'
+    this.form?.setValue({
+      nome: this.responsavel.nome,
+      telefone: this.responsavel.telefone,
+      cpf: this.responsavel.usuario.cpf,
+      senha: this.responsavel.usuario.senha,
+    })
     this.form?.disable()
   }
 

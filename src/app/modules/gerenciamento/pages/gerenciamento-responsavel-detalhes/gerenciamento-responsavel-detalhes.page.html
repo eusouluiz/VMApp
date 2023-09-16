@@ -20,14 +20,11 @@
     <hr>
     <ion-row>
       <ion-row>
-        <ion-col size="auto">
-          <h3 style="margin-left: 5px; font-weight: bold;">Responsável por:</h3>
-        </ion-col>
-        <!-- <ion-col size="auto">
+        <h3 style="margin-left: 5px; font-weight: bold;">Responsável por:</h3>
+        <ng-container *ngIf="modo !== 'detalhes'">
           <app-button type="button" (click)="adicionarAluno()">Adicionar</app-button>
-        </ion-col> -->
-        <ion-col>
-        </ion-col>
+        </ng-container>
+        
       </ion-row>
       <table mat-table [dataSource]="responsavel.alunos" class="mat-elevation-z8" style="width: 100%;">
         <ng-container matColumnDef="nome">
@@ -66,7 +63,7 @@
       </ion-row>
     </ion-row>
     
-    <ng-template id="botoesEditar" #elseTemplate>
+    <ng-container id="botoesEditar" *ngIf="modo !== 'detalhes'">
       <ion-row style="flex-direction: row-reverse;">
         <ion-col size="auto">
           <ion-button shape="round" type="submit" (click)="salvar()">Salvar</ion-button>
@@ -75,9 +72,9 @@
           <ion-button shape="round" fill="outline" color="danger" (click)="cancelar()">Cancelar</ion-button>
         </ion-col>
       </ion-row>
-    </ng-template>
+    </ng-container>
   </form>
-  <ng-container id="botoesDetalhes" *ngIf="modo === 'detalhes'; else elseTemplate">
+  <ng-container id="botoesDetalhes" *ngIf="modo === 'detalhes'">
     <ion-fab slot="fixed" vertical="bottom"  horizontal="start">
       <ion-fab-button id="botao-deletar" color="danger">
         <ion-icon name="trash"></ion-icon>
