@@ -71,30 +71,9 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
 
   modo: 'cadastrar' | 'editar' | 'detalhes' = 'detalhes'
 
-  colunasAluno: string[] = ['nome', 'turma', 'acao']
-  responsavel: Responsavel = this.responsavelVazio()
+  responsavel: Responsavel
 
   form: UntypedFormGroup | undefined;
-
-  @ViewChild(MatTable)
-  table!: MatTable<Aluno>;
-
-  actionDeletar = [
-    {
-      text: 'Deletar',
-      role: 'destructive',
-      data: {
-        action: 'delete',
-      },
-    },
-    {
-      text: 'Não',
-      role: 'cancel',
-      data: {
-        action: 'cancel',
-      },
-    },
-  ]
 
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -117,44 +96,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
   ngOnInit() {
   }
 
-  iniciarEdicao(){
-    console.log('edicao iniciada')
-    console.log(this.form)
-    this.modo = 'editar'
-    this.form?.enable()
-  }
-
-  cancelar(){
-    console.log('cancelado')
-    this.modo = 'detalhes'
-    this.form?.setValue({
-      nome: this.responsavel.nome,
-      telefone: this.responsavel.telefone,
-      cpf: this.responsavel.usuario.cpf,
-      senha: this.responsavel.usuario.senha,
-    })
-    this.form?.disable()
-  }
-
-  salvar(){
-    console.log('salvado')
-    console.log(this.form)
-    console.log('nome: ' + this.form?.value.nome)
-    console.log('telefone: ' + this.form?.value.telefone)
-    console.log('cpf: ' + this.form?.value.cpf)
-    console.log('cpf: ' + this.form?.value.senha)
-    this.modo = 'detalhes'
-    this.form?.disable()
-  }
-
-  adicionarAluno(){
-    console.log('adicionando aluno')
-    const a: Aluno = {nome: 'teste', turma: 'teste'}
-
-    this.responsavel.alunos.push(a)
-    this.table.renderRows()
-  }
-
+  // ---- busca responsavel ----//
   resgatarResponsavel(id: Number): Responsavel{
     for (let i = 0; i < RESPONSAVEL_DATA.length; i++) {
       const responsavel = RESPONSAVEL_DATA[i];
@@ -175,5 +117,104 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
       alunos: []
     }
   }
+  // ---- busca responsavel ----//
+
+  
+  // ---- controle botoes ----//
+  
+
+  //deletar
+  actionDeletar = [
+    {
+      text: 'Deletar',
+      role: 'destructive',
+      data: {
+        action: 'delete',
+      },
+    },
+    {
+      text: 'Não',
+      role: 'cancel',
+      data: {
+        action: 'cancel',
+      },
+    },
+  ]
+
+  //editar
+  iniciarEdicao(){
+    console.log('edicao iniciada')
+    console.log(this.form)
+    this.modo = 'editar'
+    this.form?.enable()
+  }
+
+  //cancelar edicao
+  cancelar(){
+    console.log('cancelado')
+    this.modo = 'detalhes'
+    this.form?.setValue({
+      nome: this.responsavel.nome,
+      telefone: this.responsavel.telefone,
+      cpf: this.responsavel.usuario.cpf,
+      senha: this.responsavel.usuario.senha,
+    })
+    this.form?.disable()
+  }
+
+  //salvar edicao
+  salvar(){
+    console.log('salvado')
+    console.log(this.form)
+    console.log('nome: ' + this.form?.value.nome)
+    console.log('telefone: ' + this.form?.value.telefone)
+    console.log('cpf: ' + this.form?.value.cpf)
+    console.log('cpf: ' + this.form?.value.senha)
+    this.modo = 'detalhes'
+    this.form?.disable()
+  }
+  // ---- controle botoes ----//
+
+  // ---- controle alunos ----//
+
+  //nome colunas
+  colunasAluno: string[] = ['nome', 'turma', 'acao']
+  listaAlunos: Aluno[] = ALUNO_DATA
+  nomeAlunos: String[] = this.getNomeAlunos(this.listaAlunos)
+
+  @ViewChild(MatTable)
+  tabelaAluno!: MatTable<Aluno>;
+
+  getNomeAlunos(lista: Aluno[]): String[]{
+    var nomes: String[] = []
+    lista.forEach(aluno => {
+      nomes.push(aluno.nome)
+    });
+    return nomes
+  }
+
+  adicionarAluno(valor: String){
+    console.log('adicionando aluno')
+    console.log(valor)
+    
+    const aluno = this.listaAlunos[Number(valor)]
+    console.log(aluno)
+
+    this.responsavel.alunos.push(aluno)
+    this.tabelaAluno.renderRows()
+
+    this.removeAlunoDaLista(Number(valor))
+  }
+
+  removeAlunoDaLista(index: number){
+    for (let i = 0; i < this.listaAlunos.length; i++) {
+      if (index === i){
+        this.listaAlunos.splice(index, 1)
+        this.nomeAlunos.splice(index, 1)
+        break;
+      }
+    }
+  }
+  // ---- controle alunos ----//
 
 }

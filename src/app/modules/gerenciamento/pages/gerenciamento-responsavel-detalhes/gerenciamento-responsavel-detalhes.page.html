@@ -18,14 +18,19 @@
       </ion-col>
     </ion-row>
     <hr>
+    <!-- INICIO SOBRE ALUNO -->
     <ion-row>
-      <ion-row>
-        <h3 style="margin-left: 5px; font-weight: bold;">Responsável por:</h3>
-        <ng-container *ngIf="modo !== 'detalhes'">
-          <app-button type="button" (click)="adicionarAluno()">Adicionar</app-button>
-        </ng-container>
-        
+      <ion-row size="auto" style="width: 100%;">
+        <ion-col size="4">
+          <h3 style="margin-left: 5px; font-weight: bold;">Responsável por:</h3>
+        </ion-col>
+        <!-- INICIO INSERCAO ALUNOS -->
+        <ion-col offset="2" size="6">
+          <app-autocomplete [listaItens]="nomeAlunos" (onBusca)="adicionarAluno($event)"></app-autocomplete>
+        </ion-col>
+        <!-- FIM INSERCAO ALUNOS -->
       </ion-row>
+      <!-- INICIO TABELA DE ALUNOS -->
       <table mat-table [dataSource]="responsavel.alunos" class="mat-elevation-z8" style="width: 100%;">
         <ng-container matColumnDef="nome">
           <th mat-header-cell *matHeaderCellDef>Nome</th>
@@ -48,7 +53,9 @@
         <tr mat-header-row *matHeaderRowDef="colunasAluno"></tr>
         <tr mat-row *matRowDef="let row; columns: colunasAluno;"></tr>
       </table>
+      <!-- FIM TABELA DE ALUNOS -->
     </ion-row>
+    <!-- FIM SOBRE ALUNO -->
     <ion-row>
       <ion-row>
         <h3 style="margin-left: 5px; font-weight: bold;">Informações para Login:</h3>
@@ -62,7 +69,6 @@
         </ion-col>
       </ion-row>
     </ion-row>
-    
     <ng-container id="botoesEditar" *ngIf="modo !== 'detalhes'">
       <ion-row style="flex-direction: row-reverse;">
         <ion-col size="auto">
