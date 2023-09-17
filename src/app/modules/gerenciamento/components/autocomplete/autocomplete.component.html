@@ -1,6 +1,14 @@
+<div class="c-field__input-wrapper">
+  <ion-input #barraBusca [(ngModel)]="busca" 
+    id="barra-busca" class="c-field__input" type="search" 
+    debounce="100" (ionInput)="getItens($event)" 
+    (ionFocus)="mudarVisualizacaoItens()" (ionBlur)="mudarVisualizacaoItens()" 
+    (keyup.enter)="selecionaPrimeiro()"></ion-input>
 
-<ion-input #barraBusca [(ngModel)]="busca" id="barra-busca" class="c-field__input" type="search" debounce="100" (ionInput)="getItens($event)" 
-  (ionFocus)="mudarVisualizacaoItens()" (ionBlur)="mudarVisualizacaoItens()" (keyup.enter)="selecionaPrimeiro()"></ion-input>
+    <ion-icon class="c-field__icon u-cursor--clickable"
+    [name]="icone === null ? '' : icone"
+    (click)="indicaBotaoClicado()"></ion-icon>
+</div>
 <ion-popover size="cover" trigger="barra-busca" 
   showBackdrop="false" keyboardClose="false" dismissOnSelect="true">
   <ion-list *ngIf="isItensVisiveis">

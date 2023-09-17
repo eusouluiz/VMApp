@@ -20,8 +20,10 @@ export class AutocompleteComponent implements OnInit {
 
   @Input('listaItens') listaItens!: String[]
   @Input('textoSemResultado') textoSemResultado!: String
+  @Input('icone') icone: String | null = null
   
-  @Output() onBusca = new EventEmitter<String>()
+  @Output() onBusca = new EventEmitter<Number>()
+  @Output() onCliqueIcone = new EventEmitter<boolean>()
 
   @ViewChild('barraBusca') barraBusca: any;
   
@@ -93,7 +95,11 @@ export class AutocompleteComponent implements OnInit {
   // -1 quando busca nao encontrada
   enviaBusca(busca: Number){
     console.log('envia: ' + busca)
-    this.onBusca.emit(String(busca))
+    this.onBusca.emit(busca)
+  }
+
+  indicaBotaoClicado(){
+    this.onCliqueIcone.emit(true)
   }
 
 }
