@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 export interface Aluno {
@@ -77,7 +77,8 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
 
   constructor(
     private formBuilder: UntypedFormBuilder,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
     ) { 
       console.log(this.activatedRoute.snapshot.paramMap.get('id'))
       
@@ -141,6 +142,20 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
       },
     },
   ]
+
+  eventoActions(ev:any){
+    const action = ev.detail.data.action
+    console.log(action)
+
+    if(action === 'delete'){
+      this.deletarResponsavel()
+    }
+  }
+
+  deletarResponsavel(){
+    console.log('responsavel deletado')
+    this.navegaPara('/responsavel')
+  }
 
   //editar
   iniciarEdicao(){
@@ -264,5 +279,14 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     console.log('cadastro de aluno')
   }
   // ---- controle alunos ----//
+
+  
+  public navegaPara(rota: String){
+    if (rota.substring(0, 1) !== '/') {
+      rota = '/' + rota
+    }
+    const caminho: String = '/app/gerenciamento' + rota
+    this.router.navigate([caminho])
+  }
 
 }

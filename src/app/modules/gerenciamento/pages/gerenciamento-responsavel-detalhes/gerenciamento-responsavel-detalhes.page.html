@@ -95,7 +95,8 @@
         <ion-icon name="pencil"></ion-icon>
       </ion-fab-button>
     </ion-fab>
-    <ion-action-sheet trigger="botao-deletar" header="Deseja deletar {{responsavel.nome}}?" [buttons]="actionDeletar"></ion-action-sheet>
+    <ion-action-sheet trigger="botao-deletar" header="Deseja deletar {{responsavel.nome}}?" 
+      [buttons]="actionDeletar" (didDismiss)="eventoActions($event)"></ion-action-sheet>
   </ng-container>
   
 </ion-content>
