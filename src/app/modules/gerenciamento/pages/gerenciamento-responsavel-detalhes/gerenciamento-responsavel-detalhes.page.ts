@@ -83,6 +83,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
       
       var id = Number(this.activatedRoute.snapshot.paramMap.get('id'))
       this.responsavel = this.resgatarResponsavel(id)
+      this.inicializarTabelaAlunos()
 
       this.form = this.formBuilder.group({
         nome: [this.responsavel.nome, Validators.required],
@@ -147,12 +148,15 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     console.log(this.form)
     this.modo = 'editar'
     this.form?.enable()
+
+    this.inicializarTabelaAlunos()
   }
 
   //cancelar edicao
   cancelar(){
     console.log('cancelado')
     this.modo = 'detalhes'
+
     this.form?.setValue({
       nome: this.responsavel.nome,
       telefone: this.responsavel.telefone,
@@ -160,18 +164,31 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
       senha: this.responsavel.usuario.senha,
     })
     this.form?.disable()
+
+    this.inicializarTabelaAlunos()
+    this.tabelaAlunos.renderRows()
   }
 
   //salvar edicao
   salvar(){
     console.log('salvado')
-    console.log(this.form)
+    
     console.log('nome: ' + this.form?.value.nome)
     console.log('telefone: ' + this.form?.value.telefone)
     console.log('cpf: ' + this.form?.value.cpf)
     console.log('cpf: ' + this.form?.value.senha)
+
+    this.responsavel.nome = this.form?.value.nome
+    this.responsavel.telefone = this.form?.value.telefone
+    this.responsavel.usuario.cpf = this.form?.value.cpf
+    this.responsavel.usuario.senha = this.form?.value.senha
+
+    this.atualizarAlunos()
+
     this.modo = 'detalhes'
     this.form?.disable()
+
+
   }
   // ---- controle botoes ----//
 
@@ -179,13 +196,21 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
 
   //nome colunas
   colunasAluno: string[] = ['nome', 'turma', 'acao']
-  listaAlunos: Aluno[] = ALUNO_DATA
-  nomeAlunos: String[] = this.getNomeAlunos(this.listaAlunos)
+  listaAlunosBusca: Aluno[] = ALUNO_DATA.slice()
+  nomeAlunosBusca: String[] = this.getNomeAlunosBusca(this.listaAlunosBusca)
+
+  listaAlunosTabela!: Aluno[]
 
   @ViewChild(MatTable)
-  tabelaAluno!: MatTable<Aluno>;
+  tabelaAlunos!: MatTable<Aluno>;
 
-  getNomeAlunos(lista: Aluno[]): String[]{
+  inicializarTabelaAlunos(){
+    this.listaAlunosTabela = this.responsavel.alunos.slice()
+    this.listaAlunosBusca = ALUNO_DATA.slice()
+    this.nomeAlunosBusca = this.getNomeAlunosBusca(this.listaAlunosBusca)
+  }
+
+  getNomeAlunosBusca(lista: Aluno[]): String[]{
     var nomes: String[] = []
     lista.forEach(aluno => {
       nomes.push(aluno.nome)
@@ -203,24 +228,36 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     }
     
     console.log('eh diferente -1')
-    const aluno = this.listaAlunos[valor]
+    const aluno = this.listaAlunosBusca[valor]
     console.log(aluno)
 
-    this.responsavel.alunos.push(aluno)
-    this.tabelaAluno.renderRows()
+    this.listaAlunosTabela.push(aluno)
+    this.tabelaAlunos.renderRows()
 
     this.removeAlunoDaLista(valor)
-    
   }
 
   removeAlunoDaLista(index: number){
-    for (let i = 0; i < this.listaAlunos.length; i++) {
+    for (let i = 0; i < this.listaAlunosBusca.length; i++) {
       if (index === i){
-        this.listaAlunos.splice(index, 1)
-        this.nomeAlunos.splice(index, 1)
+        this.listaAlunosBusca.splice(index, 1)
+        this.nomeAlunosBusca.splice(index, 1)
         break;
       }
     }
+  }
+
+  atualizarAlunos(){
+    this.responsavel.alunos = this.listaAlunosTabela.sort((a1, a2) => {
+      if (a1.nome > a2.nome){
+        return 1
+      } else if (a2.nome > a1.nome) {
+        return -1
+      } else {
+        return 0
+      }
+    })
+    this.tabelaAlunos.renderRows()
   }
 
   navegarParaCadastroAluno(id: Number){
