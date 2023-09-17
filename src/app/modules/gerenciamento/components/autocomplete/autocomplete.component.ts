@@ -35,13 +35,13 @@ export class AutocompleteComponent implements OnInit {
   }
 
   isItensVisiveis = false;
-  items!: String[];
+  itens!: String[];
 
   inicializaItens(){
-    this.items = this.listaItens;
+    this.itens = this.listaItens;
   }
 
-  getItems(ev: any) {
+  getItens(ev: any) {
 
       // reseta busca
       this.inicializaItens();
@@ -55,7 +55,7 @@ export class AutocompleteComponent implements OnInit {
       // se o valor for um valor valido
       if (val) {
         this.isItensVisiveis = true;
-        this.items = this.items.filter((item) => {
+        this.itens = this.itens.filter((item) => {
             return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
         })
       }
@@ -68,7 +68,7 @@ export class AutocompleteComponent implements OnInit {
   selecionarItem(item: any){
     this.barraBusca.setFocus()
     console.log('selecionado: ' + item)
-    this.enviaBusca(item)
+    this.enviaBusca(this.listaItens.indexOf(item))
 
     this.inicializaItens()
     this.busca = ''
@@ -76,17 +76,17 @@ export class AutocompleteComponent implements OnInit {
 
   selecionaPrimeiro(){
     console.log('buscado: ' + this.busca)
-    console.log('selecionado: ' + this.items[0])
-    this.getItems(this.busca)
-    this.enviaBusca(this.items[0])
+    console.log('selecionado: ' + this.itens[0])
+    this.getItens(this.busca)
+    this.enviaBusca(this.listaItens.indexOf(this.itens[0]))
 
     this.inicializaItens()
     this.busca = ''
   }
 
-  enviaBusca(busca: String){
+  enviaBusca(busca: String | Number){
     console.log('envia: ' + busca)
-    this.onBusca.emit(busca)
+    this.onBusca.emit(String(busca))
   }
 
 }
