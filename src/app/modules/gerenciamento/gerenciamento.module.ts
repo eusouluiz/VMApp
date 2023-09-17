@@ -17,6 +17,7 @@ import {MatInputModule} from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button'
 // import { provideAnimations} from '@angular/platform-browser/animations'
 import { GerenciamentoResponsavelDetalhesPage } from './pages/gerenciamento-responsavel-detalhes/gerenciamento-responsavel-detalhes.page';
+import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { GerenciamentoResponsavelDetalhesPage } from './pages/gerenciamento-resp
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    AutocompleteComponent
   ]
 })
 export class GerenciamentoModule { }

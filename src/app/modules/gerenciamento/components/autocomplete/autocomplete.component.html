@@ -1,0 +1,21 @@
+
+<ion-input #barraBusca [(ngModel)]="busca" id="barra-busca" class="c-field__input" type="search" debounce="100" (ionInput)="getItems($event)" 
+  (ionFocus)="mudarVisualizacaoItens()" (ionBlur)="mudarVisualizacaoItens()" (keyup.enter)="selecionaPrimeiro()"></ion-input>
+<ion-popover size="cover" trigger="barra-busca" 
+  showBackdrop="false" keyboardClose="false" dismissOnSelect="true">
+  <ion-list *ngIf="isItensVisiveis">
+      <ion-item *ngFor="let item of items; index as i; first as isPrimeiro" 
+        [class.opcao__selecionada]="isPrimeiro" class="opcao"
+        button="true" id="{{item}}"
+        (click)="selecionarItem(item)">{{ item }}</ion-item>
+  </ion-list>
+</ion-popover>
+
+<style>
+  .opcao__selecionada {
+    --background: var(--color-gray-400);
+  }
+  .opcao:hover {
+    --background: var(--color-gray-400);
+  }
+</style>
