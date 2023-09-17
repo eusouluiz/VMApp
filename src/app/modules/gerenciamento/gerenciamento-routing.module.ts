@@ -16,6 +16,7 @@ const routes: Routes = [
   {path: 'funcionario', component: GerenciamentoFuncionarioPage},
   {path: 'cargo', component: GerenciamentoCargoPage},
   {path: 'responsavel/:id/detalhes', component: GerenciamentoResponsavelDetalhesPage},
+  {path: 'responsavel/cadastro', component: GerenciamentoResponsavelDetalhesPage},
 ];
 
 @NgModule({

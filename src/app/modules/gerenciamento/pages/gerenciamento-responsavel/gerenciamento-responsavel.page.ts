@@ -77,7 +77,20 @@ export class GerenciamentoResponsavelPage implements OnInit {
   }
 
   public navegarDetalheResponsavel(responsavel: Responsavel){
-    const caminho: String = '/app/gerenciamento/responsavel/' + responsavel.idResponsavel + '/detalhes'
+    const caminho: String = '/responsavel/' + responsavel.idResponsavel + '/detalhes'
+    this.navegarPara(caminho)
+  }
+  
+  public navegarCadastroResponsavel(){
+    const caminho: String = '/responsavel/cadastro'
+    this.navegarPara(caminho)
+  }
+
+  private navegarPara(rota: String){
+    if (rota.substring(0, 1) !== '/') {
+      rota = '/' + rota
+    }
+    const caminho: String = '/app/gerenciamento' + rota
     this.router.navigate([caminho])
   }
 

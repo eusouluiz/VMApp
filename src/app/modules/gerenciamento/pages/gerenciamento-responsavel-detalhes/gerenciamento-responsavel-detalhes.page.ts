@@ -81,10 +81,18 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     private router: Router
     ) { 
       console.log(this.activatedRoute.snapshot.paramMap.get('id'))
+      console.log(this.router.url.split('/').pop())
+
+      this.definirModo()
       
-      var id = Number(this.activatedRoute.snapshot.paramMap.get('id'))
-      this.responsavel = this.resgatarResponsavel(id)
-      this.inicializarTabelaAlunos()
+      if (this.isModoDetalhes()) {
+        var id = Number(this.activatedRoute.snapshot.paramMap.get('id'))
+        this.responsavel = this.resgatarResponsavel(id)
+        this.inicializarTabelaAlunos()
+      } else {
+        this.responsavel = this.responsavelVazio()
+        this.inicializarTabelaAlunos()
+      }
 
       this.form = this.formBuilder.group({
         nome: [this.responsavel.nome, Validators.required],
@@ -92,14 +100,41 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
         cpf: [this.responsavel.usuario.cpf, Validators.required],
         senha: [this.responsavel.usuario.senha, Validators.required],
       })
-      this.form.disable()
+      if (this.isModoDetalhes()) {
+        this.form.disable()
+      }
   }
 
   ngOnInit() {
   }
 
+  // ---- controle modo pagina ----//
+
+  private definirModo(){
+    // pega ultimo termo do endpoint
+    const rota = this.router.url.split('/').pop()
+
+    if (rota === 'cadastro') {
+      this.modo = 'cadastrar'
+    }
+  }
+
+  isModoDetalhes(){
+    return this.modo === 'detalhes'
+  }
+
+  isModoEditar(){
+    return this.modo === 'editar'
+  }
+
+  isModoCadastrar(){
+    return this.modo === 'cadastrar'
+  }
+
+  // ---- define modo pagina ----//
+
   // ---- busca responsavel ----//
-  resgatarResponsavel(id: Number): Responsavel{
+  private resgatarResponsavel(id: Number): Responsavel{
     for (let i = 0; i < RESPONSAVEL_DATA.length; i++) {
       const responsavel = RESPONSAVEL_DATA[i];
       if (responsavel.idResponsavel === id) {
@@ -152,9 +187,9 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     }
   }
 
-  deletarResponsavel(){
+  private deletarResponsavel(){
     console.log('responsavel deletado')
-    this.navegaPara('/responsavel')
+    this.navegarPara('/responsavel')
   }
 
   //editar
@@ -170,6 +205,12 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
   //cancelar edicao
   cancelar(){
     console.log('cancelado')
+
+    if (this.isModoCadastrar()) {
+      this.navegarPara('/responsavel')
+      return
+    }
+
     this.modo = 'detalhes'
 
     this.form?.setValue({
@@ -219,13 +260,13 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
   @ViewChild(MatTable)
   tabelaAlunos!: MatTable<Aluno>;
 
-  inicializarTabelaAlunos(){
+  private inicializarTabelaAlunos(){
     this.listaAlunosTabela = this.responsavel.alunos.slice()
     this.listaAlunosBusca = ALUNO_DATA.slice()
     this.nomeAlunosBusca = this.getNomeAlunosBusca(this.listaAlunosBusca)
   }
 
-  getNomeAlunosBusca(lista: Aluno[]): String[]{
+  private getNomeAlunosBusca(lista: Aluno[]): String[]{
     var nomes: String[] = []
     lista.forEach(aluno => {
       nomes.push(aluno.nome)
@@ -238,11 +279,10 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     console.log(valor)
 
     if (valor === -1){
-      this.navegarParaCadastroAluno(valor)
+      this.navegarTelaAluno(valor)
       return
     }
     
-    console.log('eh diferente -1')
     const aluno = this.listaAlunosBusca[valor]
     console.log(aluno)
 
@@ -252,7 +292,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     this.removeAlunoDaLista(valor)
   }
 
-  removeAlunoDaLista(index: number){
+  private removeAlunoDaLista(index: number){
     for (let i = 0; i < this.listaAlunosBusca.length; i++) {
       if (index === i){
         this.listaAlunosBusca.splice(index, 1)
@@ -262,7 +302,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     }
   }
 
-  atualizarAlunos(){
+  private atualizarAlunos(){
     this.responsavel.alunos = this.listaAlunosTabela.sort((a1, a2) => {
       if (a1.nome > a2.nome){
         return 1
@@ -275,13 +315,13 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     this.tabelaAlunos.renderRows()
   }
 
-  navegarParaCadastroAluno(id: Number){
+  navegarTelaAluno(id: Number){
     console.log('cadastro de aluno')
   }
   // ---- controle alunos ----//
 
   
-  public navegaPara(rota: String){
+  private navegarPara(rota: String){
     if (rota.substring(0, 1) !== '/') {
       rota = '/' + rota
     }
