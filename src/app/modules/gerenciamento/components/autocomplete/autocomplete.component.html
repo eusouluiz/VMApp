@@ -4,10 +4,19 @@
 <ion-popover size="cover" trigger="barra-busca" 
   showBackdrop="false" keyboardClose="false" dismissOnSelect="true">
   <ion-list *ngIf="isItensVisiveis">
+    <ng-container *ngIf="itens.length > 0; then thenTemplate; else elseTemplate"></ng-container>
+    <ng-template #thenTemplate>
       <ion-item *ngFor="let item of itens; index as i; first as isPrimeiro" 
         [class.opcao__selecionada]="isPrimeiro" class="opcao"
         button="true" id="{{item}}"
         (click)="selecionarItem(item)">{{ item }}</ion-item>
+    </ng-template>
+    <ng-template #elseTemplate>
+      <!-- opcao quando sem resultado na busca -->
+      <ion-item class="opcao__selecionada" 
+      button="true"
+      (click)="selecionarItem(-1)">{{textoSemResultado}}</ion-item>
+    </ng-template>
   </ion-list>
 </ion-popover>
 

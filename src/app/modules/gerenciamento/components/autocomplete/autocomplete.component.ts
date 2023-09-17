@@ -19,6 +19,7 @@ import { FormsModule } from '@angular/forms';
 export class AutocompleteComponent implements OnInit {
 
   @Input('listaItens') listaItens!: String[]
+  @Input('textoSemResultado') textoSemResultado!: String
   
   @Output() onBusca = new EventEmitter<String>()
 
@@ -68,7 +69,9 @@ export class AutocompleteComponent implements OnInit {
   selecionarItem(item: any){
     this.barraBusca.setFocus()
     console.log('selecionado: ' + item)
-    this.enviaBusca(this.listaItens.indexOf(item))
+    
+    const idBusca = item === -1 ? -1 : this.listaItens.indexOf(item) 
+    this.enviaBusca(idBusca)
 
     this.inicializaItens()
     this.busca = ''
@@ -78,13 +81,17 @@ export class AutocompleteComponent implements OnInit {
     console.log('buscado: ' + this.busca)
     console.log('selecionado: ' + this.itens[0])
     this.getItens(this.busca)
-    this.enviaBusca(this.listaItens.indexOf(this.itens[0]))
+
+    const idBusca = this.itens.length === 0 ? -1 : this.listaItens.indexOf(this.itens[0])
+    this.enviaBusca(idBusca)
 
     this.inicializaItens()
     this.busca = ''
   }
 
-  enviaBusca(busca: String | Number){
+  // envia id da lista
+  // -1 quando busca nao encontrada
+  enviaBusca(busca: Number){
     console.log('envia: ' + busca)
     this.onBusca.emit(String(busca))
   }
