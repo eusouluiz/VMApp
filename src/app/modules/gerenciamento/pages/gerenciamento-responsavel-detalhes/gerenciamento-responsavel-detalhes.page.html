@@ -26,7 +26,8 @@
         </ion-col>
         <!-- INICIO INSERCAO ALUNOS -->
         <ion-col offset="2" size="6">
-          <app-autocomplete [listaItens]="nomeAlunos" (onBusca)="adicionarAluno($event)"></app-autocomplete>
+          <app-autocomplete [listaItens]="nomeAlunos" (onBusca)="adicionarAluno($event)" 
+            textoSemResultado="Cadastrar novo aluno" icone="add" (onCliqueIcone)="navegarParaCadastroAluno(-1)"></app-autocomplete>
         </ion-col>
         <!-- FIM INSERCAO ALUNOS -->
       </ion-row>

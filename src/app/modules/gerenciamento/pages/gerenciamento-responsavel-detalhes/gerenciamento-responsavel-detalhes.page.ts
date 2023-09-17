@@ -193,17 +193,24 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     return nomes
   }
 
-  adicionarAluno(valor: String){
+  adicionarAluno(valor: number){
     console.log('adicionando aluno')
     console.log(valor)
+
+    if (valor === -1){
+      this.navegarParaCadastroAluno(valor)
+      return
+    }
     
-    const aluno = this.listaAlunos[Number(valor)]
+    console.log('eh diferente -1')
+    const aluno = this.listaAlunos[valor]
     console.log(aluno)
 
     this.responsavel.alunos.push(aluno)
     this.tabelaAluno.renderRows()
 
-    this.removeAlunoDaLista(Number(valor))
+    this.removeAlunoDaLista(valor)
+    
   }
 
   removeAlunoDaLista(index: number){
@@ -214,6 +221,10 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
         break;
       }
     }
+  }
+
+  navegarParaCadastroAluno(id: Number){
+    console.log('cadastro de aluno')
   }
   // ---- controle alunos ----//
 
