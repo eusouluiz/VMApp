@@ -21,11 +21,11 @@
     <!-- INICIO SOBRE ALUNO -->
     <ion-row>
       <ion-row size="auto" style="width: 100%;">
-        <ion-col size="4">
+        <ion-col size="7" sizeLg="4" sizeMd="4">
           <h3 style="margin-left: 5px; font-weight: bold;">Responsável por:</h3>
         </ion-col>
         <!-- INICIO INSERCAO ALUNOS -->
-        <ion-col offset="2" size="6">
+        <ion-col *ngIf="modo !== 'detalhes'" offsetLg="2" offsetMd="2" size="12" sizeLg="6" sizeMd="6">
           <app-autocomplete [listaItens]="nomeAlunos" (onBusca)="adicionarAluno($event)" 
             textoSemResultado="Cadastrar novo aluno" icone="add" (onCliqueIcone)="navegarParaCadastroAluno(-1)"></app-autocomplete>
         </ion-col>
