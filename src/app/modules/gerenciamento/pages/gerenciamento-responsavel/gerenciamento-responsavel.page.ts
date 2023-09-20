@@ -47,8 +47,6 @@ var RESPONSAVEL_DATA: Responsavel[] = [
   }
 ]
 
-const r = [{nome:'a', telefone:'1'}, {nome:'b', telefone:'2'}]
-
 
 @Component({
   selector: 'app-gerenciamento-responsavel',
@@ -57,8 +55,6 @@ const r = [{nome:'a', telefone:'1'}, {nome:'b', telefone:'2'}]
 })
 export class GerenciamentoResponsavelPage implements OnInit {
 
-  colunasResponsavel: string[] = ['nome', 'telefone']
-  dataSource = new MatTableDataSource(RESPONSAVEL_DATA)
   responsaveis: any
 
   constructor(
@@ -69,11 +65,6 @@ export class GerenciamentoResponsavelPage implements OnInit {
   ngOnInit() {
 
     this.responsaveis = RESPONSAVEL_DATA
-  }
-
-  filtro(event: Event){
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   public navegarDetalheResponsavel(responsavel: Responsavel){
