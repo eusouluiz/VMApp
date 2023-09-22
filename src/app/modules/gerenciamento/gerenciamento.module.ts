@@ -19,13 +19,14 @@ import { MatButtonModule } from '@angular/material/button'
 import { GerenciamentoResponsavelDetalhesPage } from './pages/gerenciamento-responsavel-detalhes/gerenciamento-responsavel-detalhes.page';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { GerenciamentoAlunoDetalhesPage } from './pages/gerenciamento-aluno-detalhes/gerenciamento-aluno-detalhes.page';
+import { GerenciamentoTurmaDetalhesPage } from './pages/gerenciamento-turma-detalhes/gerenciamento-turma-detalhes.page';
 
 @NgModule({
   declarations: [
     GerenciamentoPage, 
     GerenciamentoResponsavelPage, GerenciamentoResponsavelDetalhesPage,
     GerenciamentoAlunoPage, GerenciamentoAlunoDetalhesPage, 
-    GerenciamentoTurmaPage,
+    GerenciamentoTurmaPage, GerenciamentoTurmaDetalhesPage,
     GerenciamentoFuncionarioPage, GerenciamentoCargoPage,
   ],
   imports: [
