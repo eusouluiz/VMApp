@@ -1,9 +1,99 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
     <ion-title>gerenciamento-turma-detalhes</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content class="ion-padding">
+  <form [formGroup]="form" (ngSubmit)="salvar()">
+    <ion-row size="12">
+      <ion-col size="12">
+        <app-field-input formControlName="nome" label="Nome"></app-field-input>
+      </ion-col>
+    </ion-row>
+    <hr>
+    <!-- INICIO SOBRE RESPONSAVEL -->
+    <ion-row>
+      <ion-row size="auto" style="width: 100%;">
+        <ion-col size="7" sizeLg="4" sizeMd="4">
+          <h3 style="margin-left: 5px; font-weight: bold;">Alunos:</h3>
+        </ion-col>
+        <!-- INICIO INSERCAO RESPONSAVEIS -->
+        <ion-col *ngIf="!isModoDetalhes()" offsetLg="2" offsetMd="2" size="12" sizeLg="6" sizeMd="6">
+          <app-autocomplete [listaItens]="nomeAlunosBusca" (onBusca)="adicionarAluno($event)" 
+            textoSemResultado="Cadastrar novo aluno" icone="add" (onCliqueIcone)="navegarTelaAluno(-1)"></app-autocomplete>
+        </ion-col>
+        <!-- FIM INSERCAO RESPONSAVEIS -->
+      </ion-row>
+      <!-- INICIO TABELA DE RESPONSAVEIS -->
+      <table mat-table [dataSource]="listaAlunosTabela" class="mat-elevation-z8" style="width: 100%;">
+        <ng-container matColumnDef="nome">
+          <th mat-header-cell *matHeaderCellDef>Nome</th>
+          <td mat-cell *matCellDef="let aluno">{{aluno.nome}}</td>
+        </ng-container>
+        <!-- <ng-container matColumnDef="telefone">
+          <th mat-header-cell *matHeaderCellDef>Telefone</th>
+          <td mat-cell *matCellDef="let aluno">{{aluno.telefone}}</td>
+        </ng-container> -->
+        <ng-container matColumnDef="acao">
+          <th mat-header-cell *matHeaderCellDef aria-label="row actions"></th>
+          <td mat-cell *matCellDef="let aluno">
+            <div style="text-align: -webkit-right;">
+              <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small" style="box-shadow: none;">
+                <ion-icon name="information"></ion-icon>
+              </ion-fab-button>
+              <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" style="box-shadow: none;">
+                <ion-icon name="trash"></ion-icon>
+              </ion-fab-button>
+            </div>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="colunasAluno"></tr>
+        <tr mat-row *matRowDef="let row; columns: colunasAluno;"></tr>
+      </table>
+      <!-- FIM TABELA DE RESPONSAVEIS -->
+    </ion-row>
+    <!-- FIM SOBRE RESPONSAVEL -->
+    <!-- <ion-row>
+      <ion-row>
+        <h3 style="margin-left: 5px; font-weight: bold;">Informações para Login:</h3>
+      </ion-row>
+      <ion-row size="12" style="width: 100%;">
+        <ion-col size="12" size-md="6" size-lg="6">
+          <app-field-input formControlName="cpf" label="CPF"></app-field-input>
+        </ion-col>
+        <ion-col size="12" size-md="6" size-lg="6">
+          <app-field-password formControlName="senha" label="Senha"></app-field-password>
+        </ion-col>
+      </ion-row>
+    </ion-row> -->
+    <ng-container id="botoesEditar" *ngIf="!isModoDetalhes()">
+      <ion-row style="flex-direction: row-reverse;">
+        <ion-col size="auto">
+          <ion-button shape="round" type="submit" (click)="salvar()">Salvar</ion-button>
+        </ion-col>
+        <ion-col size="auto">
+          <ion-button shape="round" fill="outline" color="danger" (click)="cancelar()">Cancelar</ion-button>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+  </form>
+  <ng-container id="botoesDetalhes" *ngIf="isModoDetalhes()">
+    <ion-fab slot="fixed" vertical="bottom"  horizontal="start">
+      <ion-fab-button id="botao-deletar" color="danger">
+        <ion-icon name="trash"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+      <ion-fab-button (click)="iniciarEdicao()">
+        <ion-icon name="pencil"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+    <ion-action-sheet trigger="botao-deletar" header="Deseja deletar {{turma.nome}}?" 
+      [buttons]="actionDeletar" (didDismiss)="eventoActions($event)"></ion-action-sheet>
+  </ng-container>
+  
 </ion-content>
