@@ -257,14 +257,14 @@ export class GerenciamentoAlunoDetalhesPage implements OnInit {
 
   private getNomeResponsaveisBusca(lista: Responsavel[]): String[]{
     var nomes: String[] = []
-    lista.forEach(aluno => {
-      nomes.push(aluno.nome)
+    lista.forEach(responsavel => {
+      nomes.push(responsavel.nome)
     });
     return nomes
   }
 
   adicionarResponsavel(valor: number){
-    console.log('adicionando aluno')
+    console.log('adicionando responsavel')
     console.log(valor)
 
     if (valor === -1){
@@ -272,10 +272,10 @@ export class GerenciamentoAlunoDetalhesPage implements OnInit {
       return
     }
     
-    const aluno = this.listaResponsaveisBusca[valor]
-    console.log(aluno)
+    const responsavel = this.listaResponsaveisBusca[valor]
+    console.log(responsavel)
 
-    this.listaResponsaveisTabela.push(aluno)
+    this.listaResponsaveisTabela.push(responsavel)
     this.tabelaResponsaveis.renderRows()
 
     this.removeResponsavelDaLista(valor)
@@ -292,10 +292,10 @@ export class GerenciamentoAlunoDetalhesPage implements OnInit {
   }
 
   private atualizarResponsaveis(){
-    this.aluno.responsaveis = this.listaResponsaveisTabela.sort((a1, a2) => {
-      if (a1.nome > a2.nome){
+    this.aluno.responsaveis = this.listaResponsaveisTabela.sort((r1, r2) => {
+      if (r1.nome > r2.nome){
         return 1
-      } else if (a2.nome > a1.nome) {
+      } else if (r2.nome > r1.nome) {
         return -1
       } else {
         return 0
