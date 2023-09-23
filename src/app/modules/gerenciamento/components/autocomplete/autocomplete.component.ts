@@ -21,6 +21,7 @@ export class AutocompleteComponent implements OnInit {
   @Input('listaItens') listaItens!: String[]
   @Input('textoSemResultado') textoSemResultado!: String
   @Input('icone') icone: String | null = null
+  @Input('idBusca') idBusca!: String
   
   @Output() onBusca = new EventEmitter<Number>()
   @Output() onCliqueIcone = new EventEmitter<boolean>()

@@ -26,7 +26,7 @@
         </ion-col>
         <!-- INICIO INSERCAO ALUNOS -->
         <ion-col *ngIf="!isModoDetalhes()" offsetLg="2" offsetMd="2" size="12" sizeLg="6" sizeMd="6">
-          <app-autocomplete [listaItens]="nomeAlunosBusca" (onBusca)="adicionarAluno($event)" 
+          <app-autocomplete idBusca="busca-aluno" [listaItens]="nomeAlunosBusca" (onBusca)="adicionarAluno($event)" 
             textoSemResultado="Cadastrar novo aluno" icone="add" (onCliqueIcone)="navegarTelaAluno(-1)"></app-autocomplete>
         </ion-col>
         <!-- FIM INSERCAO ALUNOS -->

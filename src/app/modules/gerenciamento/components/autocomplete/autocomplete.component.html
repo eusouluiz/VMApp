@@ -1,6 +1,6 @@
 <div class="c-field__input-wrapper">
   <ion-input #barraBusca [(ngModel)]="busca" 
-    id="barra-busca" class="c-field__input" type="search" 
+    id="{{idBusca}}" class="c-field__input" type="search" 
     debounce="100" (ionInput)="getItens($event)" 
     (ionFocus)="mudarVisualizacaoItens()" (ionBlur)="mudarVisualizacaoItens()" 
     (keyup.enter)="selecionaPrimeiro()"></ion-input>
@@ -9,7 +9,7 @@
     [name]="icone === null ? '' : icone"
     (click)="indicaBotaoClicado()"></ion-icon>
 </div>
-<ion-popover size="cover" trigger="barra-busca" 
+<ion-popover size="cover" trigger="{{idBusca}}" 
   showBackdrop="false" keyboardClose="false" dismissOnSelect="true">
   <ion-list *ngIf="isItensVisiveis">
     <ng-container *ngIf="itens.length > 0; then thenTemplate; else elseTemplate"></ng-container>
