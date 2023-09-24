@@ -1,0 +1,42 @@
+<div class="c-field" ion-content>
+  <h6 class="c-field__label">{{ label }}</h6>
+  <div class="c-field__input-wrapper">
+
+    <ion-input id="{{idBusca}}" class="c-field__input" type="text" [placeholder]="placeholder"
+      [class.c-field__input--disabled]="isDisabled"
+      [class.c-field__input--has-icon]="icon" [formControl]="ngControl.control"
+      debounce="100" (ionInput)="getItens($event)" 
+      (ionFocus)="mudarVisualizacaoItens()" (ionBlur)="mudarVisualizacaoItens()" 
+      (keyup.enter)="selecionarPrimeiro($event.target.value)">
+    </ion-input>
+
+    <ion-icon *ngIf="icone" [name]="icone" class="c-field__icon" (click)="indicaBotaoClicado()"></ion-icon>
+  </div>
+  <ion-popover size="cover" trigger="{{idBusca}}" 
+    showBackdrop="false" keyboardClose="false" dismissOnSelect="true">
+    <ion-list *ngIf="isItensVisiveis">
+      <ng-container *ngIf="itens.length > 0; then thenTemplate; else elseTemplate"></ng-container>
+      <ng-template #thenTemplate>
+        <ion-item *ngFor="let item of itens; index as i; first as isPrimeiro" 
+          [class.opcao__selecionada]="isPrimeiro" class="opcao"
+          button="true" id="{{item}}"
+          (click)="selecionarItem(item)">{{ item }}</ion-item>
+      </ng-template>
+      <ng-template #elseTemplate>
+        <!-- opcao quando sem resultado na busca -->
+        <ion-item class="opcao__selecionada" 
+        button="true"
+        (click)="selecionarItem(-1)">{{textoSemResultado}}</ion-item>
+      </ng-template>
+    </ion-list>
+  </ion-popover>
+</div>
+
+<style>
+  .opcao__selecionada {
+    --background: var(--color-gray-400);
+  }
+  .opcao:hover {
+    --background: var(--color-gray-400);
+  }
+</style>

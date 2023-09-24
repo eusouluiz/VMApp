@@ -54,12 +54,11 @@ var RESPONSAVEL_DATA: Responsavel[] = [
 ]
 
 var ALUNO_DATA = [
-  {nome: 'aluno3', turma: 'turma3'},
-  {nome: 'aluno4', turma: 'turma4'},
-  {nome: 'aluno5', turma: 'turma5'},
-  {nome: 'aluno6', turma: 'turma6'},
-  {nome: 'aluno7', turma: 'turma7'},
-  {nome: 'aluno8', turma: 'turma8'},
+  {nome: 'Gabriel', turma: 'turma3'},
+  {nome: 'Caio', turma: 'turma4'},
+  {nome: 'Afonso', turma: 'turma5'},
+  {nome: 'Luiz', turma: 'turma7'},
+  {nome: 'Giacomo', turma: 'turma8'},
 ]
 
 @Component({
@@ -100,6 +99,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
         cpf: [this.responsavel.usuario.cpf, Validators.required],
         senha: [this.responsavel.usuario.senha, Validators.required],
       })
+      this.inicializarFormBuscaAluno()
       if (this.isModoDetalhes()) {
         this.form.disable()
       }
@@ -250,6 +250,14 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
 
   // ---- controle alunos ----//
 
+  formBuscaAluno!: UntypedFormGroup
+  
+  inicializarFormBuscaAluno() {
+    this.formBuscaAluno = this.formBuilder.group({
+      busca: ''
+    })
+  }
+
   //nome colunas
   colunasAluno: string[] = ['nome', 'turma', 'acao']
   listaAlunosBusca: Aluno[] = ALUNO_DATA.slice()
@@ -290,6 +298,13 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     this.tabelaAlunos.renderRows()
 
     this.removeAlunoDaLista(valor)
+    this.limparCampoBusca()
+  }
+
+  limparCampoBusca() {
+    this.formBuscaAluno.setValue({
+      busca: ''
+    })
   }
 
   private removeAlunoDaLista(index: number){

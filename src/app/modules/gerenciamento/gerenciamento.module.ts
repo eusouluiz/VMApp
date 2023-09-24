@@ -20,6 +20,7 @@ import { GerenciamentoResponsavelDetalhesPage } from './pages/gerenciamento-resp
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { GerenciamentoAlunoDetalhesPage } from './pages/gerenciamento-aluno-detalhes/gerenciamento-aluno-detalhes.page';
 import { GerenciamentoTurmaDetalhesPage } from './pages/gerenciamento-turma-detalhes/gerenciamento-turma-detalhes.page';
+import { AutocompleteV2Component } from './components/autocomplete-v2/autocomplete-v2.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { GerenciamentoTurmaDetalhesPage } from './pages/gerenciamento-turma-deta
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    AutocompleteComponent
+    AutocompleteComponent,
+    AutocompleteV2Component
   ]
 })
 export class GerenciamentoModule { }
