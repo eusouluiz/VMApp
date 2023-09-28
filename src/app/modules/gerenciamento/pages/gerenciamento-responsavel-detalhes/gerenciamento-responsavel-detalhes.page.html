@@ -86,19 +86,9 @@
       </ion-row>
     </ng-container>
   </form>
-  <ng-container id="botoesDetalhes" *ngIf="isModoDetalhes()">
-    <ion-fab slot="fixed" vertical="bottom"  horizontal="start">
-      <ion-fab-button id="botao-deletar" color="danger">
-        <ion-icon name="trash"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
-    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-      <ion-fab-button (click)="iniciarEdicao()">
-        <ion-icon name="pencil"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
-    <ion-action-sheet trigger="botao-deletar" header="Deseja deletar {{responsavel.nome}}?" 
-      [buttons]="actionDeletar" (didDismiss)="eventoActions($event)"></ion-action-sheet>
+  <!-- BOTOES DE CONTROLE -->
+  <ng-container *ngIf="isModoDetalhes()">
+    <app-botoes-controle (onEditar)="iniciarEdicao()" (onActionSheet)="eventoActions($event)" 
+      header="Deseja cancelar {{responsavel.nome}}?"></app-botoes-controle>  
   </ng-container>
-  
 </ion-content>
