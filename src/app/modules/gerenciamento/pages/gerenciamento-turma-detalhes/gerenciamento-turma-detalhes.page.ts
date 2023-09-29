@@ -119,25 +119,6 @@ export class GerenciamentoTurmaDetalhesPage implements OnInit {
 
   
   // ---- controle botoes ----//
-  
-
-  //deletar
-  actionDeletar = [
-    {
-      text: 'Deletar',
-      role: 'destructive',
-      data: {
-        action: 'delete',
-      },
-    },
-    {
-      text: 'Não',
-      role: 'cancel',
-      data: {
-        action: 'cancel',
-      },
-    },
-  ]
 
   eventoActions(ev:any){
     const action = ev.detail.data.action
