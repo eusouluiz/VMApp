@@ -301,9 +301,9 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
 
   private atualizarAlunos(){
     this.responsavel.alunos = this.listaAlunosTabela.sort((a1, a2) => {
-      if (a1.nome > a2.nome){
+      if (a1.nome.toLowerCase().toLowerCase() > a2.nome.toLowerCase()){
         return 1
-      } else if (a2.nome > a1.nome) {
+      } else if (a2.nome.toLowerCase() > a1.nome.toLowerCase()) {
         return -1
       } else {
         return 0
@@ -317,9 +317,19 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
   }
 
   navegarParaAluno(id: Number){
-    console.log(id)
     const rota = '/aluno/' + id + '/detalhes'
     this.navegarPara(rota) 
+  }
+
+  deletarAluno(id: Number){
+    console.log('deletar: ' + id)
+    const indexAluno = this.listaAlunosTabela.findIndex((a) => {
+      return a.idAluno === id
+    })
+    if (indexAluno !== -1){
+      this.listaAlunosTabela.splice(indexAluno, 1)
+      this.tabelaAlunos.renderRows()
+    }
   }
 
   // ---- controle alunos ----//

@@ -48,10 +48,11 @@
           <td mat-cell *matCellDef="let aluno">
             <div style="text-align: -webkit-right;">
               <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small" 
-                (click)="navegarParaAluno(aluno.idAluno)" style="box-shadow: none;">
+                (click)="navegarParaAluno(aluno.idAluno)">
                 <ion-icon name="information"></ion-icon>
               </ion-fab-button>
-              <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" style="box-shadow: none;">
+              <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
+                (click)="deletarAluno(aluno.idAluno)">
                 <ion-icon name="trash"></ion-icon>
               </ion-fab-button>
             </div>
