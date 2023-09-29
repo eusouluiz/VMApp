@@ -313,11 +313,13 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
   }
 
   navegarTelaAluno(id: Number){
-    console.log('cadastro de aluno')
-  }
-
-  navegarParaAluno(id: Number){
-    const rota = '/aluno/' + id + '/detalhes'
+    console.log('navegar tela aluno: ' + id)
+    var rota
+    if (id !== -1){
+      rota = '/aluno/' + id + '/detalhes'
+    } else {
+      rota = '/aluno/cadastro'
+    }
     this.navegarPara(rota) 
   }
 
