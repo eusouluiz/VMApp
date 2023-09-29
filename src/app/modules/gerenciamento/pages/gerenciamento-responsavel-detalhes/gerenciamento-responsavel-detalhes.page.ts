@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 
 export interface Aluno {
+  idAluno: Number,
   nome: String,
   turma: String,
 }
@@ -23,8 +24,8 @@ export interface Usuario {
   senha: String,
 }
 
-var a1: Aluno = {nome: 'aluno1', turma: 'turma1'}
-var a2: Aluno = {nome: 'aluno2', turma: 'turma2'}
+var a1: Aluno = {idAluno: 0, nome: 'aluno1', turma: 'turma1'}
+var a2: Aluno = {idAluno: 1, nome: 'aluno2', turma: 'turma2'}
 
 var RESPONSAVEL_DATA: Responsavel[] = [
   {
@@ -54,11 +55,11 @@ var RESPONSAVEL_DATA: Responsavel[] = [
 ]
 
 var ALUNO_DATA = [
-  {nome: 'Gabriel', turma: 'turma3'},
-  {nome: 'Caio', turma: 'turma4'},
-  {nome: 'Afonso', turma: 'turma5'},
-  {nome: 'Luiz', turma: 'turma7'},
-  {nome: 'Giacomo', turma: 'turma8'},
+  {idAluno: 3, nome: 'Gabriel', turma: 'turma3'},
+  {idAluno: 4, nome: 'Caio', turma: 'turma4'},
+  {idAluno: 5, nome: 'Afonso', turma: 'turma5'},
+  {idAluno: 6, nome: 'Luiz', turma: 'turma7'},
+  {idAluno: 7, nome: 'Giacomo', turma: 'turma8'},
 ]
 
 @Component({
@@ -314,6 +315,13 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
   navegarTelaAluno(id: Number){
     console.log('cadastro de aluno')
   }
+
+  navegarParaAluno(id: Number){
+    console.log(id)
+    const rota = '/aluno/' + id + '/detalhes'
+    this.navegarPara(rota) 
+  }
+
   // ---- controle alunos ----//
 
   
