@@ -63,6 +63,7 @@ export class GerenciamentoTurmaDetalhesPage implements OnInit {
       this.form = this.formBuilder.group({
         nome: [this.turma.nome, Validators.required],
       })
+      this.inicializarFormBuscaAluno()
       if (this.isModoDetalhes()) {
         this.form.disable()
       }
@@ -204,6 +205,14 @@ export class GerenciamentoTurmaDetalhesPage implements OnInit {
 
   // ---- controle alunos ----//
 
+  formBuscaAluno!: UntypedFormGroup
+  
+  inicializarFormBuscaAluno() {
+    this.formBuscaAluno = this.formBuilder.group({
+      busca: ''
+    })
+  }
+
   //nome colunas
   colunasAluno: string[] = ['nome', 'acao']
   listaAlunosBusca: Aluno[] = ALUNO_DATA.slice()
@@ -244,6 +253,12 @@ export class GerenciamentoTurmaDetalhesPage implements OnInit {
     this.tabelaAlunos.renderRows()
 
     this.removeAlunoDaLista(valor)
+  }
+
+  limparCampoBusca() {
+    this.formBuscaAluno.setValue({
+      busca: ''
+    })
   }
 
   private removeAlunoDaLista(index: number){
