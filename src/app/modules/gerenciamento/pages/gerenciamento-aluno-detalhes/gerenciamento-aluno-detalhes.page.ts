@@ -94,6 +94,7 @@ export class GerenciamentoAlunoDetalhesPage implements OnInit {
         nome: [this.aluno.nome, Validators.required],
         cgm: [this.aluno.cgm, Validators.required],
       })
+      this.inicializarFormBuscaResponsavel()
       if (this.isModoDetalhes()) {
         this.form.disable()
       }
@@ -151,25 +152,6 @@ export class GerenciamentoAlunoDetalhesPage implements OnInit {
 
   
   // ---- controle botoes ----//
-  
-
-  //deletar
-  actionDeletar = [
-    {
-      text: 'Deletar',
-      role: 'destructive',
-      data: {
-        action: 'delete',
-      },
-    },
-    {
-      text: 'Não',
-      role: 'cancel',
-      data: {
-        action: 'cancel',
-      },
-    },
-  ]
 
   eventoActions(ev:any){
     const action = ev.detail.data.action
@@ -239,6 +221,14 @@ export class GerenciamentoAlunoDetalhesPage implements OnInit {
 
   // ---- controle responsaveis ----//
 
+  formBuscaResponsavel!: UntypedFormGroup
+  
+  inicializarFormBuscaResponsavel() {
+    this.formBuscaResponsavel = this.formBuilder.group({
+      busca: ''
+    })
+  }
+
   //nome colunas
   colunasResponsavel: string[] = ['nome', 'telefone', 'acao']
   listaResponsaveisBusca: Responsavel[] = RESPONSAVEL_DATA.slice()
@@ -279,6 +269,13 @@ export class GerenciamentoAlunoDetalhesPage implements OnInit {
     this.tabelaResponsaveis.renderRows()
 
     this.removeResponsavelDaLista(valor)
+    this.limparCampoBusca()
+  }
+
+  limparCampoBusca() {
+    this.formBuscaResponsavel.setValue({
+      busca: ''
+    })
   }
 
   private removeResponsavelDaLista(index: number){

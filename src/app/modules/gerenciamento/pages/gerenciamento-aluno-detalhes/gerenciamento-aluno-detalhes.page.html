@@ -26,8 +26,11 @@
         </ion-col>
         <!-- INICIO INSERCAO RESPONSAVEIS -->
         <ion-col *ngIf="!isModoDetalhes()" offsetLg="2" offsetMd="2" size="12" sizeLg="6" sizeMd="6">
-          <app-autocomplete [listaItens]="nomeResponsaveisBusca" (onBusca)="adicionarResponsavel($event)" 
-            textoSemResultado="Cadastrar novo responsavel" icone="add" (onCliqueIcone)="navegarTelaResponsavel(-1)"></app-autocomplete>
+          <form [formGroup]="formBuscaResponsavel">
+            <app-autocomplete-v2  formControlName="busca" idBusca="busca-responsavel"  [listaItens]="nomeResponsaveisBusca" 
+            (onBusca)="adicionarResponsavel($event)" textoSemResultado="Cadastrar novo responsavel" 
+            icone="add" (onCliqueIcone)="navegarTelaResponsavel(-1)"></app-autocomplete-v2>
+          </form>
         </ion-col>
         <!-- FIM INSERCAO RESPONSAVEIS -->
       </ion-row>
@@ -84,19 +87,10 @@
       </ion-row>
     </ng-container>
   </form>
-  <ng-container id="botoesDetalhes" *ngIf="isModoDetalhes()">
-    <ion-fab slot="fixed" vertical="bottom"  horizontal="start">
-      <ion-fab-button id="botao-deletar" color="danger">
-        <ion-icon name="trash"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
-    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-      <ion-fab-button (click)="iniciarEdicao()">
-        <ion-icon name="pencil"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
-    <ion-action-sheet trigger="botao-deletar" header="Deseja deletar {{aluno.nome}}?" 
-      [buttons]="actionDeletar" (didDismiss)="eventoActions($event)"></ion-action-sheet>
+  <!-- BOTOES DE CONTROLE -->
+  <ng-container *ngIf="isModoDetalhes()">
+    <app-botoes-controle (onEditar)="iniciarEdicao()" (onActionSheet)="eventoActions($event)" 
+      header="Deseja deletar {{aluno.nome}}?"></app-botoes-controle>  
   </ng-container>
   
 </ion-content>
