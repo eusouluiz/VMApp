@@ -27,6 +27,8 @@ export class AutocompleteV2Component implements ControlValueAccessor, OnInit {
   
   @Output() onBusca = new EventEmitter<Number>()
   @Output() onCliqueIcone = new EventEmitter<boolean>()
+  @Output() onSelecionado = new EventEmitter<boolean>()
+  @Output() onDesselecionado = new EventEmitter<boolean>()
 
   isItensVisiveis = false;
   itens!: String[];
@@ -113,6 +115,11 @@ export class AutocompleteV2Component implements ControlValueAccessor, OnInit {
 
   mudarVisualizacaoItens(){
     this.isItensVisiveis = !this.isItensVisiveis
+    if (this.isItensVisiveis){
+      this.indicaBuscaSelecionada()
+    } else {
+      this.indicaBuscaDesselecionada()
+    }
   }
 
   selecionarItem(item: any){
@@ -143,6 +150,16 @@ export class AutocompleteV2Component implements ControlValueAccessor, OnInit {
 
   indicaBotaoClicado(){
     this.onCliqueIcone.emit()
+  }
+
+  indicaBuscaSelecionada(){
+    console.log('selecionado')
+    this.onSelecionado.emit()
+  }
+
+  indicaBuscaDesselecionada(){
+    console.log('desselecionado')
+    this.onDesselecionado.emit()
   }
 
   getValidators(): ValidatorFn[] {

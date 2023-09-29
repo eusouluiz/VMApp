@@ -27,7 +27,7 @@
         <!-- INICIO INSERCAO RESPONSAVEIS -->
         <ion-col *ngIf="!isModoDetalhes()" offsetLg="2" offsetMd="2" size="12" sizeLg="6" sizeMd="6">
           <form [formGroup]="formBuscaResponsavel">
-            <app-autocomplete-v2  formControlName="busca" idBusca="busca-responsavel"  [listaItens]="nomeResponsaveisBusca" 
+            <app-autocomplete-v2  formControlName="buscaResponsavel" idBusca="busca-responsavel"  [listaItens]="nomeResponsaveisBusca" 
             (onBusca)="adicionarResponsavel($event)" textoSemResultado="Cadastrar novo responsavel" 
             icone="add" (onCliqueIcone)="navegarTelaResponsavel(-1)"></app-autocomplete-v2>
           </form>
@@ -63,19 +63,20 @@
       <!-- FIM TABELA DE RESPONSAVEIS -->
     </ion-row>
     <!-- FIM SOBRE RESPONSAVEL -->
-    <!-- <ion-row>
-      <ion-row>
-        <h3 style="margin-left: 5px; font-weight: bold;">Informações para Login:</h3>
-      </ion-row>
-      <ion-row size="12" style="width: 100%;">
-        <ion-col size="12" size-md="6" size-lg="6">
-          <app-field-input formControlName="cpf" label="CPF"></app-field-input>
-        </ion-col>
-        <ion-col size="12" size-md="6" size-lg="6">
-          <app-field-password formControlName="senha" label="Senha"></app-field-password>
-        </ion-col>
-      </ion-row>
+    <!-- INICIO BUSCA TURMA -->
+    <!-- AINDA NAO ESTA FUNCIONANDO ADEQUADAMENTE -->
+    <!-- <h3 style="margin-left: 5px; font-weight: bold;">Turma:</h3>
+    <ion-row size="auto" style="width: 100%;">
+      <ion-col size="12">
+        <form [formGroup]="formBuscaTurma">
+          <app-autocomplete-v2  formControlName="buscaTurma" idBusca="busca-turma"  [listaItens]="nomeTurmasBusca" 
+          (onBusca)="adicionarTurma($event)" textoSemResultado="Cadastrar novo turma" 
+          icone="add" (onCliqueIcone)="navegarTelaTurma(-1)" (onSelecionado)="alterarExpansao('1000px')"
+          (onDesselecionado)="alterarExpansao('0px')"></app-autocomplete-v2>
+        </form>
+      </ion-col>
     </ion-row> -->
+    <!-- FIM BUSCA TURMA -->
     <ng-container id="botoesEditar" *ngIf="!isModoDetalhes()">
       <ion-row style="flex-direction: row-reverse;">
         <ion-col size="auto">
@@ -92,5 +93,6 @@
     <app-botoes-controle (onEditar)="iniciarEdicao()" (onActionSheet)="eventoActions($event)" 
       header="Deseja deletar {{aluno.nome}}?"></app-botoes-controle>  
   </ng-container>
+  <div [ngStyle]="{'height': expansao}"></div>
   
 </ion-content>

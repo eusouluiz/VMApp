@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IonicModule } from '@ionic/angular';
 
 
 export interface Aluno {
@@ -95,6 +96,7 @@ export class GerenciamentoAlunoDetalhesPage implements OnInit {
         cgm: [this.aluno.cgm, Validators.required],
       })
       this.inicializarFormBuscaResponsavel()
+      this.inicializarFormBuscaTurma()
       if (this.isModoDetalhes()) {
         this.form.disable()
       }
@@ -225,7 +227,7 @@ export class GerenciamentoAlunoDetalhesPage implements OnInit {
   
   inicializarFormBuscaResponsavel() {
     this.formBuscaResponsavel = this.formBuilder.group({
-      busca: ''
+      buscaResponsavel: ''
     })
   }
 
@@ -269,12 +271,12 @@ export class GerenciamentoAlunoDetalhesPage implements OnInit {
     this.tabelaResponsaveis.renderRows()
 
     this.removeResponsavelDaLista(valor)
-    this.limparCampoBusca()
+    this.limparCampoBuscaResponsavel()
   }
 
-  limparCampoBusca() {
+  limparCampoBuscaResponsavel() {
     this.formBuscaResponsavel.setValue({
-      busca: ''
+      buscaResponsavel: ''
     })
   }
 
@@ -302,9 +304,76 @@ export class GerenciamentoAlunoDetalhesPage implements OnInit {
   }
 
   navegarTelaResponsavel(id: Number){
-    console.log('cadastro de aluno')
+    console.log('cadastro de responsavel')
   }
   // ---- controle responsaveis ----//
+
+  // ---- controle turma ----//
+
+  formBuscaTurma!: UntypedFormGroup
+  
+  inicializarFormBuscaTurma() {
+    IonicModule.forRoot({scrollAssist: false})
+    this.formBuscaTurma = this.formBuilder.group({
+      buscaTurma: ''
+    })
+  }
+
+  listaTurmasBusca: Turma[] = TURMA_DATA.slice()
+  nomeTurmasBusca: String[] = this.getNomeTurmasBusca(this.listaTurmasBusca)
+
+  private getNomeTurmasBusca(lista: Turma[]): String[]{
+    var nomes: String[] = []
+    lista.forEach(turma => {
+      nomes.push(turma.nome)
+    });
+    return nomes
+  }
+
+  adicionarTurma(valor: number){
+    console.log('adicionando turma')
+    console.log(valor)
+
+    if (valor === -1){
+      this.navegarTelaTurma(valor)
+      return
+    }
+    
+    const turma = this.listaTurmasBusca[valor]
+    console.log(turma)
+
+    this.removeTurmaDaLista(valor)
+    this.limparCampoBuscaTurma()
+  }
+
+  limparCampoBuscaTurma() {
+    this.formBuscaTurma.setValue({
+      buscaTurma: ''
+    })
+  }
+
+  private removeTurmaDaLista(index: number){
+    for (let i = 0; i < this.listaTurmasBusca.length; i++) {
+      if (index === i){
+        this.listaTurmasBusca.splice(index, 1)
+        this.nomeTurmasBusca.splice(index, 1)
+        break;
+      }
+    }
+  }
+
+  navegarTelaTurma(id: Number){
+    console.log('cadastro de aluno')
+  }
+
+  expansao: String = '0px'
+
+  alterarExpansao(tam: String){
+    console.log(tam)
+    this.expansao = tam
+  }
+
+  // ---- controle turma ----//
 
   
   private navegarPara(rota: String){
