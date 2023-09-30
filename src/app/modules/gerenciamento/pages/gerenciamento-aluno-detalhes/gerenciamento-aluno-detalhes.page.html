@@ -48,10 +48,12 @@
           <th mat-header-cell *matHeaderCellDef aria-label="row actions"></th>
           <td mat-cell *matCellDef="let responsavel">
             <div style="text-align: -webkit-right;">
-              <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small" style="box-shadow: none;">
+              <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small" 
+                (click)="navegarTelaResponsavel(responsavel.idResponsavel)">
                 <ion-icon name="information"></ion-icon>
               </ion-fab-button>
-              <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" style="box-shadow: none;">
+              <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
+                (click)="deletarResponsavel(responsavel.idResponsavel)">
                 <ion-icon name="trash"></ion-icon>
               </ion-fab-button>
             </div>
@@ -93,6 +95,5 @@
     <app-botoes-controle (onEditar)="iniciarEdicao()" (onActionSheet)="eventoActions($event)" 
       header="Deseja deletar {{aluno.nome}}?"></app-botoes-controle>  
   </ng-container>
-  <div [ngStyle]="{'height': expansao}"></div>
   
 </ion-content>

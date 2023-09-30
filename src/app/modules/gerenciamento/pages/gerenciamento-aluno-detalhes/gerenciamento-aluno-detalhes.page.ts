@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
@@ -75,7 +76,8 @@ export class GerenciamentoAlunoDetalhesPage implements OnInit {
   constructor(
     private formBuilder: UntypedFormBuilder,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private location: Location
     ) { 
       console.log(this.activatedRoute.snapshot.paramMap.get('id'))
       console.log(this.router.url.split('/').pop())
@@ -169,7 +171,7 @@ export class GerenciamentoAlunoDetalhesPage implements OnInit {
 
   private deletarAluno(){
     console.log('aluno deletado')
-    this.navegarPara('/aluno')
+    this.retornaPagina()
   }
 
   //editar
@@ -187,7 +189,7 @@ export class GerenciamentoAlunoDetalhesPage implements OnInit {
     console.log('cancelado')
 
     if (this.isModoCadastrar()) {
-      this.navegarPara('/aluno')
+      this.retornaPagina()
       return
     }
 
@@ -295,9 +297,9 @@ export class GerenciamentoAlunoDetalhesPage implements OnInit {
 
   private atualizarResponsaveis(){
     this.aluno.responsaveis = this.listaResponsaveisTabela.sort((r1, r2) => {
-      if (r1.nome > r2.nome){
+      if (r1.nome.toLowerCase() > r2.nome.toLowerCase()){
         return 1
-      } else if (r2.nome > r1.nome) {
+      } else if (r2.nome.toLowerCase() > r1.nome.toLowerCase()) {
         return -1
       } else {
         return 0
@@ -307,8 +309,27 @@ export class GerenciamentoAlunoDetalhesPage implements OnInit {
   }
 
   navegarTelaResponsavel(id: Number){
-    console.log('cadastro de responsavel')
+    console.log('navegar tela responsavel: ' + id)
+    var rota
+    if (id !== -1){
+      rota = '/responsavel/' + id + '/detalhes'
+    } else {
+      rota = '/responsavel/cadastro'
+    }
+    this.navegarPara(rota) 
   }
+
+  deletarResponsavel(id: Number){
+    console.log('deletar: ' + id)
+    const indexResponsavel = this.listaResponsaveisTabela.findIndex((r) => {
+      return r.idResponsavel === id
+    })
+    if (indexResponsavel !== -1){
+      this.listaResponsaveisTabela.splice(indexResponsavel, 1)
+      this.tabelaResponsaveis.renderRows()
+    }
+  }
+
   // ---- controle responsaveis ----//
 
   // ---- controle turma ----//
@@ -378,6 +399,9 @@ export class GerenciamentoAlunoDetalhesPage implements OnInit {
 
   // ---- controle turma ----//
 
+  private retornaPagina(){
+    this.location.back()
+  }
   
   private navegarPara(rota: String){
     if (rota.substring(0, 1) !== '/') {
