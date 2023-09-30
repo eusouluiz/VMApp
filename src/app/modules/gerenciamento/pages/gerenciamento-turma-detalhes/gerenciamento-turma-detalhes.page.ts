@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
@@ -44,13 +45,15 @@ export class GerenciamentoTurmaDetalhesPage implements OnInit {
   constructor(
     private formBuilder: UntypedFormBuilder,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private location: Location
     ) { 
       console.log(this.activatedRoute.snapshot.paramMap.get('id'))
       console.log(this.router.url.split('/').pop())
 
       this.definirModo()
       
+      this.inicializarFormBuscaAluno()
       if (this.isModoDetalhes()) {
         var id = Number(this.activatedRoute.snapshot.paramMap.get('id'))
         this.turma = this.resgatarTurma(id)
@@ -63,7 +66,6 @@ export class GerenciamentoTurmaDetalhesPage implements OnInit {
       this.form = this.formBuilder.group({
         nome: [this.turma.nome, Validators.required],
       })
-      this.inicializarFormBuscaAluno()
       if (this.isModoDetalhes()) {
         this.form.disable()
       }
@@ -134,7 +136,7 @@ export class GerenciamentoTurmaDetalhesPage implements OnInit {
 
   private deletarTurma(){
     console.log('turma deletado')
-    this.navegarPara('/turma')
+    this.retornaPagina()
   }
 
   //editar
@@ -152,7 +154,7 @@ export class GerenciamentoTurmaDetalhesPage implements OnInit {
     console.log('cancelado')
 
     if (this.isModoCadastrar()) {
-      this.navegarPara('/turma')
+      this.retornaPagina()
       return
     }
 
@@ -211,6 +213,7 @@ export class GerenciamentoTurmaDetalhesPage implements OnInit {
     this.listaAlunosTabela = this.turma.alunos.slice()
     this.listaAlunosBusca = ALUNO_DATA.slice()
     this.nomeAlunosBusca = this.getNomeAlunosBusca(this.listaAlunosBusca)
+    this.limparCampoBusca()
   }
 
   private getNomeAlunosBusca(lista: Aluno[]): String[]{
@@ -257,9 +260,9 @@ export class GerenciamentoTurmaDetalhesPage implements OnInit {
 
   private atualizarAlunos(){
     this.turma.alunos = this.listaAlunosTabela.sort((a1, a2) => {
-      if (a1.nome > a2.nome){
+      if (a1.nome.toLowerCase() > a2.nome.toLowerCase()){
         return 1
-      } else if (a2.nome > a1.nome) {
+      } else if (a2.nome.toLowerCase() > a1.nome.toLowerCase()) {
         return -1
       } else {
         return 0
@@ -269,10 +272,31 @@ export class GerenciamentoTurmaDetalhesPage implements OnInit {
   }
 
   navegarTelaAluno(id: Number){
-    console.log('cadastro de turma')
+    console.log('navegar tela aluno: ' + id)
+    var rota
+    if (id !== -1){
+      rota = '/aluno/' + id + '/detalhes'
+    } else {
+      rota = '/aluno/cadastro'
+    }
+    this.navegarPara(rota) 
+  }
+
+  deletarAluno(id: Number){
+    console.log('deletar: ' + id)
+    const indexAluno = this.listaAlunosTabela.findIndex((a) => {
+      return a.idAluno === id
+    })
+    if (indexAluno !== -1){
+      this.listaAlunosTabela.splice(indexAluno, 1)
+      this.tabelaAlunos.renderRows()
+    }
   }
   // ---- controle alunos ----//
 
+  private retornaPagina(){
+    this.location.back()
+  }
   
   private navegarPara(rota: String){
     if (rota.substring(0, 1) !== '/') {

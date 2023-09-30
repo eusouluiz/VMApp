@@ -87,6 +87,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
 
       this.definirModo()
       
+      this.inicializarFormBuscaAluno()
       if (this.isModoDetalhes()) {
         var id = Number(this.activatedRoute.snapshot.paramMap.get('id'))
         this.responsavel = this.resgatarResponsavel(id)
@@ -102,7 +103,6 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
         cpf: [this.responsavel.usuario.cpf, Validators.required],
         senha: [this.responsavel.usuario.senha, Validators.required],
       })
-      this.inicializarFormBuscaAluno()
       if (this.isModoDetalhes()) {
         this.form.disable()
       }
@@ -259,6 +259,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     this.listaAlunosTabela = this.responsavel.alunos.slice()
     this.listaAlunosBusca = ALUNO_DATA.slice()
     this.nomeAlunosBusca = this.getNomeAlunosBusca(this.listaAlunosBusca)
+    this.limparCampoBusca()
   }
 
   private getNomeAlunosBusca(lista: Aluno[]): String[]{
