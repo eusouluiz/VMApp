@@ -15,22 +15,22 @@
       </ion-col>
     </ion-row>
     <hr>
-    <!-- INICIO SOBRE RESPONSAVEL -->
+    <!-- INICIO SOBRE ALUNO -->
     <ion-row>
       <ion-row size="auto" style="width: 100%;">
         <ion-col size="7" sizeLg="4" sizeMd="4">
           <h3 style="margin-left: 5px; font-weight: bold;">Alunos:</h3>
         </ion-col>
-        <!-- INICIO INSERCAO RESPONSAVEIS -->
+        <!-- INICIO INSERCAO ALUNOS -->
         <ion-col *ngIf="!isModoDetalhes()" offsetLg="2" offsetMd="2" size="12" sizeLg="6" sizeMd="6">
           <form [formGroup]="formBuscaAluno">
             <app-autocomplete-v2 formControlName="busca" idBusca="busca-aluno" [listaItens]="nomeAlunosBusca" (onBusca)="adicionarAluno($event)" 
               textoSemResultado="Cadastrar novo aluno" icone="add" (onCliqueIcone)="navegarTelaAluno(-1)"></app-autocomplete-v2>
           </form>
         </ion-col>
-        <!-- FIM INSERCAO RESPONSAVEIS -->
+        <!-- FIM INSERCAO ALUNOS -->
       </ion-row>
-      <!-- INICIO TABELA DE RESPONSAVEIS -->
+      <!-- INICIO TABELA DE ALUNOS -->
       <table mat-table [dataSource]="listaAlunosTabela" class="mat-elevation-z8" style="width: 100%;">
         <ng-container matColumnDef="nome">
           <th mat-header-cell *matHeaderCellDef>Nome</th>
@@ -58,9 +58,9 @@
         <tr mat-header-row *matHeaderRowDef="colunasAluno"></tr>
         <tr mat-row *matRowDef="let row; columns: colunasAluno;"></tr>
       </table>
-      <!-- FIM TABELA DE RESPONSAVEIS -->
+      <!-- FIM TABELA DE ALUNOS -->
     </ion-row>
-    <!-- FIM SOBRE RESPONSAVEL -->
+    <!-- FIM SOBRE ALUNO -->
     <!-- <ion-row>
       <ion-row>
         <h3 style="margin-left: 5px; font-weight: bold;">Informações para Login:</h3>
