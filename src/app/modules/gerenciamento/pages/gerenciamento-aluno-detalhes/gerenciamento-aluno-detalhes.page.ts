@@ -156,6 +156,9 @@ export class GerenciamentoAlunoDetalhesPage implements OnInit {
   // ---- controle botoes ----//
 
   eventoActions(ev:any){
+    if (ev.detail.data === undefined) {
+      return
+    }
     const action = ev.detail.data.action
     console.log(action)
 
