@@ -1,9 +1,21 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
     <ion-title>gerenciamento-cargo</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content class="ion-padding">
+  <div *ngFor="let cargo of cargos">
+    <ion-item detail="true" button="true" color="light" (click)="navegarDetalheCargo(cargo)">
+      <ion-col size="6">{{cargo.nome}}</ion-col>
+    </ion-item>
+  </div>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="navegarCadastroCargo()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
