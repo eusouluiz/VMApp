@@ -9,6 +9,8 @@ import { GerenciamentoCargoPage } from './pages/gerenciamento-cargo/gerenciament
 import { GerenciamentoResponsavelDetalhesPage } from './pages/gerenciamento-responsavel-detalhes/gerenciamento-responsavel-detalhes.page';
 import { GerenciamentoAlunoDetalhesPage } from './pages/gerenciamento-aluno-detalhes/gerenciamento-aluno-detalhes.page';
 import { GerenciamentoTurmaDetalhesPage } from './pages/gerenciamento-turma-detalhes/gerenciamento-turma-detalhes.page';
+import { GerenciamentoFuncionarioDetalhesPage } from './pages/gerenciamento-funcionario-detalhes/gerenciamento-funcionario-detalhes.page';
+import { GerenciamentoCargoDetalhesPage } from './pages/gerenciamento-cargo-detalhes/gerenciamento-cargo-detalhes.page';
 
 const routes: Routes = [
   {path: '', component: GerenciamentoPage},
@@ -22,9 +24,11 @@ const routes: Routes = [
   {path: 'turma/:id/detalhes', component: GerenciamentoTurmaDetalhesPage},
   {path: 'turma/cadastro', component: GerenciamentoTurmaDetalhesPage},
   {path: 'funcionario', component: GerenciamentoFuncionarioPage},
+  {path: 'funcionario/:id/detalhes', component: GerenciamentoFuncionarioDetalhesPage},
+  {path: 'funcionario/cadastro', component: GerenciamentoFuncionarioDetalhesPage},
   {path: 'cargo', component: GerenciamentoCargoPage},
-
-
+  {path: 'cargo/:id/detalhes', component: GerenciamentoCargoDetalhesPage},
+  {path: 'cargo/cadastro', component: GerenciamentoCargoDetalhesPage},
 ];
 
 @NgModule({
@@ -37,6 +41,7 @@ export class GerenciamentoRoutingModule {
     GerenciamentoResponsavelPage, GerenciamentoResponsavelDetalhesPage,
     GerenciamentoAlunoPage, GerenciamentoAlunoDetalhesPage, 
     GerenciamentoTurmaPage, GerenciamentoTurmaDetalhesPage,
-    GerenciamentoFuncionarioPage, GerenciamentoCargoPage,
+    GerenciamentoFuncionarioPage, GerenciamentoFuncionarioDetalhesPage,
+    GerenciamentoCargoPage, GerenciamentoCargoDetalhesPage,
   ]
 }

@@ -22,6 +22,8 @@ import { GerenciamentoAlunoDetalhesPage } from './pages/gerenciamento-aluno-deta
 import { GerenciamentoTurmaDetalhesPage } from './pages/gerenciamento-turma-detalhes/gerenciamento-turma-detalhes.page';
 import { AutocompleteV2Component } from './components/autocomplete-v2/autocomplete-v2.component';
 import { BotoesControleComponent } from './components/botoes-controle/botoes-controle.component';
+import { GerenciamentoFuncionarioDetalhesPage } from './pages/gerenciamento-funcionario-detalhes/gerenciamento-funcionario-detalhes.page';
+import { GerenciamentoCargoDetalhesPage } from './pages/gerenciamento-cargo-detalhes/gerenciamento-cargo-detalhes.page';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,8 @@ import { BotoesControleComponent } from './components/botoes-controle/botoes-con
     GerenciamentoResponsavelPage, GerenciamentoResponsavelDetalhesPage,
     GerenciamentoAlunoPage, GerenciamentoAlunoDetalhesPage, 
     GerenciamentoTurmaPage, GerenciamentoTurmaDetalhesPage,
-    GerenciamentoFuncionarioPage, GerenciamentoCargoPage,
+    GerenciamentoFuncionarioPage, GerenciamentoFuncionarioDetalhesPage,
+    GerenciamentoCargoPage, GerenciamentoCargoDetalhesPage,
   ],
   imports: [
     CommonModule,
