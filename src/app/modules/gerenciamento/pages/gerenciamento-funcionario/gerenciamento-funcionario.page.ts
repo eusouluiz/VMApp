@@ -19,7 +19,7 @@ export interface Funcionario {
 var a1: Cargo = {nome: 'cargo1', turma: 'turma1'}
 var a2: Cargo = {nome: 'cargo2', turma: 'turma2'}
 
-var RESPONSAVEL_DATA: Funcionario[] = [
+var FUNCIONARIO_DATA: Funcionario[] = [
   {
     idFuncionario: 0,
     idUsuario: 0,
@@ -62,7 +62,7 @@ export class GerenciamentoFuncionarioPage implements OnInit {
 
   ngOnInit() {
 
-    this.funcionarios = RESPONSAVEL_DATA
+    this.funcionarios = FUNCIONARIO_DATA
   }
 
   public navegarDetalheFuncionario(funcionario: Funcionario){
