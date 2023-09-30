@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common'
 
 
 export interface Aluno {
@@ -78,7 +79,8 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
   constructor(
     private formBuilder: UntypedFormBuilder,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private location: Location
     ) { 
       console.log(this.activatedRoute.snapshot.paramMap.get('id'))
       console.log(this.router.url.split('/').pop())
@@ -171,7 +173,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
 
   private deletarResponsavel(){
     console.log('responsavel deletado')
-    this.navegarPara('/responsavel')
+    this.retornaPagina()
   }
 
   //editar
@@ -189,7 +191,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     console.log('cancelado')
 
     if (this.isModoCadastrar()) {
-      this.navegarPara('/responsavel')
+      this.retornaPagina()
       return
     }
 
@@ -336,6 +338,9 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
 
   // ---- controle alunos ----//
 
+  private retornaPagina(){
+    this.location.back()
+  }
   
   private navegarPara(rota: String){
     if (rota.substring(0, 1) !== '/') {
