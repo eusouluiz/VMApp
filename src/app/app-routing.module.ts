@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { FooterComponent } from './shared/components/footer/footer.component';
+import { AuthGuardService } from './core/guards/auth/auth-guard.service';
 
 /*
   Please check the article below for understanding how to structure modules
@@ -40,6 +41,7 @@ const routes: Routes = [
         path: 'app',
         component: FooterComponent,
         children:routes,
+        canActivate: [AuthGuardService]
       }
     ],
     { preloadingStrategy: PreloadAllModules })],
