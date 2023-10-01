@@ -6,9 +6,9 @@
 
 <ion-content>
   <form [formGroup]="form" (ngSubmit)="submit()">
-    <app-field-input formControlName="login" label="Login" placeholder="login" showValidationErrorMessage="true"></app-field-input>
+    <app-field-input formControlName="cpf" label="CPF" placeholder="cpf" showValidationErrorMessage="true"></app-field-input>
     <app-field-password formControlName="senha" label="Senha" placeholder="senha"></app-field-password>
     
-    <app-button type="submit"> Submit </app-button>
+    <app-button type="submit"> Entrar </app-button>
   </form>
 </ion-content>
