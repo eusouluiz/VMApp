@@ -1,9 +1,92 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
     <ion-title>gerenciamento-funcionario-detalhes</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content class="ion-padding">
+  <form [formGroup]="form" (ngSubmit)="salvar()">
+    <ion-row size="12">
+      <ion-col size="12" size-md="6" size-lg="6">
+        <app-field-input formControlName="nome" label="Nome"></app-field-input>
+      </ion-col>
+      <ion-col size="12" size-md="6" size-lg="6">
+        <app-field-input formControlName="telefone" label="Telefone"></app-field-input>
+      </ion-col>
+    </ion-row>
+    <hr>
+    <!-- INICIO SOBRE CARGO -->
+    <ion-row>
+      <ion-row size="auto" style="width: 100%;">
+        <ion-col size="7" sizeLg="4" sizeMd="4">
+          <h3 style="margin-left: 5px; font-weight: bold;">Cargo:</h3>
+        </ion-col>
+        <!-- INICIO INSERCAO CARGOS -->
+        <ion-col *ngIf="!isModoDetalhes()" offsetLg="2" offsetMd="2" size="12" sizeLg="6" sizeMd="6">
+          <form [formGroup]="formBuscaCargo">
+            <app-autocomplete-v2 formControlName="busca" idBusca="busca-cargo" [listaItens]="nomeCargosBusca" (onBusca)="adicionarCargo($event)" 
+              textoSemResultado="Cadastrar novo cargo" icone="add" (onCliqueIcone)="navegarTelaCargo(-1)"></app-autocomplete-v2>
+          </form>
+        </ion-col>
+        <!-- FIM INSERCAO CARGOS -->
+      </ion-row>
+      <!-- INICIO TABELA DE CARGOS -->
+      <table mat-table [dataSource]="listaCargosTabela" class="mat-elevation-z8" style="width: 100%;">
+        <ng-container matColumnDef="nome">
+          <th mat-header-cell *matHeaderCellDef>Nome</th>
+          <td mat-cell *matCellDef="let cargo">{{cargo.nome}}</td>
+        </ng-container>
+        <ng-container matColumnDef="acao">
+          <th mat-header-cell *matHeaderCellDef aria-label="row actions"></th>
+          <td mat-cell *matCellDef="let cargo">
+            <div style="text-align: -webkit-right;">
+              <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small" 
+                (click)="navegarTelaCargo(cargo.idCargo)">
+                <ion-icon name="information"></ion-icon>
+              </ion-fab-button>
+              <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
+                (click)="deletarCargo(cargo.idCargo)">
+                <ion-icon name="trash"></ion-icon>
+              </ion-fab-button>
+            </div>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="colunasCargo"></tr>
+        <tr mat-row *matRowDef="let row; columns: colunasCargo;"></tr>
+      </table>
+      <!-- FIM TABELA DE CARGOS -->
+    </ion-row>
+    <!-- FIM SOBRE CARGO -->
+    <ion-row>
+      <ion-row>
+        <h3 style="margin-left: 5px; font-weight: bold;">Informações para Login:</h3>
+      </ion-row>
+      <ion-row size="12" style="width: 100%;">
+        <ion-col size="12" size-md="6" size-lg="6">
+          <app-field-input formControlName="cpf" label="CPF"></app-field-input>
+        </ion-col>
+        <ion-col size="12" size-md="6" size-lg="6">
+          <app-field-password formControlName="senha" label="Senha"></app-field-password>
+        </ion-col>
+      </ion-row>
+    </ion-row>
+    <ng-container id="botoesEditar" *ngIf="!isModoDetalhes()">
+      <ion-row style="flex-direction: row-reverse;">
+        <ion-col size="auto">
+          <ion-button shape="round" type="submit" (click)="salvar()">Salvar</ion-button>
+        </ion-col>
+        <ion-col size="auto">
+          <ion-button shape="round" fill="outline" color="danger" (click)="cancelar()">Cancelar</ion-button>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+  </form>
+  <!-- BOTOES DE CONTROLE -->
+  <ng-container *ngIf="isModoDetalhes()">
+    <app-botoes-controle (onEditar)="iniciarEdicao()" (onActionSheet)="eventoActions($event)" 
+      header="Deseja deletar {{funcionario.nome}}?"></app-botoes-controle>  
+  </ng-container>
 </ion-content>
