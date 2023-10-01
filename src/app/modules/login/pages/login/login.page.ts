@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppModule, Funcionario, Responsavel, Usuario } from '../../../../app.module';
+import { SessionService } from '../../../../core/state/session/session.service';
 
 @Component({
   selector: 'app-login',
@@ -10,11 +11,13 @@ import { AppModule, Funcionario, Responsavel, Usuario } from '../../../../app.mo
 })
 export class LoginPage implements OnInit {
 
+  usuario!: Usuario
   form: UntypedFormGroup;
 
   constructor(
       private formBuilder: UntypedFormBuilder,
       private router: Router,
+      private sessionService: SessionService,
     ) {
     this.form = this.formBuilder.group({
       cpf: ['', Validators.required],
@@ -31,27 +34,29 @@ export class LoginPage implements OnInit {
     const senhaForm = this.form.value.senha
 
     try {
-      const usuario = autenticar(cpfForm, senhaForm)
+      this.usuario = autenticar(cpfForm, senhaForm)
+      var responsavelLogado: Responsavel | undefined = undefined
+      var funcionarioLogado: Funcionario | undefined = undefined 
 
-      if(usuario){
+      if(this.usuario){
         console.log('logado com sucesso')
-        switch (usuario.tipoUsuario){
+        switch (this.usuario.tipoUsuario){
           case 'F': {
             console.log('funcionario')
-            const funcionario = buscarFuncionario(usuario.idUsuario)
+            const funcionario = buscarFuncionario(this.usuario.idUsuario)
             if (funcionario === undefined) {
               throw new Error('Funcionario nao encontrado')
             }
-            definirUsuarioLogado(funcionario)
+            funcionarioLogado = funcionario
             break
           }
           case 'R': {
             console.log('responsavel')
-            const responsavel = buscarResponsavel(usuario.idUsuario)
+            const responsavel = buscarResponsavel(this.usuario.idUsuario)
             if (responsavel === undefined) {
               throw new Error('Responsavel nao encontrado')
             }
-            definirUsuarioLogado(responsavel)
+            responsavelLogado = responsavel
             break
           }
           case 'A': {
@@ -62,7 +67,9 @@ export class LoginPage implements OnInit {
             throw new Error('Usuario nao definido o tipo')
           }
         }
-        console.log(AppModule.usuarioLogado)
+        console.log('responsavelLogado: ' + responsavelLogado)
+        console.log('funcionarioLogado: ' + funcionarioLogado)
+        this.sessionService.login(responsavelLogado, funcionarioLogado).subscribe()
         this.navegaParaApp()
       } 
     } catch (e: any) {
@@ -76,7 +83,7 @@ export class LoginPage implements OnInit {
 
 }
 
-
+// autentica e retorna o usuario encontrado
 function autenticar(cpfForm: String, senhaForm: String): Usuario {
   const usuario = buscarUsuarioPorCpf(cpfForm)
   if (usuario === undefined){
@@ -115,8 +122,5 @@ function buscarFuncionario(idUsuario: Number): Funcionario | undefined {
   return listaFuncionarios.find((f) => {
     return f.usuario.idUsuario === idUsuario
   })
-}
-function definirUsuarioLogado(usuarioLogado: Responsavel | Funcionario) {
-  AppModule.usuarioLogado = usuarioLogado
 }
 
