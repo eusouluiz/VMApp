@@ -22,7 +22,7 @@ export class SessionApiService {
       listaFuncionalidades = funcionario.cargo.funcionalidades
     }
 
-    return of({ accessToken: '123456', tokenType: 'Bearer', funcionalidadeAcesso: listaFuncionalidades});
+    return of({ accessToken: '123456', tokenType: 'Bearer', funcionalidadesAcesso: listaFuncionalidades});
   }
 
   postLogout(): Observable<string> {

@@ -88,8 +88,8 @@ const CARGO_DATA: Cargo[] = [
 
 const FUNCIONARIO_DATA: Funcionario[] = [
   {idFuncionario: 0, nome: 'Admin f0', usuario: USUARIO_DATA[0], cargo: CARGO_DATA[0]},
-  {idFuncionario: 1, nome: 'Giacomo f1', usuario: USUARIO_DATA[1], cargo: CARGO_DATA[1]},
-  {idFuncionario: 2, nome: 'Madu f2', usuario: USUARIO_DATA[2], cargo: CARGO_DATA[2]},
+  {idFuncionario: 1, nome: 'Giacomo f1', usuario: USUARIO_DATA[3], cargo: CARGO_DATA[1]},
+  {idFuncionario: 2, nome: 'Madu f2', usuario: USUARIO_DATA[4], cargo: CARGO_DATA[2]},
 ]
 
 @NgModule({

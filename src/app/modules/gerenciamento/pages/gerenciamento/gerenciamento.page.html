@@ -6,24 +6,11 @@
 
 <ion-content>
 
-  <ion-item detail="true" button="true" (click)="navegarPara('responsavel')">
-    <ion-label>Responsavel</ion-label>
-  </ion-item>
-  
-  <ion-item detail="true" button="true" (click)="navegarPara('aluno')">
-    <ion-label>Aluno</ion-label>
-  </ion-item>
-  
-  <ion-item detail="true" button="true" (click)="navegarPara('turma')">
-    <ion-label>Turma</ion-label>
-  </ion-item>
-  
-  <ion-item detail="true" button="true" (click)="navegarPara('funcionario')">
-    <ion-label>Funcionario</ion-label>
-  </ion-item>
-  
-  <ion-item detail="true" button="true" (click)="navegarPara('cargo')">
-    <ion-label>Cargo</ion-label>
-  </ion-item>
+  <ng-container *ngFor="let opcao of opcoesGerenciamento">
+    <ion-item *ngIf="possuiAcessoFuncionalidade(opcao.idFuncionalidade)"
+      detail="true" button="true" (click)="navegarPara(opcao.paginaRedirecionamento)">
+      <ion-label>{{opcao.nomeOpcao}}</ion-label>
+    </ion-item>
+  </ng-container>
 
 </ion-content>
