@@ -144,3 +144,27 @@ export function logaData(info: any = undefined){
         console.log(info)
     }
 }
+
+export function usuarioVazio(): Usuario {
+    return { idUsuario: 0, cpf: '', senha: '', telefone: '', tipoUsuario: '' }
+}
+
+export function responsavelVazio(): Responsavel {
+    return { idResponsavel: 0, nome: '', usuario: usuarioVazio(), alunos: [] }
+}
+
+export function turmaVazio(): Turma {
+    return { idTurma: 0, nome: '', alunos: [] }
+}
+
+export function alunoVazio(): Aluno {
+    return { idAluno: 0, nome: '', cgm: '', responsaveis: [], turma: turmaVazio() }
+}
+
+export function cargoVazio(): Cargo {
+    return { idCargo: 0, nome: '', funcionarios: [], funcionalidades: [] }
+}
+
+export function funcionarioVazio(): Funcionario {
+    return { idFuncionario: 0, nome: '', usuario: usuarioVazio(), cargo: cargoVazio() }
+}
