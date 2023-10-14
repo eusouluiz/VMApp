@@ -30,9 +30,9 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
       this.definirModo()
       
       this.inicializarFormBuscaAluno()
-      if (this.isModoDetalhes()) {
-        var id = Number(this.activatedRoute.snapshot.paramMap.get('id'))
-        this.responsavel = this.resgatarResponsavel(id)
+      const id = this.activatedRoute.snapshot.paramMap.get('id')
+      if (this.isModoDetalhes() && id !== null) {
+        this.responsavel = this.resgatarResponsavel(Number.parseInt(id))
         this.inicializarTabelaAlunos()
       } else {
         this.responsavel = responsavelVazio()
@@ -79,7 +79,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
   // ---- define modo pagina ----//
 
   // ---- busca responsavel ----//
-  private resgatarResponsavel(id: Number): Responsavel{
+  private resgatarResponsavel(id: number): Responsavel{
     const responsavel = this.responsavelService.buscarResponsavel(id)
     if (responsavel !== undefined) {
       return responsavel
@@ -158,7 +158,11 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
 
     this.atualizarAlunos()
 
-    this.responsavelService.alterarResponsavel(this.responsavel)
+    if (this.isModoCadastrar()){
+      this.responsavelService.incluirResponsavel(this.responsavel)
+    } else {
+      this.responsavelService.alterarResponsavel(this.responsavel)
+    }
 
     this.modo = 'detalhes'
     this.form?.disable()
@@ -250,7 +254,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     this.tabelaAlunos.renderRows()
   }
 
-  navegarTelaAluno(id: Number){
+  navegarTelaAluno(id: number){
     console.log('navegar tela aluno: ' + id)
     var rota
     if (id !== -1){
@@ -261,7 +265,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     this.navegarPara(rota) 
   }
 
-  deletarAluno(id: Number){
+  deletarAluno(id: number){
     console.log('deletar: ' + id)
     const indexAluno = this.listaAlunosTabela.findIndex((a) => {
       return a.idAluno === id

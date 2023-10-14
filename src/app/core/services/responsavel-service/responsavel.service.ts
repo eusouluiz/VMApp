@@ -10,13 +10,14 @@ export class ResponsavelService {
         return RESPONSAVEL_DATA
     }
 
-    buscarResponsavel(idResponsavel: Number): Responsavel | undefined{
+    buscarResponsavel(idResponsavel: number): Responsavel | undefined{
         return RESPONSAVEL_DATA.find((r) => {
             return r.idResponsavel === idResponsavel
         })
     }
 
     incluirResponsavel(responsavel: Responsavel) {
+        responsavel.idResponsavel = RESPONSAVEL_DATA[RESPONSAVEL_DATA.length-1].idResponsavel + 1
         RESPONSAVEL_DATA.push(responsavel)
     }
 
@@ -31,7 +32,7 @@ export class ResponsavelService {
         }
     }
 
-    deletarResponsavel(idResponsavel: Number) {
+    deletarResponsavel(idResponsavel: number) {
         var indexR = RESPONSAVEL_DATA.findIndex((r) => {
             return r.idResponsavel === idResponsavel
         })

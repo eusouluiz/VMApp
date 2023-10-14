@@ -3,50 +3,50 @@
 // ====================================
 
 export interface Usuario {
-    idUsuario: Number,
-    cpf: String,
-    senha: String,
-    telefone: String,
+    idUsuario: number,
+    cpf: string,
+    senha: string,
+    telefone: string,
     tipoUsuario: 'R' | 'F' | 'A' | '',
 }
 
 export interface Turma {
-    idTurma: Number,
-    nome: String,
+    idTurma: number,
+    nome: string,
     alunos: Aluno[]
 }
 
 export interface Aluno {
-    idAluno: Number,
-    nome: String,
-    cgm: String,
+    idAluno: number,
+    nome: string,
+    cgm: string,
     responsaveis: Responsavel[],
     turma: Turma,
 }
 
 export interface Responsavel {
-    idResponsavel: Number,
-    nome: String,
+    idResponsavel: number,
+    nome: string,
     usuario: Usuario,
     alunos: Aluno[],
 }
 
 export interface Funcionalidade {
-    idFuncionalidade: Number
-    nome: String,
-    descricao: String
+    idFuncionalidade: number
+    nome: string,
+    descricao: string
 }
 
 export interface Cargo {
-    idCargo: Number,
-    nome: String,
+    idCargo: number,
+    nome: string,
     funcionarios: Funcionario[],
     funcionalidades: Funcionalidade[],
 }
 
 export interface Funcionario {
-    idFuncionario: Number,
-    nome: String,
+    idFuncionario: number,
+    nome: string,
     usuario: Usuario,
     cargo: Cargo
 }
