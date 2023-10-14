@@ -1,38 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
-
-export interface Funcionalidade {
-  idFuncionalidade: String,
-  nome: String,
-}
-
-export interface Cargo {
-  idCargo: Number,
-  nome: String,
-  funcionalidades: Funcionalidade[]
-}
-
-var a1: Funcionalidade = {idFuncionalidade: 'funcionalidade1', nome: 'nome1'}
-var a2: Funcionalidade = {idFuncionalidade: 'funcionalidade2', nome: 'nome2'}
-
-var RESPONSAVEL_DATA: Cargo[] = [
-  {
-    idCargo: 0,
-    nome: 'Cargo1',
-    funcionalidades: [a1, a2]
-  },
-  {
-    idCargo: 1,
-    nome: 'Cargo2',
-    funcionalidades: [a1]
-  },
-  {
-    idCargo: 2,
-    nome: 'Cargo3',
-    funcionalidades: [a2]
-  }
-]
+import { CARGO_DATA, Cargo } from '../../../../shared/utilities/entidade/entidade.utility';
 
 @Component({
   selector: 'app-gerenciamento-cargo',
@@ -50,7 +18,7 @@ export class GerenciamentoCargoPage implements OnInit {
 
   ngOnInit() {
 
-    this.cargos = RESPONSAVEL_DATA
+    this.cargos = CARGO_DATA
   }
 
   public navegarDetalheCargo(cargo: Cargo){

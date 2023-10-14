@@ -3,32 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-
-
-export interface Funcionario {
-  idFuncionario: Number,
-  nome: String,
-}
-
-export interface Cargo {
-  idCargo: Number,
-  nome: String,
-  funcionarios: Funcionario[]
-}
-
-var FUNCIONARIO_DATA: Funcionario[] = [
-  {idFuncionario: 0, nome: 'Gabriel f1',},
-  {idFuncionario: 1, nome: 'Edir f2',},
-  {idFuncionario: 2, nome: 'Matheus f3',},
-  {idFuncionario: 3, nome: 'Augusto f4',},
-  {idFuncionario: 4, nome: 'Gustavo f5',},
-]
-
-var CARGO_DATA: Cargo[] = [
-  {idCargo: 0, nome: 'Cargo A', funcionarios: [FUNCIONARIO_DATA[0], FUNCIONARIO_DATA[1]]},
-  {idCargo: 1, nome: 'Cargo B', funcionarios: [FUNCIONARIO_DATA[2], FUNCIONARIO_DATA[1]]},
-  {idCargo: 2, nome: 'Cargo C', funcionarios: [FUNCIONARIO_DATA[4], FUNCIONARIO_DATA[0]]},
-]
+import { CARGO_DATA, Cargo, FUNCIONARIO_DATA, Funcionario, cargoVazio } from '../../../../shared/utilities/entidade/entidade.utility';
 
 @Component({
   selector: 'app-gerenciamento-cargo-detalhes',
@@ -59,7 +34,7 @@ export class GerenciamentoCargoDetalhesPage implements OnInit {
         this.cargo = this.resgatarCargo(id)
         this.inicializarTabelaFuncionarios()
       } else {
-        this.cargo = this.cargoVazio()
+        this.cargo = cargoVazio()
         this.inicializarTabelaFuncionarios()
       }
 
@@ -107,15 +82,7 @@ export class GerenciamentoCargoDetalhesPage implements OnInit {
         return cargo
       }
     }
-    return this.cargoVazio()
-  }
-
-  private cargoVazio(): Cargo{
-    return {
-      idCargo: 0,
-      nome: '',
-      funcionarios: []
-    }
+    return cargoVazio()
   }
   // ---- busca cargo ----//
 
