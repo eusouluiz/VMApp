@@ -3,65 +3,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common'
-
-
-export interface Aluno {
-  idAluno: Number,
-  nome: String,
-  turma: String,
-}
-
-export interface Responsavel {
-  idResponsavel: Number,
-  idUsuario: Number,
-  nome: String,
-  usuario: Usuario,
-  telefone: String,
-  alunos: Aluno[]
-}
-
-export interface Usuario {
-  cpf: String,
-  senha: String,
-}
-
-var a1: Aluno = {idAluno: 0, nome: 'aluno1', turma: 'turma1'}
-var a2: Aluno = {idAluno: 1, nome: 'aluno2', turma: 'turma2'}
-
-var RESPONSAVEL_DATA: Responsavel[] = [
-  {
-    idResponsavel: 0,
-    idUsuario: 0,
-    nome: 'Carlos r1',
-    usuario: {cpf: '123.456.789-00', senha: '12345678',},
-    telefone: '(41) 98822-2527',
-    alunos: [a1, a2]
-  },
-  {
-    idResponsavel: 1,
-    idUsuario: 1,
-    nome: 'Gabriel r2',
-    usuario: {cpf: '987.654.321-99', senha: '12345678',},
-    telefone: '(00) 12345-6789',
-    alunos: [a1]
-  },
-  {
-    idResponsavel: 2,
-    idUsuario: 2,
-    nome: 'Felipe r3',
-    usuario: {cpf: '333.666.999-369', senha: '12345678',},
-    telefone: '(12) 34567-8900',
-    alunos: [a2]
-  }
-]
-
-var ALUNO_DATA = [
-  {idAluno: 3, nome: 'Gabriel', turma: 'turma3'},
-  {idAluno: 4, nome: 'Caio', turma: 'turma4'},
-  {idAluno: 5, nome: 'Afonso', turma: 'turma5'},
-  {idAluno: 6, nome: 'Luiz', turma: 'turma7'},
-  {idAluno: 7, nome: 'Giacomo', turma: 'turma8'},
-]
+import { ALUNO_DATA, Aluno, RESPONSAVEL_DATA, Responsavel, responsavelVazio } from '../../../../shared/utilities/entidade/entidade.utility';
 
 @Component({
   selector: 'app-gerenciamento-responsavel-detalhes',
@@ -93,13 +35,13 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
         this.responsavel = this.resgatarResponsavel(id)
         this.inicializarTabelaAlunos()
       } else {
-        this.responsavel = this.responsavelVazio()
+        this.responsavel = responsavelVazio()
         this.inicializarTabelaAlunos()
       }
 
       this.form = this.formBuilder.group({
         nome: [this.responsavel.nome, Validators.required],
-        telefone: [this.responsavel.telefone, Validators.required],
+        telefone: [this.responsavel.usuario.telefone, Validators.required],
         cpf: [this.responsavel.usuario.cpf, Validators.required],
         senha: [this.responsavel.usuario.senha, Validators.required],
       })
@@ -144,18 +86,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
         return responsavel
       }
     }
-    return this.responsavelVazio()
-  }
-
-  private responsavelVazio(): Responsavel{
-    return {
-      idResponsavel: 0,
-      idUsuario: 0,
-      nome: '',
-      usuario: {cpf: '', senha: '',},
-      telefone: '',
-      alunos: []
-    }
+    return responsavelVazio()
   }
   // ---- busca responsavel ----//
 
@@ -202,7 +133,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
 
     this.form?.setValue({
       nome: this.responsavel.nome,
-      telefone: this.responsavel.telefone,
+      telefone: this.responsavel.usuario.telefone,
       cpf: this.responsavel.usuario.cpf,
       senha: this.responsavel.usuario.senha,
     })
@@ -222,7 +153,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     console.log('cpf: ' + this.form?.value.senha)
 
     this.responsavel.nome = this.form?.value.nome
-    this.responsavel.telefone = this.form?.value.telefone
+    this.responsavel.usuario.telefone = this.form?.value.telefone
     this.responsavel.usuario.cpf = this.form?.value.cpf
     this.responsavel.usuario.senha = this.form?.value.senha
 
