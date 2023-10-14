@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { SessionApiService } from '../../api/session/session-api.service';
 import { SessionRepository } from './session.repository';
-import { Funcionario, Responsavel, Usuario } from '../../../app.module';
+import { Funcionario, Responsavel } from '../../../shared/utilities/entidade/entidade.utility';
 
 @Injectable({ providedIn: 'root' })
 export class SessionService {

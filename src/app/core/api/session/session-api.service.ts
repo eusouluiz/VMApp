@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Session } from '../../state/session/session.interface';
-import { Funcionalidade, Funcionario, Responsavel, Usuario } from '../../../app.module';
+import { Funcionalidade, Funcionario, Responsavel } from '../../../shared/utilities/entidade/entidade.utility';
 
 @Injectable({
   providedIn: 'root',
