@@ -1,50 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
-
-export interface Cargo {
-  nome: String,
-  turma: String,
-}
-
-export interface Funcionario {
-  idFuncionario: Number,
-  idUsuario: Number,
-  nome: String,
-  cpf: String,
-  telefone: String,
-  cargos: Cargo[]
-}
-
-var a1: Cargo = {nome: 'cargo1', turma: 'turma1'}
-var a2: Cargo = {nome: 'cargo2', turma: 'turma2'}
-
-var FUNCIONARIO_DATA: Funcionario[] = [
-  {
-    idFuncionario: 0,
-    idUsuario: 0,
-    nome: 'Carlos r1',
-    cpf: '123.456.789-00',
-    telefone: '(41) 98822-2527',
-    cargos: [a1, a2]
-  },
-  {
-    idFuncionario: 1,
-    idUsuario: 1,
-    nome: 'Gabriel r2',
-    cpf: '987.654.321-99',
-    telefone: '(00) 12345-6789',
-    cargos: [a1]
-  },
-  {
-    idFuncionario: 2,
-    idUsuario: 2,
-    nome: 'Felipe r3',
-    cpf: '333.666.999-369',
-    telefone: '(12) 34567-8900',
-    cargos: [a2]
-  }
-]
+import { FUNCIONARIO_DATA, Funcionario } from '../../../../shared/utilities/entidade/entidade.utility';
 
 @Component({
   selector: 'app-gerenciamento-funcionario',

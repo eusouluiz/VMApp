@@ -3,65 +3,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common'
-
-
-export interface Cargo {
-  idCargo: Number,
-  nome: String,
-  turma: String,
-}
-
-export interface Funcionario {
-  idFuncionario: Number,
-  idUsuario: Number,
-  nome: String,
-  usuario: Usuario,
-  telefone: String,
-  cargos: Cargo[]
-}
-
-export interface Usuario {
-  cpf: String,
-  senha: String,
-}
-
-var a1: Cargo = {idCargo: 0, nome: 'cargo1', turma: 'turma1'}
-var a2: Cargo = {idCargo: 1, nome: 'cargo2', turma: 'turma2'}
-
-var FUNCIONARIO_DATA: Funcionario[] = [
-  {
-    idFuncionario: 0,
-    idUsuario: 0,
-    nome: 'Carlos r1',
-    usuario: {cpf: '123.456.789-00', senha: '12345678',},
-    telefone: '(41) 98822-2527',
-    cargos: [a1, a2]
-  },
-  {
-    idFuncionario: 1,
-    idUsuario: 1,
-    nome: 'Gabriel r2',
-    usuario: {cpf: '987.654.321-99', senha: '12345678',},
-    telefone: '(00) 12345-6789',
-    cargos: [a1]
-  },
-  {
-    idFuncionario: 2,
-    idUsuario: 2,
-    nome: 'Felipe r3',
-    usuario: {cpf: '333.666.999-369', senha: '12345678',},
-    telefone: '(12) 34567-8900',
-    cargos: [a2]
-  }
-]
-
-var CARGO_DATA = [
-  {idCargo: 3, nome: 'Gabriel', turma: 'turma3'},
-  {idCargo: 4, nome: 'Caio', turma: 'turma4'},
-  {idCargo: 5, nome: 'Afonso', turma: 'turma5'},
-  {idCargo: 6, nome: 'Luiz', turma: 'turma7'},
-  {idCargo: 7, nome: 'Giacomo', turma: 'turma8'},
-]
+import { CARGO_DATA, Cargo, FUNCIONARIO_DATA, Funcionario, funcionarioVazio } from '../../../../shared/utilities/entidade/entidade.utility';
 
 @Component({
   selector: 'app-gerenciamento-funcionario-detalhes',
@@ -93,13 +35,13 @@ export class GerenciamentoFuncionarioDetalhesPage implements OnInit {
         this.funcionario = this.resgatarFuncionario(id)
         this.inicializarTabelaCargos()
       } else {
-        this.funcionario = this.funcionarioVazio()
+        this.funcionario = funcionarioVazio()
         this.inicializarTabelaCargos()
       }
 
       this.form = this.formBuilder.group({
         nome: [this.funcionario.nome, Validators.required],
-        telefone: [this.funcionario.telefone, Validators.required],
+        telefone: [this.funcionario.usuario.telefone, Validators.required],
         cpf: [this.funcionario.usuario.cpf, Validators.required],
         senha: [this.funcionario.usuario.senha, Validators.required],
       })
@@ -144,18 +86,7 @@ export class GerenciamentoFuncionarioDetalhesPage implements OnInit {
         return funcionario
       }
     }
-    return this.funcionarioVazio()
-  }
-
-  private funcionarioVazio(): Funcionario{
-    return {
-      idFuncionario: 0,
-      idUsuario: 0,
-      nome: '',
-      usuario: {cpf: '', senha: '',},
-      telefone: '',
-      cargos: []
-    }
+    return funcionarioVazio()
   }
   // ---- busca funcionario ----//
 
@@ -202,7 +133,7 @@ export class GerenciamentoFuncionarioDetalhesPage implements OnInit {
 
     this.form?.setValue({
       nome: this.funcionario.nome,
-      telefone: this.funcionario.telefone,
+      telefone: this.funcionario.usuario.telefone,
       cpf: this.funcionario.usuario.cpf,
       senha: this.funcionario.usuario.senha,
     })
@@ -222,11 +153,9 @@ export class GerenciamentoFuncionarioDetalhesPage implements OnInit {
     console.log('cpf: ' + this.form?.value.senha)
 
     this.funcionario.nome = this.form?.value.nome
-    this.funcionario.telefone = this.form?.value.telefone
+    this.funcionario.usuario.telefone = this.form?.value.telefone
     this.funcionario.usuario.cpf = this.form?.value.cpf
     this.funcionario.usuario.senha = this.form?.value.senha
-
-    this.atualizarCargos()
 
     this.modo = 'detalhes'
     this.form?.disable()
@@ -256,7 +185,7 @@ export class GerenciamentoFuncionarioDetalhesPage implements OnInit {
   tabelaCargos!: MatTable<Cargo>;
 
   private inicializarTabelaCargos(){
-    this.listaCargosTabela = this.funcionario.cargos.slice()
+    this.listaCargosTabela = [this.funcionario.cargo]
     this.listaCargosBusca = CARGO_DATA.slice()
     this.nomeCargosBusca = this.getNomeCargosBusca(this.listaCargosBusca)
     this.limparCampoBusca()
@@ -303,19 +232,6 @@ export class GerenciamentoFuncionarioDetalhesPage implements OnInit {
         break;
       }
     }
-  }
-
-  private atualizarCargos(){
-    this.funcionario.cargos = this.listaCargosTabela.sort((a1, a2) => {
-      if (a1.nome.toLowerCase().toLowerCase() > a2.nome.toLowerCase()){
-        return 1
-      } else if (a2.nome.toLowerCase() > a1.nome.toLowerCase()) {
-        return -1
-      } else {
-        return 0
-      }
-    })
-    this.tabelaCargos.renderRows()
   }
 
   navegarTelaCargo(id: Number){
