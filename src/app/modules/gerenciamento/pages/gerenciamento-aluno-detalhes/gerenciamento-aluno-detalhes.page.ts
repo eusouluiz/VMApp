@@ -4,62 +4,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
-
-
-export interface Aluno {
-  idAluno: Number,
-  cgm: String,
-  nome: String,
-  turma: Turma | null,
-  responsaveis: Responsavel[]
-}
-
-export interface Turma {
-  idTurma: Number,
-  nome: String,
-}
-
-export interface Responsavel {
-  idResponsavel: Number,
-  nome: String,
-  telefone: String,
-}
-
-var RESPONSAVEL_DATA: Responsavel[] = [
-  {idResponsavel: 0, nome: 'Carlos r1', telefone: '(41) 98822-2527'},
-  {idResponsavel: 1, nome: 'Gabriel r2', telefone: '(00) 12345-6789'},
-  {idResponsavel: 2, nome: 'Felipe r3', telefone: '(12) 34567-8900'}
-]
-
-var TURMA_DATA: Turma[] = [
-  {idTurma: 0, nome: 'Turma A'},
-  {idTurma: 1, nome: 'Turma B'},
-  {idTurma: 2, nome: 'Turma C'}
-]
-
-var ALUNO_DATA: Aluno[] = [
-  {
-    idAluno: 0,
-    cgm: '123456789',
-    nome: 'Gabriel a1',
-    turma: TURMA_DATA[0],
-    responsaveis: [RESPONSAVEL_DATA[0]]
-  },
-  {
-    idAluno: 1,
-    cgm: '987654321',
-    nome: 'Caio a2',
-    turma: TURMA_DATA[1],
-    responsaveis: [RESPONSAVEL_DATA[1]]
-  },
-  {
-    idAluno: 2,
-    cgm: '000000000',
-    nome: 'Luiz a3',
-    turma: TURMA_DATA[2],
-    responsaveis: [RESPONSAVEL_DATA[2]]
-  },
-]
+import { ALUNO_DATA, Aluno, RESPONSAVEL_DATA, Responsavel, TURMA_DATA, Turma, alunoVazio } from '../../../../shared/utilities/entidade/entidade.utility';
 
 @Component({
   selector: 'app-gerenciamento-aluno-detalhes',
@@ -91,7 +36,7 @@ export class GerenciamentoAlunoDetalhesPage implements OnInit {
         this.aluno = this.resgatarAluno(id)
         this.inicializarTabelaResponsaveis()
       } else {
-        this.aluno = this.alunoVazio()
+        this.aluno = alunoVazio()
         this.inicializarTabelaResponsaveis()
       }
 
@@ -140,17 +85,7 @@ export class GerenciamentoAlunoDetalhesPage implements OnInit {
         return aluno
       }
     }
-    return this.alunoVazio()
-  }
-
-  private alunoVazio(): Aluno{
-    return {
-      idAluno: 0,
-      cgm: '',
-      nome: '',
-      turma: null,
-      responsaveis: []
-    }
+    return alunoVazio()
   }
   // ---- busca aluno ----//
 

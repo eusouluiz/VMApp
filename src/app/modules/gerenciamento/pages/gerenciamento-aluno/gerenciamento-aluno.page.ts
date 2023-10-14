@@ -1,31 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
-
-export interface Aluno {
-  idAluno: Number
-  nome: String,
-  turma: String,
-}
-
-var ALUNO_DATA: Aluno[] = [
-  {
-    idAluno: 0,
-    nome: 'Gabriel a1',
-    turma: 'Turma A'
-  },
-  {
-    idAluno: 1,
-    nome: 'Caio a2',
-    turma: 'Turma B'
-  },
-  {
-    idAluno: 2,
-    nome: 'Luiz a3',
-    turma: 'Turma C'
-  },
-]
-
+import { ALUNO_DATA, Aluno } from '../../../../shared/utilities/entidade/entidade.utility';
 
 @Component({
   selector: 'app-gerenciamento-aluno',
