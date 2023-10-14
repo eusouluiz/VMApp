@@ -82,7 +82,10 @@ export var RESPONSAVEL_DATA: Responsavel[] = [
 
 export var FUNCIONALIDADE_DATA: Funcionalidade[] = [
     { idFuncionalidade: 0, nome: 'Gerenciamento Responsaveis', descricao: 'Gerencia todos os responsaveis' },
-    { idFuncionalidade: 1, nome: 'Gerenciamento Funcionarios', descricao: 'Gerencia todos os funcionarios' },
+    { idFuncionalidade: 1, nome: 'Gerenciamento Aluno', descricao: 'Gerencia todos os alunos' },
+    { idFuncionalidade: 2, nome: 'Gerenciamento Turma', descricao: 'Gerencia todas as turmas' },
+    { idFuncionalidade: 3, nome: 'Gerenciamento Funcionarios', descricao: 'Gerencia todos os funcionarios' },
+    { idFuncionalidade: 4, nome: 'Gerenciamento Cargo', descricao: 'Gerencia todos os cargos' },
 ]
 
 export var CARGO_DATA: Cargo[] = [
