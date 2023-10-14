@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { RESPONSAVEL_DATA, Responsavel } from '../../../../shared/utilities/entidade/entidade.utility';
+import { Responsavel } from '../../../../shared/utilities/entidade/entidade.utility';
+import { ResponsavelService } from '../../../../core/services/responsavel-service/responsavel.service';
 
 @Component({
   selector: 'app-gerenciamento-responsavel',
@@ -13,11 +14,12 @@ export class GerenciamentoResponsavelPage implements OnInit {
 
   constructor(
     private router: Router,
-    ) { 
+    private responsavelService: ResponsavelService,
+  ) { 
+    this.responsaveis = responsavelService.buscarTodosResponsaveis()
   }
 
   ngOnInit() {
-    this.responsaveis = RESPONSAVEL_DATA
   }
 
   public navegarDetalheResponsavel(responsavel: Responsavel){

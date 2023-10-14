@@ -3,7 +3,8 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common'
-import { ALUNO_DATA, Aluno, RESPONSAVEL_DATA, Responsavel, responsavelVazio } from '../../../../shared/utilities/entidade/entidade.utility';
+import { ALUNO_DATA, Aluno, Responsavel, responsavelVazio } from '../../../../shared/utilities/entidade/entidade.utility';
+import { ResponsavelService } from '../../../../core/services/responsavel-service/responsavel.service';
 
 @Component({
   selector: 'app-gerenciamento-responsavel-detalhes',
@@ -22,10 +23,9 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private responsavelService: ResponsavelService,
     ) { 
-      console.log(this.activatedRoute.snapshot.paramMap.get('id'))
-      console.log(this.router.url.split('/').pop())
 
       this.definirModo()
       
@@ -80,11 +80,9 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
 
   // ---- busca responsavel ----//
   private resgatarResponsavel(id: Number): Responsavel{
-    for (let i = 0; i < RESPONSAVEL_DATA.length; i++) {
-      const responsavel = RESPONSAVEL_DATA[i];
-      if (responsavel.idResponsavel === id) {
-        return responsavel
-      }
+    const responsavel = this.responsavelService.buscarResponsavel(id)
+    if (responsavel !== undefined) {
+      return responsavel
     }
     return responsavelVazio()
   }
@@ -107,6 +105,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
 
   private deletarResponsavel(){
     console.log('responsavel deletado')
+    this.responsavelService.deletarResponsavel(this.responsavel.idResponsavel)
     this.retornaPagina()
   }
 
@@ -158,6 +157,8 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     this.responsavel.usuario.senha = this.form?.value.senha
 
     this.atualizarAlunos()
+
+    this.responsavelService.alterarResponsavel(this.responsavel)
 
     this.modo = 'detalhes'
     this.form?.disable()
