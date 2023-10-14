@@ -1,26 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
-
-export interface Turma {
-  idTurma: Number
-  nome: String,
-}
-
-var TURMA_DATA: Turma[] = [
-  {
-    idTurma: 0,
-    nome: 'Turma A',
-  },
-  {
-    idTurma: 1,
-    nome: 'Turma B',
-  },
-  {
-    idTurma: 2,
-    nome: 'Turma C',
-  },
-]
+import { TURMA_DATA, Turma } from '../../../../shared/utilities/entidade/entidade.utility';
 
 @Component({
   selector: 'app-gerenciamento-turma',

@@ -3,32 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-
-
-export interface Aluno {
-  idAluno: Number,
-  nome: String,
-}
-
-export interface Turma {
-  idTurma: Number,
-  nome: String,
-  alunos: Aluno[]
-}
-
-var ALUNO_DATA: Aluno[] = [
-  {idAluno: 0, nome: 'Gabriel a1',},
-  {idAluno: 1, nome: 'Rafael a2',},
-  {idAluno: 2, nome: 'Augusto a3',},
-  {idAluno: 3, nome: 'Luiz a4',},
-  {idAluno: 4, nome: 'Giacomo a5',},
-]
-
-var TURMA_DATA: Turma[] = [
-  {idTurma: 0, nome: 'Turma A', alunos: [ALUNO_DATA[0], ALUNO_DATA[1]]},
-  {idTurma: 1, nome: 'Turma B', alunos: [ALUNO_DATA[2], ALUNO_DATA[1]]},
-  {idTurma: 2, nome: 'Turma C', alunos: [ALUNO_DATA[4], ALUNO_DATA[0]]},
-]
+import { ALUNO_DATA, Aluno, TURMA_DATA, Turma, turmaVazio } from '../../../../shared/utilities/entidade/entidade.utility';
 
 @Component({
   selector: 'app-gerenciamento-turma-detalhes',
@@ -59,7 +34,7 @@ export class GerenciamentoTurmaDetalhesPage implements OnInit {
         this.turma = this.resgatarTurma(id)
         this.inicializarTabelaAlunos()
       } else {
-        this.turma = this.turmaVazio()
+        this.turma = turmaVazio()
         this.inicializarTabelaAlunos()
       }
 
@@ -107,15 +82,7 @@ export class GerenciamentoTurmaDetalhesPage implements OnInit {
         return turma
       }
     }
-    return this.turmaVazio()
-  }
-
-  private turmaVazio(): Turma{
-    return {
-      idTurma: 0,
-      nome: '',
-      alunos: []
-    }
+    return turmaVazio()
   }
   // ---- busca turma ----//
 
