@@ -3,8 +3,9 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common'
-import { ALUNO_DATA, Aluno, Responsavel, responsavelVazio } from '../../../../shared/utilities/entidade/entidade.utility';
+import { Aluno, Responsavel, responsavelVazio } from '../../../../shared/utilities/entidade/entidade.utility';
 import { ResponsavelService } from '../../../../core/services/responsavel-service/responsavel.service';
+import { AlunoService } from '../../../../core/services/aluno-service/aluno.service';
 
 @Component({
   selector: 'app-gerenciamento-responsavel-detalhes',
@@ -16,6 +17,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
   modo: 'cadastrar' | 'editar' | 'detalhes' = 'detalhes'
 
   responsavel: Responsavel
+  listaTodosAlunos: Aluno[] | null = null
 
   form: UntypedFormGroup | undefined;
 
@@ -25,6 +27,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     private router: Router,
     private location: Location,
     private responsavelService: ResponsavelService,
+    private alunoService: AlunoService,
     ) { 
 
       this.definirModo()
@@ -183,8 +186,8 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
 
   //nome colunas
   colunasAluno: string[] = ['nome', 'turma', 'acao']
-  listaAlunosBusca: Aluno[] = ALUNO_DATA.slice()
-  nomeAlunosBusca: String[] = this.getNomeAlunosBusca(this.listaAlunosBusca)
+  listaAlunosBusca: Aluno[] = []
+  nomeAlunosBusca: string[] = []
 
   listaAlunosTabela!: Aluno[]
 
@@ -193,13 +196,39 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
 
   private inicializarTabelaAlunos(){
     this.listaAlunosTabela = this.responsavel.alunos.slice()
-    this.listaAlunosBusca = ALUNO_DATA.slice()
+    if (!this.isModoDetalhes()) {
+      this.inicializaBuscaAlunos()
+    }
+  }
+
+  private inicializaBuscaAlunos(){
+    // evitar com que lista de todos os alunos seja buscada toda hora
+    if (this.listaTodosAlunos === null){
+      this.listaTodosAlunos = this.alunoService.buscarTodosAlunos().slice()
+    }
+    this.listaAlunosBusca = []
+    this.listaTodosAlunos.forEach((a) => {
+      const idAluno = a.idAluno
+      var isResponsavelPossuiAluno = false
+
+      for (let i = 0; i < this.listaAlunosTabela.length; i++) {
+        const responsavelAluno = this.listaAlunosTabela[i];
+        if (responsavelAluno.idAluno === idAluno) {
+          isResponsavelPossuiAluno = true
+          break
+        }
+      }
+
+      if (!isResponsavelPossuiAluno){
+        this.listaAlunosBusca.push(a)
+      }
+    })
     this.nomeAlunosBusca = this.getNomeAlunosBusca(this.listaAlunosBusca)
     this.limparCampoBusca()
   }
 
-  private getNomeAlunosBusca(lista: Aluno[]): String[]{
-    var nomes: String[] = []
+  private getNomeAlunosBusca(lista: Aluno[]): string[]{
+    var nomes: string[] = []
     lista.forEach(aluno => {
       nomes.push(aluno.nome)
     });
@@ -270,9 +299,13 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     const indexAluno = this.listaAlunosTabela.findIndex((a) => {
       return a.idAluno === id
     })
+    const aluno = this.listaAlunosTabela[indexAluno]
     if (indexAluno !== -1){
       this.listaAlunosTabela.splice(indexAluno, 1)
       this.tabelaAlunos.renderRows()
+      
+      this.listaAlunosBusca.push(aluno)
+      this.nomeAlunosBusca.push(aluno.nome)
     }
   }
 
@@ -282,11 +315,11 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     this.location.back()
   }
   
-  private navegarPara(rota: String){
+  private navegarPara(rota: string){
     if (rota.substring(0, 1) !== '/') {
       rota = '/' + rota
     }
-    const caminho: String = '/app/gerenciamento' + rota
+    const caminho: string = '/app/gerenciamento' + rota
     this.router.navigate([caminho])
   }
 

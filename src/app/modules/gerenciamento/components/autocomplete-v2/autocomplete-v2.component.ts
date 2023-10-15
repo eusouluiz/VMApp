@@ -124,7 +124,7 @@ export class AutocompleteV2Component implements ControlValueAccessor, OnInit {
 
   selecionarItem(item: any){
     // this.barraBusca.setFocus()
-    console.log('selecionado: ' + item)
+    // console.log('selecionado: ' + item)
     
     const idBusca = item === -1 ? -1 : this.listaItens.indexOf(item) 
     this.value = item === -1 ? undefined : item
@@ -153,12 +153,12 @@ export class AutocompleteV2Component implements ControlValueAccessor, OnInit {
   }
 
   indicaBuscaSelecionada(){
-    console.log('selecionado')
+    // console.log('selecionado')
     this.onSelecionado.emit()
   }
 
   indicaBuscaDesselecionada(){
-    console.log('desselecionado')
+    // console.log('desselecionado')
     this.onDesselecionado.emit()
   }
 
