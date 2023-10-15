@@ -90,8 +90,8 @@ export var FUNCIONALIDADE_DATA: Funcionalidade[] = [
 
 export var CARGO_DATA: Cargo[] = [
     { idCargo: 0, nome: 'Admin', funcionarios: [], funcionalidades: FUNCIONALIDADE_DATA },
-    { idCargo: 1, nome: 'Funcionarios - Responsavel', funcionarios: [], funcionalidades: [FUNCIONALIDADE_DATA[0]] },
-    { idCargo: 2, nome: 'Funcionarios - Funcionario', funcionarios: [], funcionalidades: [FUNCIONALIDADE_DATA[1]] },
+    { idCargo: 1, nome: 'Funcionarios - Responsavel', funcionarios: [], funcionalidades: [FUNCIONALIDADE_DATA[0], FUNCIONALIDADE_DATA[1], FUNCIONALIDADE_DATA[2]] },
+    { idCargo: 2, nome: 'Funcionarios - Funcionario', funcionarios: [], funcionalidades: [FUNCIONALIDADE_DATA[3], FUNCIONALIDADE_DATA[4]] },
 ]
 
 export var FUNCIONARIO_DATA: Funcionario[] = [

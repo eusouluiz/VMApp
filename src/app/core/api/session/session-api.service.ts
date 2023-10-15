@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Session } from '../../state/session/session.interface';
-import { Funcionalidade, Funcionario, Responsavel } from '../../../shared/utilities/entidade/entidade.utility';
+import { Funcionario, Responsavel } from '../../../shared/utilities/entidade/entidade.utility';
 
 @Injectable({
   providedIn: 'root',
@@ -16,10 +16,12 @@ export class SessionApiService {
       throw new Error('Nao pode ser definido ambas entidades')
     }
 
-    var listaFuncionalidades: Funcionalidade[] = []
+    var listaFuncionalidades: number[] = []
     // so preenche a lista de funcionalidades caso o usuario seja um funcionario
     if (funcionario !== undefined) {
-      listaFuncionalidades = funcionario.cargo.funcionalidades
+      funcionario.cargo.funcionalidades.forEach((f) => {
+        listaFuncionalidades.push(f.idFuncionalidade)
+      })
     }
 
     return of({ accessToken: '123456', tokenType: 'Bearer', funcionalidadesAcesso: listaFuncionalidades});

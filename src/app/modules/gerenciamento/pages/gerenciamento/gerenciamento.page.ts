@@ -1,11 +1,12 @@
 import { SessionRepository } from './../../../../core/state/session/session.repository';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ConstantesFuncionalidades } from '../../../../shared/utilities/constantes/constantes.utility';
 
 interface OpcoesGerenciamento {
   nomeOpcao: String,
   paginaRedirecionamento: String,
-  idFuncionalidade: Number
+  idFuncionalidade: number
 }
 
 @Component({
@@ -15,28 +16,29 @@ interface OpcoesGerenciamento {
 })
 export class GerenciamentoPage implements OnInit {
 
-  idFuncionalidadesAcesso: Number[] = []
+  idFuncionalidadesAcesso: number[] = []
   opcoesGerenciamento: OpcoesGerenciamento[] = [
-    {nomeOpcao: 'Responsavel', paginaRedirecionamento: 'responsavel', idFuncionalidade: 0},
-    {nomeOpcao: 'Aluno', paginaRedirecionamento: 'aluno', idFuncionalidade: 0},
-    {nomeOpcao: 'Turma', paginaRedirecionamento: 'turma', idFuncionalidade: 0},
-    {nomeOpcao: 'Funcionario', paginaRedirecionamento: 'funcionario', idFuncionalidade: 1},
-    {nomeOpcao: 'Cargo', paginaRedirecionamento: 'cargo', idFuncionalidade: 1},
+    {nomeOpcao: 'Responsavel', paginaRedirecionamento: 'responsavel', idFuncionalidade: ConstantesFuncionalidades.GERENCIAMENTO_RESPONSAVEL},
+    {nomeOpcao: 'Aluno', paginaRedirecionamento: 'aluno', idFuncionalidade: ConstantesFuncionalidades.GERENCIAMENTO_ALUNO},
+    {nomeOpcao: 'Turma', paginaRedirecionamento: 'turma', idFuncionalidade: ConstantesFuncionalidades.GERENCIAMENTO_TURMA},
+    {nomeOpcao: 'Funcionario', paginaRedirecionamento: 'funcionario', idFuncionalidade: ConstantesFuncionalidades.GERENCIAMENTO_FUNCIONARIO},
+    {nomeOpcao: 'Cargo', paginaRedirecionamento: 'cargo', idFuncionalidade: ConstantesFuncionalidades.GERENCIAMENTO_CARGO},
   ]
 
   constructor(
     private router: Router,
     private sessionRepository: SessionRepository
   ) { 
-    this.sessionRepository.session()?.funcionalidadesAcesso.forEach((f) => {
-      this.idFuncionalidadesAcesso.push(f.idFuncionalidade)
-    })
+    var ids = this.sessionRepository.session()?.funcionalidadesAcesso
+    if (ids !== undefined) {
+      this.idFuncionalidadesAcesso = ids
+    } 
   }
 
   ngOnInit() {
   }
 
-  public possuiAcessoFuncionalidade(id: Number): boolean{
+  public possuiAcessoFuncionalidade(id: number): boolean{
     return this.idFuncionalidadesAcesso.includes(id)
   }
 
