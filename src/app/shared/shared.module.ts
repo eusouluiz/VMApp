@@ -33,6 +33,7 @@ import { ModalExampleComponent } from './components/modal-example/modal-example.
 import { FieldDatetimeComponent } from './components/field-datetime/field-datetime.component';
 import { ContentSegmentComponent } from './components/content-segment/content-segment.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { FooterComponent } from './components/footer/footer.component';
     FieldFileComponent,
     FieldDatetimeComponent,
     FieldValidationIconComponent,
+    HeaderComponent,
   ],
   imports: [
     CommonModule,
@@ -83,6 +85,7 @@ import { FooterComponent } from './components/footer/footer.component';
     FieldFileComponent,
     FieldDatetimeComponent,
     FieldValidationIconComponent,
+    HeaderComponent,
   ],
 })
 export class SharedModule {}
