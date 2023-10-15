@@ -48,6 +48,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
         cpf: [this.responsavel.usuario.cpf, Validators.required],
         senha: [this.responsavel.usuario.senha, Validators.required],
       })
+      
       if (this.isModoDetalhes()) {
         this.form.disable()
       }
@@ -99,7 +100,6 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
       return
     }
     const action = ev.detail.data.action
-    console.log(action)
 
     if(action === 'delete'){
       this.deletarResponsavel()
@@ -107,15 +107,12 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
   }
 
   private deletarResponsavel(){
-    console.log('responsavel deletado')
     this.responsavelService.deletarResponsavel(this.responsavel.idResponsavel)
-    this.retornaPagina()
+    this.retornarPagina()
   }
 
   //editar
   iniciarEdicao(){
-    console.log('edicao iniciada')
-    console.log(this.form)
     this.modo = 'editar'
     this.form?.enable()
 
@@ -124,10 +121,9 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
 
   //cancelar edicao
   cancelar(){
-    console.log('cancelado')
 
     if (this.isModoCadastrar()) {
-      this.retornaPagina()
+      this.retornarPagina()
       return
     }
 
@@ -147,12 +143,6 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
 
   //salvar edicao
   salvar(){
-    console.log('salvado')
-    
-    console.log('nome: ' + this.form?.value.nome)
-    console.log('telefone: ' + this.form?.value.telefone)
-    console.log('cpf: ' + this.form?.value.cpf)
-    console.log('cpf: ' + this.form?.value.senha)
 
     this.responsavel.nome = this.form?.value.nome
     this.responsavel.usuario.telefone = this.form?.value.telefone
@@ -206,6 +196,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     if (this.listaTodosAlunos === null){
       this.listaTodosAlunos = this.alunoService.buscarTodosAlunos().slice()
     }
+
     this.listaAlunosBusca = []
     this.listaTodosAlunos.forEach((a) => {
       const idAluno = a.idAluno
@@ -223,11 +214,12 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
         this.listaAlunosBusca.push(a)
       }
     })
-    this.nomeAlunosBusca = this.getNomeAlunosBusca(this.listaAlunosBusca)
+
+    this.nomeAlunosBusca = this.resgatarNomeAlunosBusca(this.listaAlunosBusca)
     this.limparCampoBusca()
   }
 
-  private getNomeAlunosBusca(lista: Aluno[]): string[]{
+  private resgatarNomeAlunosBusca(lista: Aluno[]): string[]{
     var nomes: string[] = []
     lista.forEach(aluno => {
       nomes.push(aluno.nome)
@@ -236,8 +228,6 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
   }
 
   adicionarAluno(valor: number){
-    console.log('adicionando aluno')
-    console.log(valor)
 
     if (valor === -1){
       this.navegarTelaAluno(valor)
@@ -245,12 +235,11 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     }
     
     const aluno = this.listaAlunosBusca[valor]
-    console.log(aluno)
 
     this.listaAlunosTabela.push(aluno)
     this.tabelaAlunos.renderRows()
 
-    this.removeAlunoDaLista(valor)
+    this.removerAlunoDaLista(valor)
     this.limparCampoBusca()
   }
 
@@ -260,7 +249,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     })
   }
 
-  private removeAlunoDaLista(index: number){
+  private removerAlunoDaLista(index: number){
     for (let i = 0; i < this.listaAlunosBusca.length; i++) {
       if (index === i){
         this.listaAlunosBusca.splice(index, 1)
@@ -272,7 +261,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
 
   private atualizarAlunos(){
     this.responsavel.alunos = this.listaAlunosTabela.sort((a1, a2) => {
-      if (a1.nome.toLowerCase().toLowerCase() > a2.nome.toLowerCase()){
+      if (a1.nome.toLowerCase() > a2.nome.toLowerCase()){
         return 1
       } else if (a2.nome.toLowerCase() > a1.nome.toLowerCase()) {
         return -1
@@ -284,7 +273,6 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
   }
 
   navegarTelaAluno(id: number){
-    console.log('navegar tela aluno: ' + id)
     var rota
     if (id !== -1){
       rota = '/aluno/' + id + '/detalhes'
@@ -295,7 +283,6 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
   }
 
   deletarAluno(id: number){
-    console.log('deletar: ' + id)
     const indexAluno = this.listaAlunosTabela.findIndex((a) => {
       return a.idAluno === id
     })
@@ -311,7 +298,7 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
 
   // ---- controle alunos ----//
 
-  private retornaPagina(){
+  private retornarPagina(){
     this.location.back()
   }
   
