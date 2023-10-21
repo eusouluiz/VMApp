@@ -7,21 +7,17 @@ import { Aluno, Responsavel, responsavelVazio } from '../../../../shared/utiliti
 import { ResponsavelService } from '../../../../core/services/responsavel-service/responsavel.service';
 import { AlunoService } from '../../../../core/services/aluno-service/aluno.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
-import { Rota } from '../../../../shared/utilities/rota/rota.utility';
+import { PaginaGerenciamento } from '../../../../shared/utilities/pagina-gerenciamento/pagina-gerenciamento.utility';
 
 @Component({
   selector: 'app-gerenciamento-responsavel-detalhes',
   templateUrl: './gerenciamento-responsavel-detalhes.page.html',
   styleUrls: ['./gerenciamento-responsavel-detalhes.page.scss'],
 })
-export default class GerenciamentoResponsavelDetalhesPage extends Rota implements OnInit {
-
-  modo: 'cadastrar' | 'editar' | 'detalhes' = 'detalhes'
+export default class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamento implements OnInit {
 
   responsavel: Responsavel
   listaTodosAlunos: Aluno[] | null = null
-
-  form: UntypedFormGroup | undefined;
 
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -30,64 +26,39 @@ export default class GerenciamentoResponsavelDetalhesPage extends Rota implement
     private location: Location,
     private responsavelService: ResponsavelService,
     private alunoService: AlunoService,
-    ) { 
-      const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO
-      super(router, location, ROTA_BASE)
+  ) {
+    const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO
+    super(router, location, ROTA_BASE)
 
-      this.definirModo()
-      
-      this.inicializarFormBuscaAluno()
-      const id = this.activatedRoute.snapshot.paramMap.get('id')
-      if (this.isModoDetalhes() && id !== null) {
-        this.responsavel = this.resgatarResponsavel(Number.parseInt(id))
-        this.inicializarTabelaAlunos()
-      } else {
-        this.responsavel = responsavelVazio()
-        this.inicializarTabelaAlunos()
-      }
+    this.definirModo()
 
-      this.form = this.formBuilder.group({
-        nome: [this.responsavel.nome, Validators.required],
-        telefone: [this.responsavel.usuario.telefone, Validators.required],
-        cpf: [this.responsavel.usuario.cpf, Validators.required],
-        senha: [this.responsavel.usuario.senha, Validators.required],
-      })
-      
-      if (this.isModoDetalhes()) {
-        this.form.disable()
-      }
+    this.inicializarFormBuscaAluno()
+    const id = this.activatedRoute.snapshot.paramMap.get('id')
+    if (this.isModoDetalhes() && id !== null) {
+      this.responsavel = this.resgatarResponsavel(Number.parseInt(id))
+      this.inicializarTabelaAlunos()
+    } else {
+      this.responsavel = responsavelVazio()
+      this.inicializarTabelaAlunos()
+    }
+
+    this.form = this.formBuilder.group({
+      nome: [this.responsavel.nome, Validators.required],
+      telefone: [this.responsavel.usuario.telefone, Validators.required],
+      cpf: [this.responsavel.usuario.cpf, Validators.required],
+      senha: [this.responsavel.usuario.senha, Validators.required],
+    })
+
+    if (this.isModoDetalhes()) {
+      this.form.disable()
+    }
   }
 
   ngOnInit() {
   }
 
-  // ---- controle modo pagina ----//
-
-  private definirModo(){
-    // pega ultimo termo do endpoint
-    const rota = this.router.url.split('/').pop()
-
-    if (rota === 'cadastro') {
-      this.modo = 'cadastrar'
-    }
-  }
-
-  isModoDetalhes(){
-    return this.modo === 'detalhes'
-  }
-
-  isModoEditar(){
-    return this.modo === 'editar'
-  }
-
-  isModoCadastrar(){
-    return this.modo === 'cadastrar'
-  }
-
-  // ---- define modo pagina ----//
-
   // ---- busca responsavel ----//
-  private resgatarResponsavel(id: number): Responsavel{
+  private resgatarResponsavel(id: number): Responsavel {
     const responsavel = this.responsavelService.buscarResponsavel(id)
     if (responsavel !== undefined) {
       return responsavel
@@ -95,36 +66,23 @@ export default class GerenciamentoResponsavelDetalhesPage extends Rota implement
     return responsavelVazio()
   }
   // ---- busca responsavel ----//
-
   
   // ---- controle botoes ----//
 
-  eventoActions(ev:any){
-    if (ev.detail.data === undefined) {
-      return
-    }
-    const action = ev.detail.data.action
-
-    if(action === 'delete'){
-      this.deletarResponsavel()
-    }
-  }
-
-  private deletarResponsavel(){
+  //delecao
+  protected deletar() {
     this.responsavelService.deletarResponsavel(this.responsavel.idResponsavel)
     this.retornarPagina()
   }
 
-  //editar
-  iniciarEdicao(){
-    this.modo = 'editar'
-    this.form?.enable()
+  //edicao
 
+  protected inicializarComponentesEdicao() {
     this.inicializarTabelaAlunos()
   }
 
   //cancelar edicao
-  cancelar(){
+  cancelar() {
 
     if (this.isModoCadastrar()) {
       this.retornarPagina()
@@ -146,7 +104,7 @@ export default class GerenciamentoResponsavelDetalhesPage extends Rota implement
   }
 
   //salvar edicao
-  salvar(){
+  salvar() {
 
     this.responsavel.nome = this.form?.value.nome
     this.responsavel.usuario.telefone = this.form?.value.telefone
@@ -155,7 +113,7 @@ export default class GerenciamentoResponsavelDetalhesPage extends Rota implement
 
     this.atualizarAlunos()
 
-    if (this.isModoCadastrar()){
+    if (this.isModoCadastrar()) {
       this.responsavelService.incluirResponsavel(this.responsavel)
     } else {
       this.responsavelService.alterarResponsavel(this.responsavel)
@@ -171,7 +129,7 @@ export default class GerenciamentoResponsavelDetalhesPage extends Rota implement
   // ---- controle alunos ----//
 
   formBuscaAluno!: UntypedFormGroup
-  
+
   inicializarFormBuscaAluno() {
     this.formBuscaAluno = this.formBuilder.group({
       busca: ''
@@ -188,16 +146,16 @@ export default class GerenciamentoResponsavelDetalhesPage extends Rota implement
   @ViewChild(MatTable)
   tabelaAlunos!: MatTable<Aluno>;
 
-  private inicializarTabelaAlunos(){
+  private inicializarTabelaAlunos() {
     this.listaAlunosTabela = this.responsavel.alunos.slice()
     if (!this.isModoDetalhes()) {
       this.inicializaBuscaAlunos()
     }
   }
 
-  private inicializaBuscaAlunos(){
+  private inicializaBuscaAlunos() {
     // evitar com que lista de todos os alunos seja buscada toda hora
-    if (this.listaTodosAlunos === null){
+    if (this.listaTodosAlunos === null) {
       this.listaTodosAlunos = this.alunoService.buscarTodosAlunos().slice()
     }
 
@@ -214,7 +172,7 @@ export default class GerenciamentoResponsavelDetalhesPage extends Rota implement
         }
       }
 
-      if (!isResponsavelPossuiAluno){
+      if (!isResponsavelPossuiAluno) {
         this.listaAlunosBusca.push(a)
       }
     })
@@ -223,7 +181,7 @@ export default class GerenciamentoResponsavelDetalhesPage extends Rota implement
     this.limparCampoBusca()
   }
 
-  private resgatarNomeAlunosBusca(lista: Aluno[]): string[]{
+  private resgatarNomeAlunosBusca(lista: Aluno[]): string[] {
     var nomes: string[] = []
     lista.forEach(aluno => {
       nomes.push(aluno.nome)
@@ -231,13 +189,13 @@ export default class GerenciamentoResponsavelDetalhesPage extends Rota implement
     return nomes
   }
 
-  adicionarAluno(valor: number){
+  adicionarAluno(valor: number) {
 
-    if (valor === -1){
+    if (valor === -1) {
       this.navegarTelaAluno(valor)
       return
     }
-    
+
     const aluno = this.listaAlunosBusca[valor]
 
     this.listaAlunosTabela.push(aluno)
@@ -253,9 +211,9 @@ export default class GerenciamentoResponsavelDetalhesPage extends Rota implement
     })
   }
 
-  private removerAlunoDaLista(index: number){
+  private removerAlunoDaLista(index: number) {
     for (let i = 0; i < this.listaAlunosBusca.length; i++) {
-      if (index === i){
+      if (index === i) {
         this.listaAlunosBusca.splice(index, 1)
         this.nomeAlunosBusca.splice(index, 1)
         break;
@@ -263,9 +221,9 @@ export default class GerenciamentoResponsavelDetalhesPage extends Rota implement
     }
   }
 
-  private atualizarAlunos(){
+  private atualizarAlunos() {
     this.responsavel.alunos = this.listaAlunosTabela.sort((a1, a2) => {
-      if (a1.nome.toLowerCase() > a2.nome.toLowerCase()){
+      if (a1.nome.toLowerCase() > a2.nome.toLowerCase()) {
         return 1
       } else if (a2.nome.toLowerCase() > a1.nome.toLowerCase()) {
         return -1
@@ -276,25 +234,25 @@ export default class GerenciamentoResponsavelDetalhesPage extends Rota implement
     this.tabelaAlunos.renderRows()
   }
 
-  navegarTelaAluno(id: number){
+  navegarTelaAluno(id: number) {
     var rota = ConstantesRotas.ROTA_GERENCIAMENTO_ALUNO
-    if (id !== -1){
+    if (id !== -1) {
       rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES
     } else {
       rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO
     }
-    this.navegarPara(rota) 
+    this.navegarPara(rota)
   }
 
-  deletarAluno(id: number){
+  deletarAluno(id: number) {
     const indexAluno = this.listaAlunosTabela.findIndex((a) => {
       return a.idAluno === id
     })
     const aluno = this.listaAlunosTabela[indexAluno]
-    if (indexAluno !== -1){
+    if (indexAluno !== -1) {
       this.listaAlunosTabela.splice(indexAluno, 1)
       this.tabelaAlunos.renderRows()
-      
+
       this.listaAlunosBusca.push(aluno)
       this.nomeAlunosBusca.push(aluno.nome)
     }
