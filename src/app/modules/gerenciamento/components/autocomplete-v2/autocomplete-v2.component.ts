@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Optional, Output, Self, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Optional, Output, Self, ViewChild, Renderer2, ElementRef } from '@angular/core';
 import { SharedModule } from '../../../../shared/shared.module';
 import { ControlValueAccessor, FormsModule, NgControl, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonPopover, IonicModule, PopoverController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -18,6 +18,8 @@ import { CommonModule } from '@angular/common';
   ]
 })
 export class AutocompleteV2Component implements ControlValueAccessor, OnInit {
+
+  @ViewChild('popover') popover!: HTMLIonPopoverElement
 
   @Input('listaItens') listaItens!: String[]
   @Input('textoSemResultado') textoSemResultado!: String
@@ -45,9 +47,11 @@ export class AutocompleteV2Component implements ControlValueAccessor, OnInit {
   onChange: (_: any) => void = () => {};
   onTouched: () => void = () => {};
 
-  constructor(@Self() @Optional() public ngControl: NgControl) {
+  constructor(
+    @Self() @Optional() public ngControl: NgControl,
+    private renderer: Renderer2
+  ) {
     this.ngControl.valueAccessor = this;
-    console.log(this.ngControl)
   }
 
   ngOnInit() {
@@ -59,7 +63,6 @@ export class AutocompleteV2Component implements ControlValueAccessor, OnInit {
     control?.setValidators(validators);
     control?.updateValueAndValidity();
     
-    console.log(this.listaItens)
     this.inicializaItens()
   }
 
@@ -70,7 +73,6 @@ export class AutocompleteV2Component implements ControlValueAccessor, OnInit {
   }
 
   writeValue(value: string): void {
-    console.log(value)
     this.value = value;
     this.updateChanges();
   }
@@ -113,18 +115,29 @@ export class AutocompleteV2Component implements ControlValueAccessor, OnInit {
       }
   }
 
-  mudarVisualizacaoItens(){
-    this.isItensVisiveis = !this.isItensVisiveis
-    if (this.isItensVisiveis){
-      this.indicaBuscaSelecionada()
-    } else {
-      this.indicaBuscaDesselecionada()
+  blur: boolean = false
+  async mostrarItens(){
+    this.blur = !this.blur
+    if (this.blur){
+      this.popover.cssClass = undefined
+      this.popover.keyboardClose = false
+      this.isItensVisiveis = true
+      await this.popover.present()
     }
   }
 
+  async esconderItens(){
+    this.isItensVisiveis = false
+    await this.popover.dismiss()
+
+    this.popover.cssClass = 'esconder-popover'
+    this.popover.keyboardClose = true
+    await this.popover.present()
+    await this.popover.dismiss()
+  }
+
   selecionarItem(item: any){
-    // this.barraBusca.setFocus()
-    // console.log('selecionado: ' + item)
+    console.log('selecionarItem')
     
     const idBusca = item === -1 ? -1 : this.listaItens.indexOf(item) 
     this.value = item === -1 ? undefined : item

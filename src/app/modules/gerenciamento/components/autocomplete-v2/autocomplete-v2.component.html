@@ -6,14 +6,15 @@
       [class.c-field__input--disabled]="isDisabled"
       [class.c-field__input--has-icon]="icon" [formControl]="ngControl.control"
       debounce="100" (ionInput)="getItens($event)" 
-      (ionFocus)="mudarVisualizacaoItens()" (ionBlur)="mudarVisualizacaoItens()" 
+      (ionFocus)="mostrarItens()" (ionBlur)="esconderItens()" 
       (keyup.enter)="selecionarPrimeiro($event.target.value)">
     </ion-input>
 
     <ion-icon *ngIf="icone" [name]="icone" class="c-field__icon" (click)="indicaBotaoClicado()"></ion-icon>
   </div>
-  <ion-popover size="cover" trigger="{{idBusca}}" 
-    showBackdrop="false" keyboardClose="false" dismissOnSelect="true">
+  <ion-popover #popover size="cover" trigger="{{idBusca}}"
+    showBackdrop="false" keyboardClose="false" dismissOnSelect="true"
+    style="height: 180px;">
     <ion-list *ngIf="isItensVisiveis">
       <ng-container *ngIf="itens.length > 0; then thenTemplate; else elseTemplate"></ng-container>
       <ng-template #thenTemplate>
@@ -38,5 +39,9 @@
   }
   .opcao:hover {
     --background: var(--color-gray-400);
+  }
+
+  .esconder-popover {
+    display: none;
   }
 </style>
