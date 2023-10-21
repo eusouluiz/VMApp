@@ -6,13 +6,15 @@ import { Location } from '@angular/common'
 import { Aluno, Responsavel, responsavelVazio } from '../../../../shared/utilities/entidade/entidade.utility';
 import { ResponsavelService } from '../../../../core/services/responsavel-service/responsavel.service';
 import { AlunoService } from '../../../../core/services/aluno-service/aluno.service';
+import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
+import { Rota } from '../../../../shared/utilities/rota/rota.utility';
 
 @Component({
   selector: 'app-gerenciamento-responsavel-detalhes',
   templateUrl: './gerenciamento-responsavel-detalhes.page.html',
   styleUrls: ['./gerenciamento-responsavel-detalhes.page.scss'],
 })
-export class GerenciamentoResponsavelDetalhesPage implements OnInit {
+export default class GerenciamentoResponsavelDetalhesPage extends Rota implements OnInit {
 
   modo: 'cadastrar' | 'editar' | 'detalhes' = 'detalhes'
 
@@ -29,6 +31,8 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
     private responsavelService: ResponsavelService,
     private alunoService: AlunoService,
     ) { 
+      const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO
+      super(router, location, ROTA_BASE)
 
       this.definirModo()
       
@@ -273,11 +277,11 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
   }
 
   navegarTelaAluno(id: number){
-    var rota
+    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_ALUNO
     if (id !== -1){
-      rota = '/aluno/' + id + '/detalhes'
+      rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES
     } else {
-      rota = '/aluno/cadastro'
+      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO
     }
     this.navegarPara(rota) 
   }
@@ -297,17 +301,5 @@ export class GerenciamentoResponsavelDetalhesPage implements OnInit {
   }
 
   // ---- controle alunos ----//
-
-  private retornarPagina(){
-    this.location.back()
-  }
-  
-  private navegarPara(rota: string){
-    if (rota.substring(0, 1) !== '/') {
-      rota = '/' + rota
-    }
-    const caminho: string = '/app/gerenciamento' + rota
-    this.router.navigate([caminho])
-  }
 
 }

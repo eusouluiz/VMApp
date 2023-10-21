@@ -12,11 +12,11 @@ import { GerenciamentoFuncionarioPage } from './pages/gerenciamento-funcionario/
 import { GerenciamentoCargoPage } from './pages/gerenciamento-cargo/gerenciamento-cargo.page';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table'
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button'
 // import { provideAnimations} from '@angular/platform-browser/animations'
-import { GerenciamentoResponsavelDetalhesPage } from './pages/gerenciamento-responsavel-detalhes/gerenciamento-responsavel-detalhes.page';
+import GerenciamentoResponsavelDetalhesPage from './pages/gerenciamento-responsavel-detalhes/gerenciamento-responsavel-detalhes.page';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { GerenciamentoAlunoDetalhesPage } from './pages/gerenciamento-aluno-detalhes/gerenciamento-aluno-detalhes.page';
 import { GerenciamentoTurmaDetalhesPage } from './pages/gerenciamento-turma-detalhes/gerenciamento-turma-detalhes.page';
@@ -27,9 +27,9 @@ import { GerenciamentoCargoDetalhesPage } from './pages/gerenciamento-cargo-deta
 
 @NgModule({
   declarations: [
-    GerenciamentoPage, 
+    GerenciamentoPage,
     GerenciamentoResponsavelPage, GerenciamentoResponsavelDetalhesPage,
-    GerenciamentoAlunoPage, GerenciamentoAlunoDetalhesPage, 
+    GerenciamentoAlunoPage, GerenciamentoAlunoDetalhesPage,
     GerenciamentoTurmaPage, GerenciamentoTurmaDetalhesPage,
     GerenciamentoFuncionarioPage, GerenciamentoFuncionarioDetalhesPage,
     GerenciamentoCargoPage, GerenciamentoCargoDetalhesPage,

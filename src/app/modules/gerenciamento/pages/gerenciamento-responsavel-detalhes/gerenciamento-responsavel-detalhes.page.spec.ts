@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { GerenciamentoResponsavelDetalhesPage } from './gerenciamento-responsavel-detalhes.page';
+import GerenciamentoResponsavelDetalhesPage from './gerenciamento-responsavel-detalhes.page';
 
 describe('GerenciamentoResponsavelDetalhesPage', () => {
   let component: GerenciamentoResponsavelDetalhesPage;
@@ -9,7 +9,7 @@ describe('GerenciamentoResponsavelDetalhesPage', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ GerenciamentoResponsavelDetalhesPage ],
+      declarations: [GerenciamentoResponsavelDetalhesPage],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
