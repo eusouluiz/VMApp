@@ -66,7 +66,7 @@ export default class GerenciamentoResponsavelDetalhesPage extends PaginaGerencia
     return responsavelVazio()
   }
   // ---- busca responsavel ----//
-  
+
   // ---- controle botoes ----//
 
   //delecao
@@ -100,7 +100,6 @@ export default class GerenciamentoResponsavelDetalhesPage extends PaginaGerencia
     this.form?.disable()
 
     this.inicializarTabelaAlunos()
-    this.tabelaAlunos.renderRows()
   }
 
   //salvar edicao
@@ -137,14 +136,10 @@ export default class GerenciamentoResponsavelDetalhesPage extends PaginaGerencia
   }
 
   //nome colunas
-  colunasAluno: string[] = ['nome', 'turma', 'acao']
   listaAlunosBusca: Aluno[] = []
   nomeAlunosBusca: string[] = []
 
   listaAlunosTabela!: Aluno[]
-
-  @ViewChild(MatTable)
-  tabelaAlunos!: MatTable<Aluno>;
 
   private inicializarTabelaAlunos() {
     this.listaAlunosTabela = this.responsavel.alunos.slice()
@@ -199,7 +194,6 @@ export default class GerenciamentoResponsavelDetalhesPage extends PaginaGerencia
     const aluno = this.listaAlunosBusca[valor]
 
     this.listaAlunosTabela.push(aluno)
-    this.tabelaAlunos.renderRows()
 
     this.removerAlunoDaLista(valor)
     this.limparCampoBusca()
@@ -231,7 +225,6 @@ export default class GerenciamentoResponsavelDetalhesPage extends PaginaGerencia
         return 0
       }
     })
-    this.tabelaAlunos.renderRows()
   }
 
   navegarTelaAluno(id: number) {
@@ -251,7 +244,7 @@ export default class GerenciamentoResponsavelDetalhesPage extends PaginaGerencia
     const aluno = this.listaAlunosTabela[indexAluno]
     if (indexAluno !== -1) {
       this.listaAlunosTabela.splice(indexAluno, 1)
-      this.tabelaAlunos.renderRows()
+
 
       this.listaAlunosBusca.push(aluno)
       this.nomeAlunosBusca.push(aluno.nome)

@@ -27,18 +27,16 @@
         <!-- FIM INSERCAO ALUNOS -->
       </ion-row>
       <!-- INICIO TABELA DE ALUNOS -->
-      <table mat-table [dataSource]="listaAlunosTabela" class="mat-elevation-z8" style="width: 100%;">
-        <ng-container matColumnDef="nome">
-          <th mat-header-cell *matHeaderCellDef>Nome</th>
-          <td mat-cell *matCellDef="let aluno">{{aluno.nome}}</td>
-        </ng-container>
-        <ng-container matColumnDef="turma">
-          <th mat-header-cell *matHeaderCellDef>Turma</th>
-          <td mat-cell *matCellDef="let aluno">{{aluno.turma.nome}}</td>
-        </ng-container>
-        <ng-container matColumnDef="acao">
-          <th mat-header-cell *matHeaderCellDef aria-label="row actions"></th>
-          <td mat-cell *matCellDef="let aluno">
+      <table style="width: 100%;">
+        <tr>
+          <th>Aluno</th>
+          <th>Turma</th>
+          <th></th>
+        </tr>
+        <tr *ngFor="let aluno of listaAlunosTabela">
+          <td style="width: 45%;">{{aluno.nome}}</td>
+          <td style="width: 45%;">{{aluno.turma.nome}}</td>
+          <td style="width: 10%;">
             <div style="text-align: -webkit-right;">
               <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small" 
                 (click)="navegarTelaAluno(aluno.idAluno)">
@@ -50,9 +48,7 @@
               </ion-fab-button>
             </div>
           </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="colunasAluno"></tr>
-        <tr mat-row *matRowDef="let row; columns: colunasAluno;"></tr>
+        </tr>
       </table>
       <!-- FIM TABELA DE ALUNOS -->
     </ion-row>
