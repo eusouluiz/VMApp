@@ -48,8 +48,7 @@ export class AutocompleteV2Component implements ControlValueAccessor, OnInit {
   onTouched: () => void = () => {};
 
   constructor(
-    @Self() @Optional() public ngControl: NgControl,
-    private renderer: Renderer2
+    @Self() @Optional() public ngControl: NgControl
   ) {
     this.ngControl.valueAccessor = this;
   }
@@ -127,9 +126,14 @@ export class AutocompleteV2Component implements ControlValueAccessor, OnInit {
   }
 
   async esconderItens(){
+    //sleep de 1 milisegundo pra caso blur tenha sido de selecao de item
+    //pra dar tempo de executar funcao selecionarItem antes de esconder popover
+    await new Promise(f => setTimeout(f, 10))
+
     this.isItensVisiveis = false
     await this.popover.dismiss()
 
+    // gambiarra para esconder popover
     this.popover.cssClass = 'esconder-popover'
     this.popover.keyboardClose = true
     await this.popover.present()
@@ -137,8 +141,6 @@ export class AutocompleteV2Component implements ControlValueAccessor, OnInit {
   }
 
   selecionarItem(item: any){
-    console.log('selecionarItem')
-    
     const idBusca = item === -1 ? -1 : this.listaItens.indexOf(item) 
     this.value = item === -1 ? undefined : item
     

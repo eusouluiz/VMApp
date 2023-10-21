@@ -5,7 +5,7 @@
     <ion-input id="{{idBusca}}" class="c-field__input" type="text" [placeholder]="placeholder"
       [class.c-field__input--disabled]="isDisabled"
       [class.c-field__input--has-icon]="icon" [formControl]="ngControl.control"
-      debounce="100" (ionInput)="getItens($event)" 
+      debounce="100" (ionInput)="getItens($event)"
       (ionFocus)="mostrarItens()" (ionBlur)="esconderItens()" 
       (keyup.enter)="selecionarPrimeiro($event.target.value)">
     </ion-input>
@@ -13,7 +13,7 @@
     <ion-icon *ngIf="icone" [name]="icone" class="c-field__icon" (click)="indicaBotaoClicado()"></ion-icon>
   </div>
   <ion-popover #popover size="cover" trigger="{{idBusca}}"
-    showBackdrop="false" keyboardClose="false" dismissOnSelect="true"
+    showBackdrop="false" keyboardClose="false"
     style="height: 180px;">
     <ion-list *ngIf="isItensVisiveis">
       <ng-container *ngIf="itens.length > 0; then thenTemplate; else elseTemplate"></ng-container>
