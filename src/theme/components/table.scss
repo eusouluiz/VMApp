@@ -1,5 +1,6 @@
 table {
   width: 100%;
+  border: 1px solid;
 }
 tr:nth-child(even){
   background-color: var(--color-gray-300);
