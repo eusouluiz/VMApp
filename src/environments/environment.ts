@@ -13,7 +13,7 @@ export const environment = {
     enabled: false,
     payload: {},
   },
-  availableLanguages: ['en', 'de'],
+  availableLanguages: ['br', 'en', 'de'],
 };
 
 /*

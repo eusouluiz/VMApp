@@ -104,24 +104,26 @@ export default class GerenciamentoResponsavelDetalhesPage extends PaginaGerencia
 
   //salvar edicao
   salvar() {
+    console.log('salvar')
+    if (this.form?.valid) {
+      this.responsavel.nome = this.form?.value.nome
+      this.responsavel.usuario.telefone = this.form?.value.telefone
+      this.responsavel.usuario.cpf = this.form?.value.cpf
+      this.responsavel.usuario.senha = this.form?.value.senha
 
-    this.responsavel.nome = this.form?.value.nome
-    this.responsavel.usuario.telefone = this.form?.value.telefone
-    this.responsavel.usuario.cpf = this.form?.value.cpf
-    this.responsavel.usuario.senha = this.form?.value.senha
+      this.atualizarAlunos()
 
-    this.atualizarAlunos()
+      if (this.isModoCadastrar()) {
+        this.responsavelService.incluirResponsavel(this.responsavel)
+      } else {
+        this.responsavelService.alterarResponsavel(this.responsavel)
+      }
 
-    if (this.isModoCadastrar()) {
-      this.responsavelService.incluirResponsavel(this.responsavel)
+      this.modo = 'detalhes'
+      this.form?.disable()
     } else {
-      this.responsavelService.alterarResponsavel(this.responsavel)
+      this.form?.markAllAsTouched()
     }
-
-    this.modo = 'detalhes'
-    this.form?.disable()
-
-
   }
   // ---- controle botoes ----//
 
