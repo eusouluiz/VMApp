@@ -1,20 +1,16 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-title>gerenciamento-cargo</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header titulo="gerenciamento-cargo" [botaoRetorno]="true" [location]="location"></app-header>
 
 <ion-content class="ion-padding">
-  <div *ngFor="let cargo of cargos">
-    <ion-item detail="true" button="true" color="light" (click)="navegarDetalheCargo(cargo)">
+  <ion-row>
+    <ion-searchbar placeholder="Cargo" [debounce]="500" (ionInput)="filtarCargoNome($event)"></ion-searchbar>
+  </ion-row>
+  <div *ngFor="let cargo of listaCargos">
+    <ion-item detail="true" button="true" color="light" (click)="navegarTelaCargo(cargo.idCargo)">
       <ion-col size="6">{{cargo.nome}}</ion-col>
     </ion-item>
   </div>
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button (click)="navegarCadastroCargo()">
+    <ion-fab-button (click)="navegarTelaCargo(-1)">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

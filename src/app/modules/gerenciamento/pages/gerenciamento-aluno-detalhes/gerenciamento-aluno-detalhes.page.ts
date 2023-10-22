@@ -138,7 +138,6 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamento implemen
     })
   }
 
-  //nome colunas
   listaResponsaveisBusca: Responsavel[] = []
   nomeResponsaveisBusca: string[] = []
 
@@ -266,7 +265,6 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamento implemen
     })
   }
 
-  //nome colunas
   listaTurmasBusca: Turma[] = []
   nomeTurmasBusca: string[] = []
 

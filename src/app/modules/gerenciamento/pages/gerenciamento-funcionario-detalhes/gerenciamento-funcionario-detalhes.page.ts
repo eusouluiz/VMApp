@@ -135,7 +135,6 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamento im
     })
   }
 
-  //nome colunas
   listaCargosBusca: Cargo[] = []
   nomeCargosBusca: string[] = []
 

@@ -1,42 +1,63 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CARGO_DATA, Cargo } from '../../../../shared/utilities/entidade/entidade.utility';
+import { Cargo } from '../../../../shared/utilities/entidade/entidade.utility';
+import { CargoService } from '../../../../core/services/cargo-service/cargo.service';
+import { Rota } from '../../../../shared/utilities/rota/rota.utility';
+import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-gerenciamento-cargo',
   templateUrl: './gerenciamento-cargo.page.html',
   styleUrls: ['./gerenciamento-cargo.page.scss'],
 })
-export class GerenciamentoCargoPage implements OnInit {
+export class GerenciamentoCargoPage extends Rota implements OnInit {
 
-  cargos: any
+  cargos: Cargo[] = []
+  listaCargos: Cargo[] = []
+
 
   constructor(
     private router: Router,
-    ) { 
+    private cargoService: CargoService,
+    public location: Location,
+  ) {
+    const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO
+    super(router, ROTA_BASE, location)
+    this.inicializarConteudo()
   }
 
   ngOnInit() {
-
-    this.cargos = CARGO_DATA
   }
 
-  public navegarDetalheCargo(cargo: Cargo){
-    const caminho: String = '/cargo/' + cargo.idCargo + '/detalhes'
-    this.navegarPara(caminho)
-  }
-  
-  public navegarCadastroCargo(){
-    const caminho: String = '/cargo/cadastro'
-    this.navegarPara(caminho)
+  // evento emitido toda vez que retorna a pagina
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event: any) {
+    this.inicializarConteudo()
   }
 
-  private navegarPara(rota: String){
-    if (rota.substring(0, 1) !== '/') {
-      rota = '/' + rota
+  protected inicializarConteudo(): void {
+    this.cargos = this.cargoService.buscarTodosCargos()
+    this.listaCargos = this.cargos.slice()
+  }
+
+  filtarCargoNome(ev: any) {
+    var val = ev.target.value;
+    this.listaCargos = this.cargos.slice()
+
+    // se o valor for um valor valido
+    this.listaCargos = this.listaCargos.filter((cargo) => {
+      return (cargo.nome.toLowerCase().indexOf(val.toLowerCase()) > -1);
+    })
+  }
+
+  navegarTelaCargo(id: number) {
+    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_CARGO
+    if (id !== -1) {
+      rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES
+    } else {
+      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO
     }
-    const caminho: String = '/app/gerenciamento' + rota
-    this.router.navigate([caminho])
+    this.navegarPara(rota)
   }
-
 }

@@ -166,7 +166,6 @@ export class GerenciamentoTurmaDetalhesPage implements OnInit {
     })
   }
 
-  //nome colunas
   colunasAluno: string[] = ['nome', 'acao']
   listaAlunosBusca: Aluno[] = ALUNO_DATA.slice()
   nomeAlunosBusca: String[] = this.getNomeAlunosBusca(this.listaAlunosBusca)

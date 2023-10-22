@@ -135,7 +135,6 @@ export default class GerenciamentoResponsavelDetalhesPage extends PaginaGerencia
     })
   }
 
-  //nome colunas
   listaAlunosBusca: Aluno[] = []
   nomeAlunosBusca: string[] = []
 
