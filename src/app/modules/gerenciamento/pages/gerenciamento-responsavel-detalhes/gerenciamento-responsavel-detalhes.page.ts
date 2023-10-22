@@ -197,7 +197,7 @@ export default class GerenciamentoResponsavelDetalhesPage extends PaginaGerencia
 
     this.listaAlunosTabela.push(aluno)
 
-    this.removerAlunoDaLista(valor)
+    this.removerAlunoDaListaBusca(valor)
     this.limparCampoBusca()
   }
 
@@ -207,7 +207,7 @@ export default class GerenciamentoResponsavelDetalhesPage extends PaginaGerencia
     })
   }
 
-  private removerAlunoDaLista(index: number) {
+  private removerAlunoDaListaBusca(index: number) {
     for (let i = 0; i < this.listaAlunosBusca.length; i++) {
       if (index === i) {
         this.listaAlunosBusca.splice(index, 1)
