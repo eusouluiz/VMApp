@@ -112,6 +112,7 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamento implemen
       this.aluno.cgm = this.form?.value.telefone
 
       this.atualizarResponsaveis()
+      this.atualizarTurmas()
 
       if (this.isModoCadastrar()) {
         this.alunoService.incluirAluno(this.aluno)
