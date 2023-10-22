@@ -146,11 +146,11 @@ export default class GerenciamentoResponsavelDetalhesPage extends PaginaGerencia
   private inicializarTabelaAlunos() {
     this.listaAlunosTabela = this.responsavel.alunos.slice()
     if (!this.isModoDetalhes()) {
-      this.inicializaBuscaAlunos()
+      this.inicializarBuscaAlunos()
     }
   }
 
-  private inicializaBuscaAlunos() {
+  private inicializarBuscaAlunos() {
     // evitar com que lista de todos os alunos seja buscada toda hora
     if (this.listaTodosAlunos === null) {
       this.listaTodosAlunos = this.alunoService.buscarTodosAlunos().slice()
