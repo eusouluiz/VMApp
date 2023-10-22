@@ -33,22 +33,31 @@
           <th>Turma</th>
           <th></th>
         </tr>
-        <tr *ngFor="let aluno of listaAlunosTabela">
-          <td style="width: 45%;">{{aluno.nome}}</td>
-          <td style="width: 45%;">{{aluno.turma.nome}}</td>
-          <td style="width: 10%;">
-            <div style="text-align: -webkit-right;">
-              <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small" 
-                (click)="navegarTelaAluno(aluno.idAluno)">
-                <ion-icon name="information"></ion-icon>
-              </ion-fab-button>
-              <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
-                (click)="deletarAluno(aluno.idAluno)">
-                <ion-icon name="trash"></ion-icon>
-              </ion-fab-button>
-            </div>
-          </td>
-        </tr>
+        <ng-container *ngIf="listaAlunosTabela.length > 0; then thenTemplate; else elseTemplate"></ng-container>
+        <ng-template #thenTemplate>
+          <tr *ngFor="let aluno of listaAlunosTabela">
+            <td style="width: 45%;">{{aluno.nome}}</td>
+            <td style="width: 45%;">{{aluno.turma.nome}}</td>
+            <td style="width: 10%;">
+              <div style="text-align: -webkit-right;">
+                <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small" 
+                  (click)="navegarTelaAluno(aluno.idAluno)">
+                  <ion-icon name="information"></ion-icon>
+                </ion-fab-button>
+                <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
+                  (click)="deletarAluno(aluno.idAluno)">
+                  <ion-icon name="trash"></ion-icon>
+                </ion-fab-button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template #elseTemplate>
+          <tr>
+            <td colspan="100%" style="text-align: center; font-weight: bold;">Selecione um Aluno</td>
+          </tr>
+        </ng-template>
+        
       </table>
       <!-- FIM TABELA DE ALUNOS -->
     </ion-row>
