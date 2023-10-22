@@ -4,7 +4,7 @@ import { Responsavel } from '../../../../shared/utilities/entidade/entidade.util
 import { ResponsavelService } from '../../../../core/services/responsavel-service/responsavel.service';
 import { Rota } from '../../../../shared/utilities/rota/rota.utility';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
-import { Location, PlatformLocation } from '@angular/common';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-gerenciamento-responsavel',
@@ -20,23 +20,24 @@ export class GerenciamentoResponsavelPage extends Rota implements OnInit {
   constructor(
     private router: Router,
     private responsavelService: ResponsavelService,
-    private location: PlatformLocation,
+    public location: Location,
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO
     super(router, ROTA_BASE, location)
-    this.responsaveis = responsavelService.buscarTodosResponsaveis()
     this.inicializarConteudo()
-
-    // evento emitido toda vez que retorna a pagina
-    location.onPopState(() => {
-      this.inicializarConteudo()
-    })
   }
 
   ngOnInit() {
   }
-  
+
+  // evento emitido toda vez que retorna a pagina
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event: any) {
+    this.inicializarConteudo()
+  }
+
   protected inicializarConteudo(): void {
+    this.responsaveis = this.responsavelService.buscarTodosResponsaveis()
     this.listaResponsaveis = this.responsaveis.slice()
   }
 

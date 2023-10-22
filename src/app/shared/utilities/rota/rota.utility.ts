@@ -1,12 +1,12 @@
 import { Router } from "@angular/router"
-import { Location, PlatformLocation } from '@angular/common'
+import { Location } from '@angular/common'
 
 export class Rota {
 
     constructor(
         private rotaRouter: Router,
         private rotaBase: string,
-        private rotaLocation?: PlatformLocation,
+        private rotaLocation?: Location,
     ) {
     }
 

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons *ngIf="botaoRetorno" slot="start">
-      <ion-back-button style="display: block;"></ion-back-button>
+    <ion-buttons *ngIf="botaoRetorno" slot="start" (click)="retornarPagina()">
+      <ion-icon name="arrow-back-outline" size="large"></ion-icon>
     </ion-buttons>
     <ion-title>{{titulo}}</ion-title>
   </ion-toolbar>
