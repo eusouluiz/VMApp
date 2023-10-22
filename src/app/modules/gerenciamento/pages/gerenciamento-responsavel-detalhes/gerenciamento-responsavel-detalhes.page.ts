@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common'
+import { Location, PlatformLocation } from '@angular/common'
 import { Aluno, Responsavel, responsavelVazio } from '../../../../shared/utilities/entidade/entidade.utility';
 import { ResponsavelService } from '../../../../core/services/responsavel-service/responsavel.service';
 import { AlunoService } from '../../../../core/services/aluno-service/aluno.service';
@@ -23,7 +23,7 @@ export default class GerenciamentoResponsavelDetalhesPage extends PaginaGerencia
     private formBuilder: UntypedFormBuilder,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private location: Location,
+    private location: PlatformLocation,
     private responsavelService: ResponsavelService,
     private alunoService: AlunoService,
   ) {

@@ -1,6 +1,6 @@
 import { Router } from "@angular/router";
 import { Rota } from "../rota/rota.utility";
-import { Location } from "@angular/common";
+import { Location, PlatformLocation } from "@angular/common";
 import { UntypedFormGroup } from "@angular/forms";
 
 
@@ -9,7 +9,7 @@ export class PaginaGerenciamento extends Rota {
     constructor(
         private routerGerenciamento: Router,
         private rotaBaseGerenciamento: string,
-        private locationGerenciamento: Location,
+        private locationGerenciamento: PlatformLocation,
     ) {
         super(routerGerenciamento, rotaBaseGerenciamento, locationGerenciamento)
     }

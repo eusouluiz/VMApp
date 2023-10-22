@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Responsavel } from '../../../../shared/utilities/entidade/entidade.utility';
 import { ResponsavelService } from '../../../../core/services/responsavel-service/responsavel.service';
 import { Rota } from '../../../../shared/utilities/rota/rota.utility';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
+import { Location, PlatformLocation } from '@angular/common';
 
 @Component({
   selector: 'app-gerenciamento-responsavel',
@@ -15,20 +16,27 @@ export class GerenciamentoResponsavelPage extends Rota implements OnInit {
   responsaveis: Responsavel[] = []
   listaResponsaveis: Responsavel[] = []
 
+
   constructor(
     private router: Router,
     private responsavelService: ResponsavelService,
+    private location: PlatformLocation,
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO
-    super(router, ROTA_BASE)
+    super(router, ROTA_BASE, location)
     this.responsaveis = responsavelService.buscarTodosResponsaveis()
+    this.inicializarConteudo()
+
+    // evento emitido toda vez que retorna a pagina
+    location.onPopState(() => {
+      this.inicializarConteudo()
+    })
   }
 
   ngOnInit() {
   }
-
-  // carregar a lista de responsaveis sempre que o conteudo for visto
-  ngAfterContentChecked(): void {
+  
+  protected inicializarConteudo(): void {
     this.listaResponsaveis = this.responsaveis.slice()
   }
 
