@@ -8,10 +8,10 @@ export class PaginaGerenciamento extends Rota {
 
     constructor(
         private routerGerenciamento: Router,
-        private locationGerenciamento: Location,
         private rotaBaseGerenciamento: string,
+        private locationGerenciamento: Location,
     ) {
-        super(routerGerenciamento, locationGerenciamento, rotaBaseGerenciamento)
+        super(routerGerenciamento, rotaBaseGerenciamento, locationGerenciamento)
     }
 
     modo: 'cadastrar' | 'editar' | 'detalhes' = 'detalhes'

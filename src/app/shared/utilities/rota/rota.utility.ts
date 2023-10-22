@@ -3,16 +3,18 @@ import { Location } from '@angular/common'
 
 export class Rota {
 
-    constructor (
-        private rotaRouter: Router, 
-        private rotaLocation: Location,
+    constructor(
+        private rotaRouter: Router,
         private rotaBase: string,
-    ){
+        private rotaLocation?: Location,
+    ) {
 
     }
 
-    protected retornarPagina(){
-      this.rotaLocation.back()
+    protected retornarPagina() {
+        if (this.rotaLocation !== undefined) {
+            this.rotaLocation.back()
+        }
     }
 
     protected navegarPara(rota: string) {

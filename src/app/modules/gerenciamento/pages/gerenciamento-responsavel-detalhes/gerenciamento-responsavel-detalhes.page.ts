@@ -28,7 +28,7 @@ export default class GerenciamentoResponsavelDetalhesPage extends PaginaGerencia
     private alunoService: AlunoService,
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO
-    super(router, location, ROTA_BASE)
+    super(router, ROTA_BASE, location)
 
     this.definirModo()
 

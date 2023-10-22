@@ -1,14 +1,17 @@
 <app-header titulo="gerenciamento-responsavel-detalhes" [botaoRetorno]="true"></app-header>
 
 <ion-content class="ion-padding">
-  <div *ngFor="let responsavel of responsaveis">
-    <ion-item detail="true" button="true" color="light" (click)="navegarDetalheResponsavel(responsavel)">
+  <ion-row>
+    <ion-searchbar placeholder="Responsavel" [debounce]="500" (ionInput)="filtarResponsavelNome($event)"></ion-searchbar>
+  </ion-row>
+  <div *ngFor="let responsavel of listaResponsaveis">
+    <ion-item detail="true" button="true" color="light" (click)="navegarTelaResponsavel(responsavel)">
       <ion-col size="6">{{responsavel.nome}}</ion-col>
       <ion-col size="6"><label style="font-weight: bold;">Tel:</label> {{responsavel.usuario.telefone}}</ion-col>
     </ion-item>
   </div>
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button (click)="navegarCadastroResponsavel()">
+    <ion-fab-button (click)="navegarTelaResponsavel(-1)">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
