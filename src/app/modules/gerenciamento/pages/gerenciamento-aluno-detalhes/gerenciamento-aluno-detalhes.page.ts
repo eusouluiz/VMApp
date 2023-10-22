@@ -230,7 +230,7 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamento implemen
   }
 
   navegarTelaResponsavel(id: number) {
-    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_ALUNO
+    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_RESPONSAVEL
     if (id !== -1) {
       rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES
     } else {
@@ -357,7 +357,7 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamento implemen
   }
 
   navegarTelaTurma(id: number) {
-    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_CARGO
+    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_TURMA
     if (id !== -1) {
       rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES
     } else {
