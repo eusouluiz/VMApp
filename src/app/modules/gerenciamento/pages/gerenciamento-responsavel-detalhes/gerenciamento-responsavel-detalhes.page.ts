@@ -243,8 +243,8 @@ export default class GerenciamentoResponsavelDetalhesPage extends PaginaGerencia
     const indexAluno = this.listaAlunosTabela.findIndex((a) => {
       return a.idAluno === id
     })
-    const aluno = this.listaAlunosTabela[indexAluno]
     if (indexAluno !== -1) {
+      const aluno = this.listaAlunosTabela[indexAluno]
       this.listaAlunosTabela.splice(indexAluno, 1)
 
 
