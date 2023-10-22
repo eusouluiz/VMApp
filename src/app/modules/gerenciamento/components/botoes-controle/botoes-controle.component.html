@@ -1,6 +1,6 @@
 <ion-row size="12">
   <ion-col size="6">
-    <ion-fab-button id="botao-deletar" color="danger">
+    <ion-fab-button (click)="deletar()" color="danger">
       <ion-icon name="trash"></ion-icon>
     </ion-fab-button>
   </ion-col>
@@ -8,7 +8,5 @@
     <ion-fab-button (click)="editar()" style="float: right;">
       <ion-icon name="pencil"></ion-icon>
     </ion-fab-button>
-  </ion-col>  
-  <ion-action-sheet trigger="botao-deletar" [header]="header" 
-    [buttons]="actionDeletar" (didDismiss)="actionSheet($event)"></ion-action-sheet>
+  </ion-col>
 </ion-row>

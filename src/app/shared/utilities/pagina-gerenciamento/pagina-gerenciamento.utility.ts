@@ -42,15 +42,8 @@ export class PaginaGerenciamento extends Rota {
         return this.modo === 'cadastrar'
     }
 
-    eventoActions(ev: any) {
-        if (ev.detail.data === undefined) {
-            return
-        }
-        const action = ev.detail.data.action
-
-        if (action === 'delete') {
-            this.deletar()
-        }
+    deletarAction() {
+        this.deletar()
     }
 
     // ---- define modo pagina ----//

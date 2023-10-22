@@ -129,7 +129,7 @@
   </form>
   <!-- BOTOES DE CONTROLE -->
   <ng-container *ngIf="isModoDetalhes()">
-    <app-botoes-controle (onEditar)="iniciarEdicao()" (onActionSheet)="eventoActions($event)" 
+    <app-botoes-controle (onEditar)="iniciarEdicao()" (onDeletar)="deletarAction()" 
       header="Deseja deletar {{aluno.nome}}?"></app-botoes-controle>  
   </ng-container>
 </ion-content>

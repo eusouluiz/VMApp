@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SharedModule } from '../../../../shared/shared.module';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import { ActionSheetButton, ActionSheetController, IonicModule } from '@ionic/angular';
 
 @Component({
   selector: 'app-botoes-controle',
@@ -16,19 +16,22 @@ import { IonicModule } from '@ionic/angular';
 })
 export class BotoesControleComponent implements OnInit {
 
-  @Input('header') header: String = ''
+  @Input('header') header: string = ''
 
   @Output('onEditar') onEditar = new EventEmitter<boolean>()
-  @Output('onActionSheet') onActionSheet = new EventEmitter<any>()
+  @Output('onDeletar') onDeletar = new EventEmitter<any>()
   
   //deletar
-  actionDeletar = [
+  actionDeletar: (string | ActionSheetButton<any>)[] = [
     {
       text: 'Deletar',
       role: 'destructive',
       data: {
         action: 'delete',
       },
+      handler: () => {
+        this.onDeletar.emit(true)
+      }
     },
     {
       text: 'Não',
@@ -39,7 +42,9 @@ export class BotoesControleComponent implements OnInit {
     },
   ]
 
-  constructor() { }
+  constructor(
+    private actionSheetController: ActionSheetController,
+  ) { }
 
   ngOnInit() {}
 
@@ -47,8 +52,13 @@ export class BotoesControleComponent implements OnInit {
     this.onEditar.emit(true)
   }
 
-  actionSheet(ev:any){
-    this.onActionSheet.emit(ev)
+  async deletar() {
+    const actionSheet = await this.actionSheetController.create({
+      header: this.header,
+      buttons: this.actionDeletar
+    })
+
+    actionSheet.present()
   }
 
 }
