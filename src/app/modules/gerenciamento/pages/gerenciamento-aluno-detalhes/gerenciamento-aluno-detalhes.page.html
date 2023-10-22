@@ -1,11 +1,4 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-title>gerenciamento-aluno-detalhes</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header titulo="gerenciamento-aluno-detalhes" [botaoRetorno]="true" [location]="location"></app-header>
 
 <ion-content class="ion-padding">
   <form [formGroup]="form" (ngSubmit)="salvar()">
@@ -22,72 +15,116 @@
     <ion-row>
       <ion-row size="auto" style="width: 100%;">
         <ion-col size="7" sizeLg="4" sizeMd="4">
-          <h3 style="margin-left: 5px; font-weight: bold;">Responsáveis:</h3>
+          <h3 style="margin-left: 5px; font-weight: bold;">Resposáveis:</h3>
         </ion-col>
         <!-- INICIO INSERCAO RESPONSAVEIS -->
         <ion-col *ngIf="!isModoDetalhes()" offsetLg="2" offsetMd="2" size="12" sizeLg="6" sizeMd="6">
           <form [formGroup]="formBuscaResponsavel">
-            <app-autocomplete-v2  formControlName="buscaResponsavel" idBusca="busca-responsavel"  [listaItens]="nomeResponsaveisBusca" 
-            (onBusca)="adicionarResponsavel($event)" textoSemResultado="Cadastrar novo responsavel" 
-            icone="add" (onCliqueIcone)="navegarTelaResponsavel(-1)"></app-autocomplete-v2>
+            <app-autocomplete-v2 formControlName="buscaResponsavel" idBusca="busca-responsavel" [listaItens]="nomeResponsaveisBusca" (onBusca)="adicionarResponsavel($event)" 
+              textoSemResultado="Cadastrar novo responsavel" icone="add" (onCliqueIcone)="navegarTelaResponsavel(-1)"></app-autocomplete-v2>
           </form>
         </ion-col>
         <!-- FIM INSERCAO RESPONSAVEIS -->
       </ion-row>
       <!-- INICIO TABELA DE RESPONSAVEIS -->
-      <table mat-table [dataSource]="listaResponsaveisTabela" class="mat-elevation-z8" style="width: 100%;">
-        <ng-container matColumnDef="nome">
-          <th mat-header-cell *matHeaderCellDef>Nome</th>
-          <td mat-cell *matCellDef="let responsavel">{{responsavel.nome}}</td>
-        </ng-container>
-        <ng-container matColumnDef="telefone">
-          <th mat-header-cell *matHeaderCellDef>Telefone</th>
-          <td mat-cell *matCellDef="let responsavel">{{responsavel.usuario.telefone}}</td>
-        </ng-container>
-        <ng-container matColumnDef="acao">
-          <th mat-header-cell *matHeaderCellDef aria-label="row actions"></th>
-          <td mat-cell *matCellDef="let responsavel">
-            <div style="text-align: -webkit-right;">
-              <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small" 
-                (click)="navegarTelaResponsavel(responsavel.idResponsavel)">
-                <ion-icon name="information"></ion-icon>
-              </ion-fab-button>
-              <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
-                (click)="deletarResponsavel(responsavel.idResponsavel)">
-                <ion-icon name="trash"></ion-icon>
-              </ion-fab-button>
-            </div>
-          </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="colunasResponsavel"></tr>
-        <tr mat-row *matRowDef="let row; columns: colunasResponsavel;"></tr>
-      </table>
+      <ion-row size="auto" style="width: 100%;">
+        <table style="margin-left: 5px; margin-right: 5px;">
+          <tr>
+            <th>Responsavel</th>
+            <th>Telefone</th>
+            <th></th>
+          </tr>
+          <ng-container *ngIf="listaResponsaveisTabela.length > 0; then comResponsavel; else semResponsavel"></ng-container>
+          <ng-template #comResponsavel>
+            <tr *ngFor="let responsavel of listaResponsaveisTabela">
+              <td style="width: 45%;">{{responsavel.nome}}</td>
+              <td style="width: 45%;">{{responsavel.usuario.telefone}}</td>
+              <td style="width: 10%;">
+                <div style="text-align: -webkit-right;">
+                  <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small" 
+                    (click)="navegarTelaResponsavel(responsavel.idResponsavel)">
+                    <ion-icon name="information"></ion-icon>
+                  </ion-fab-button>
+                  <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
+                    (click)="deletarResponsavel(responsavel.idResponsavel)">
+                    <ion-icon name="trash"></ion-icon>
+                  </ion-fab-button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template #semResponsavel>
+            <tr>
+              <td colspan="100%" style="text-align: center; font-weight: bold;">Selecione um Responsavel</td>
+            </tr>
+          </ng-template>
+          
+        </table>
+      </ion-row>
       <!-- FIM TABELA DE RESPONSAVEIS -->
     </ion-row>
     <!-- FIM SOBRE RESPONSAVEL -->
-    <!-- INICIO BUSCA TURMA -->
-    <!-- AINDA NAO ESTA FUNCIONANDO ADEQUADAMENTE -->
-    <!-- <h3 style="margin-left: 5px; font-weight: bold;">Turma:</h3>
-    <ion-row size="auto" style="width: 100%;">
-      <ion-col size="12">
-        <form [formGroup]="formBuscaTurma">
-          <app-autocomplete-v2  formControlName="buscaTurma" idBusca="busca-turma"  [listaItens]="nomeTurmasBusca" 
-          (onBusca)="adicionarTurma($event)" textoSemResultado="Cadastrar novo turma" 
-          icone="add" (onCliqueIcone)="navegarTelaTurma(-1)" (onSelecionado)="alterarExpansao('1000px')"
-          (onDesselecionado)="alterarExpansao('0px')"></app-autocomplete-v2>
-        </form>
-      </ion-col>
-    </ion-row> -->
-    <!-- FIM BUSCA TURMA -->
+    <!-- INICIO SOBRE TURMA -->
+    <ion-row>
+      <ion-row size="auto" style="width: 100%;">
+        <ion-col size="7" sizeLg="4" sizeMd="4">
+          <h3 style="margin-left: 5px; font-weight: bold;">Turma:</h3>
+        </ion-col>
+        <!-- INICIO INSERCAO TURMAS -->
+        <ion-col *ngIf="!isModoDetalhes()" offsetLg="2" offsetMd="2" size="12" sizeLg="6" sizeMd="6">
+          <form [formGroup]="formBuscaTurma">
+            <app-autocomplete-v2 formControlName="buscaTurma" idBusca="busca-turma" [listaItens]="nomeTurmasBusca" (onBusca)="adicionarTurma($event)" 
+              textoSemResultado="Cadastrar novo turma" icone="add" (onCliqueIcone)="navegarTelaTurma(-1)"></app-autocomplete-v2>
+          </form>
+        </ion-col>
+        <!-- FIM INSERCAO TURMAS -->
+      </ion-row>
+      <!-- INICIO TABELA DE TURMAS -->
+      <ion-row size="auto" style="width: 100%;">
+        <table style="margin-left: 5px; margin-right: 5px;">
+          <tr>
+            <th>Turma</th>
+            <th></th>
+          </tr>
+          <ng-container *ngIf="listaTurmasTabela.length > 0; then comTurma; else semTurma"></ng-container>
+          <ng-template #comTurma>
+            <tr *ngFor="let turma of listaTurmasTabela">
+              <td style="width: 90%;">{{turma.nome}}</td>
+              <td style="width: 10%;">
+                <div style="text-align: -webkit-right;">
+                  <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small" 
+                    (click)="navegarTelaTurma(turma.idTurma)">
+                    <ion-icon name="information"></ion-icon>
+                  </ion-fab-button>
+                  <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
+                    (click)="deletarTurma()">
+                    <ion-icon name="trash"></ion-icon>
+                  </ion-fab-button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template #semTurma>
+            <tr>
+              <td colspan="100%" style="text-align: center; font-weight: bold;">Selecione um Turma</td>
+            </tr>
+          </ng-template>
+          
+        </table>
+      </ion-row>
+      <!-- FIM TABELA DE TURMAS -->
+    </ion-row>
+    <!-- FIM SOBRE TURMA -->
     <ng-container id="botoesEditar" *ngIf="!isModoDetalhes()">
       <ion-row style="flex-direction: row-reverse;">
         <ion-col size="auto">
-          <ion-button shape="round" type="submit" (click)="salvar()">Salvar</ion-button>
+          <ion-button shape="round" type="submit">Salvar</ion-button>
         </ion-col>
         <ion-col size="auto">
           <ion-button shape="round" fill="outline" color="danger" (click)="cancelar()">Cancelar</ion-button>
         </ion-col>
       </ion-row>
+      <div style="height: 100px"></div>
     </ng-container>
   </form>
   <!-- BOTOES DE CONTROLE -->
@@ -95,5 +132,4 @@
     <app-botoes-controle (onEditar)="iniciarEdicao()" (onActionSheet)="eventoActions($event)" 
       header="Deseja deletar {{aluno.nome}}?"></app-botoes-controle>  
   </ng-container>
-  
 </ion-content>
