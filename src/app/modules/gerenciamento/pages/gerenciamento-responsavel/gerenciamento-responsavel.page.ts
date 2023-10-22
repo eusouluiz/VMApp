@@ -22,10 +22,14 @@ export class GerenciamentoResponsavelPage extends Rota implements OnInit {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO
     super(router, ROTA_BASE)
     this.responsaveis = responsavelService.buscarTodosResponsaveis()
-    this.listaResponsaveis = this.responsaveis.slice()
   }
 
   ngOnInit() {
+  }
+
+  // carregar a lista de responsaveis sempre que o conteudo for visto
+  ngAfterContentChecked(): void {
+    this.listaResponsaveis = this.responsaveis.slice()
   }
 
   filtarResponsavelNome(ev: any) {
