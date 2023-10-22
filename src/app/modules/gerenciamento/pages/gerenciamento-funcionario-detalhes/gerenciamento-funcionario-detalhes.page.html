@@ -1,11 +1,4 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-title>gerenciamento-funcionario-detalhes</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header titulo="gerenciamento-funcionario-detalhes" [botaoRetorno]="true" [location]="location"></app-header>
 
 <ion-content class="ion-padding">
   <form [formGroup]="form" (ngSubmit)="salvar()">
@@ -34,29 +27,38 @@
         <!-- FIM INSERCAO CARGOS -->
       </ion-row>
       <!-- INICIO TABELA DE CARGOS -->
-      <table mat-table [dataSource]="listaCargosTabela" class="mat-elevation-z8" style="width: 100%;">
-        <ng-container matColumnDef="nome">
-          <th mat-header-cell *matHeaderCellDef>Nome</th>
-          <td mat-cell *matCellDef="let cargo">{{cargo.nome}}</td>
-        </ng-container>
-        <ng-container matColumnDef="acao">
-          <th mat-header-cell *matHeaderCellDef aria-label="row actions"></th>
-          <td mat-cell *matCellDef="let cargo">
-            <div style="text-align: -webkit-right;">
-              <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small" 
-                (click)="navegarTelaCargo(cargo.idCargo)">
-                <ion-icon name="information"></ion-icon>
-              </ion-fab-button>
-              <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
-                (click)="deletarCargo(cargo.idCargo)">
-                <ion-icon name="trash"></ion-icon>
-              </ion-fab-button>
-            </div>
-          </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="colunasCargo"></tr>
-        <tr mat-row *matRowDef="let row; columns: colunasCargo;"></tr>
-      </table>
+      <ion-row size="auto" style="width: 100%;">
+        <table style="margin-left: 5px; margin-right: 5px;">
+          <tr>
+            <th>Cargo</th>
+            <th></th>
+          </tr>
+          <ng-container *ngIf="listaCargosTabela.length > 0; then thenTemplate; else elseTemplate"></ng-container>
+          <ng-template #thenTemplate>
+            <tr *ngFor="let cargo of listaCargosTabela">
+              <td style="width: 90%;">{{cargo.nome}}</td>
+              <td style="width: 10%;">
+                <div style="text-align: -webkit-right;">
+                  <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small" 
+                    (click)="navegarTelaCargo(cargo.idCargo)">
+                    <ion-icon name="information"></ion-icon>
+                  </ion-fab-button>
+                  <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
+                    (click)="deletarCargo()">
+                    <ion-icon name="trash"></ion-icon>
+                  </ion-fab-button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template #elseTemplate>
+            <tr>
+              <td colspan="100%" style="text-align: center; font-weight: bold;">Selecione um Cargo</td>
+            </tr>
+          </ng-template>
+          
+        </table>
+      </ion-row>
       <!-- FIM TABELA DE CARGOS -->
     </ion-row>
     <!-- FIM SOBRE CARGO -->
@@ -76,7 +78,7 @@
     <ng-container id="botoesEditar" *ngIf="!isModoDetalhes()">
       <ion-row style="flex-direction: row-reverse;">
         <ion-col size="auto">
-          <ion-button shape="round" type="submit" (click)="salvar()">Salvar</ion-button>
+          <ion-button shape="round" type="submit">Salvar</ion-button>
         </ion-col>
         <ion-col size="auto">
           <ion-button shape="round" fill="outline" color="danger" (click)="cancelar()">Cancelar</ion-button>
