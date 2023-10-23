@@ -30,12 +30,6 @@ export class GerenciamentoCargoPage extends Rota implements OnInit {
   ngOnInit() {
   }
 
-  // evento emitido toda vez que retorna a pagina
-  @HostListener('window:popstate', ['$event'])
-  onPopState(event: any) {
-    this.inicializarConteudo()
-  }
-
   protected inicializarConteudo(): void {
     this.cargos = this.cargoService.buscarTodosCargos()
     this.listaCargos = this.cargos.slice()

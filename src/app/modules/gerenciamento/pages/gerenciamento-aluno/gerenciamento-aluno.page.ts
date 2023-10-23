@@ -30,12 +30,6 @@ export class GerenciamentoAlunoPage extends Rota implements OnInit {
   ngOnInit() {
   }
 
-  // evento emitido toda vez que retorna a pagina
-  @HostListener('window:popstate', ['$event'])
-  onPopState(event: any) {
-    this.inicializarConteudo()
-  }
-
   protected inicializarConteudo(): void {
     this.responsaveis = this.alunoService.buscarTodosAlunos()
     this.listaAlunos = this.responsaveis.slice()

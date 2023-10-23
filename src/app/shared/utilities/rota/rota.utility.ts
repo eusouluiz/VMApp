@@ -1,6 +1,8 @@
 import { Router } from "@angular/router"
 import { Location } from '@angular/common'
+import { Directive, HostListener } from "@angular/core"
 
+@Directive()
 export class Rota {
 
     constructor(
@@ -9,6 +11,16 @@ export class Rota {
         private rotaLocation?: Location,
     ) {
     }
+
+    
+
+    // evento emitido toda vez que retorna a pagina
+    @HostListener('window:popstate', ['$event'])
+    onPopState(event: any) {
+        this.inicializarConteudo()
+    }
+    
+    protected inicializarConteudo() {}
 
     protected retornarPagina() {
         if (this.rotaLocation !== undefined) {

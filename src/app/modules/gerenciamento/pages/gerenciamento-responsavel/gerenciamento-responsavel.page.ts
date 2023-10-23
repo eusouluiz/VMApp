@@ -30,12 +30,6 @@ export class GerenciamentoResponsavelPage extends Rota implements OnInit {
   ngOnInit() {
   }
 
-  // evento emitido toda vez que retorna a pagina
-  @HostListener('window:popstate', ['$event'])
-  onPopState(event: any) {
-    this.inicializarConteudo()
-  }
-
   protected inicializarConteudo(): void {
     this.responsaveis = this.responsavelService.buscarTodosResponsaveis()
     this.listaResponsaveis = this.responsaveis.slice()
