@@ -20,7 +20,7 @@ export class GerenciamentoFuncionarioPage extends Rota implements OnInit {
   constructor(
     private router: Router,
     private funcionarioService: FuncionarioService,
-    private location: Location,
+    public location: Location,
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO
     super(router, ROTA_BASE, location)
