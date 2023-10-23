@@ -1,11 +1,4 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-title>gerenciamento-turma-detalhes</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header titulo="gerenciamento-turma-detalhes" [botaoRetorno]="true" [location]="location"></app-header>
 
 <ion-content class="ion-padding">
   <form [formGroup]="form" (ngSubmit)="salvar()">
@@ -24,65 +17,60 @@
         <!-- INICIO INSERCAO ALUNOS -->
         <ion-col *ngIf="!isModoDetalhes()" offsetLg="2" offsetMd="2" size="12" sizeLg="6" sizeMd="6">
           <form [formGroup]="formBuscaAluno">
-            <app-autocomplete-v2 formControlName="busca" idBusca="busca-aluno" [listaItens]="nomeAlunosBusca" (onBusca)="adicionarAluno($event)" 
+            <app-autocomplete-v2 formControlName="buscaAluno" idBusca="busca-aluno" [listaItens]="nomeAlunosBusca" (onBusca)="adicionarAluno($event)" 
               textoSemResultado="Cadastrar novo aluno" icone="add" (onCliqueIcone)="navegarTelaAluno(-1)"></app-autocomplete-v2>
           </form>
         </ion-col>
         <!-- FIM INSERCAO ALUNOS -->
       </ion-row>
       <!-- INICIO TABELA DE ALUNOS -->
-      <table mat-table [dataSource]="listaAlunosTabela" class="mat-elevation-z8" style="width: 100%;">
-        <ng-container matColumnDef="nome">
-          <th mat-header-cell *matHeaderCellDef>Nome</th>
-          <td mat-cell *matCellDef="let aluno">{{aluno.nome}}</td>
-        </ng-container>
-        <!-- <ng-container matColumnDef="telefone">
-          <th mat-header-cell *matHeaderCellDef>Telefone</th>
-          <td mat-cell *matCellDef="let aluno">{{aluno.telefone}}</td>
-        </ng-container> -->
-        <ng-container matColumnDef="acao">
-          <th mat-header-cell *matHeaderCellDef aria-label="row actions"></th>
-          <td mat-cell *matCellDef="let aluno">
-            <div style="text-align: -webkit-right;">
-              <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small" 
-                (click)="navegarTelaAluno(aluno.idAluno)">
-                <ion-icon name="information"></ion-icon>
-              </ion-fab-button>
-              <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
-                (click)="deletarAluno(aluno.idAluno)">
-                <ion-icon name="trash"></ion-icon>
-              </ion-fab-button>
-            </div>
-          </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="colunasAluno"></tr>
-        <tr mat-row *matRowDef="let row; columns: colunasAluno;"></tr>
-      </table>
+      <ion-row size="auto" style="width: 100%;">
+        <table style="margin-left: 5px; margin-right: 5px;">
+          <tr>
+            <th>Aluno</th>
+            <th>CGM</th>
+            <th></th>
+          </tr>
+          <ng-container *ngIf="listaAlunosTabela.length > 0; then comAluno; else semAluno"></ng-container>
+          <ng-template #comAluno>
+            <tr *ngFor="let aluno of listaAlunosTabela">
+              <td style="width: 45%;">{{aluno.nome}}</td>
+              <td style="width: 45%;">{{aluno.cgm}}</td>
+              <td style="width: 10%;">
+                <div style="text-align: -webkit-right;">
+                  <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small" 
+                    (click)="navegarTelaAluno(aluno.idAluno)">
+                    <ion-icon name="information"></ion-icon>
+                  </ion-fab-button>
+                  <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
+                    (click)="deletarAluno(aluno.idAluno)">
+                    <ion-icon name="trash"></ion-icon>
+                  </ion-fab-button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template #semAluno>
+            <tr>
+              <td colspan="100%" style="text-align: center; font-weight: bold;">Selecione um Aluno</td>
+            </tr>
+          </ng-template>
+          
+        </table>
+      </ion-row>
       <!-- FIM TABELA DE ALUNOS -->
     </ion-row>
     <!-- FIM SOBRE ALUNO -->
-    <!-- <ion-row>
-      <ion-row>
-        <h3 style="margin-left: 5px; font-weight: bold;">Informações para Login:</h3>
-      </ion-row>
-      <ion-row size="12" style="width: 100%;">
-        <ion-col size="12" size-md="6" size-lg="6">
-          <app-field-input formControlName="cpf" label="CPF"></app-field-input>
-        </ion-col>
-        <ion-col size="12" size-md="6" size-lg="6">
-          <app-field-password formControlName="senha" label="Senha"></app-field-password>
-        </ion-col>
-      </ion-row>
-    </ion-row> -->
     <ng-container id="botoesEditar" *ngIf="!isModoDetalhes()">
       <ion-row style="flex-direction: row-reverse;">
         <ion-col size="auto">
-          <ion-button shape="round" type="submit" (click)="salvar()">Salvar</ion-button>
+          <ion-button shape="round" type="submit">Salvar</ion-button>
         </ion-col>
         <ion-col size="auto">
           <ion-button shape="round" fill="outline" color="danger" (click)="cancelar()">Cancelar</ion-button>
         </ion-col>
       </ion-row>
+      <div style="height: 100px"></div>
     </ng-container>
   </form>
   <!-- BOTOES DE CONTROLE -->
@@ -90,5 +78,4 @@
     <app-botoes-controle (onEditar)="iniciarEdicao()" (onDeletar)="deletarAction()" 
       header="Deseja deletar {{turma.nome}}?"></app-botoes-controle>  
   </ng-container>
-  
 </ion-content>

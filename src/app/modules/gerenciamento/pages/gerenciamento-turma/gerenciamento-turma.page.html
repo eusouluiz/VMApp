@@ -1,20 +1,16 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-title>gerenciamento-turma</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header titulo="gerenciamento-turma" [botaoRetorno]="true" [location]="location"></app-header>
 
 <ion-content class="ion-padding">
-  <div *ngFor="let turma of turmas">
-    <ion-item detail="true" button="true" color="light" (click)="navegarDetalheTurma(turma)">
-      <ion-col>{{turma.nome}}</ion-col>
+  <ion-row>
+    <ion-searchbar placeholder="Turma" [debounce]="500" (ionInput)="filtarTurmaNome($event)"></ion-searchbar>
+  </ion-row>
+  <div *ngFor="let turma of listaTurmas">
+    <ion-item detail="true" button="true" color="light" (click)="navegarTelaTurma(turma.idTurma)">
+      <ion-col size="6">{{turma.nome}}</ion-col>
     </ion-item>
   </div>
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button (click)="navegarCadastroTurma()">
+    <ion-fab-button (click)="navegarTelaTurma(-1)">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
