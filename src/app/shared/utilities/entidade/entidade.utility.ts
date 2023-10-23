@@ -51,6 +51,13 @@ export interface Funcionario {
     cargo: Cargo
 }
 
+export interface Canal {
+    idCanal: number,
+    nome: string,
+    responsavel?: Responsavel,
+    cargos: Cargo[]
+}
+
 export var USUARIO_DATA: Usuario[] = [
     { idUsuario: 0, cpf: '00000000000', senha: 'admin000', telefone: '041000000000', tipoUsuario: 'F' },
     { idUsuario: 1, cpf: '12345678900', senha: 'senha123', telefone: '041987654321', tipoUsuario: 'R' },
@@ -86,6 +93,7 @@ export var FUNCIONALIDADE_DATA: Funcionalidade[] = [
     { idFuncionalidade: 2, nome: 'Gerenciamento Turma', descricao: 'Gerencia todas as turmas' },
     { idFuncionalidade: 3, nome: 'Gerenciamento Funcionarios', descricao: 'Gerencia todos os funcionarios' },
     { idFuncionalidade: 4, nome: 'Gerenciamento Cargo', descricao: 'Gerencia todos os cargos' },
+    { idFuncionalidade: 5, nome: 'Gerenciamento Canal', descricao: 'Gerencia todos os canais' },
 ]
 
 export var CARGO_DATA: Cargo[] = [
@@ -101,6 +109,12 @@ export var FUNCIONARIO_DATA: Funcionario[] = [
     { idFuncionario: 3, nome: 'Jaime f3', usuario: USUARIO_DATA[5], cargo: CARGO_DATA[2] },
 ]
 
+export var CANAL_DATA: Canal[] = [
+    { idCanal: 0, nome: 'Admin c0', cargos: [CARGO_DATA[0]] },
+    { idCanal: 1, nome: 'Secretaria c1', cargos: [CARGO_DATA[1]] },
+    { idCanal: 2, nome: 'Pedagogia c2', cargos: [CARGO_DATA[2]] },
+    { idCanal: 3, nome: 'Outro c3', cargos: [CARGO_DATA[1], CARGO_DATA[2]] },
+]
 
 export function preencheDados(){
     // preenche turmas
@@ -170,4 +184,8 @@ export function cargoVazio(): Cargo {
 
 export function funcionarioVazio(): Funcionario {
     return { idFuncionario: 0, nome: '', usuario: usuarioVazio(), cargo: cargoVazio() }
+}
+
+export function canalVazio(): Canal {
+    return { idCanal: 0, nome: '', cargos: [] }
 }

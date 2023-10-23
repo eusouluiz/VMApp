@@ -8,12 +8,7 @@ export class ConstantesFuncionalidades {
     static readonly GERENCIAMENTO_TURMA = 2
     static readonly GERENCIAMENTO_FUNCIONARIO = 3
     static readonly GERENCIAMENTO_CARGO = 4
-
-    // static readonly EDICAO_RESPONSAVEL = 5
-    // static readonly DELECAO_RESPONSAVEL = 6
-    // static readonly CADASTRO_RESPONSAVEL = 7
-    // static readonly CONSULTA_RESPONSAVEL = 8
-
+    static readonly GERENCIAMENTO_CANAL = 5
 }
 
 // ====================================
@@ -35,6 +30,7 @@ export class ConstantesRotas {
     static readonly ROTA_GERENCIAMENTO_CARGO = '/cargo'
     static readonly ROTA_GERENCIAMENTO_DETALHES = '/detalhes'
     static readonly ROTA_GERENCIAMENTO_CADASTRO = '/cadastro'
+    static readonly ROTA_GERENCIAMENTO_CANAL = '/canal'
 
     static readonly ROTA_MENSAGEM = '/mensagem'
     static readonly ROTA_AVISO = '/aviso'

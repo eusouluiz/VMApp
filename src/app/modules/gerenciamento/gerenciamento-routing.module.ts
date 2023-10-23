@@ -6,11 +6,13 @@ import { GerenciamentoPage } from './pages/gerenciamento/gerenciamento.page';
 import { GerenciamentoAlunoPage } from './pages/gerenciamento-aluno/gerenciamento-aluno.page';
 import { GerenciamentoFuncionarioPage } from './pages/gerenciamento-funcionario/gerenciamento-funcionario.page';
 import { GerenciamentoCargoPage } from './pages/gerenciamento-cargo/gerenciamento-cargo.page';
-import GerenciamentoResponsavelDetalhesPage from './pages/gerenciamento-responsavel-detalhes/gerenciamento-responsavel-detalhes.page';
+import { GerenciamentoResponsavelDetalhesPage } from './pages/gerenciamento-responsavel-detalhes/gerenciamento-responsavel-detalhes.page';
 import { GerenciamentoAlunoDetalhesPage } from './pages/gerenciamento-aluno-detalhes/gerenciamento-aluno-detalhes.page';
 import { GerenciamentoTurmaDetalhesPage } from './pages/gerenciamento-turma-detalhes/gerenciamento-turma-detalhes.page';
 import { GerenciamentoFuncionarioDetalhesPage } from './pages/gerenciamento-funcionario-detalhes/gerenciamento-funcionario-detalhes.page';
 import { GerenciamentoCargoDetalhesPage } from './pages/gerenciamento-cargo-detalhes/gerenciamento-cargo-detalhes.page';
+import { GerenciamentoCanalPage } from './pages/gerenciamento-canal/gerenciamento-canal.page';
+import { GerenciamentoCanalDetalhesPage } from './pages/gerenciamento-canal-detalhes/gerenciamento-canal-detalhes.page';
 
 const routes: Routes = [
   { path: '', component: GerenciamentoPage },
@@ -29,6 +31,9 @@ const routes: Routes = [
   { path: 'cargo', component: GerenciamentoCargoPage },
   { path: 'cargo/:id/detalhes', component: GerenciamentoCargoDetalhesPage },
   { path: 'cargo/cadastro', component: GerenciamentoCargoDetalhesPage },
+  { path: 'canal', component: GerenciamentoCanalPage },
+  { path: 'canal/:id/detalhes', component: GerenciamentoCanalDetalhesPage },
+  { path: 'canal/cadastro', component: GerenciamentoCanalDetalhesPage },
 ];
 
 @NgModule({
@@ -43,5 +48,6 @@ export class GerenciamentoRoutingModule {
     GerenciamentoTurmaPage, GerenciamentoTurmaDetalhesPage,
     GerenciamentoFuncionarioPage, GerenciamentoFuncionarioDetalhesPage,
     GerenciamentoCargoPage, GerenciamentoCargoDetalhesPage,
+    GerenciamentoCanalPage, GerenciamentoCanalDetalhesPage,
   ]
 }

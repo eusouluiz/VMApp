@@ -13,7 +13,7 @@ import { PaginaGerenciamento } from '../../../../shared/utilities/pagina-gerenci
   templateUrl: './gerenciamento-responsavel-detalhes.page.html',
   styleUrls: ['./gerenciamento-responsavel-detalhes.page.scss'],
 })
-export default class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamento implements OnInit {
+export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamento implements OnInit {
 
   responsavel: Responsavel
   listaTodosAlunos: Aluno[] | null = null
