@@ -16,6 +16,7 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
   canais: Canal[] = []
   isResponsavel = this.usuarioLogado.isResponsavel()
   cargoId = this.usuarioLogado.getIdCargo()
+  primeiroNome: string = ''
 
   constructor(
     private router: Router,
@@ -25,6 +26,10 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_MENSAGEM
     super(router, ROTA_BASE)
 
+    const nome = usuarioLogado.getNome()
+    if (nome !== undefined){
+      this.primeiroNome = nome.split(' ')[0]
+    }
     this.inicializarConteudo()
   }
 

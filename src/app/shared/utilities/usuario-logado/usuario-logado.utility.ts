@@ -25,4 +25,8 @@ export class UsuarioLogado {
         return this.sessionRepository.session()?.usuarioLogado.idCargo
     }
 
+    getNome(): string | undefined{
+        return this.sessionRepository.session()?.usuarioLogado.nome
+    }
+
 }
