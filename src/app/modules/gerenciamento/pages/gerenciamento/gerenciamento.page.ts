@@ -34,7 +34,7 @@ export class GerenciamentoPage extends Pagina implements OnInit {
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO
     super(router, ROTA_BASE)
-    var ids = this.sessionRepository.session()?.funcionalidadesAcesso
+    var ids = this.sessionRepository.session()?.usuarioLogado.funcionalidadesAcessoId
     if (ids !== undefined) {
       this.idFuncionalidadesAcesso = ids
     }

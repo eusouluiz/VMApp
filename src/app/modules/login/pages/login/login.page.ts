@@ -69,8 +69,6 @@ export class LoginPage implements OnInit {
             throw new Error('Usuario nao definido o tipo')
           }
         }
-        console.log('responsavelLogado: ' + responsavelLogado)
-        console.log('funcionarioLogado: ' + funcionarioLogado)
         this.sessionService.login(responsavelLogado, funcionarioLogado).subscribe()
         this.navegaParaApp()
       }
