@@ -1,5 +1,7 @@
+import { Injectable } from '@angular/core';
 import { SessionRepository } from './../../../core/state/session/session.repository';
 
+@Injectable({ providedIn: 'root' })
 export class UsuarioLogado {
 
     constructor (
@@ -19,8 +21,8 @@ export class UsuarioLogado {
         return this.sessionRepository.session()?.usuarioLogado.funcionalidadesAcessoId
     }
 
-    getCargoId(): number | undefined{
-        return this.sessionRepository.session()?.usuarioLogado.cargoId
+    getIdCargo(): number | undefined{
+        return this.sessionRepository.session()?.usuarioLogado.idCargo
     }
 
 }

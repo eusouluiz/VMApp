@@ -1,6 +1,6 @@
 interface UsuarioLogado {
   tipoUsuario: 'F' | 'R',
-  cargoId?: number,
+  idCargo?: number,
   funcionalidadesAcessoId?: number[],
 }
 

@@ -15,7 +15,7 @@ export class SessionApiService {
     }
 
     var tipoUsuario: 'F' | 'R' = 'R'
-    var idCargo = null
+    var idCargo = undefined
 
     var listaFuncionalidades: number[] = []
     // so preenche a lista de funcionalidades caso o usuario seja um funcionario
