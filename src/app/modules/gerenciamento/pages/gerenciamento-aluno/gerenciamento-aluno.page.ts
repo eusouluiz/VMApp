@@ -24,7 +24,6 @@ export class GerenciamentoAlunoPage extends Pagina implements OnInit {
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO
     super(router, ROTA_BASE, location)
-    this.inicializarConteudo()
   }
 
   ngOnInit() {

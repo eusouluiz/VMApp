@@ -12,11 +12,8 @@ export class Pagina {
     ) {
     }
 
-    
-
-    // evento emitido toda vez que retorna a pagina
-    @HostListener('window:popstate', ['$event'])
-    onPopState(event: any) {
+    // evento emitido toda vez que carrega conteudo ion
+    ionViewWillEnter(){
         this.inicializarConteudo()
     }
     
