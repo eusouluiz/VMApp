@@ -15,7 +15,7 @@ import { ConstantesRotas } from '../../../../shared/utilities/constantes/constan
 })
 export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
 
-  turma: Turma
+  turma: Turma = turmaVazio()
   listaTodosAlunos: Aluno[] | null = null
 
   constructor(
@@ -29,28 +29,43 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO
     super(router, ROTA_BASE, location)
 
-    this.definirModo()
+    this.inicializarForms()
+    this.inicializarConteudo()
 
-    this.inicializarFormBuscaAluno()
-    const id = this.activatedRoute.snapshot.paramMap.get('id')
-    if (this.isModoDetalhes() && id !== null) {
-      this.turma = this.resgatarTurma(Number.parseInt(id))
-      this.inicializarTabelaAlunos()
-    } else {
-      this.turma = turmaVazio()
-      this.inicializarTabelaAlunos()
-    }
-
-    this.form = this.formBuilder.group({
-      nome: [this.turma.nome, Validators.required],
-    })
-
-    if (this.isModoDetalhes()) {
-      this.form.disable()
-    }
   }
 
   ngOnInit() {
+  }
+  
+  inicializarForms() {
+    this.inicializarFormTurma()
+    this.inicializarFormBuscaAluno()
+  }
+
+  inicializarFormTurma() {
+    this.form = this.formBuilder.group({
+      nome: ['', Validators.required],
+    })
+  }
+
+  protected inicializarConteudo(): void {
+    this.listaTodosAlunos = this.alunoService.buscarTodosAlunos().slice()
+
+    this.definirModo()
+
+    const id = this.activatedRoute.snapshot.paramMap.get('id')
+    if (this.isModoDetalhes() && id !== null) {
+      this.turma = this.resgatarTurma(Number.parseInt(id))
+
+      this.form?.setValue({
+        nome: this.turma.nome,
+      })
+    }
+    this.inicializarTabelaAlunos()
+
+    if (this.isModoDetalhes()) {
+      this.form?.disable()
+    }
   }
 
   // ---- busca turma ----//
@@ -139,28 +154,25 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   private inicializarBuscaAlunos() {
-    // evitar com que lista de todos os alunos seja buscada toda hora
-    if (this.listaTodosAlunos === null) {
-      this.listaTodosAlunos = this.alunoService.buscarTodosAlunos().slice()
-    }
-
     this.listaAlunosBusca = []
-    this.listaTodosAlunos.forEach((f) => {
-      const idAluno = f.idAluno
-      var isAlunoPossuiAluno = false
-
-      for (let i = 0; i < this.listaAlunosTabela.length; i++) {
-        const alunoAluno = this.listaAlunosTabela[i];
-        if (alunoAluno.idAluno === idAluno) {
-          isAlunoPossuiAluno = true
-          break
+    if (this.listaTodosAlunos !== null) {
+      this.listaTodosAlunos.forEach((f) => {
+        const idAluno = f.idAluno
+        var isAlunoPossuiAluno = false
+  
+        for (let i = 0; i < this.listaAlunosTabela.length; i++) {
+          const alunoAluno = this.listaAlunosTabela[i];
+          if (alunoAluno.idAluno === idAluno) {
+            isAlunoPossuiAluno = true
+            break
+          }
         }
-      }
-
-      if (!isAlunoPossuiAluno) {
-        this.listaAlunosBusca.push(f)
-      }
-    })
+  
+        if (!isAlunoPossuiAluno) {
+          this.listaAlunosBusca.push(f)
+        }
+      })
+    }
 
     this.nomeAlunosBusca = this.resgatarNomeAlunosBusca(this.listaAlunosBusca)
     this.limparCampoBuscaAluno()

@@ -16,7 +16,7 @@ import { TurmaService } from '../../../../core/services/turma-service/turma.serv
 })
 export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
 
-  aluno: Aluno
+  aluno: Aluno = alunoVazio()
   listaTodosResponsaveis: Responsavel[] | null = null
   listaTodasTurmas: Turma[] | null = null
 
@@ -32,32 +32,48 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO
     super(router, ROTA_BASE, location)
 
-    this.definirModo()
-
-    this.inicializarFormBuscaResponsavel()
-    this.inicializarFormBuscaTurma()
-    const id = this.activatedRoute.snapshot.paramMap.get('id')
-    if (this.isModoDetalhes() && id !== null) {
-      this.aluno = this.resgatarAluno(Number.parseInt(id))
-      this.inicializarTabelaResponsaveis()
-      this.inicializarTabelaTurmas()
-    } else {
-      this.aluno = alunoVazio()
-      this.inicializarTabelaResponsaveis()
-      this.inicializarTabelaTurmas()
-    }
-
-    this.form = this.formBuilder.group({
-      nome: [this.aluno.nome, Validators.required],
-      cgm: [this.aluno.cgm, Validators.required],
-    })
-
-    if (this.isModoDetalhes()) {
-      this.form.disable()
-    }
+    this.inicializarForms()
+    this.inicializarConteudo()
   }
 
   ngOnInit() {
+  }
+
+  inicializarForms() {
+    this.inicializarFormAluno()
+    this.inicializarFormBuscaResponsavel()
+    this.inicializarFormBuscaTurma()
+  }
+
+  inicializarFormAluno() {
+    this.form = this.formBuilder.group({
+      nome: ['', Validators.required],
+      cgm: ['', Validators.required],
+    })
+  }
+
+  protected inicializarConteudo(): void {
+    this.listaTodosResponsaveis = this.responsavelService.buscarTodosResponsaveis().slice()
+    this.listaTodasTurmas = this.turmaService.buscarTodosTurmas().slice()
+
+    this.definirModo()
+
+    const id = this.activatedRoute.snapshot.paramMap.get('id')
+    if (this.isModoDetalhes() && id !== null) {
+      this.aluno = this.resgatarAluno(Number.parseInt(id))
+
+      this.form?.setValue({
+        nome: this.aluno.nome,
+        cgm: this.aluno.cgm,
+      })
+    }
+    this.inicializarTabelaResponsaveis()
+    this.inicializarTabelaTurmas()
+
+    if (this.isModoDetalhes()) {
+      this.form?.disable()
+    }
+
   }
 
   // ---- busca aluno ----//
@@ -151,28 +167,26 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   private inicializarBuscaResponsaveis() {
-    // evitar com que lista de todos os responsaveis seja buscada toda hora
-    if (this.listaTodosResponsaveis === null) {
-      this.listaTodosResponsaveis = this.responsavelService.buscarTodosResponsaveis().slice()
-    }
 
     this.listaResponsaveisBusca = []
-    this.listaTodosResponsaveis.forEach((r) => {
-      const idResponsavel = r.idResponsavel
-      var isResponsavelPossuiResponsavel = false
-
-      for (let i = 0; i < this.listaResponsaveisTabela.length; i++) {
-        const responsavelResponsavel = this.listaResponsaveisTabela[i];
-        if (responsavelResponsavel.idResponsavel === idResponsavel) {
-          isResponsavelPossuiResponsavel = true
-          break
+    if (this.listaTodosResponsaveis !== null) {
+      this.listaTodosResponsaveis.forEach((r) => {
+        const idResponsavel = r.idResponsavel
+        var isResponsavelPossuiResponsavel = false
+  
+        for (let i = 0; i < this.listaResponsaveisTabela.length; i++) {
+          const responsavelResponsavel = this.listaResponsaveisTabela[i];
+          if (responsavelResponsavel.idResponsavel === idResponsavel) {
+            isResponsavelPossuiResponsavel = true
+            break
+          }
         }
-      }
-
-      if (!isResponsavelPossuiResponsavel) {
-        this.listaResponsaveisBusca.push(r)
-      }
-    })
+  
+        if (!isResponsavelPossuiResponsavel) {
+          this.listaResponsaveisBusca.push(r)
+        }
+      })
+    }
 
     this.nomeResponsaveisBusca = this.resgatarNomeResponsaveisBusca(this.listaResponsaveisBusca)
     this.limparCampoBuscaResponsavel()
@@ -281,28 +295,26 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   private inicializarBuscaTurmas() {
-    // evitar com que lista de todos os turmas seja buscada toda hora
-    if (this.listaTodasTurmas === null) {
-      this.listaTodasTurmas = this.turmaService.buscarTodosTurmas().slice()
-    }
 
     this.listaTurmasBusca = []
-    this.listaTodasTurmas.forEach((t) => {
-      const idTurma = t.idTurma
-      var isFuncionarioPossuiTurma = false
-
-      for (let i = 0; i < this.listaTurmasTabela.length; i++) {
-        const alunoTurma = this.listaTurmasTabela[i];
-        if (alunoTurma.idTurma === idTurma) {
-          isFuncionarioPossuiTurma = true
-          break
+    if (this.listaTodasTurmas !== null) {
+      this.listaTodasTurmas.forEach((t) => {
+        const idTurma = t.idTurma
+        var isFuncionarioPossuiTurma = false
+  
+        for (let i = 0; i < this.listaTurmasTabela.length; i++) {
+          const alunoTurma = this.listaTurmasTabela[i];
+          if (alunoTurma.idTurma === idTurma) {
+            isFuncionarioPossuiTurma = true
+            break
+          }
         }
-      }
-
-      if (!isFuncionarioPossuiTurma) {
-        this.listaTurmasBusca.push(t)
-      }
-    })
+  
+        if (!isFuncionarioPossuiTurma) {
+          this.listaTurmasBusca.push(t)
+        }
+      })
+    }
 
     this.nomeTurmasBusca = this.resgatarNomeTurmasBusca(this.listaTurmasBusca)
     this.limparCampoBuscaTurma()
