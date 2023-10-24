@@ -1,3 +1,4 @@
+import { UsuarioLogado } from './../../../../shared/utilities/usuario-logado/usuario-logado.utility';
 import { ConstantesRotas } from './../../../../shared/utilities/constantes/constantes.utility';
 import { SessionRepository } from './../../../../core/state/session/session.repository';
 import { Component, OnInit } from '@angular/core';
@@ -30,11 +31,12 @@ export class GerenciamentoPage extends Pagina implements OnInit {
 
   constructor(
     private router: Router,
-    private sessionRepository: SessionRepository
+    private sessionRepository: SessionRepository,
+    private usuarioLogado: UsuarioLogado 
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO
     super(router, ROTA_BASE)
-    var ids = this.sessionRepository.session()?.usuarioLogado.funcionalidadesAcessoId
+    var ids = usuarioLogado.getFuncionalidadesAcessoId()
     if (ids !== undefined) {
       this.idFuncionalidadesAcesso = ids
     }
