@@ -1,3 +1,4 @@
+import { UsuarioLogado } from './../../utilities/usuario-logado/usuario-logado.utility';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
@@ -7,7 +8,9 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public usuarioLogado: UsuarioLogado
+  ) { }
 
   ngOnInit() {}
 

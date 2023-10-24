@@ -8,7 +8,7 @@
       <ion-icon name="apps"></ion-icon>
       <ion-label>Mensagens</ion-label>
     </ion-tab-button>
-    <ion-tab-button tab="gerenciamento">
+    <ion-tab-button *ngIf="usuarioLogado.isFuncionario()" tab="gerenciamento">
       <ion-icon name="send"></ion-icon>
       <ion-label>Gerenciamento</ion-label>
     </ion-tab-button>
