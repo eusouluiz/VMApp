@@ -3,7 +3,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common'
 import { Funcionario, Cargo, cargoVazio, Funcionalidade } from '../../../../shared/utilities/entidade/entidade.utility';
-import { PaginaGerenciamento } from '../../../../shared/utilities/pagina-gerenciamento/pagina-gerenciamento.utility';
+import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina-gerenciamento-detalhes/pagina-gerenciamento-detalhes.utility';
 import { CargoService } from '../../../../core/services/cargo-service/cargo.service';
 import { FuncionarioService } from '../../../../core/services/funcionario-service/funcionario.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
@@ -14,7 +14,7 @@ import { FuncionalidadeService } from '../../../../core/services/funcionalidade-
   templateUrl: './gerenciamento-cargo-detalhes.page.html',
   styleUrls: ['./gerenciamento-cargo-detalhes.page.scss'],
 })
-export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamento implements OnInit {
+export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
 
   cargo: Cargo
   listaTodosFuncionarios: Funcionario[] | null = null
@@ -252,115 +252,115 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamento implemen
 
   // ---- controle funcionarios ----//
 
- // ---- controle funcionalidades ----//
+  // ---- controle funcionalidades ----//
 
- formBuscaFuncionalidade!: UntypedFormGroup
+  formBuscaFuncionalidade!: UntypedFormGroup
 
- inicializarFormBuscaFuncionalidade() {
-   this.formBuscaFuncionalidade = this.formBuilder.group({
-     buscaFuncionalidade: ''
-   })
- }
+  inicializarFormBuscaFuncionalidade() {
+    this.formBuscaFuncionalidade = this.formBuilder.group({
+      buscaFuncionalidade: ''
+    })
+  }
 
- listaFuncionalidadesBusca: Funcionalidade[] = []
- nomeFuncionalidadesBusca: string[] = []
+  listaFuncionalidadesBusca: Funcionalidade[] = []
+  nomeFuncionalidadesBusca: string[] = []
 
- listaFuncionalidadesTabela!: Funcionalidade[]
+  listaFuncionalidadesTabela!: Funcionalidade[]
 
- private inicializarTabelaFuncionalidades() {
-   this.listaFuncionalidadesTabela = this.cargo.funcionalidades.slice()
-   if (!this.isModoDetalhes()) {
-     this.inicializarBuscaFuncionalidades()
-   }
- }
+  private inicializarTabelaFuncionalidades() {
+    this.listaFuncionalidadesTabela = this.cargo.funcionalidades.slice()
+    if (!this.isModoDetalhes()) {
+      this.inicializarBuscaFuncionalidades()
+    }
+  }
 
- private inicializarBuscaFuncionalidades() {
-   // evitar com que lista de todos os funcionalidades seja buscada toda hora
-   if (this.listaTodasFuncionalidades === null) {
-     this.listaTodasFuncionalidades = this.funcionalidadeService.buscarTodosFuncionalidades().slice()
-   }
+  private inicializarBuscaFuncionalidades() {
+    // evitar com que lista de todos os funcionalidades seja buscada toda hora
+    if (this.listaTodasFuncionalidades === null) {
+      this.listaTodasFuncionalidades = this.funcionalidadeService.buscarTodosFuncionalidades().slice()
+    }
 
-   this.listaFuncionalidadesBusca = []
-   this.listaTodasFuncionalidades.forEach((f) => {
-     const idFuncionalidade = f.idFuncionalidade
-     var isFuncionalidadePossuiFuncionalidade = false
+    this.listaFuncionalidadesBusca = []
+    this.listaTodasFuncionalidades.forEach((f) => {
+      const idFuncionalidade = f.idFuncionalidade
+      var isFuncionalidadePossuiFuncionalidade = false
 
-     for (let i = 0; i < this.listaFuncionalidadesTabela.length; i++) {
-       const funcionalidadeFuncionalidade = this.listaFuncionalidadesTabela[i];
-       if (funcionalidadeFuncionalidade.idFuncionalidade === idFuncionalidade) {
-         isFuncionalidadePossuiFuncionalidade = true
-         break
-       }
-     }
+      for (let i = 0; i < this.listaFuncionalidadesTabela.length; i++) {
+        const funcionalidadeFuncionalidade = this.listaFuncionalidadesTabela[i];
+        if (funcionalidadeFuncionalidade.idFuncionalidade === idFuncionalidade) {
+          isFuncionalidadePossuiFuncionalidade = true
+          break
+        }
+      }
 
-     if (!isFuncionalidadePossuiFuncionalidade) {
-       this.listaFuncionalidadesBusca.push(f)
-     }
-   })
+      if (!isFuncionalidadePossuiFuncionalidade) {
+        this.listaFuncionalidadesBusca.push(f)
+      }
+    })
 
-   this.nomeFuncionalidadesBusca = this.resgatarNomeFuncionalidadesBusca(this.listaFuncionalidadesBusca)
-   this.limparCampoBuscaFuncionalidade()
- }
+    this.nomeFuncionalidadesBusca = this.resgatarNomeFuncionalidadesBusca(this.listaFuncionalidadesBusca)
+    this.limparCampoBuscaFuncionalidade()
+  }
 
- private resgatarNomeFuncionalidadesBusca(lista: Funcionalidade[]): string[] {
-   var nomes: string[] = []
-   lista.forEach(funcionalidade => {
-     nomes.push(funcionalidade.nome)
-   });
-   return nomes
- }
+  private resgatarNomeFuncionalidadesBusca(lista: Funcionalidade[]): string[] {
+    var nomes: string[] = []
+    lista.forEach(funcionalidade => {
+      nomes.push(funcionalidade.nome)
+    });
+    return nomes
+  }
 
- adicionarFuncionalidade(valor: number) {
-   const funcionalidade = this.listaFuncionalidadesBusca[valor]
+  adicionarFuncionalidade(valor: number) {
+    const funcionalidade = this.listaFuncionalidadesBusca[valor]
 
-   this.listaFuncionalidadesTabela.push(funcionalidade)
+    this.listaFuncionalidadesTabela.push(funcionalidade)
 
-   this.removerFuncionalidadeDaListaBusca(valor)
-   this.limparCampoBuscaFuncionalidade()
- }
+    this.removerFuncionalidadeDaListaBusca(valor)
+    this.limparCampoBuscaFuncionalidade()
+  }
 
- limparCampoBuscaFuncionalidade() {
-   this.formBuscaFuncionalidade.setValue({
-     buscaFuncionalidade: ''
-   })
- }
+  limparCampoBuscaFuncionalidade() {
+    this.formBuscaFuncionalidade.setValue({
+      buscaFuncionalidade: ''
+    })
+  }
 
- private removerFuncionalidadeDaListaBusca(index: number) {
-   for (let i = 0; i < this.listaFuncionalidadesBusca.length; i++) {
-     if (index === i) {
-       this.listaFuncionalidadesBusca.splice(index, 1)
-       this.nomeFuncionalidadesBusca.splice(index, 1)
-       break;
-     }
-   }
- }
+  private removerFuncionalidadeDaListaBusca(index: number) {
+    for (let i = 0; i < this.listaFuncionalidadesBusca.length; i++) {
+      if (index === i) {
+        this.listaFuncionalidadesBusca.splice(index, 1)
+        this.nomeFuncionalidadesBusca.splice(index, 1)
+        break;
+      }
+    }
+  }
 
- private atualizarFuncionalidades() {
-   this.cargo.funcionalidades = this.listaFuncionalidadesTabela.sort((f1, f2) => {
-     if (f1.nome.toLowerCase() > f2.nome.toLowerCase()) {
-       return 1
-     } else if (f2.nome.toLowerCase() > f1.nome.toLowerCase()) {
-       return -1
-     } else {
-       return 0
-     }
-   })
- }
+  private atualizarFuncionalidades() {
+    this.cargo.funcionalidades = this.listaFuncionalidadesTabela.sort((f1, f2) => {
+      if (f1.nome.toLowerCase() > f2.nome.toLowerCase()) {
+        return 1
+      } else if (f2.nome.toLowerCase() > f1.nome.toLowerCase()) {
+        return -1
+      } else {
+        return 0
+      }
+    })
+  }
 
- deletarFuncionalidade(id: number) {
-   const indexFuncionalidade = this.listaFuncionalidadesTabela.findIndex((r) => {
-     return r.idFuncionalidade === id
-   })
-   if (indexFuncionalidade !== -1) {
-     const funcionalidade = this.listaFuncionalidadesTabela[indexFuncionalidade]
-     this.listaFuncionalidadesTabela.splice(indexFuncionalidade, 1)
+  deletarFuncionalidade(id: number) {
+    const indexFuncionalidade = this.listaFuncionalidadesTabela.findIndex((r) => {
+      return r.idFuncionalidade === id
+    })
+    if (indexFuncionalidade !== -1) {
+      const funcionalidade = this.listaFuncionalidadesTabela[indexFuncionalidade]
+      this.listaFuncionalidadesTabela.splice(indexFuncionalidade, 1)
 
 
-     this.listaFuncionalidadesBusca.push(funcionalidade)
-     this.nomeFuncionalidadesBusca.push(funcionalidade.nome)
-   }
- }
+      this.listaFuncionalidadesBusca.push(funcionalidade)
+      this.nomeFuncionalidadesBusca.push(funcionalidade.nome)
+    }
+  }
 
- // ---- controle funcionalidades ----//
+  // ---- controle funcionalidades ----//
 
 }

@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Funcionario } from '../../../../shared/utilities/entidade/entidade.utility';
-import { Rota } from '../../../../shared/utilities/rota/rota.utility';
+import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { FuncionarioService } from '../../../../core/services/funcionario-service/funcionario.service';
 import { Location } from '@angular/common';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
@@ -11,7 +11,7 @@ import { ConstantesRotas } from '../../../../shared/utilities/constantes/constan
   templateUrl: './gerenciamento-funcionario.page.html',
   styleUrls: ['./gerenciamento-funcionario.page.scss'],
 })
-export class GerenciamentoFuncionarioPage extends Rota implements OnInit {
+export class GerenciamentoFuncionarioPage extends Pagina implements OnInit {
 
   funcionarios: Funcionario[] = []
   listaFuncionarios: Funcionario[] = []
@@ -29,7 +29,7 @@ export class GerenciamentoFuncionarioPage extends Rota implements OnInit {
 
   ngOnInit() {
   }
-  
+
   protected inicializarConteudo(): void {
     this.funcionarios = this.funcionarioService.buscarTodosFuncionarios()
     this.listaFuncionarios = this.funcionarios.slice()

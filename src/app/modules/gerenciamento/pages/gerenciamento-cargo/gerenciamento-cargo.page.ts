@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Cargo } from '../../../../shared/utilities/entidade/entidade.utility';
 import { CargoService } from '../../../../core/services/cargo-service/cargo.service';
-import { Rota } from '../../../../shared/utilities/rota/rota.utility';
+import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { Location } from '@angular/common';
 
@@ -11,7 +11,7 @@ import { Location } from '@angular/common';
   templateUrl: './gerenciamento-cargo.page.html',
   styleUrls: ['./gerenciamento-cargo.page.scss'],
 })
-export class GerenciamentoCargoPage extends Rota implements OnInit {
+export class GerenciamentoCargoPage extends Pagina implements OnInit {
 
   cargos: Cargo[] = []
   listaCargos: Cargo[] = []

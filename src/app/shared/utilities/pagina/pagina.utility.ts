@@ -3,12 +3,12 @@ import { Location } from '@angular/common'
 import { Directive, HostListener } from "@angular/core"
 
 @Directive()
-export class Rota {
+export class Pagina {
 
     constructor(
-        private rotaRouter: Router,
-        private rotaBase: string,
-        private rotaLocation?: Location,
+        private routerPagina: Router,
+        private basePagina: string,
+        private locationPagina?: Location,
     ) {
     }
 
@@ -23,18 +23,18 @@ export class Rota {
     protected inicializarConteudo() {}
 
     protected retornarPagina() {
-        if (this.rotaLocation !== undefined) {
-            this.rotaLocation.back()
+        if (this.locationPagina !== undefined) {
+            this.locationPagina.back()
         }
     }
 
     protected navegarPara(rota: string) {
-        rota = this.adequarRota(rota)
-        const caminho = this.rotaBase + rota
-        this.rotaRouter.navigate([caminho])
+        rota = this.adequarPagina(rota)
+        const caminho = this.basePagina + rota
+        this.routerPagina.navigate([caminho])
     }
 
-    protected adequarRota(rota: string): string {
+    protected adequarPagina(rota: string): string {
         if (rota.substring(0, 1) !== '/') {
             return '/' + rota
         }

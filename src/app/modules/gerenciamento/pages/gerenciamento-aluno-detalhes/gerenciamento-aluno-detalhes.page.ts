@@ -3,7 +3,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common'
 import { Responsavel, Aluno, alunoVazio, Turma } from '../../../../shared/utilities/entidade/entidade.utility';
-import { PaginaGerenciamento } from '../../../../shared/utilities/pagina-gerenciamento/pagina-gerenciamento.utility';
+import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina-gerenciamento-detalhes/pagina-gerenciamento-detalhes.utility';
 import { AlunoService } from '../../../../core/services/aluno-service/aluno.service';
 import { ResponsavelService } from '../../../../core/services/responsavel-service/responsavel.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
@@ -14,7 +14,7 @@ import { TurmaService } from '../../../../core/services/turma-service/turma.serv
   templateUrl: './gerenciamento-aluno-detalhes.page.html',
   styleUrls: ['./gerenciamento-aluno-detalhes.page.scss'],
 })
-export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamento implements OnInit {
+export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
 
   aluno: Aluno
   listaTodosResponsaveis: Responsavel[] | null = null

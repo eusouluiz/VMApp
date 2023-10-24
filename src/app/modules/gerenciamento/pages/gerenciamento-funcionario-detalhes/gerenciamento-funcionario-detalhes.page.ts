@@ -3,7 +3,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common'
 import { Cargo, Funcionario, funcionarioVazio } from '../../../../shared/utilities/entidade/entidade.utility';
-import { PaginaGerenciamento } from '../../../../shared/utilities/pagina-gerenciamento/pagina-gerenciamento.utility';
+import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina-gerenciamento-detalhes/pagina-gerenciamento-detalhes.utility';
 import { FuncionarioService } from '../../../../core/services/funcionario-service/funcionario.service';
 import { CargoService } from '../../../../core/services/cargo-service/cargo.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
@@ -13,7 +13,7 @@ import { ConstantesRotas } from '../../../../shared/utilities/constantes/constan
   templateUrl: './gerenciamento-funcionario-detalhes.page.html',
   styleUrls: ['./gerenciamento-funcionario-detalhes.page.scss'],
 })
-export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamento implements OnInit {
+export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
 
   funcionario: Funcionario
   listaTodosCargos: Cargo[] | null = null
@@ -196,7 +196,7 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamento im
     const cargo = this.listaCargosBusca[valor]
 
     // remove 1 para colocar outro
-    if (this.listaCargosTabela.length > 0){
+    if (this.listaCargosTabela.length > 0) {
       this.deletarCargo()
     }
     this.listaCargosTabela.push(cargo)

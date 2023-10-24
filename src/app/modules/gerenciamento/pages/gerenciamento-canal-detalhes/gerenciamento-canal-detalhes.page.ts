@@ -6,14 +6,14 @@ import { Cargo, Canal, canalVazio } from '../../../../shared/utilities/entidade/
 import { CanalService } from '../../../../core/services/canal-service/canal.service';
 import { CargoService } from '../../../../core/services/cargo-service/cargo.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
-import { PaginaGerenciamento } from '../../../../shared/utilities/pagina-gerenciamento/pagina-gerenciamento.utility';
+import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina-gerenciamento-detalhes/pagina-gerenciamento-detalhes.utility';
 
 @Component({
   selector: 'app-gerenciamento-canal-detalhes',
   templateUrl: './gerenciamento-canal-detalhes.page.html',
   styleUrls: ['./gerenciamento-canal-detalhes.page.scss'],
 })
-export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamento implements OnInit {
+export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
 
   canal: Canal
   listaTodosCargos: Cargo[] | null = null

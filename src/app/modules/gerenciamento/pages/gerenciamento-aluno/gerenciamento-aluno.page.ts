@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Aluno } from '../../../../shared/utilities/entidade/entidade.utility';
 import { AlunoService } from '../../../../core/services/aluno-service/aluno.service';
-import { Rota } from '../../../../shared/utilities/rota/rota.utility';
+import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { Location } from '@angular/common';
 
@@ -11,7 +11,7 @@ import { Location } from '@angular/common';
   templateUrl: './gerenciamento-aluno.page.html',
   styleUrls: ['./gerenciamento-aluno.page.scss'],
 })
-export class GerenciamentoAlunoPage extends Rota implements OnInit {
+export class GerenciamentoAlunoPage extends Pagina implements OnInit {
 
   responsaveis: Aluno[] = []
   listaAlunos: Aluno[] = []

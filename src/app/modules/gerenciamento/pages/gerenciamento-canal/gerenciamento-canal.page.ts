@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Canal } from '../../../../shared/utilities/entidade/entidade.utility';
 import { CanalService } from '../../../../core/services/canal-service/canal.service';
-import { Rota } from '../../../../shared/utilities/rota/rota.utility';
+import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { Location } from '@angular/common';
 
@@ -11,7 +11,7 @@ import { Location } from '@angular/common';
   templateUrl: './gerenciamento-canal.page.html',
   styleUrls: ['./gerenciamento-canal.page.scss'],
 })
-export class GerenciamentoCanalPage extends Rota implements OnInit {
+export class GerenciamentoCanalPage extends Pagina implements OnInit {
 
   responsaveis: Canal[] = []
   listaCanais: Canal[] = []

@@ -1,17 +1,17 @@
 import { Router } from "@angular/router";
-import { Rota } from "../rota/rota.utility";
+import { Pagina } from "../pagina/pagina.utility";
 import { Location } from "@angular/common";
 import { UntypedFormGroup } from "@angular/forms";
 
 
-export class PaginaGerenciamento extends Rota {
+export class PaginaGerenciamentoDetalhes extends Pagina {
 
     constructor(
-        private routerGerenciamento: Router,
-        private rotaBaseGerenciamento: string,
-        private locationGerenciamento: Location,
+        private routerGerenciamentoDetalhes: Router,
+        private rotaBaseGerenciamentoDetalhes: string,
+        private locationGerenciamentoDetalhes: Location,
     ) {
-        super(routerGerenciamento, rotaBaseGerenciamento, locationGerenciamento)
+        super(routerGerenciamentoDetalhes, rotaBaseGerenciamentoDetalhes, locationGerenciamentoDetalhes)
     }
 
     modo: 'cadastrar' | 'editar' | 'detalhes' = 'detalhes'
@@ -23,7 +23,7 @@ export class PaginaGerenciamento extends Rota {
 
     protected definirModo() {
         // pega ultimo termo do endpoint
-        const rota = this.routerGerenciamento.url.split('/').pop()
+        const rota = this.routerGerenciamentoDetalhes.url.split('/').pop()
 
         if (rota === 'cadastro') {
             this.modo = 'cadastrar'
@@ -54,10 +54,10 @@ export class PaginaGerenciamento extends Rota {
 
     //editar
     iniciarEdicao() {
-      this.modo = 'editar'
-      this.form?.enable()
-  
-      this.inicializarComponentesEdicao()
+        this.modo = 'editar'
+        this.form?.enable()
+
+        this.inicializarComponentesEdicao()
     }
 
     protected inicializarComponentesEdicao() {

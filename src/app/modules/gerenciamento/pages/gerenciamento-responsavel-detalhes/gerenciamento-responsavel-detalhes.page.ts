@@ -6,14 +6,14 @@ import { Aluno, Responsavel, responsavelVazio } from '../../../../shared/utiliti
 import { ResponsavelService } from '../../../../core/services/responsavel-service/responsavel.service';
 import { AlunoService } from '../../../../core/services/aluno-service/aluno.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
-import { PaginaGerenciamento } from '../../../../shared/utilities/pagina-gerenciamento/pagina-gerenciamento.utility';
+import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina-gerenciamento-detalhes/pagina-gerenciamento-detalhes.utility';
 
 @Component({
   selector: 'app-gerenciamento-responsavel-detalhes',
   templateUrl: './gerenciamento-responsavel-detalhes.page.html',
   styleUrls: ['./gerenciamento-responsavel-detalhes.page.scss'],
 })
-export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamento implements OnInit {
+export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
 
   responsavel: Responsavel
   listaTodosAlunos: Aluno[] | null = null

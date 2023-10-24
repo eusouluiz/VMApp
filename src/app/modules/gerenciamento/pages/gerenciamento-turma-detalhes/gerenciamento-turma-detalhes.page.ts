@@ -3,7 +3,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common'
 import { Aluno, Turma, turmaVazio } from '../../../../shared/utilities/entidade/entidade.utility';
-import { PaginaGerenciamento } from '../../../../shared/utilities/pagina-gerenciamento/pagina-gerenciamento.utility';
+import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina-gerenciamento-detalhes/pagina-gerenciamento-detalhes.utility';
 import { TurmaService } from '../../../../core/services/turma-service/turma.service';
 import { AlunoService } from '../../../../core/services/aluno-service/aluno.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
@@ -13,7 +13,7 @@ import { ConstantesRotas } from '../../../../shared/utilities/constantes/constan
   templateUrl: './gerenciamento-turma-detalhes.page.html',
   styleUrls: ['./gerenciamento-turma-detalhes.page.scss'],
 })
-export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamento implements OnInit {
+export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
 
   turma: Turma
   listaTodosAlunos: Aluno[] | null = null
