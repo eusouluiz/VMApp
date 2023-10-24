@@ -47,6 +47,16 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
     return verificarListaCargo(canal, this.cargoId)
   }
 
+  navegarParaCanal(idCanal: number) {
+    var rota: string
+    if (this.isResponsavel) {
+      rota = idCanal.toString() + ConstantesRotas.ROTA_MENSAGEM_CANAL
+    } else {
+      rota = ConstantesRotas.ROTA_MENSAGEM_SELECAO_ALUNO
+    }
+    this.navegarPara(rota)
+  }
+
 }
 
 function verificarListaCargo(canal: Canal, idCargo?: number): boolean{

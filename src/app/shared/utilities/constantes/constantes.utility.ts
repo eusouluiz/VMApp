@@ -33,5 +33,8 @@ export class ConstantesRotas {
     static readonly ROTA_GERENCIAMENTO_CANAL = '/canal'
 
     static readonly ROTA_MENSAGEM = '/mensagem'
+    static readonly ROTA_MENSAGEM_SELECAO_ALUNO = '/selecao-aluno'
+    static readonly ROTA_MENSAGEM_CANAL = '/canal'
+
     static readonly ROTA_AVISO = '/aviso'
 }

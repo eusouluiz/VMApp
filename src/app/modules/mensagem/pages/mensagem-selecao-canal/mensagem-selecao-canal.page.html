@@ -4,7 +4,7 @@
   <h3>Canais de Comunicação</h3>
 
   <ng-container *ngFor="let canal of canais">
-    <ion-item *ngIf="verificarAcesso(canal)" detail="true" button="true" (click)="navegarPara('')">
+    <ion-item *ngIf="verificarAcesso(canal)" detail="true" button="true" (click)="navegarParaCanal(canal.idCanal)">
       <ion-label>{{canal.nome}}</ion-label>
     </ion-item>
   </ng-container>
