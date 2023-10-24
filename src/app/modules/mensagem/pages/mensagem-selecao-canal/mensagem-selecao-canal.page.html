@@ -1,9 +1,11 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>mensagem-selecao-canal</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header titulo="Bem vindo, Usuário."></app-header>
 
-<ion-content>
+<ion-content class="ion-padding">
+  <h3>Canais de Comunicação</h3>
 
+  <ng-container *ngFor="let canal of canais">
+    <ion-item detail="true" button="true" (click)="navegarPara('')">
+      <ion-label>{{canal.nome}}</ion-label>
+    </ion-item>
+  </ng-container>
 </ion-content>
