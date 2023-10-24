@@ -15,7 +15,7 @@ import { ConstantesRotas } from '../../../../shared/utilities/constantes/constan
 })
 export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
 
-  funcionario: Funcionario
+  funcionario: Funcionario = funcionarioVazio()
   listaTodosCargos: Cargo[] | null = null
 
   constructor(
@@ -29,31 +29,50 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO
     super(router, ROTA_BASE, location)
 
-    this.definirModo()
+    this.inicializarForms()
+    this.inicializarConteudo()
 
-    this.inicializarFormBuscaCargo()
-    const id = this.activatedRoute.snapshot.paramMap.get('id')
-    if (this.isModoDetalhes() && id !== null) {
-      this.funcionario = this.resgatarFuncionario(Number.parseInt(id))
-      this.inicializarTabelaCargos()
-    } else {
-      this.funcionario = funcionarioVazio()
-      this.inicializarTabelaCargos()
-    }
-
-    this.form = this.formBuilder.group({
-      nome: [this.funcionario.nome, Validators.required],
-      telefone: [this.funcionario.usuario.telefone, Validators.required],
-      cpf: [this.funcionario.usuario.cpf, Validators.required],
-      senha: [this.funcionario.usuario.senha, Validators.required],
-    })
-
-    if (this.isModoDetalhes()) {
-      this.form.disable()
-    }
   }
 
   ngOnInit() {
+  }
+
+  inicializarForms() {
+    this.inicializarFormFuncionario()
+    this.inicializarFormBuscaCargo()
+  }
+
+  inicializarFormFuncionario() {
+    this.form = this.formBuilder.group({
+      nome: ['', Validators.required],
+      telefone: ['', Validators.required],
+      cpf: ['', Validators.required],
+      senha: ['', Validators.required],
+    })
+  }
+
+  protected inicializarConteudo(): void {
+    this.listaTodosCargos = this.cargoService.buscarTodosCargos().slice()
+    
+    this.definirModo()
+
+    const id = this.activatedRoute.snapshot.paramMap.get('id')
+    if (this.isModoDetalhes() && id !== null) {
+      this.funcionario = this.resgatarFuncionario(Number.parseInt(id))
+
+      this.form?.setValue({
+        nome: this.funcionario.nome,
+        telefone: this.funcionario.usuario.telefone,
+        cpf: this.funcionario.usuario.cpf,
+        senha: this.funcionario.usuario.senha,
+      })
+    }
+    this.inicializarTabelaCargos()
+
+
+    if (this.isModoDetalhes()) {
+      this.form?.disable()
+    }
   }
 
   // ---- busca funcionario ----//
@@ -151,28 +170,26 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
   }
 
   private inicializarBuscaCargos() {
-    // evitar com que lista de todos os cargos seja buscada toda hora
-    if (this.listaTodosCargos === null) {
-      this.listaTodosCargos = this.cargoService.buscarTodosCargos().slice()
-    }
 
     this.listaCargosBusca = []
-    this.listaTodosCargos.forEach((c) => {
-      const idCargo = c.idCargo
-      var isFuncionarioPossuiCargo = false
-
-      for (let i = 0; i < this.listaCargosTabela.length; i++) {
-        const funcionarioCargo = this.listaCargosTabela[i];
-        if (funcionarioCargo.idCargo === idCargo) {
-          isFuncionarioPossuiCargo = true
-          break
+    if (this.listaTodosCargos !== null) {
+      this.listaTodosCargos.forEach((c) => {
+        const idCargo = c.idCargo
+        var isFuncionarioPossuiCargo = false
+  
+        for (let i = 0; i < this.listaCargosTabela.length; i++) {
+          const funcionarioCargo = this.listaCargosTabela[i];
+          if (funcionarioCargo.idCargo === idCargo) {
+            isFuncionarioPossuiCargo = true
+            break
+          }
         }
-      }
-
-      if (!isFuncionarioPossuiCargo) {
-        this.listaCargosBusca.push(c)
-      }
-    })
+  
+        if (!isFuncionarioPossuiCargo) {
+          this.listaCargosBusca.push(c)
+        }
+      })
+    }
 
     this.nomeCargosBusca = this.resgatarNomeCargosBusca(this.listaCargosBusca)
     this.limparCampoBusca()

@@ -15,7 +15,7 @@ import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina
 })
 export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
 
-  canal: Canal
+  canal: Canal = canalVazio()
   listaTodosCargos: Cargo[] | null = null
 
   constructor(
@@ -29,28 +29,43 @@ export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamentoDetalhes 
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO
     super(router, ROTA_BASE, location)
 
-    this.definirModo()
-
-    this.inicializarFormBuscaCargo()
-    const id = this.activatedRoute.snapshot.paramMap.get('id')
-    if (this.isModoDetalhes() && id !== null) {
-      this.canal = this.resgatarCanal(Number.parseInt(id))
-      this.inicializarTabelaCargos()
-    } else {
-      this.canal = canalVazio()
-      this.inicializarTabelaCargos()
-    }
-
-    this.form = this.formBuilder.group({
-      nome: [this.canal.nome, Validators.required],
-    })
-
-    if (this.isModoDetalhes()) {
-      this.form.disable()
-    }
+    this.inicializarForms()
+    this.inicializarConteudo()
   }
 
   ngOnInit() {
+  }
+  
+  inicializarForms() {
+    this.inicializarFormCanal()
+    this.inicializarFormBuscaCargo()
+  }
+
+  inicializarFormCanal() {
+    this.form = this.formBuilder.group({
+      nome: ['', Validators.required],
+    })
+  }
+
+  protected inicializarConteudo(): void {
+    this.listaTodosCargos = this.cargoService.buscarTodosCargos().slice()
+
+    this.definirModo()
+
+    const id = this.activatedRoute.snapshot.paramMap.get('id')
+    if (this.isModoDetalhes() && id !== null) {
+      this.canal = this.resgatarCanal(Number.parseInt(id))
+
+      this.form?.setValue({
+        nome: this.canal.nome,
+      })
+    }
+    this.inicializarTabelaCargos()
+
+    if (this.isModoDetalhes()) {
+      this.form?.disable()
+    }
+      
   }
 
   // ---- busca canal ----//
@@ -139,28 +154,26 @@ export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   private inicializarBuscaCargos() {
-    // evitar com que lista de todos os cargos seja buscada toda hora
-    if (this.listaTodosCargos === null) {
-      this.listaTodosCargos = this.cargoService.buscarTodosCargos().slice()
-    }
 
     this.listaCargosBusca = []
-    this.listaTodosCargos.forEach((c) => {
-      const idCargo = c.idCargo
-      var isCanalPossuiCargo = false
-
-      for (let i = 0; i < this.listaCargosTabela.length; i++) {
-        const canalCargo = this.listaCargosTabela[i];
-        if (canalCargo.idCargo === idCargo) {
-          isCanalPossuiCargo = true
-          break
+    if (this.listaTodosCargos !== null) {
+      this.listaTodosCargos.forEach((c) => {
+        const idCargo = c.idCargo
+        var isCanalPossuiCargo = false
+  
+        for (let i = 0; i < this.listaCargosTabela.length; i++) {
+          const canalCargo = this.listaCargosTabela[i];
+          if (canalCargo.idCargo === idCargo) {
+            isCanalPossuiCargo = true
+            break
+          }
         }
-      }
-
-      if (!isCanalPossuiCargo) {
-        this.listaCargosBusca.push(c)
-      }
-    })
+  
+        if (!isCanalPossuiCargo) {
+          this.listaCargosBusca.push(c)
+        }
+      })
+    }
 
     this.nomeCargosBusca = this.resgatarNomeCargosBusca(this.listaCargosBusca)
     this.limparCampoBusca()

@@ -16,7 +16,7 @@ import { FuncionalidadeService } from '../../../../core/services/funcionalidade-
 })
 export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
 
-  cargo: Cargo
+  cargo: Cargo = cargoVazio()
   listaTodosFuncionarios: Funcionario[] | null = null
   listaTodasFuncionalidades: Funcionalidade[] | null = null
 
@@ -32,31 +32,45 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO
     super(router, ROTA_BASE, location)
 
-    this.definirModo()
-
-    this.inicializarFormBuscaFuncionario()
-    this.inicializarFormBuscaFuncionalidade()
-    const id = this.activatedRoute.snapshot.paramMap.get('id')
-    if (this.isModoDetalhes() && id !== null) {
-      this.cargo = this.resgatarCargo(Number.parseInt(id))
-      this.inicializarTabelaFuncionarios()
-      this.inicializarTabelaFuncionalidades()
-    } else {
-      this.cargo = cargoVazio()
-      this.inicializarTabelaFuncionarios()
-      this.inicializarTabelaFuncionalidades()
-    }
-
-    this.form = this.formBuilder.group({
-      nome: [this.cargo.nome, Validators.required],
-    })
-
-    if (this.isModoDetalhes()) {
-      this.form.disable()
-    }
+    this.inicializarForms()
+    this.inicializarConteudo()
   }
 
   ngOnInit() {
+  }
+  
+  inicializarForms() {
+    this.inicializarFormCargo()
+    this.inicializarFormBuscaFuncionario()
+    this.inicializarFormBuscaFuncionalidade()
+  }
+
+  inicializarFormCargo() {
+    this.form = this.formBuilder.group({
+      nome: ['', Validators.required],
+    })
+  }
+
+  protected inicializarConteudo(): void {
+    this.listaTodosFuncionarios = this.funcionarioService.buscarTodosFuncionarios().slice()
+    this.listaTodasFuncionalidades = this.funcionalidadeService.buscarTodosFuncionalidades().slice()
+
+    this.definirModo()
+
+    const id = this.activatedRoute.snapshot.paramMap.get('id')
+    if (this.isModoDetalhes() && id !== null) {
+      this.cargo = this.resgatarCargo(Number.parseInt(id))
+
+      this.form?.setValue({
+        nome: this.cargo.nome,
+      })
+    } 
+    this.inicializarTabelaFuncionarios()
+    this.inicializarTabelaFuncionalidades()
+
+    if (this.isModoDetalhes()) {
+      this.form?.disable()
+    }
   }
 
   // ---- busca cargo ----//
@@ -148,28 +162,26 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   private inicializarBuscaFuncionarios() {
-    // evitar com que lista de todos os funcionarios seja buscada toda hora
-    if (this.listaTodosFuncionarios === null) {
-      this.listaTodosFuncionarios = this.funcionarioService.buscarTodosFuncionarios().slice()
-    }
 
     this.listaFuncionariosBusca = []
-    this.listaTodosFuncionarios.forEach((f) => {
-      const idFuncionario = f.idFuncionario
-      var isFuncionarioPossuiFuncionario = false
-
-      for (let i = 0; i < this.listaFuncionariosTabela.length; i++) {
-        const funcionarioFuncionario = this.listaFuncionariosTabela[i];
-        if (funcionarioFuncionario.idFuncionario === idFuncionario) {
-          isFuncionarioPossuiFuncionario = true
-          break
+    if (this.listaTodosFuncionarios !== null) {
+      this.listaTodosFuncionarios.forEach((f) => {
+        const idFuncionario = f.idFuncionario
+        var isFuncionarioPossuiFuncionario = false
+  
+        for (let i = 0; i < this.listaFuncionariosTabela.length; i++) {
+          const funcionarioFuncionario = this.listaFuncionariosTabela[i];
+          if (funcionarioFuncionario.idFuncionario === idFuncionario) {
+            isFuncionarioPossuiFuncionario = true
+            break
+          }
         }
-      }
-
-      if (!isFuncionarioPossuiFuncionario) {
-        this.listaFuncionariosBusca.push(f)
-      }
-    })
+  
+        if (!isFuncionarioPossuiFuncionario) {
+          this.listaFuncionariosBusca.push(f)
+        }
+      })
+    }
 
     this.nomeFuncionariosBusca = this.resgatarNomeFuncionariosBusca(this.listaFuncionariosBusca)
     this.limparCampoBuscaFuncionario()
@@ -275,28 +287,26 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   private inicializarBuscaFuncionalidades() {
-    // evitar com que lista de todos os funcionalidades seja buscada toda hora
-    if (this.listaTodasFuncionalidades === null) {
-      this.listaTodasFuncionalidades = this.funcionalidadeService.buscarTodosFuncionalidades().slice()
-    }
 
     this.listaFuncionalidadesBusca = []
-    this.listaTodasFuncionalidades.forEach((f) => {
-      const idFuncionalidade = f.idFuncionalidade
-      var isFuncionalidadePossuiFuncionalidade = false
-
-      for (let i = 0; i < this.listaFuncionalidadesTabela.length; i++) {
-        const funcionalidadeFuncionalidade = this.listaFuncionalidadesTabela[i];
-        if (funcionalidadeFuncionalidade.idFuncionalidade === idFuncionalidade) {
-          isFuncionalidadePossuiFuncionalidade = true
-          break
+    if (this.listaTodasFuncionalidades !== null) {
+      this.listaTodasFuncionalidades.forEach((f) => {
+        const idFuncionalidade = f.idFuncionalidade
+        var isFuncionalidadePossuiFuncionalidade = false
+  
+        for (let i = 0; i < this.listaFuncionalidadesTabela.length; i++) {
+          const funcionalidadeFuncionalidade = this.listaFuncionalidadesTabela[i];
+          if (funcionalidadeFuncionalidade.idFuncionalidade === idFuncionalidade) {
+            isFuncionalidadePossuiFuncionalidade = true
+            break
+          }
         }
-      }
-
-      if (!isFuncionalidadePossuiFuncionalidade) {
-        this.listaFuncionalidadesBusca.push(f)
-      }
-    })
+  
+        if (!isFuncionalidadePossuiFuncionalidade) {
+          this.listaFuncionalidadesBusca.push(f)
+        }
+      })
+    }
 
     this.nomeFuncionalidadesBusca = this.resgatarNomeFuncionalidadesBusca(this.listaFuncionalidadesBusca)
     this.limparCampoBuscaFuncionalidade()
