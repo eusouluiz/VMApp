@@ -6,8 +6,8 @@ import { MensagemCanalPage } from './pages/mensagem-canal/mensagem-canal.page';
 
 const routes: Routes = [
   {path: '', component: MensagemSelecaoCanalPage},
-  {path: 'selecao-aluno', component: MensagemSelecaoAlunoPage},
-  {path: ':id/canal', component: MensagemCanalPage},
+  {path: ':idCanal/selecao-aluno', component: MensagemSelecaoAlunoPage},
+  {path: ':idCanalResponsavel/canal', component: MensagemCanalPage},
 ];
 
 @NgModule({

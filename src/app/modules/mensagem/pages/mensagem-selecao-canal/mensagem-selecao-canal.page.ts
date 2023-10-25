@@ -62,7 +62,7 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
         throw new Error('id responsavel nao definido')
       }
     } else {
-      rota = ConstantesRotas.ROTA_MENSAGEM_SELECAO_ALUNO
+      rota = idCanal.toString() + ConstantesRotas.ROTA_MENSAGEM_SELECAO_ALUNO
     }
     this.navegarPara(rota)
   }
