@@ -15,6 +15,7 @@ export class SessionApiService {
     }
 
     var nome: string = ''
+    var idFuncionarioResponsavel: number = -1
     var tipoUsuario: 'F' | 'R' = 'R'
     var idCargo = undefined
 
@@ -25,14 +26,17 @@ export class SessionApiService {
         listaFuncionalidades.push(f.idFuncionalidade)
       })
       nome = funcionario.nome
+      idFuncionarioResponsavel = funcionario.idFuncionario
       tipoUsuario = 'F'
       idCargo = funcionario.cargo.idCargo
     } else if (responsavel !== undefined) {
       nome = responsavel?.nome
+      idFuncionarioResponsavel = responsavel.idResponsavel
     }
 
     return of({ accessToken: '123456', tokenType: 'Bearer', usuarioLogado: {
       nome: nome,
+      idFuncionarioResponsavel: idFuncionarioResponsavel,
       tipoUsuario: tipoUsuario, 
       idCargo: idCargo, 
       funcionalidadesAcessoId: listaFuncionalidades 

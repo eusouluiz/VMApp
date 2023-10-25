@@ -50,7 +50,17 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
   navegarParaCanal(idCanal: number) {
     var rota: string
     if (this.isResponsavel) {
-      rota = idCanal.toString() + ConstantesRotas.ROTA_MENSAGEM_CANAL
+      const idResponsavel = this.usuarioLogado.getId()
+      if (idResponsavel !== undefined) {
+        const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(idCanal, idResponsavel)
+        if (idCanalResponsavel !== undefined) {
+          rota = idCanalResponsavel.toString() + ConstantesRotas.ROTA_MENSAGEM_CANAL
+        } else {
+          throw new Error('Canal Responsavel nao encontrado')
+        }
+      } else {
+        throw new Error('id responsavel nao definido')
+      }
     } else {
       rota = ConstantesRotas.ROTA_MENSAGEM_SELECAO_ALUNO
     }

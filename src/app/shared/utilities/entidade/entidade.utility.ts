@@ -54,8 +54,13 @@ export interface Funcionario {
 export interface Canal {
     idCanal: number,
     nome: string,
-    responsavel?: Responsavel,
     cargos: Cargo[]
+}
+
+export interface CanalResponsavel {
+    idCanalResponsavel: number,
+    idCanal: number,
+    idResponsavel: number
 }
 
 export var USUARIO_DATA: Usuario[] = [
@@ -116,6 +121,13 @@ export var CANAL_DATA: Canal[] = [
     { idCanal: 3, nome: 'Outro c3', cargos: [CARGO_DATA[1], CARGO_DATA[2]] },
 ]
 
+export var CANAL_RESPONSAVEL_DATA: CanalResponsavel[] = [
+    { idCanalResponsavel: 0, idCanal: CANAL_DATA[0].idCanal, idResponsavel: RESPONSAVEL_DATA[0].idResponsavel },
+    { idCanalResponsavel: 1, idCanal: CANAL_DATA[0].idCanal, idResponsavel: RESPONSAVEL_DATA[1].idResponsavel },
+    { idCanalResponsavel: 2, idCanal: CANAL_DATA[1].idCanal, idResponsavel: RESPONSAVEL_DATA[2].idResponsavel },
+    { idCanalResponsavel: 3, idCanal: CANAL_DATA[2].idCanal, idResponsavel: RESPONSAVEL_DATA[0].idResponsavel },
+] 
+
 export function preencheDados(){
     // preenche turmas
 
@@ -157,6 +169,8 @@ export function logaData(info: any = undefined){
         console.log(FUNCIONARIO_DATA)
         console.log(CARGO_DATA)
         console.log(FUNCIONALIDADE_DATA)
+        console.log(CANAL_DATA)
+        console.log(CANAL_RESPONSAVEL_DATA)
     } else {
         console.log(info)
     }

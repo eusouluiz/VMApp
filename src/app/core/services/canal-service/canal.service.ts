@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CANAL_DATA, Canal } from '../../../shared/utilities/entidade/entidade.utility';
+import { CANAL_DATA, CANAL_RESPONSAVEL_DATA, Canal, CanalResponsavel } from '../../../shared/utilities/entidade/entidade.utility';
 
 @Injectable({
   providedIn: 'root',
@@ -41,6 +41,28 @@ export class CanalService {
         } else {
             throw new Error('canal nao encontrado')
         }
+    }
+
+    buscarIdCanalResponsavel(idCanal: number, idResponsavel: number): number | undefined{
+        var idCanalResponsavel = CANAL_RESPONSAVEL_DATA.find((cr) => {
+            return cr.idCanal === idCanal && cr.idResponsavel === idResponsavel
+        })?.idCanalResponsavel
+
+        if (idCanalResponsavel !== undefined){
+            return idCanalResponsavel
+        }
+        return this.incluirCanalResponsavel(idCanal, idResponsavel)
+    }
+
+    incluirCanalResponsavel(idCanal: number, idResponsavel: number): number | undefined{
+        var canalResponsavel: CanalResponsavel = {
+            idCanalResponsavel: CANAL_RESPONSAVEL_DATA[CANAL_RESPONSAVEL_DATA.length-1].idCanalResponsavel + 1,
+            idCanal: idCanal,
+            idResponsavel: idResponsavel
+        }
+
+        CANAL_RESPONSAVEL_DATA.push(canalResponsavel)
+        return canalResponsavel.idCanalResponsavel
     }
 
 }

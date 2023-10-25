@@ -29,4 +29,8 @@ export class UsuarioLogado {
         return this.sessionRepository.session()?.usuarioLogado.nome
     }
 
+    getId(): number | undefined{
+        return this.sessionRepository.session()?.usuarioLogado.idFuncionarioResponsavel
+    }
+
 }
