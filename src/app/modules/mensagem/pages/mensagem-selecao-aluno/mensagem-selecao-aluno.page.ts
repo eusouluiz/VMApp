@@ -6,6 +6,12 @@ import { CanalService } from '../../../../core/services/canal-service/canal.serv
 import { Aluno, Canal } from '../../../../shared/utilities/entidade/entidade.utility';
 import { AlunoService } from '../../../../core/services/aluno-service/aluno.service';
 
+interface ItemCanalResponsavel{
+  nomeAluno: string,
+  nomeResponsavel: string,
+  idResponsavel: number,
+}
+
 @Component({
   selector: 'app-mensagem-selecao-aluno',
   templateUrl: './mensagem-selecao-aluno.page.html',
@@ -15,6 +21,7 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
 
   canal!: Canal
   listaTodosAlunos!: Aluno[]
+  listaCanalResponsavel: ItemCanalResponsavel[] = []
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -41,6 +48,23 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
     } else {
       throw new Error('idCanal nao especificado na url')
     }
+    this.inicializarCanalResponsavel()
+  }
+
+  inicializarCanalResponsavel(){
+    // esvaziar para encher
+    this.listaCanalResponsavel = []
+    this.listaTodosAlunos.forEach((a) => {
+      if (a.responsaveis.length > 0) {
+        a.responsaveis.forEach((r) => {
+          this.listaCanalResponsavel.push({
+            nomeAluno: a.nome,
+            nomeResponsavel: r.nome,
+            idResponsavel: r.idResponsavel
+          })
+        })
+      }
+    })
   }
 
   private resgatarCanal(id: number): Canal {
@@ -60,8 +84,18 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
     } else {
       throw new Error('Canal Responsavel nao encontrado')
     }
-    
+
     this.navegarPara(rota)
+  }
+
+  filtrarCanalResponsavel(ev: any) {
+    var val = ev.target.value;
+    this.inicializarCanalResponsavel()
+
+    // se o valor for um valor valido
+    this.listaCanalResponsavel = this.listaCanalResponsavel.filter((canal) => {
+      return (canal.nomeAluno.toLowerCase().indexOf(val.toLowerCase()) > -1) || (canal.nomeResponsavel.toLowerCase().indexOf(val.toLowerCase()) > -1);
+    })
   }
 
 }

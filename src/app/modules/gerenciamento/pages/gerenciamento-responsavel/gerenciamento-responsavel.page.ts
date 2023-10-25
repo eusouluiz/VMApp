@@ -34,7 +34,7 @@ export class GerenciamentoResponsavelPage extends Pagina implements OnInit {
     this.listaResponsaveis = this.responsaveis.slice()
   }
 
-  filtarResponsavelNome(ev: any) {
+  filtrarResponsavelNome(ev: any) {
     var val = ev.target.value;
     this.listaResponsaveis = this.responsaveis.slice()
 

@@ -2,7 +2,7 @@
 
 <ion-content class="ion-padding">
   <ion-row>
-    <ion-searchbar placeholder="Responsavel" [debounce]="500" (ionInput)="filtarResponsavelNome($event)"></ion-searchbar>
+    <ion-searchbar placeholder="Responsavel" [debounce]="500" (ionInput)="filtrarResponsavelNome($event)"></ion-searchbar>
   </ion-row>
   <div *ngFor="let responsavel of listaResponsaveis">
     <ion-item detail="true" button="true" color="light" (click)="navegarTelaResponsavel(responsavel.idResponsavel)">

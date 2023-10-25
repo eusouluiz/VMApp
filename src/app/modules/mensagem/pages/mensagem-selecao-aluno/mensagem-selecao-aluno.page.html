@@ -1,16 +1,17 @@
 <app-header titulo="{{canal.nome}}" botaoRetorno="true"></app-header>
 
 <ion-content>
-  <ng-container *ngFor="let aluno of listaTodosAlunos">
-    <ng-container *ngFor="let responsavel of aluno.responsaveis">
-      <ion-item detail="true" button="true" (click)="navegarParaCanalResponsavel(responsavel.idResponsavel)">
-        <ion-col size="6">
-          <ion-label>{{responsavel.nome}}</ion-label>
-        </ion-col>
-        <ion-col size="6">
-          <ion-label>{{aluno.nome}}</ion-label>
-        </ion-col>
-      </ion-item>
-    </ng-container>
+  <ion-row>
+    <ion-searchbar placeholder="Procurar" [debounce]="500" (ionInput)="filtrarCanalResponsavel($event)"></ion-searchbar>
+  </ion-row>
+  <ng-container *ngFor="let canal of listaCanalResponsavel">
+    <ion-item detail="true" button="true" (click)="navegarParaCanalResponsavel(canal.idResponsavel)">
+      <ion-col size="6">
+        <ion-label>{{canal.nomeResponsavel}}</ion-label>
+      </ion-col>
+      <ion-col size="6">
+        <ion-label>{{canal.nomeAluno}}</ion-label>
+      </ion-col>
+    </ion-item>
   </ng-container>
 </ion-content>
