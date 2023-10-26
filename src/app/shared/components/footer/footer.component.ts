@@ -18,7 +18,7 @@ export class FooterComponent implements OnInit {
     router.events.subscribe((e) =>{
       if (e instanceof NavigationEnd){
         this.caminhoUrl = router.url
-        console.log(this.caminhoUrl)
+        // console.log(this.caminhoUrl)
       }
     })
   }

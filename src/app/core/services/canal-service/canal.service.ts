@@ -1,3 +1,4 @@
+import { ResponsavelService } from './../responsavel-service/responsavel.service';
 import { Injectable } from '@angular/core';
 import { CANAL_DATA, CANAL_RESPONSAVEL_DATA, Canal, CanalResponsavel } from '../../../shared/utilities/entidade/entidade.utility';
 
@@ -6,13 +7,18 @@ import { CANAL_DATA, CANAL_RESPONSAVEL_DATA, Canal, CanalResponsavel } from '../
 })
 export class CanalService {
 
+    constructor (
+        private responsavelService: ResponsavelService
+    ) {
+    }
+
     buscarTodosCanais(): Canal[]{
         return CANAL_DATA
     }
 
     buscarCanal(idCanal: number): Canal | undefined{
-        return CANAL_DATA.find((r) => {
-            return r.idCanal === idCanal
+        return CANAL_DATA.find((c) => {
+            return c.idCanal === idCanal
         })
     }
 
@@ -45,7 +51,7 @@ export class CanalService {
 
     buscarIdCanalResponsavel(idCanal: number, idResponsavel: number): number | undefined{
         var idCanalResponsavel = CANAL_RESPONSAVEL_DATA.find((cr) => {
-            return cr.idCanal === idCanal && cr.idResponsavel === idResponsavel
+            return cr.canal.idCanal === idCanal && cr.responsavel.idResponsavel === idResponsavel
         })?.idCanalResponsavel
 
         if (idCanalResponsavel !== undefined){
@@ -54,11 +60,24 @@ export class CanalService {
         return this.incluirCanalResponsavel(idCanal, idResponsavel)
     }
 
+    buscarCanalResponsavel(idCanalResponsavel: number): CanalResponsavel | undefined{
+        return CANAL_RESPONSAVEL_DATA.find((cr) => {
+            return cr.idCanalResponsavel === idCanalResponsavel
+        })
+    }
+
     incluirCanalResponsavel(idCanal: number, idResponsavel: number): number | undefined{
-        var canalResponsavel: CanalResponsavel = {
-            idCanalResponsavel: CANAL_RESPONSAVEL_DATA[CANAL_RESPONSAVEL_DATA.length-1].idCanalResponsavel + 1,
-            idCanal: idCanal,
-            idResponsavel: idResponsavel
+        const canal = this.buscarCanal(idCanal)
+        const responsavel = this.responsavelService.buscarResponsavel(idResponsavel)
+
+        if (canal !== undefined && responsavel !== undefined) {
+            var canalResponsavel: CanalResponsavel = {
+                idCanalResponsavel: CANAL_RESPONSAVEL_DATA[CANAL_RESPONSAVEL_DATA.length-1].idCanalResponsavel + 1,
+                canal: canal,
+                responsavel: responsavel
+            }
+        } else {
+            throw new Error('nao encontrado canal ou responsavel')
         }
 
         CANAL_RESPONSAVEL_DATA.push(canalResponsavel)

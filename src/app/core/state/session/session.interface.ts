@@ -1,4 +1,5 @@
 interface UsuarioLogado {
+  idUsuario: number,
   nome: string,
   idFuncionarioResponsavel: number,
   tipoUsuario: 'F' | 'R',

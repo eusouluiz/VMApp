@@ -59,8 +59,18 @@ export interface Canal {
 
 export interface CanalResponsavel {
     idCanalResponsavel: number,
-    idCanal: number,
-    idResponsavel: number
+    canal: Canal,
+    responsavel: Responsavel
+}
+
+export interface Mensagem {
+    idMensagem: number,
+    idUsuario: number,
+    idCanalResponsavel: number,
+    texto: string,
+    arquivo: string,
+    dataHoraEnvio: Date,
+    indVisualizacao: boolean
 }
 
 export var USUARIO_DATA: Usuario[] = [
@@ -122,10 +132,10 @@ export var CANAL_DATA: Canal[] = [
 ]
 
 export var CANAL_RESPONSAVEL_DATA: CanalResponsavel[] = [
-    { idCanalResponsavel: 0, idCanal: CANAL_DATA[0].idCanal, idResponsavel: RESPONSAVEL_DATA[0].idResponsavel },
-    { idCanalResponsavel: 1, idCanal: CANAL_DATA[0].idCanal, idResponsavel: RESPONSAVEL_DATA[1].idResponsavel },
-    { idCanalResponsavel: 2, idCanal: CANAL_DATA[1].idCanal, idResponsavel: RESPONSAVEL_DATA[2].idResponsavel },
-    { idCanalResponsavel: 3, idCanal: CANAL_DATA[2].idCanal, idResponsavel: RESPONSAVEL_DATA[0].idResponsavel },
+    { idCanalResponsavel: 0, canal: CANAL_DATA[0], responsavel: RESPONSAVEL_DATA[0] },
+    { idCanalResponsavel: 1, canal: CANAL_DATA[0], responsavel: RESPONSAVEL_DATA[1] },
+    { idCanalResponsavel: 2, canal: CANAL_DATA[1], responsavel: RESPONSAVEL_DATA[2] },
+    { idCanalResponsavel: 3, canal: CANAL_DATA[2], responsavel: RESPONSAVEL_DATA[0] },
 ] 
 
 export function preencheDados(){

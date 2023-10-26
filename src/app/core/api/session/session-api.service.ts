@@ -14,6 +14,7 @@ export class SessionApiService {
       throw new Error('Nao pode ser definido ambas entidades')
     }
 
+    var idUsuario: number = -1
     var nome: string = ''
     var idFuncionarioResponsavel: number = -1
     var tipoUsuario: 'F' | 'R' = 'R'
@@ -25,16 +26,19 @@ export class SessionApiService {
       funcionario.cargo.funcionalidades.forEach((f) => {
         listaFuncionalidades.push(f.idFuncionalidade)
       })
+      idUsuario = funcionario.usuario.idUsuario
       nome = funcionario.nome
       idFuncionarioResponsavel = funcionario.idFuncionario
       tipoUsuario = 'F'
       idCargo = funcionario.cargo.idCargo
     } else if (responsavel !== undefined) {
+      idUsuario = responsavel.usuario.idUsuario
       nome = responsavel?.nome
       idFuncionarioResponsavel = responsavel.idResponsavel
     }
 
     return of({ accessToken: '123456', tokenType: 'Bearer', usuarioLogado: {
+      idUsuario: idUsuario,
       nome: nome,
       idFuncionarioResponsavel: idFuncionarioResponsavel,
       tipoUsuario: tipoUsuario, 

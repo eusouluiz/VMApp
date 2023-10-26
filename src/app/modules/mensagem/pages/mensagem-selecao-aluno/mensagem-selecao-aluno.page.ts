@@ -68,9 +68,9 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
   }
 
   private resgatarCanal(id: number): Canal {
-    const responsavel = this.canalService.buscarCanal(id)
-    if (responsavel !== undefined) {
-      return responsavel
+    const canal = this.canalService.buscarCanal(id)
+    if (canal !== undefined) {
+      return canal
     }
     throw new Error('Canal nao encontrado')
   }
