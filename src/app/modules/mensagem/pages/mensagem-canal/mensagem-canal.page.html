@@ -1,10 +1,8 @@
 <app-header titulo="{{nomeCanal()}}" botaoRetorno="true"></app-header>
 
 <ion-content>
-  <app-mensagem [mensagem]="mensagem" [idUsuario]="0"></app-mensagem>
-  <app-mensagem [mensagem]="mensagem" [idUsuario]="1"></app-mensagem>
-  <ng-container *ngFor="let msg of mensagens">
-    <app-mensagem [mensagem]="msg" [idUsuario]="idUsuario"></app-mensagem>
+  <ng-container *ngFor="let mensagem of mensagens">
+    <app-mensagem [mensagem]="mensagem" [idUsuario]="idUsuario"></app-mensagem>
   </ng-container>
 </ion-content>
 

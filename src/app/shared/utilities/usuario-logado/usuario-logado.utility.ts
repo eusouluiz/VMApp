@@ -29,8 +29,16 @@ export class UsuarioLogado {
         return this.sessionRepository.session()?.usuarioLogado.nome
     }
 
-    getId(): number | undefined{
+    getIdResponsavel(): number | undefined{
         return this.sessionRepository.session()?.usuarioLogado.idFuncionarioResponsavel
+    }
+
+    getIdFuncionario(): number | undefined{
+        return this.sessionRepository.session()?.usuarioLogado.idFuncionarioResponsavel
+    }
+
+    getIdUsuario(): number | undefined{
+        return this.sessionRepository.session()?.usuarioLogado.idUsuario
     }
 
 }

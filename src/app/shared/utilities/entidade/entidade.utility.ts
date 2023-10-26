@@ -136,9 +136,37 @@ export var CANAL_RESPONSAVEL_DATA: CanalResponsavel[] = [
     { idCanalResponsavel: 1, canal: CANAL_DATA[0], responsavel: RESPONSAVEL_DATA[1] },
     { idCanalResponsavel: 2, canal: CANAL_DATA[1], responsavel: RESPONSAVEL_DATA[2] },
     { idCanalResponsavel: 3, canal: CANAL_DATA[2], responsavel: RESPONSAVEL_DATA[0] },
-] 
+]
 
-export function preencheDados(){
+export var MENSAGEM_DATA: Mensagem[] = [
+    {
+        idMensagem: 0,
+        idUsuario: 0,
+        idCanalResponsavel: 1,
+        texto: 'teste teste teste teste teste teste teste',
+        arquivo: '',
+        dataHoraEnvio: new Date(),
+        indVisualizacao: false
+    },{
+        idMensagem: 1,
+        idUsuario: 0,
+        idCanalResponsavel: 1,
+        texto: 'teste teste teste teste teste teste teste2',
+        arquivo: '',
+        dataHoraEnvio: new Date(),
+        indVisualizacao: false
+    },{
+        idMensagem: 1,
+        idUsuario: 0,
+        idCanalResponsavel: 0,
+        texto: 'teste teste teste teste teste teste teste3',
+        arquivo: '',
+        dataHoraEnvio: new Date(),
+        indVisualizacao: false
+    },
+]
+
+export function preencheDados() {
     // preenche turmas
 
     TURMA_DATA[0].alunos.push(ALUNO_DATA[0])
@@ -170,8 +198,8 @@ export function preencheDados(){
 
 }
 
-export function logaData(info: any = undefined){
-    if (info === undefined){
+export function logaData(info: any = undefined) {
+    if (info === undefined) {
         console.log(USUARIO_DATA)
         console.log(RESPONSAVEL_DATA)
         console.log(ALUNO_DATA)

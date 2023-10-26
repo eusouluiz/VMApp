@@ -50,7 +50,7 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
   navegarParaCanal(idCanal: number) {
     var rota: string
     if (this.isResponsavel) {
-      const idResponsavel = this.usuarioLogado.getId()
+      const idResponsavel = this.usuarioLogado.getIdResponsavel()
       if (idResponsavel !== undefined) {
         const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(idCanal, idResponsavel)
         if (idCanalResponsavel !== undefined) {
