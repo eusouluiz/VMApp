@@ -24,6 +24,17 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     indVisualizacao: true
   }
   idUsuario: number | undefined = this.usuarioLogado.getId()
+  mensagens: Mensagem[] = [
+    {
+      idMensagem: 0,
+      idUsuario: 0,
+      idCanalResponsavel: 0,
+      texto: 'teste loop',
+      arquivo: '',
+      dataHoraEnvio: new Date(),
+      indVisualizacao: true
+    }
+  ]
 
   constructor(
     private usuarioLogado: UsuarioLogado,
@@ -68,6 +79,7 @@ export class MensagemCanalPage extends Pagina implements OnInit {
 
   enviarMensagem(mensagem: Mensagem){
     console.log(mensagem)
+    this.mensagens.push(mensagem)
   }
 
 }
