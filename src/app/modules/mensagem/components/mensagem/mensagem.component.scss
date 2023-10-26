@@ -1,0 +1,94 @@
+.c-mensagem-item {
+    --background: transparent;
+    --padding-start: 8px;
+    --padding-end: 0px;
+    --ion-safe-area-left: 0px;
+    --min-height: 32px;
+    --border-width: 0;
+    .c-mensagem-label {
+        position: relative;
+        border-radius: 12px;
+        padding: 4px 8px;
+        margin-top: 12px;
+        max-width: 70%;
+        .c-mensagem-text {
+            font-weight: 400;
+            font-size: 0.9rem;
+            &:after {
+                content: '';
+                width: 52px;
+                height: 12px;
+                display: inline-block;
+                vertical-align: top;
+                visibility: hidden;
+                font-size: 0.75rem;
+            }
+        }
+        .c-mensagem-horario {
+            position: absolute;
+            display: flex;
+            right: 0;
+            bottom: 0;
+            padding: 4px 8px 4px 4px;
+            line-height: 16px;
+            pointer-events: auto;
+            color: var(--ion-color-medium);
+            
+            ion-icon {
+                // font-weight: bold;
+                .c-mensagem-visualizada {
+                    color: var(--ion-color-secondary-tint)
+                }
+                .c-mensagem-naovisualizada {
+                    color: var(--color-gray-500)
+                }
+            }
+        }
+    }
+}
+
+.c-recebido {
+    .c-mensagem-label {
+        margin-left: 8px;
+        background-color: var(--ion-color-light);
+        .c-mensagem-text {
+            &:after {
+                width: 72px !important;
+            }
+        }
+        .c-mensagem-horario {
+            small {
+                margin-right: 2px;
+                line-height: 16px;
+            }
+
+            ion-icon {
+                font-size: 16px;
+            }
+        }
+    }
+}
+
+.c-enviado {
+    .c-mensagem-label {
+        // background-color: #DCF8C6;
+        background-color: var(--ion-color-primary);
+        color: #fff;
+        .c-mensagem-text {
+            &:after {
+                width: 72px !important;
+            }
+        }
+        .c-mensagem-horario {
+            small {
+                margin-right: 2px;
+                line-height: 16px;
+                color: var(--ion-color-dark);
+            }
+
+            ion-icon {
+                font-size: 16px;
+            }
+        }
+    }
+}

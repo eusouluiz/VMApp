@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CanalResponsavel } from '../../../../shared/utilities/entidade/entidade.utility';
+import { CanalResponsavel, Mensagem } from '../../../../shared/utilities/entidade/entidade.utility';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CanalService } from '../../../../core/services/canal-service/canal.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
@@ -14,6 +14,16 @@ import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuar
 export class MensagemCanalPage extends Pagina implements OnInit {
 
   canalResponsavel!: CanalResponsavel
+  mensagem: Mensagem = {
+    idMensagem: 0,
+    idUsuario: 0,
+    idCanalResponsavel: 0,
+    texto: 'teste teste teste teste teste teste teste',
+    arquivo: '',
+    dataHoraEnvio: new Date(),
+    indVisualizacao: true
+  }
+  idUsuario: number | undefined = this.usuarioLogado.getId()
 
   constructor(
     private usuarioLogado: UsuarioLogado,
@@ -30,7 +40,7 @@ export class MensagemCanalPage extends Pagina implements OnInit {
 
   ngOnInit() {
   }
-  
+
   protected inicializarConteudo(): void {
 
     const id = this.activatedRoute.snapshot.paramMap.get('idCanalResponsavel')
@@ -49,8 +59,8 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     throw new Error('Canal nao encontrado')
   }
 
-  nomeCanal(): string{
-    if(this.usuarioLogado.isResponsavel()){
+  nomeCanal(): string {
+    if (this.usuarioLogado.isResponsavel()) {
       return this.canalResponsavel.canal.nome
     }
     return this.canalResponsavel.responsavel.nome
