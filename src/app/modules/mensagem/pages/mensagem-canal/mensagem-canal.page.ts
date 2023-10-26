@@ -66,4 +66,8 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     return this.canalResponsavel.responsavel.nome
   }
 
+  enviarMensagem(mensagem: Mensagem){
+    console.log(mensagem)
+  }
+
 }

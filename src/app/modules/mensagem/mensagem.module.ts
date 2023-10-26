@@ -8,6 +8,7 @@ import { MensagemSelecaoCanalPage } from './pages/mensagem-selecao-canal/mensage
 import { MensagemSelecaoAlunoPage } from './pages/mensagem-selecao-aluno/mensagem-selecao-aluno.page';
 import { MensagemCanalPage } from './pages/mensagem-canal/mensagem-canal.page';
 import { MensagemComponent } from './components/mensagem/mensagem.component';
+import { EnvioMensagemComponent } from './components/envio-mensagem/envio-mensagem.component';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { MensagemComponent } from './components/mensagem/mensagem.component';
     SharedModule,
     IonicModule,
     MensagemComponent,
+    EnvioMensagemComponent,
   ]
 })
 export class MensagemModule { }

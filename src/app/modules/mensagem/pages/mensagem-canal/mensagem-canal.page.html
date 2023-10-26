@@ -4,3 +4,7 @@
   <app-mensagem [mensagem]="mensagem" [idUsuario]="0"></app-mensagem>
   <app-mensagem [mensagem]="mensagem" [idUsuario]="1"></app-mensagem>
 </ion-content>
+
+<ion-footer>
+  <app-envio-mensagem (onEnvio)="enviarMensagem($event)"></app-envio-mensagem>
+</ion-footer>

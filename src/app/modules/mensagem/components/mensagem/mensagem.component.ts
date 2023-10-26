@@ -29,8 +29,8 @@ export class MensagemComponent implements OnInit {
   ngOnInit() {}
 
   ngAfterViewInit(): void {
-    console.log(this.mensagem)
-    console.log(this.idUsuario)
+    // console.log(this.mensagem)
+    // console.log(this.idUsuario)
 
   }
 
