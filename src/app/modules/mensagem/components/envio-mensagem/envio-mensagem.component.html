@@ -3,7 +3,8 @@
     autoGrow 
     rows="1" 
     placeholder="Send message" 
-    class="ion-text-center">
+    class="ion-text-center"
+    (keyup.enter)="enviarMensagem()">
   </ion-textarea>
   <ion-buttons slot="end">
     <ion-fab-button size="small" color="primary" (click)="enviarMensagem()">

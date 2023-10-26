@@ -26,7 +26,6 @@ export class EnvioMensagemComponent implements OnInit {
   ngOnInit() {}
 
   enviarMensagem() {
-    console.log(this.campoTexto.value)
     const val = this.campoTexto.value
     if (val !== undefined && val !== null) {
       const mensagem: Mensagem = {
@@ -40,6 +39,12 @@ export class EnvioMensagemComponent implements OnInit {
       }
       this.onEnvio.emit(mensagem)
     }
+
+    this.apagarCampoMensagem()
+  }
+
+  apagarCampoMensagem(){
+    this.campoTexto.value = ''
   }
 
 }
