@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { Canal } from '../../../../shared/utilities/entidade/entidade.utility';
 import { CanalService } from '../../../../core/services/canal-service/canal.service';
+import { MensagemService } from '../../../../core/services/mensagem-service/mensagem.service';
 
 @Component({
   selector: 'app-mensagem-selecao-canal',
@@ -15,13 +16,14 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
 
   canais: Canal[] = []
   isResponsavel = this.usuarioLogado.isResponsavel()
-  cargoId = this.usuarioLogado.getIdCargo()
+  idCargo = this.usuarioLogado.getIdCargo()
   primeiroNome: string = ''
 
   constructor(
     private router: Router,
     private canalService: CanalService,
-    public usuarioLogado: UsuarioLogado
+    public usuarioLogado: UsuarioLogado,
+    private mensagemService: MensagemService,
   ) { 
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_MENSAGEM
     super(router, ROTA_BASE)
@@ -44,7 +46,7 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
     if (this.isResponsavel) {
       return true
     } 
-    return verificarListaCargo(canal, this.cargoId)
+    return verificarListaCargo(canal, this.idCargo)
   }
 
   navegarParaCanal(idCanal: number) {
@@ -65,6 +67,28 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
       rota = idCanal.toString() + ConstantesRotas.ROTA_MENSAGEM_SELECAO_ALUNO
     }
     this.navegarPara(rota)
+  }
+
+  resgatarUltimaMensagem(idCanal: number): string {
+
+    const idResponsavel = this.usuarioLogado.getIdResponsavel()
+
+    if (idResponsavel !== undefined) {
+      const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(idCanal, idResponsavel)
+  
+      if (idCanalResponsavel !== undefined) {
+        const mensagem = this.mensagemService.buscarUltimaMensagensCanalResponsavel(idCanalResponsavel)
+        if (mensagem !== undefined){
+          return mensagem.texto
+        } else {
+          return ''
+        }
+      } else {
+        return ''
+      }
+    } else {
+      throw new Error('id Responsavel nao definido')
+    }
   }
 
 }

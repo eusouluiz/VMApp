@@ -5,7 +5,10 @@
 
   <ng-container *ngFor="let canal of canais">
     <ion-item *ngIf="verificarAcesso(canal)" detail="true" button="true" (click)="navegarParaCanal(canal.idCanal)">
-      <ion-label>{{canal.nome}}</ion-label>
+      <ion-label>
+        <ion-row><ion-text>{{canal.nome}}</ion-text></ion-row>
+        <ion-row><ion-text>{{resgatarUltimaMensagem(canal.idCanal)}}</ion-text></ion-row>
+      </ion-label>
     </ion-item>
   </ng-container>
 </ion-content>

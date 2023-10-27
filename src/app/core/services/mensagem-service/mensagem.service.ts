@@ -50,4 +50,16 @@ export class MensagemService {
         })
     }
 
+    buscarUltimaMensagensCanalResponsavel(idCanalResponsavel: number): Mensagem | undefined {
+        var mensagens = MENSAGEM_DATA.slice()
+        mensagens = mensagens.filter((m) => {
+            return m.idCanalResponsavel === idCanalResponsavel
+        })
+        if (mensagens.length > 0) {
+            return mensagens[mensagens.length-1]
+        } else {
+            return undefined
+        }
+    }
+
 }

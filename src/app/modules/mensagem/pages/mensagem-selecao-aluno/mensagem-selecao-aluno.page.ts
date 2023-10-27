@@ -5,6 +5,7 @@ import { ConstantesRotas } from '../../../../shared/utilities/constantes/constan
 import { CanalService } from '../../../../core/services/canal-service/canal.service';
 import { Aluno, Canal } from '../../../../shared/utilities/entidade/entidade.utility';
 import { AlunoService } from '../../../../core/services/aluno-service/aluno.service';
+import { MensagemService } from '../../../../core/services/mensagem-service/mensagem.service';
 
 interface ItemCanalResponsavel{
   nomeAluno: string,
@@ -28,6 +29,7 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
     private router: Router,
     private canalService: CanalService,
     private alunoService: AlunoService,
+    private mensagemService: MensagemService,
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_MENSAGEM
     super(router, ROTA_BASE)
@@ -73,6 +75,21 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
       return canal
     }
     throw new Error('Canal nao encontrado')
+  }
+
+  resgatarUltimaMensagem(idResponsavel: number): string {
+    const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(this.canal.idCanal, idResponsavel)
+
+    if (idCanalResponsavel !== undefined) {
+      const mensagem = this.mensagemService.buscarUltimaMensagensCanalResponsavel(idCanalResponsavel)
+      if (mensagem !== undefined){
+        return mensagem.texto
+      } else {
+        return ''
+      }
+    } else {
+      return ''
+    }
   }
 
   navegarParaCanalResponsavel(idResponsavel: number) {
