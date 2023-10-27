@@ -2,6 +2,6 @@
 
 <ion-content>
   <ng-container *ngFor="let aviso of avisos">
-    <app-aviso-item [aviso]="aviso"></app-aviso-item>
+    <app-aviso-item [aviso]="aviso" (onSelecionado)="abrirModalAviso($event)"></app-aviso-item>
   </ng-container>
 </ion-content>

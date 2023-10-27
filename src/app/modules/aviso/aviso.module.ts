@@ -6,6 +6,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { IonicModule } from '@ionic/angular';
 import { AvisoPage } from './pages/aviso/aviso.page';
 import { AvisoItemComponent } from './components/aviso-item/aviso-item.component';
+import { AvisoModalComponent } from './components/aviso-modal/aviso-modal.component';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { AvisoItemComponent } from './components/aviso-item/aviso-item.component
     SharedModule,
     IonicModule,
     AvisoItemComponent,
+    AvisoModalComponent,
   ]
 })
 export class AvisoModule { }
