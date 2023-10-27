@@ -1,1 +1,8 @@
-<ion-input [formControl]="ngControl.control" style="font-size: 1.875rem"></ion-input>
+<ion-input [formControl]="ngControl.control" style="font-size: 1.875rem"
+    [class.c-campo-cadastrar]="isCadastrar"></ion-input>
+
+<style>
+    .c-campo-cadastrar {
+      background-color: var(--color-gray-400);
+    }
+</style>

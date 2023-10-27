@@ -26,28 +26,28 @@ export class AvisoModalComponent implements OnInit {
 
   @Input('modo') modo: 'cadastrar' | 'editar' | 'detalhes' = 'detalhes'
   @Input('aviso') aviso: Aviso = avisoVazio()
-  
+
   form: UntypedFormGroup
 
   constructor(
     private formBuilder: UntypedFormBuilder,
     private modalController: ModalController
-  ) { 
+  ) {
     this.form = formBuilder.group({
       titulo: ['', Validators.required],
       texto: ['', Validators.required],
     })
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this.inicializarConteudo()
   }
 
   inicializarConteudo() {
     console.log(this.aviso)
-    if(this.isModoDetalhes()){
+    if (this.isModoDetalhes()) {
       this.form.setValue({
         titulo: this.aviso.titulo,
         texto: this.aviso.texto,
@@ -58,24 +58,25 @@ export class AvisoModalComponent implements OnInit {
   }
 
   isModoDetalhes() {
-      return this.modo === 'detalhes'
+    return this.modo === 'detalhes'
   }
 
   isModoEditar() {
-      return this.modo === 'editar'
+    return this.modo === 'editar'
   }
 
   isModoCadastrar() {
-      return this.modo === 'cadastrar'
+    console.log(this.modo)
+    return this.modo === 'cadastrar'
   }
 
-  iniciarEdicao(){
+  iniciarEdicao() {
     this.modo = 'editar'
     this.form.controls.titulo.enable()
     this.form.controls.texto.enable()
   }
 
-  salvarAviso(){
+  salvarAviso() {
     const formAviso = {
       titulo: this.form.controls.titulo.value,
       texto: this.form.controls.texto.value,
@@ -85,7 +86,7 @@ export class AvisoModalComponent implements OnInit {
     return this.modalController.dismiss(formAviso, 'salvarAviso')
   }
 
-  cancelar(){
+  cancelar() {
     this.form.setValue({
       titulo: this.aviso.titulo,
       texto: this.aviso.texto,

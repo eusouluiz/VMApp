@@ -1,10 +1,11 @@
 <div class="c-modal-backdrop"></div>
 <div class="c-modal">
   <form [formGroup]="form">
-    <app-aviso-modal-titulo formControlName="titulo"></app-aviso-modal-titulo>
+    <app-aviso-modal-titulo formControlName="titulo" [isCadastrar]="isModoCadastrar()"></app-aviso-modal-titulo>
+    <hr>
     <ion-row>
       <ion-label>
-        <app-aviso-modal-texto formControlName="texto"></app-aviso-modal-texto>
+        <app-aviso-modal-texto formControlName="texto" [isCadastrar]="isModoCadastrar()"></app-aviso-modal-texto>
       </ion-label>
     </ion-row>
     <hr>
@@ -30,4 +31,3 @@
     </ion-row>
   </form>
 </div>
-

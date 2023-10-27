@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, Optional, Self } from '@angular/core';
+import { Component, Input, OnInit, Optional, Self } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { ControlValueAccessor, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 
@@ -16,6 +16,8 @@ import { ControlValueAccessor, FormsModule, NgControl, ReactiveFormsModule } fro
   ]
 })
 export class AvisoModalTextoComponent implements ControlValueAccessor, OnInit {
+
+  @Input('isCadastrar') isCadastrar: boolean = false
 
   constructor(
     @Self() @Optional() public ngControl: NgControl
