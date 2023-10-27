@@ -66,7 +66,6 @@ export class AvisoModalComponent implements OnInit {
   }
 
   isModoCadastrar() {
-    console.log(this.modo)
     return this.modo === 'cadastrar'
   }
 
@@ -91,6 +90,10 @@ export class AvisoModalComponent implements OnInit {
       titulo: this.aviso.titulo,
       texto: this.aviso.texto,
     })
+
+    if (this.isModoCadastrar()) {
+      return this.modalController.dismiss()
+    }
 
     this.modo = 'detalhes'
     this.form.controls.titulo.disable()
