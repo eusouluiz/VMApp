@@ -38,3 +38,13 @@ export class ConstantesRotas {
 
     static readonly ROTA_AVISO = '/aviso'
 }
+
+// ====================================
+// PRIORIDADES AVISOS
+// ====================================
+
+export class ConstantesPrioridadesAvisos {
+    static readonly ALTA = '1'
+    static readonly MEDIA = '2'
+    static readonly BAIXA = '3'
+}

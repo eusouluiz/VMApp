@@ -4,11 +4,13 @@ import { CommonModule } from '@angular/common';
 import { AvisoRoutingModule } from './aviso-routing.module';
 import { SharedModule } from '../../shared/shared.module';
 import { IonicModule } from '@ionic/angular';
-import { HubPage } from './pages/hub/hub.page';
+import { AvisoPage } from './pages/aviso/aviso.page';
 
 
 @NgModule({
-  declarations: [HubPage],
+  declarations: [
+    AvisoPage,
+  ],
   imports: [
     CommonModule,
     AvisoRoutingModule,

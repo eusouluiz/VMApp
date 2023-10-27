@@ -2,6 +2,8 @@
 // ENTIDADES
 // ====================================
 
+import { ConstantesPrioridadesAvisos } from "../constantes/constantes.utility"
+
 export interface Usuario {
     idUsuario: number,
     cpf: string,
@@ -70,6 +72,25 @@ export interface Mensagem {
     texto: string,
     arquivo: string,
     dataHoraEnvio: Date,
+    indVisualizacao: boolean
+}
+
+export interface Aviso {
+    idAviso: number,
+    idFuncionario: number,
+    idCanal: number,
+    titulo: string,
+    texto: string,
+    arquivo: string,
+    dataPublicacao: Date,
+    dataEncerramento: Date,
+    prioridade: '1' | '2' | '3',
+    idTurmas: number[]
+}
+
+export interface AvisoResponsavel {
+    idAviso: number,
+    idResponsavel: number,
     indVisualizacao: boolean
 }
 
@@ -166,6 +187,43 @@ export var MENSAGEM_DATA: Mensagem[] = [
     },
 ]
 
+export var AVISO_DATA: Aviso[] = [
+    {
+        idAviso: 0,
+        idFuncionario: 0,
+        idCanal: 0,
+        titulo: 'Aviso 0',
+        texto: 'teste1',
+        arquivo: '',
+        dataPublicacao: new Date(),
+        dataEncerramento: new Date(),
+        prioridade: '1',        
+        idTurmas: []
+    },{
+        idAviso: 1,
+        idFuncionario: 0,
+        idCanal: 0,
+        titulo: 'Aviso 1',
+        texto: 'teste2',
+        arquivo: '',
+        dataPublicacao: new Date(),
+        dataEncerramento: new Date(),
+        prioridade: '2',        
+        idTurmas: []
+    },{
+        idAviso: 2,
+        idFuncionario: 0,
+        idCanal: 0,
+        titulo: 'Aviso 2',
+        texto: 'teste3',
+        arquivo: '',
+        dataPublicacao: new Date(),
+        dataEncerramento: new Date(),
+        prioridade: '3',        
+        idTurmas: []
+    },
+]
+
 export function preencheDados() {
     // preenche turmas
 
@@ -240,4 +298,19 @@ export function funcionarioVazio(): Funcionario {
 
 export function canalVazio(): Canal {
     return { idCanal: 0, nome: '', cargos: [] }
+}
+
+export function avisoVazio(): Aviso {
+    return {
+        idAviso: 0,
+        idFuncionario: -1,
+        idCanal: -1,
+        titulo: '',
+        texto: '',
+        arquivo: '',
+        dataPublicacao: new Date(),
+        dataEncerramento: new Date(),
+        prioridade: '3',        
+        idTurmas: []
+    }
 }
