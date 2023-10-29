@@ -1,13 +1,19 @@
-<app-header titulo="gerenciamento-funcionario" [botaoRetorno]="true"></app-header>
+<app-header titulo="Funcionario" [botaoRetorno]="true"></app-header>
 
 <ion-content class="ion-padding">
-  <ion-row>
-    <ion-searchbar placeholder="Funcionario" [debounce]="500" (ionInput)="filtarFuncionarioNome($event)"></ion-searchbar>
-  </ion-row>
-  <div *ngFor="let responsavel of listaFuncionarios">
-    <ion-item detail="true" button="true" color="light" (click)="navegarTelaFuncionario(responsavel.idFuncionario)">
-      <ion-col size="6">{{responsavel.nome}}</ion-col>
-      <ion-col size="6"><label style="font-weight: bold;">Tel:</label> {{responsavel.usuario.telefone}}</ion-col>
+  <ion-searchbar class="ion-no-padding"
+    placeholder="Funcionario" [debounce]="500" (ionInput)="filtarFuncionarioNome($event)"></ion-searchbar>
+  <div *ngFor="let funcionario of listaFuncionarios">
+    <ion-item class="c-item"
+      lines="none" detail="true" button="true" (click)="navegarTelaFuncionario(funcionario.idFuncionario)">
+      <ion-label>
+        <ion-row>
+          <ion-text class="c-item-titulo">{{funcionario.nome}}</ion-text>
+        </ion-row>
+        <ion-row>
+          <ion-text class="c-item-subtitulo">Tel: {{funcionario.usuario.telefone}}</ion-text>
+        </ion-row>
+      </ion-label>
     </ion-item>
   </div>
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">

@@ -1,12 +1,19 @@
-<app-header titulo="gerenciamento-aluno" [botaoRetorno]="true"></app-header>
+<app-header titulo="Aluno" [botaoRetorno]="true"></app-header>
 
 <ion-content class="ion-padding">
-  <ion-row>
-    <ion-searchbar placeholder="Aluno" [debounce]="500" (ionInput)="filtarAlunoNome($event)"></ion-searchbar>
-  </ion-row>
+  <ion-searchbar class="ion-no-padding" 
+    placeholder="Aluno" [debounce]="500" (ionInput)="filtarAlunoNome($event)"></ion-searchbar>
   <div *ngFor="let aluno of listaAlunos">
-    <ion-item detail="true" button="true" color="light" (click)="navegarTelaAluno(aluno.idAluno)">
-      <ion-col size="6">{{aluno.nome}}</ion-col>
+    <ion-item class="c-item"
+      lines="none" detail="true" button="true" (click)="navegarTelaAluno(aluno.idAluno)">
+      <ion-label>
+        <ion-row>
+          <ion-text class="c-item-titulo">{{aluno.nome}}</ion-text>
+        </ion-row>
+        <ion-row>
+          <ion-text class="c-item-subtitulo">Turma: {{aluno.turma.nome}}</ion-text>
+        </ion-row>
+      </ion-label>
     </ion-item>
   </div>
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
