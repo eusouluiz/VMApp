@@ -70,24 +70,27 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
   }
 
   resgatarUltimaMensagem(idCanal: number): string {
-
-    const idResponsavel = this.usuarioLogado.getIdResponsavel()
-
-    if (idResponsavel !== undefined) {
-      const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(idCanal, idResponsavel)
+    if (this.isResponsavel) {
+      const idResponsavel = this.usuarioLogado.getIdResponsavel()
   
-      if (idCanalResponsavel !== undefined) {
-        const mensagem = this.mensagemService.buscarUltimaMensagensCanalResponsavel(idCanalResponsavel)
-        if (mensagem !== undefined){
-          return mensagem.texto
+      if (idResponsavel !== undefined) {
+        const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(idCanal, idResponsavel)
+    
+        if (idCanalResponsavel !== undefined) {
+          const mensagem = this.mensagemService.buscarUltimaMensagensCanalResponsavel(idCanalResponsavel)
+          if (mensagem !== undefined){
+            return mensagem.texto
+          } else {
+            return ''
+          }
         } else {
           return ''
         }
       } else {
-        return ''
+        throw new Error('id Responsavel nao definido')
       }
     } else {
-      throw new Error('id Responsavel nao definido')
+      return ''
     }
   }
 
