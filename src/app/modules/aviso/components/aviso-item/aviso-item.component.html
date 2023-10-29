@@ -1,11 +1,11 @@
-<ion-item lines="none" button="true" detail="true" (click)="selecionar()"
-  class="c-recebido c-mensagem-item" style="border: 1px solid;">
-  <ion-label class="c-mensagem-label">
+<ion-item class="c-item__grande"
+  lines="none" button="true" detail="true" (click)="selecionar()">
+  <ion-label class="c-aviso-label">
     <ion-row>
-      <ion-text class="c-mensagem-text">{{aviso.titulo}}</ion-text>
+      <ion-text class="c-item-titulo">{{aviso.titulo}}</ion-text>
     </ion-row>
     <ion-row>
-      <ion-text class="c-mensagem-text">{{aviso.texto}}</ion-text>
+      <ion-text class="c-item-subtitulo">{{aviso.texto}}</ion-text>
     </ion-row>
   </ion-label>
 </ion-item>

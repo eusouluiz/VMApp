@@ -1,8 +1,12 @@
 <app-header titulo="Avisos"></app-header>
 
 <ion-content>
-  <ng-container *ngFor="let aviso of avisos">
-    <app-aviso-item [aviso]="aviso" (onSelecionado)="abrirModalAviso($event)"></app-aviso-item>
-  </ng-container>
-  <ion-button shape="round" (click)="abrirModalAviso()">Novo Aviso</ion-button>
+  <div>
+    <ng-container *ngFor="let aviso of avisos">
+      <app-aviso-item [aviso]="aviso" (onSelecionado)="abrirModalAviso($event)"></app-aviso-item>
+    </ng-container>
+  </div>
+  <ion-row class="ion-justify-content-center">
+    <ion-button (click)="abrirModalAviso()">Novo Aviso</ion-button>
+  </ion-row>
 </ion-content>
