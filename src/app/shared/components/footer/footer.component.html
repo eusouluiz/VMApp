@@ -1,15 +1,15 @@
 <ion-tabs>
   <ion-tab-bar *ngIf="!isCanalMensagem()" slot="bottom">
     <ion-tab-button tab="aviso">
-      <ion-icon name="flash"></ion-icon>
+      <ion-icon name="notifications"></ion-icon>
       <ion-label>Aviso</ion-label>
     </ion-tab-button>
     <ion-tab-button tab="mensagem">
-      <ion-icon name="apps"></ion-icon>
+      <ion-icon name="chatbubble-ellipses"></ion-icon>
       <ion-label>Mensagens</ion-label>
     </ion-tab-button>
     <ion-tab-button *ngIf="usuarioLogado.isFuncionario()" tab="gerenciamento">
-      <ion-icon name="send"></ion-icon>
+      <ion-icon name="settings"></ion-icon>
       <ion-label>Gerenciamento</ion-label>
     </ion-tab-button>
   </ion-tab-bar>
