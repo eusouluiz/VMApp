@@ -1,13 +1,20 @@
-<app-header titulo="gerenciamento-responsavel" [botaoRetorno]="true"></app-header>
+<app-header titulo="Responsavel" [botaoRetorno]="true"></app-header>
 
 <ion-content class="ion-padding">
   <ion-row>
     <ion-searchbar placeholder="Responsavel" [debounce]="500" (ionInput)="filtrarResponsavelNome($event)"></ion-searchbar>
   </ion-row>
   <div *ngFor="let responsavel of listaResponsaveis">
-    <ion-item detail="true" button="true" color="light" (click)="navegarTelaResponsavel(responsavel.idResponsavel)">
-      <ion-col size="6">{{responsavel.nome}}</ion-col>
-      <ion-col size="6"><label style="font-weight: bold;">Tel:</label> {{responsavel.usuario.telefone}}</ion-col>
+    <ion-item class="c-item"
+      lines="none" detail="true" button="true" (click)="navegarTelaResponsavel(responsavel.idResponsavel)">
+      <ion-label>
+        <ion-row>
+          <ion-text class="c-item-titulo">{{responsavel.nome}}</ion-text>
+        </ion-row>
+        <ion-row>
+          <ion-text class="c-item-subtitulo">Tel: {{responsavel.usuario.telefone}}</ion-text>
+        </ion-row>
+      </ion-label>
     </ion-item>
   </div>
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">

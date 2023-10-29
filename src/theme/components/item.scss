@@ -1,0 +1,29 @@
+@mixin c-item {
+    --border-width: 1px;
+    
+    margin: 10px;
+
+    ion-text {
+        margin: 2px 0;
+    }
+
+    .c-item-titulo {
+        font-size: $size-base * 1.25;
+    }
+    
+    .c-item-subtitulo {
+        
+    }
+}
+
+.c-item {
+    @include c-item();
+    
+    --min-height: 75px;
+}
+
+.c-item__grande {
+    @include c-item();
+
+    --min-height: 100px;
+}
