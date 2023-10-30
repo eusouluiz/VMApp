@@ -128,13 +128,13 @@ export class AutocompleteV2Component implements ControlValueAccessor, OnInit {
   async esconderItens(){
     //sleep de 1 milisegundo pra caso blur tenha sido de selecao de item
     //pra dar tempo de executar funcao selecionarItem antes de esconder popover
-    await new Promise(f => setTimeout(f, 10))
+    await new Promise(f => setTimeout(f, 1))
 
     this.isItensVisiveis = false
     await this.popover.dismiss()
 
     // gambiarra para esconder popover
-    this.popover.cssClass = 'esconder-popover'
+    this.popover.cssClass = 'ion-hide'
     this.popover.keyboardClose = true
     await this.popover.present()
     await this.popover.dismiss()

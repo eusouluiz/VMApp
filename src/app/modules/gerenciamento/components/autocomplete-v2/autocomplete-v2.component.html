@@ -1,5 +1,4 @@
-<div class="c-field" ion-content>
-  <h6 class="c-field__label">{{ label }}</h6>
+<div class="ion-align-items-center" ion-content>
   <div class="c-field__input-wrapper">
 
     <ion-input id="{{idBusca}}" class="c-field__input" type="text" [placeholder]="placeholder"
@@ -19,29 +18,15 @@
       <ng-container *ngIf="itens.length > 0; then thenTemplate; else elseTemplate"></ng-container>
       <ng-template #thenTemplate>
         <ion-item *ngFor="let item of itens; index as i; first as isPrimeiro" 
-          [class.opcao__selecionada]="isPrimeiro" class="opcao"
           button="true" id="{{item}}"
           (click)="selecionarItem(item)">{{ item }}</ion-item>
       </ng-template>
       <ng-template #elseTemplate>
         <!-- opcao quando sem resultado na busca -->
-        <ion-item class="opcao__selecionada" 
+        <ion-item
         button="true"
         (click)="selecionarItem(-1)">{{textoSemResultado}}</ion-item>
       </ng-template>
     </ion-list>
   </ion-popover>
 </div>
-
-<style>
-  .opcao__selecionada {
-    --background: var(--color-gray-400);
-  }
-  .opcao:hover {
-    --background: var(--color-gray-400);
-  }
-
-  .esconder-popover {
-    display: none;
-  }
-</style>
