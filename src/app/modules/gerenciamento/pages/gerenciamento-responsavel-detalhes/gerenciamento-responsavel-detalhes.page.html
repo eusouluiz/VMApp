@@ -13,63 +13,55 @@
     <hr>
     <!-- INICIO SOBRE ALUNO -->
     <ion-row>
-      <ion-row class="ion-align-items-center ion-margin-vertical" size="auto">
-        <ion-col class="ion-no-padding" size="12" sizeLg="4" sizeMd="4">
+      <ion-row class="ion-align-items-center" size="auto">
+        <ion-col size="12" sizeLg="4" sizeMd="4">
           <h3 class="u-font-weight--bold">Responsável por:</h3>
         </ion-col>
         <!-- INICIO INSERCAO ALUNOS -->
-        <ion-col offsetLg="2" offsetMd="2" size="12" sizeLg="6" sizeMd="6"
-          style="min-height: 80px;">
-          <ng-container *ngIf="!isModoDetalhes()">
-            <form [formGroup]="formBuscaAluno">
-              <app-autocomplete-v2 formControlName="busca" idBusca="busca-aluno" [listaItens]="nomeAlunosBusca" (onBusca)="adicionarAluno($event)" 
-                textoSemResultado="Cadastrar novo aluno" icone="add" (onCliqueIcone)="navegarTelaAluno(-1)"></app-autocomplete-v2>
-            </form>
-          </ng-container>
+        <ion-col offsetLg="2" offsetMd="2" size="12" sizeLg="6" sizeMd="6">
+          <form [formGroup]="formBuscaAluno">
+            <app-autocomplete-v2 formControlName="busca" idBusca="busca-aluno" [listaItens]="nomeAlunosBusca" (onBusca)="adicionarAluno($event)" 
+              textoSemResultado="Cadastrar novo aluno" icone="add" (onCliqueIcone)="navegarTelaAluno(-1)"></app-autocomplete-v2>
+          </form>
         </ion-col>
         <!-- FIM INSERCAO ALUNOS -->
       </ion-row>
       <!-- INICIO TABELA DE ALUNOS -->
-      <ion-row size="auto">
-        <table>
-          <tr>
-            <th>Aluno</th>
-            <th>Turma</th>
-            <th></th>
-          </tr>
-          <ng-container *ngIf="listaAlunosTabela.length > 0; then thenTemplate; else elseTemplate"></ng-container>
-          <ng-template #thenTemplate>
-            <tr *ngFor="let aluno of listaAlunosTabela">
-              <td style="width: 45%;">{{aluno.nome}}</td>
-              <td style="width: 45%;">{{aluno.turma.nome}}</td>
-              <td style="width: 10%;">
-                <div style="text-align: -webkit-right;">
-                  <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small"
-                    (click)="navegarTelaAluno(aluno.idAluno)">
-                    <ion-icon name="information"></ion-icon>
-                  </ion-fab-button>
-                  <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
-                    (click)="deletarAluno(aluno.idAluno)">
-                    <ion-icon name="trash"></ion-icon>
-                  </ion-fab-button>
-                </div>
-              </td>
-            </tr>
-          </ng-template>
-          <ng-template #elseTemplate>
-            <tr>
-              <td class="c-tabela-colunaunica u-font-weight--bold" colspan="100%">Selecione um Aluno</td>
-            </tr>
-          </ng-template>
-          
-        </table>
+      <ion-row>
+        <ion-col size="12">
+          <ng-container *ngFor="let aluno of listaAlunosTabela">
+            <ion-item class="c-item"
+              lines="none" [detail]="isModoDetalhes()" [button]="isModoDetalhes()" (click)="navegarTelaAluno(aluno.idAluno)">
+              <ion-label>
+                <ion-row class="ion-align-items-center">
+                  <ion-col class="ion-align-items-center" size="11">
+                    <ion-row>
+                      <ion-text class="c-item-titulo">{{aluno.nome}}</ion-text>
+                    </ion-row>
+                    <ion-row>
+                      <ion-text class="c-item-subtitulo">Turma: {{aluno.turma.nome}}</ion-text>
+                    </ion-row>
+                  </ion-col>
+                  <ion-col size="1" style="min-height: 70px;">
+                    <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
+                        (click)="deletarAluno(aluno.idAluno)">
+                        <ion-icon name="trash"></ion-icon>
+                    </ion-fab-button>
+                  </ion-col>
+                </ion-row>
+              </ion-label>
+            </ion-item>
+          </ng-container>
+        </ion-col>
       </ion-row>
       <!-- FIM TABELA DE ALUNOS -->
     </ion-row>
     <!-- FIM SOBRE ALUNO -->
     <ion-row class="ion-margin-vertical">
       <ion-row>
-        <h3 class="u-font-weight--bold">Informações para Login:</h3>
+        <ion-col size="12">
+          <h3 class="u-font-weight--bold">Informações Usuário:</h3>
+        </ion-col>
       </ion-row>
       <ion-row size="12">
         <ion-col size="12" size-md="6" size-lg="6">

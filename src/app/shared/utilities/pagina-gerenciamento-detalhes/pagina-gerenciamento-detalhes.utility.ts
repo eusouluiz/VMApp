@@ -55,12 +55,16 @@ export class PaginaGerenciamentoDetalhes extends Pagina {
     //editar
     iniciarEdicao() {
         this.modo = 'editar'
-        this.form?.enable()
+        this.habilitarForms()
 
         this.inicializarComponentesEdicao()
     }
 
     protected inicializarComponentesEdicao() {
         throw new Error("metodo inicializarComponentesEdicao nao implementado");
+    }
+
+    protected habilitarForms(){
+        this.form?.enable()
     }
 }

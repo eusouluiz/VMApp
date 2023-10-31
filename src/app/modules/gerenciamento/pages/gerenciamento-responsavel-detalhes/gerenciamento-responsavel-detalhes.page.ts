@@ -41,7 +41,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
     this.inicializarFormBuscaAluno()
   }
 
-  inicializarFormResponsavel(){
+  inicializarFormResponsavel() {
     this.form = this.formBuilder.group({
       nome: ['', Validators.required],
       telefone: ['', Validators.required],
@@ -69,6 +69,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
 
     if (this.isModoDetalhes()) {
       this.form?.disable()
+      this.formBuscaAluno.disable()
     }
 
   }
@@ -97,6 +98,16 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
     this.inicializarTabelaAlunos()
   }
 
+  protected habilitarForms(): void {
+    this.form?.enable()
+    this.formBuscaAluno?.enable()
+  }
+
+  protected desabilitarForms(): void {
+    this.form?.disable()
+    this.formBuscaAluno?.disable()
+  }
+
   //cancelar edicao
   cancelar() {
 
@@ -113,7 +124,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
       cpf: this.responsavel.usuario.cpf,
       senha: this.responsavel.usuario.senha,
     })
-    this.form?.disable()
+    this.desabilitarForms()
 
     this.inicializarTabelaAlunos()
   }
@@ -159,9 +170,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
 
   private inicializarTabelaAlunos() {
     this.listaAlunosTabela = this.responsavel.alunos.slice()
-    if (!this.isModoDetalhes()) {
-      this.inicializarBuscaAlunos()
-    }
+    this.inicializarBuscaAlunos()
   }
 
   private inicializarBuscaAlunos() {
@@ -171,7 +180,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
       this.listaTodosAlunos.forEach((a) => {
         const idAluno = a.idAluno
         var isResponsavelPossuiAluno = false
-  
+
         for (let i = 0; i < this.listaAlunosTabela.length; i++) {
           const responsavelAluno = this.listaAlunosTabela[i];
           if (responsavelAluno.idAluno === idAluno) {
@@ -179,7 +188,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
             break
           }
         }
-  
+
         if (!isResponsavelPossuiAluno) {
           this.listaAlunosBusca.push(a)
         }
@@ -242,13 +251,15 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
   }
 
   navegarTelaAluno(id: number) {
-    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_ALUNO
-    if (id !== -1) {
-      rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES
-    } else {
-      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO
+    if (this.isModoDetalhes()) {
+      var rota = ConstantesRotas.ROTA_GERENCIAMENTO_ALUNO
+      if (id !== -1) {
+        rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES
+      } else {
+        rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO
+      }
+      this.navegarPara(rota)
     }
-    this.navegarPara(rota)
   }
 
   deletarAluno(id: number) {

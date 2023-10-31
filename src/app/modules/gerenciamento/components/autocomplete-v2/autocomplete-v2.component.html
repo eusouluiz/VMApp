@@ -18,13 +18,13 @@
       <ng-container *ngIf="itens.length > 0; then thenTemplate; else elseTemplate"></ng-container>
       <ng-template #thenTemplate>
         <ion-item *ngFor="let item of itens; index as i; first as isPrimeiro" 
-          button="true" id="{{item}}"
+          lines="full" button="true" id="{{item}}"
           (click)="selecionarItem(item)">{{ item }}</ion-item>
       </ng-template>
       <ng-template #elseTemplate>
         <!-- opcao quando sem resultado na busca -->
         <ion-item
-        button="true"
+        lines="full" button="true"
         (click)="selecionarItem(-1)">{{textoSemResultado}}</ion-item>
       </ng-template>
     </ion-list>
