@@ -1,22 +1,21 @@
 <app-header titulo="{{canal.nome}}" botaoRetorno="true"></app-header>
 
-<ion-content>
+<ion-content class="ion-padding">
   <ion-row>
-    <ion-searchbar placeholder="Procurar" [debounce]="500" (ionInput)="filtrarCanalResponsavel($event)"></ion-searchbar>
+    <ion-searchbar class="ion-no-padding" placeholder="Procurar" [debounce]="500" (ionInput)="filtrarCanalResponsavel($event)"></ion-searchbar>
   </ion-row>
   <ng-container *ngFor="let canal of listaCanalResponsavel">
-    <ion-item detail="true" button="true" (click)="navegarParaCanalResponsavel(canal.idResponsavel)">
+    <ion-item class="c-item"
+      lines="none" detail="true" button="true" (click)="navegarParaCanalResponsavel(canal.idResponsavel)">
       <ion-label>
-        <ion-row size="12" style="width: 100%;">
-          <ion-col size="6">
-            <ion-text>{{canal.nomeResponsavel}}</ion-text>
-          </ion-col>
-          <ion-col size="6">
-            <ion-text>{{canal.nomeAluno}}</ion-text>
-          </ion-col>
+        <ion-row class="c-item-titulo" size="12">
+          <ion-text>{{canal.nomeResponsavel}}</ion-text>
         </ion-row>
-        <ion-row size="12" style="width: 100%;">
-          <ion-text>{{resgatarUltimaMensagem(canal.idResponsavel)}}</ion-text>
+        <ion-row class="c-item-subtitulo" size="12">
+          <ion-text><b>Aluno:</b> {{canal.nomeAluno}}</ion-text>
+        </ion-row>
+        <ion-row class="c-item-subtitulo" size="12">
+          <ion-text color="medium" >{{resgatarUltimaMensagem(canal.idResponsavel)}}</ion-text>
         </ion-row>
       </ion-label>
     </ion-item>

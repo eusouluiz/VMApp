@@ -83,7 +83,7 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
     if (idCanalResponsavel !== undefined) {
       const mensagem = this.mensagemService.buscarUltimaMensagensCanalResponsavel(idCanalResponsavel)
       if (mensagem !== undefined){
-        return mensagem.texto
+        return 'Mensagem: ' + mensagem.texto
       } else {
         return ''
       }
