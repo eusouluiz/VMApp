@@ -1,17 +1,17 @@
-.c-mensagem-item {
+.e-mensagem-item {
     --background: transparent;
     --padding-start: 8px;
     --padding-end: 0px;
     --ion-safe-area-left: 0px;
     --min-height: 32px;
     --border-width: 0;
-    .c-mensagem-label {
+    .e-mensagem-label {
         position: relative;
         border-radius: 12px;
         padding: 4px 8px;
         margin-top: 12px;
         max-width: 70%;
-        .c-mensagem-text {
+        .e-mensagem-text {
             font-weight: 400;
             font-size: 0.9rem;
             &:after {
@@ -24,7 +24,7 @@
                 font-size: 0.75rem;
             }
         }
-        .c-mensagem-horario {
+        .e-mensagem-horario {
             position: absolute;
             display: flex;
             right: 0;
@@ -36,10 +36,10 @@
             
             ion-icon {
                 // font-weight: bold;
-                .c-mensagem-visualizada {
+                .e-mensagem-visualizada {
                     color: var(--ion-color-secondary-tint)
                 }
-                .c-mensagem-naovisualizada {
+                .e-mensagem-naovisualizada {
                     color: var(--color-gray-500)
                 }
             }
@@ -47,16 +47,16 @@
     }
 }
 
-.c-recebido {
-    .c-mensagem-label {
+.e-recebido {
+    .e-mensagem-label {
         margin-left: 8px;
         background-color: var(--ion-color-light);
-        .c-mensagem-text {
+        .e-mensagem-text {
             &:after {
                 width: 72px !important;
             }
         }
-        .c-mensagem-horario {
+        .e-mensagem-horario {
             small {
                 margin-right: 2px;
                 line-height: 16px;
@@ -69,17 +69,15 @@
     }
 }
 
-.c-enviado {
-    .c-mensagem-label {
-        // background-color: #DCF8C6;
-        background-color: var(--ion-color-primary);
-        color: #fff;
-        .c-mensagem-text {
+.e-enviado {
+    .e-mensagem-label {
+        background-color: var(--ion-color-tertiary);
+        .e-mensagem-text {
             &:after {
                 width: 72px !important;
             }
         }
-        .c-mensagem-horario {
+        .e-mensagem-horario {
             small {
                 margin-right: 2px;
                 line-height: 16px;
