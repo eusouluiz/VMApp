@@ -145,6 +145,8 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit {
     this.value = this.itens[0];
     this.updateChanges();
     this.indicaBuscaRealizada(this.listaItens.indexOf(this.value))
+
+    this.esconderItens()
   }
 
   indicaBuscaRealizada(id: Number){
