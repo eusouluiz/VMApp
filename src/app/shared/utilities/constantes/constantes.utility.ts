@@ -39,6 +39,7 @@ export class ConstantesRotas {
     static readonly ROTA_MENSAGEM_CANAL = '/canal'
 
     static readonly ROTA_AVISO = '/aviso'
+    static readonly ROTA_AVISO_NOVO = '/novo'
 }
 
 // ====================================

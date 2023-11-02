@@ -95,4 +95,8 @@ export class AvisoPage extends Pagina implements OnInit {
     return this.usuarioLogado.getFuncionalidadesAcessoId()?.includes(ConstantesFuncionalidades.GERENCIAMENTO_AVISO)
   }
 
+  navegarNovoAviso(){
+    this.navegarPara(ConstantesRotas.ROTA_AVISO_NOVO)
+  }
+
 }
