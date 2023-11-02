@@ -17,8 +17,8 @@
         <!-- INICIO INSERCAO CARGOS -->
         <ion-col *ngIf="!isModoDetalhes()" offsetLg="2" offsetMd="2" size="12" sizeLg="6" sizeMd="6">
           <form [formGroup]="formBuscaCargo">
-            <app-autocomplete-v2 formControlName="busca" idBusca="busca-cargo" [listaItens]="nomeCargosBusca" (onBusca)="adicionarCargo($event)" 
-              textoSemResultado="Cadastrar novo cargo" icone="add" (onCliqueIcone)="navegarTelaCargo(-1)"></app-autocomplete-v2>
+            <app-autocomplete formControlName="busca" idBusca="busca-cargo" [listaItens]="nomeCargosBusca" (onBusca)="adicionarCargo($event)" 
+              textoSemResultado="Cadastrar novo cargo" icone="add" (onCliqueIcone)="navegarTelaCargo(-1)"></app-autocomplete>
           </form>
         </ion-col>
         <!-- FIM INSERCAO CARGOS -->

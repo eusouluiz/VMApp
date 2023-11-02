@@ -20,8 +20,8 @@
         <!-- INICIO INSERCAO RESPONSAVEIS -->
         <ion-col *ngIf="!isModoDetalhes()" offsetLg="2" offsetMd="2" size="12" sizeLg="6" sizeMd="6">
           <form [formGroup]="formBuscaResponsavel">
-            <app-autocomplete-v2 formControlName="buscaResponsavel" idBusca="busca-responsavel" [listaItens]="nomeResponsaveisBusca" (onBusca)="adicionarResponsavel($event)" 
-              textoSemResultado="Cadastrar novo responsavel" icone="add" (onCliqueIcone)="navegarTelaResponsavel(-1)"></app-autocomplete-v2>
+            <app-autocomplete formControlName="buscaResponsavel" idBusca="busca-responsavel" [listaItens]="nomeResponsaveisBusca" (onBusca)="adicionarResponsavel($event)" 
+              textoSemResultado="Cadastrar novo responsavel" icone="add" (onCliqueIcone)="navegarTelaResponsavel(-1)"></app-autocomplete>
           </form>
         </ion-col>
         <!-- FIM INSERCAO RESPONSAVEIS -->
@@ -73,8 +73,8 @@
         <!-- INICIO INSERCAO TURMAS -->
         <ion-col *ngIf="!isModoDetalhes()" offsetLg="2" offsetMd="2" size="12" sizeLg="6" sizeMd="6">
           <form [formGroup]="formBuscaTurma">
-            <app-autocomplete-v2 formControlName="buscaTurma" idBusca="busca-turma" [listaItens]="nomeTurmasBusca" (onBusca)="adicionarTurma($event)" 
-              textoSemResultado="Cadastrar novo turma" icone="add" (onCliqueIcone)="navegarTelaTurma(-1)"></app-autocomplete-v2>
+            <app-autocomplete formControlName="buscaTurma" idBusca="busca-turma" [listaItens]="nomeTurmasBusca" (onBusca)="adicionarTurma($event)" 
+              textoSemResultado="Cadastrar novo turma" icone="add" (onCliqueIcone)="navegarTelaTurma(-1)"></app-autocomplete>
           </form>
         </ion-col>
         <!-- FIM INSERCAO TURMAS -->

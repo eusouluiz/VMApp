@@ -34,6 +34,7 @@ import { FieldDatetimeComponent } from './components/field-datetime/field-dateti
 import { ContentSegmentComponent } from './components/content-segment/content-segment.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
+import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { HeaderComponent } from './components/header/header.component';
     FieldDatetimeComponent,
     FieldValidationIconComponent,
     HeaderComponent,
+    AutocompleteComponent,
   ],
   imports: [
     CommonModule,
@@ -86,6 +88,7 @@ import { HeaderComponent } from './components/header/header.component';
     FieldDatetimeComponent,
     FieldValidationIconComponent,
     HeaderComponent,
+    AutocompleteComponent,
   ],
 })
 export class SharedModule {}

@@ -1,23 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Optional, Output, Self, ViewChild, Renderer2, ElementRef } from '@angular/core';
-import { SharedModule } from '../../../../shared/shared.module';
-import { ControlValueAccessor, FormsModule, NgControl, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
-import { IonPopover, IonicModule, PopoverController } from '@ionic/angular';
-import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, OnInit, Optional, Output, Self, ViewChild } from '@angular/core';
+import { ControlValueAccessor, NgControl, ValidatorFn } from '@angular/forms';
 
 @Component({
-  selector: 'app-autocomplete-v2',
-  templateUrl: './autocomplete-v2.component.html',
-  styleUrls: ['./autocomplete-v2.component.scss'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    SharedModule,
-    IonicModule,
-    FormsModule,
-    ReactiveFormsModule
-  ]
+  selector: 'app-autocomplete',
+  templateUrl: './autocomplete.component.html',
+  styleUrls: ['./autocomplete.component.scss'],
 })
-export class AutocompleteV2Component implements ControlValueAccessor, OnInit {
+export class AutocompleteComponent implements ControlValueAccessor, OnInit {
 
   @ViewChild('popover') popover!: HTMLIonPopoverElement
 

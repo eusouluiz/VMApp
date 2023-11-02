@@ -17,8 +17,8 @@
         <!-- INICIO INSERCAO FUNCIONARIOS -->
         <ion-col *ngIf="!isModoDetalhes()" offsetLg="2" offsetMd="2" size="12" sizeLg="6" sizeMd="6">
           <form [formGroup]="formBuscaFuncionario">
-            <app-autocomplete-v2 formControlName="buscaFuncionario" idBusca="busca-funcionario" [listaItens]="nomeFuncionariosBusca" (onBusca)="adicionarFuncionario($event)" 
-              textoSemResultado="Cadastrar novo funcionario" icone="add" (onCliqueIcone)="navegarTelaFuncionario(-1)"></app-autocomplete-v2>
+            <app-autocomplete formControlName="buscaFuncionario" idBusca="busca-funcionario" [listaItens]="nomeFuncionariosBusca" (onBusca)="adicionarFuncionario($event)" 
+              textoSemResultado="Cadastrar novo funcionario" icone="add" (onCliqueIcone)="navegarTelaFuncionario(-1)"></app-autocomplete>
           </form>
         </ion-col>
         <!-- FIM INSERCAO FUNCIONARIOS -->
@@ -70,8 +70,8 @@
         <!-- INICIO INSERCAO FUNCIONALIDADES -->
         <ion-col *ngIf="!isModoDetalhes()" offsetLg="2" offsetMd="2" size="12" sizeLg="6" sizeMd="6">
           <form [formGroup]="formBuscaFuncionalidade">
-            <app-autocomplete-v2 formControlName="buscaFuncionalidade" idBusca="busca-funcionalidade" [listaItens]="nomeFuncionalidadesBusca" (onBusca)="adicionarFuncionalidade($event)" 
-              textoSemResultado="Funcionalidade não existe" icone="add"></app-autocomplete-v2>
+            <app-autocomplete formControlName="buscaFuncionalidade" idBusca="busca-funcionalidade" [listaItens]="nomeFuncionalidadesBusca" (onBusca)="adicionarFuncionalidade($event)" 
+              textoSemResultado="Funcionalidade não existe" icone="add"></app-autocomplete>
           </form>
         </ion-col>
         <!-- FIM INSERCAO FUNCIONALIDADES -->

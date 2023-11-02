@@ -15,12 +15,9 @@ import { MatTableModule } from '@angular/material/table'
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button'
-// import { provideAnimations} from '@angular/platform-browser/animations'
 import { GerenciamentoResponsavelDetalhesPage } from './pages/gerenciamento-responsavel-detalhes/gerenciamento-responsavel-detalhes.page';
-import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { GerenciamentoAlunoDetalhesPage } from './pages/gerenciamento-aluno-detalhes/gerenciamento-aluno-detalhes.page';
 import { GerenciamentoTurmaDetalhesPage } from './pages/gerenciamento-turma-detalhes/gerenciamento-turma-detalhes.page';
-import { AutocompleteV2Component } from './components/autocomplete-v2/autocomplete-v2.component';
 import { BotoesControleComponent } from './components/botoes-controle/botoes-controle.component';
 import { GerenciamentoFuncionarioDetalhesPage } from './pages/gerenciamento-funcionario-detalhes/gerenciamento-funcionario-detalhes.page';
 import { GerenciamentoCargoDetalhesPage } from './pages/gerenciamento-cargo-detalhes/gerenciamento-cargo-detalhes.page';
@@ -48,8 +45,6 @@ import { GerenciamentoCanalDetalhesPage } from './pages/gerenciamento-canal-deta
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    AutocompleteComponent,
-    AutocompleteV2Component,
     BotoesControleComponent
   ]
 })
