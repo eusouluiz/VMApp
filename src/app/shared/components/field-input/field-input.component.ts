@@ -21,6 +21,16 @@ export class FieldInputComponent implements ControlValueAccessor, OnInit {
 
   @Input() showValidationErrorMessage = true;
 
+  // ---- text area ---- //
+
+  @Input() textArea = false;
+
+  @Input() colsTextArea = 100;
+  
+  @Input() rowsTextArea = 1;
+
+  // ---- text area ---- //
+
   value: string | null = null;
 
   isDisabled = false;
