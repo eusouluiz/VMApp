@@ -9,7 +9,7 @@
       </ion-label>
     </ion-row>
     <hr>
-    <ion-row>
+    <ion-row *ngIf="hasAcessoGerenciamentoAviso">
       <ng-container *ngIf="isModoDetalhes(); then modoDetalhes; else modoEdicao"></ng-container>
       <ng-template #modoDetalhes>
         <ion-row style="flex-direction: row-reverse;">

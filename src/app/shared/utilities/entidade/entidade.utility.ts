@@ -130,6 +130,7 @@ export var FUNCIONALIDADE_DATA: Funcionalidade[] = [
     { idFuncionalidade: 3, nome: 'Gerenciamento Funcionarios', descricao: 'Gerencia todos os funcionarios' },
     { idFuncionalidade: 4, nome: 'Gerenciamento Cargo', descricao: 'Gerencia todos os cargos' },
     { idFuncionalidade: 5, nome: 'Gerenciamento Canal', descricao: 'Gerencia todos os canais' },
+    { idFuncionalidade: 6, nome: 'Gerenciamento Aviso', descricao: 'Gerencia todos os avisos' },
 ]
 
 export var CARGO_DATA: Cargo[] = [

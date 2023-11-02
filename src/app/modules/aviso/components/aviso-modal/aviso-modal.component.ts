@@ -26,6 +26,7 @@ export class AvisoModalComponent implements OnInit {
 
   @Input('modo') modo: 'cadastrar' | 'editar' | 'detalhes' = 'detalhes'
   @Input('aviso') aviso: Aviso = avisoVazio()
+  @Input('hasAcessoGerenciamentoAviso') hasAcessoGerenciamentoAviso: boolean = false
 
   form: UntypedFormGroup
 
@@ -76,13 +77,17 @@ export class AvisoModalComponent implements OnInit {
   }
 
   salvarAviso() {
-    const formAviso = {
-      titulo: this.form.controls.titulo.value,
-      texto: this.form.controls.texto.value,
+    if (this.form.valid) {
+      const formAviso = {
+        titulo: this.form.controls.titulo.value,
+        texto: this.form.controls.texto.value,
+      }
+  
+      this.modo = 'detalhes'
+      return this.modalController.dismiss(formAviso, 'salvarAviso')
+    } else {
+      this.form?.markAllAsTouched()
     }
-
-    this.modo = 'detalhes'
-    return this.modalController.dismiss(formAviso, 'salvarAviso')
   }
 
   cancelar() {

@@ -3,9 +3,10 @@ import { AvisoService } from './../../../../core/services/aviso-service/aviso.se
 import { Component, OnInit } from '@angular/core';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { Router } from '@angular/router';
-import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
-import { AVISO_DATA, Aviso, avisoVazio } from '../../../../shared/utilities/entidade/entidade.utility';
+import { ConstantesFuncionalidades, ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
+import { Aviso, avisoVazio } from '../../../../shared/utilities/entidade/entidade.utility';
 import { AvisoModalComponent } from '../../components/aviso-modal/aviso-modal.component';
+import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
 
 @Component({
   selector: 'app-aviso',
@@ -19,7 +20,8 @@ export class AvisoPage extends Pagina implements OnInit {
   constructor(
     private router: Router,
     private avisoService: AvisoService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private usuarioLogado: UsuarioLogado,
   ) { 
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_AVISO
     super(router, ROTA_BASE)
@@ -53,7 +55,8 @@ export class AvisoPage extends Pagina implements OnInit {
         cssClass: 'c-ion-modal',
         componentProps: {
           modo: 'detalhes',
-          aviso: aviso
+          aviso: aviso,
+          hasAcessoGerenciamentoAviso: this.hasAcessoGerenciamentoAviso(),
         },
       });
     } else {
@@ -62,7 +65,8 @@ export class AvisoPage extends Pagina implements OnInit {
         mode: 'md',
         cssClass: 'c-ion-modal',
         componentProps: {
-          modo: 'cadastrar'
+          modo: 'cadastrar',
+          hasAcessoGerenciamentoAviso: this.hasAcessoGerenciamentoAviso(),
         },
       });
     }
@@ -85,6 +89,10 @@ export class AvisoPage extends Pagina implements OnInit {
         this.avisoService.incluirAviso(novoAviso)
       }
     }
+  }
+
+  hasAcessoGerenciamentoAviso(){
+    return this.usuarioLogado.getFuncionalidadesAcessoId()?.includes(ConstantesFuncionalidades.GERENCIAMENTO_AVISO)
   }
 
 }

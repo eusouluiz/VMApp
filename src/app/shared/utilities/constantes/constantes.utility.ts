@@ -9,6 +9,8 @@ export class ConstantesFuncionalidades {
     static readonly GERENCIAMENTO_FUNCIONARIO = 3
     static readonly GERENCIAMENTO_CARGO = 4
     static readonly GERENCIAMENTO_CANAL = 5
+
+    static readonly GERENCIAMENTO_AVISO = 6
 }
 
 // ====================================
