@@ -55,13 +55,23 @@ export class NovoAvisoPage extends Pagina implements OnInit {
       prioridade: ['', Validators.required],
       texto: ['', Validators.required],
       canal: ['', Validators.required],
-      turmaBusca: [''],
+      turmaBusca: ['', Validators.required],
     })
   }
 
   // ---- controle ---- //
 
-  salvar(){}
+  salvar(){
+    console.log(this.form?.valid)
+    if (this.form?.valid){
+
+    } else {
+      this.form?.markAllAsTouched()
+      if (this.listaTurmasTabela.length > 0) {
+        this.form?.controls.turmaBusca.markAsUntouched()
+      }
+    }
+  }
 
   cancelar(){}
   
