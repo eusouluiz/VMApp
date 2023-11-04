@@ -6,7 +6,7 @@ import { MensagemCanalPage } from './pages/mensagem-canal/mensagem-canal.page';
 
 const routes: Routes = [
   {path: '', component: MensagemSelecaoCanalPage},
-  {path: ':idCanal/selecao-aluno', component: MensagemSelecaoAlunoPage},
+  {path: ':idCanal/selecao-responsavel', component: MensagemSelecaoAlunoPage},
   {path: ':idCanalResponsavel/canal', component: MensagemCanalPage},
 ];
 
