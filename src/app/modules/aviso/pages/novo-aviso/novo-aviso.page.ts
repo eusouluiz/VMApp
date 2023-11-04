@@ -67,6 +67,7 @@ export class NovoAvisoPage extends Pagina implements OnInit {
 
     } else {
       this.form?.markAllAsTouched()
+      // se tiver preenchido de alguma forma a lista entao nao precisa marcar
       if (this.listaTurmasTabela.length > 0) {
         this.form?.controls.turmaBusca.markAsUntouched()
       }
@@ -136,12 +137,14 @@ export class NovoAvisoPage extends Pagina implements OnInit {
   }
 
   adicionarTurma(valor: number) {
-    const turma = this.listaTurmasBusca[valor]
-
-    this.listaTurmasTabela.push(turma)
-
-    this.removerTurmaDaListaBusca(valor)
-    this.limparCampoBuscaTurma()
+    if (valor !== -1) {
+      const turma = this.listaTurmasBusca[valor]
+  
+      this.listaTurmasTabela.push(turma)
+  
+      this.removerTurmaDaListaBusca(valor)
+      this.limparCampoBuscaTurma()
+    }
   }
 
   limparCampoBuscaTurma() {
