@@ -8,14 +8,14 @@ import { ControlValueAccessor, NgControl, ValidatorFn } from '@angular/forms';
 })
 export class AutocompleteComponent implements ControlValueAccessor, OnInit {
 
-  @ViewChild('popover') popover!: HTMLIonPopoverElement
+  @ViewChild('popover') popover!: any
 
   @Input('listaItens') listaItens!: String[]
   @Input('textoSemResultado') textoSemResultado!: String
   @Input('icone') icone: String | null = null
   @Input('idBusca') idBusca!: String
   @Input('label') label!: String
-  
+
   @Output() onBusca = new EventEmitter<Number>()
   @Output() onCliqueIcone = new EventEmitter<boolean>()
   @Output() onSelecionado = new EventEmitter<boolean>()
@@ -23,7 +23,7 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit {
 
   isItensVisiveis = false;
   itens!: String[];
-  
+
   busca!: string
   primeiroItem!: string
 
@@ -33,8 +33,8 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit {
 
   value: String | null = null
   isDisabled = false;
-  onChange: (_: any) => void = () => {};
-  onTouched: () => void = () => {};
+  onChange: (_: any) => void = () => { };
+  onTouched: () => void = () => { };
 
   constructor(
     @Self() @Optional() public ngControl: NgControl
@@ -50,7 +50,7 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit {
 
     control?.setValidators(validators);
     control?.updateValueAndValidity();
-    
+
     this.inicializaItens()
   }
 
@@ -79,42 +79,37 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit {
 
   // ---- controle formulario ---- //
 
-  inicializaItens(){
+  inicializaItens() {
     this.itens = this.listaItens;
   }
 
   getItens(ev: any) {
 
-      // reseta busca
-      this.inicializaItens();
+    // reseta busca
+    this.inicializaItens();
 
-      // seta o valor a o que esta vindo da busca
-      var val = '';
-      if (typeof ev !== 'undefined'){
-        val = typeof ev !== typeof 'string' ? ev.target.value : ev;
-      }
+    // seta o valor a o que esta vindo da busca
+    var val = '';
+    if (typeof ev !== 'undefined') {
+      val = typeof ev !== typeof 'string' ? ev.target.value : ev;
+    }
 
-      // se o valor for um valor valido
-      if (val) {
-        this.isItensVisiveis = true;
-        this.itens = this.itens.filter((item) => {
-            return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
-        })
-      }
-  }
-
-  blur: boolean = false
-  async mostrarItens(){
-    this.blur = !this.blur
-    if (this.blur){
-      this.popover.cssClass = undefined
-      this.popover.keyboardClose = false
-      this.isItensVisiveis = true
-      await this.popover.present()
+    // se o valor for um valor valido
+    if (val) {
+      this.isItensVisiveis = true;
+      this.itens = this.itens.filter((item) => {
+        return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
     }
   }
 
-  async esconderItens(){
+  mostrarItens() {
+    this.popover.cssClass = undefined
+    this.popover.keyboardClose = false
+    this.isItensVisiveis = true
+  }
+
+  async esconderItens() {
     //sleep de 1 milisegundo pra caso blur tenha sido de selecao de item
     //pra dar tempo de executar funcao selecionarItem antes de esconder popover
     await new Promise(f => setTimeout(f, 1))
@@ -129,12 +124,12 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit {
     await this.popover.dismiss()
   }
 
-  selecionarItem(item: any){
-    const idBusca = item === -1 ? -1 : this.listaItens.indexOf(item) 
+  async selecionarItem(item: any) {
+    const idBusca = item === -1 ? -1 : this.listaItens.indexOf(item)
     this.value = item === -1 ? undefined : item
-    
+
     this.updateChanges();
-    this.indicaBuscaRealizada(idBusca)
+    await this.indicaBuscaRealizada(idBusca)
 
     this.inicializaItens()
     this.busca = ''
@@ -149,21 +144,21 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit {
     this.esconderItens()
   }
 
-  indicaBuscaRealizada(id: Number){
+  async indicaBuscaRealizada(id: Number) {
     this.onBusca.emit(id)
     this.inicializaItens()
   }
 
-  indicaBotaoClicado(){
+  indicaBotaoClicado() {
     this.onCliqueIcone.emit()
   }
 
-  indicaBuscaSelecionada(){
+  indicaBuscaSelecionada() {
     // console.log('selecionado')
     this.onSelecionado.emit()
   }
 
-  indicaBuscaDesselecionada(){
+  indicaBuscaDesselecionada() {
     // console.log('desselecionado')
     this.onDesselecionado.emit()
   }
