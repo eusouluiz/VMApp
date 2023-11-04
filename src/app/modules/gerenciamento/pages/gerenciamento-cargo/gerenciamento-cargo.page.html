@@ -1,0 +1,21 @@
+<app-header titulo="Cargo" [botaoRetorno]="true"></app-header>
+
+<ion-content class="ion-padding">
+  <ion-searchbar class="ion-no-padding" 
+    placeholder="Cargo" [debounce]="500" (ionInput)="filtarCargoNome($event)"></ion-searchbar>
+  <div *ngFor="let cargo of listaCargos">
+    <ion-item class="c-item"
+      lines="none" detail="true" button="true" (click)="navegarTelaCargo(cargo.idCargo)">
+      <ion-label>
+        <ion-row>
+          <ion-text class="c-item-titulo">{{cargo.nome}}</ion-text>
+        </ion-row>
+      </ion-label>
+    </ion-item>
+  </div>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="navegarTelaCargo(-1)">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

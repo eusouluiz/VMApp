@@ -1,0 +1,105 @@
+<app-header [titulo]="isModoCadastrar() ? 'Novo Responsavel' : responsavel.nome" [botaoRetorno]="true"></app-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="form" (ngSubmit)="salvar()">
+    <ion-row size="12">
+      <ion-col size="12" size-md="6" size-lg="6">
+        <app-field-input formControlName="nome" label="Nome"></app-field-input>
+      </ion-col>
+      <ion-col size="12" size-md="6" size-lg="6">
+        <app-field-input formControlName="telefone" label="Telefone"></app-field-input>
+      </ion-col>
+    </ion-row>
+    <hr>
+    <!-- INICIO SOBRE ALUNO -->
+    <ion-row>
+      <ion-row class="ion-align-items-center" size="auto">
+        <ion-col size="12" sizeLg="4" sizeMd="4">
+          <h3 class="u-font-weight--bold">Responsável por:</h3>
+        </ion-col>
+        <!-- INICIO INSERCAO ALUNOS -->
+        <ion-col offsetLg="2" offsetMd="2" size="12" sizeLg="6" sizeMd="6">
+          <form [formGroup]="formBuscaAluno">
+            <app-autocomplete placeholder="Insira o nome do aluno" formControlName="busca" idBusca="busca-aluno" [listaItens]="nomeAlunosBusca" (onBusca)="adicionarAluno($event)" 
+              textoSemResultado="Cadastrar novo aluno" icone="add" (onCliqueIcone)="navegarTelaAluno(-1)"></app-autocomplete>
+          </form>
+        </ion-col>
+        <!-- FIM INSERCAO ALUNOS -->
+      </ion-row>
+      <!-- INICIO TABELA DE ALUNOS -->
+      <ion-row>
+        <ion-col size="12">
+          <ng-container *ngIf="listaAlunosTabela.length > 0; else elseTemplate">
+            <ng-container *ngFor="let aluno of listaAlunosTabela">
+              <ion-item class="c-item"
+                lines="none" [detail]="isModoDetalhes()" [button]="isModoDetalhes()" (click)="navegarTelaAluno(aluno.idAluno)">
+                <ion-label>
+                  <ion-row class="ion-align-items-center">
+                    <ion-col class="ion-align-items-center" size="9" sizeLg="11" sizeMd="11">
+                      <ion-row>
+                        <ion-text class="c-item-titulo ion-text-wrap">{{aluno.nome}}</ion-text>
+                      </ion-row>
+                      <ion-row>
+                        <ion-text class="c-item-subtitulo ion-text-wrap">Turma: {{aluno.turma.nome}}</ion-text>
+                      </ion-row>
+                    </ion-col>
+                    <ion-col size="3" sizeLg="1" sizeMd="1" style="min-height: 70px; text-align: -webkit-right">
+                      <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
+                          (click)="deletarAluno(aluno.idAluno)">
+                          <ion-icon name="trash"></ion-icon>
+                      </ion-fab-button>
+                    </ion-col>
+                  </ion-row>
+                </ion-label>
+              </ion-item>
+            </ng-container>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <ion-item class="c-item" color="light"
+              lines="none">
+              <ion-label>
+                <ion-row class="ion-align-items-center ion-justify-content-center" style="min-height: 70px;">
+                  <ion-text class="c-item-titulo">
+                    Insira um Aluno
+                  </ion-text>
+                </ion-row>
+              </ion-label>
+            </ion-item>
+          </ng-template>
+        </ion-col>
+      </ion-row>
+      <!-- FIM TABELA DE ALUNOS -->
+    </ion-row>
+    <!-- FIM SOBRE ALUNO -->
+    <ion-row class="ion-margin-vertical">
+      <ion-row>
+        <ion-col size="12">
+          <h3 class="u-font-weight--bold">Informações Usuário:</h3>
+        </ion-col>
+      </ion-row>
+      <ion-row size="12">
+        <ion-col size="12" size-md="6" size-lg="6">
+          <app-field-input formControlName="cpf" label="CPF"></app-field-input>
+        </ion-col>
+        <ion-col size="12" size-md="6" size-lg="6">
+          <app-field-password placeholder=" " formControlName="senha" label="Senha"></app-field-password>
+        </ion-col>
+      </ion-row>
+    </ion-row>
+    <ng-container id="botoesEditar" *ngIf="!isModoDetalhes()">
+      <ion-row style="flex-direction: row-reverse;">
+        <ion-col size="auto">
+          <ion-button shape="round" type="submit">Salvar</ion-button>
+        </ion-col>
+        <ion-col size="auto">
+          <ion-button shape="round" fill="outline" color="danger" (click)="cancelar()">Cancelar</ion-button>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+  </form>
+  <!-- BOTOES DE CONTROLE -->
+  <ng-container *ngIf="isModoDetalhes()">
+    <app-botoes-controle (onEditar)="iniciarEdicao()" (onDeletar)="deletarAction()" 
+      header="Deseja deletar {{responsavel.nome}}?"></app-botoes-controle>  
+  </ng-container>
+</ion-content>

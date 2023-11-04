@@ -1,0 +1,31 @@
+{
+  "HOME_PAGE_TITLE": "Página inicial",
+  "PRESENTATION_TITLE": "Ready to create an app?",
+  "SHARED_EXAMPLE_CONTENT": "shared-example works!",
+  "FIELDS": {
+    "PASSWORD": {
+      "LABEL": "Senha",
+      "PLACEHOLDER": "Insira sua senha",
+      "SHOW_PASSWORD_VISIBILITY": "Mostra sua senha",
+      "HIDE_PASSWORD_VISIBILITY": "Esconda sua senha"
+    },
+    "EMAIL": {
+      "LABEL": "E-mail",
+      "PLACEHOLDER": "Insira seu e-mail"
+    },
+    "SELECT": {
+      "PLACEHOLDER": "Selecione uma opção",
+      "OK_TEXT": "OK",
+      "CANCEL_TEXT": "Cancelar"
+    },
+    "FILE": {
+      "PLACEHOLDER": "Arraste um arquivo aqui"
+    }
+  },
+  "FORM_VALIDATION_MESSAGES": {
+    "REQUIRED": "Este campo é obrigatório",
+    "INVALID": "Este campo está inválido",
+    "EMAIL": "Este e-mail está inválido",
+    "WEAK_PASSWORD": "Sua senha precisa conter pelo menos 8 caracteres"
+  }
+}

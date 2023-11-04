@@ -1,0 +1,130 @@
+<app-header titulo="gerenciamento-cargo-detalhes" [botaoRetorno]="true"></app-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="form" (ngSubmit)="salvar()">
+    <ion-row size="12">
+      <ion-col size="12">
+        <app-field-input formControlName="nome" label="Nome"></app-field-input>
+      </ion-col>
+    </ion-row>
+    <hr>
+    <!-- INICIO SOBRE FUNCIONARIO -->
+    <ion-row>
+      <ion-row size="auto" style="width: 100%;">
+        <ion-col size="7" sizeLg="4" sizeMd="4">
+          <h3 style="margin-left: 5px; font-weight: bold;">Funcionarios:</h3>
+        </ion-col>
+        <!-- INICIO INSERCAO FUNCIONARIOS -->
+        <ion-col *ngIf="!isModoDetalhes()" offsetLg="2" offsetMd="2" size="12" sizeLg="6" sizeMd="6">
+          <form [formGroup]="formBuscaFuncionario">
+            <app-autocomplete formControlName="buscaFuncionario" idBusca="busca-funcionario" [listaItens]="nomeFuncionariosBusca" (onBusca)="adicionarFuncionario($event)" 
+              textoSemResultado="Cadastrar novo funcionario" icone="add" (onCliqueIcone)="navegarTelaFuncionario(-1)"></app-autocomplete>
+          </form>
+        </ion-col>
+        <!-- FIM INSERCAO FUNCIONARIOS -->
+      </ion-row>
+      <!-- INICIO TABELA DE FUNCIONARIOS -->
+      <ion-row size="auto" style="width: 100%;">
+        <table style="margin-left: 5px; margin-right: 5px;">
+          <tr>
+            <th>Funcionario</th>
+            <th>Telefone</th>
+            <th></th>
+          </tr>
+          <ng-container *ngIf="listaFuncionariosTabela.length > 0; then comFuncionario; else semFuncionario"></ng-container>
+          <ng-template #comFuncionario>
+            <tr *ngFor="let funcionario of listaFuncionariosTabela">
+              <td style="width: 45%;">{{funcionario.nome}}</td>
+              <td style="width: 45%;">{{funcionario.usuario.telefone}}</td>
+              <td style="width: 10%;">
+                <div style="text-align: -webkit-right;">
+                  <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small" 
+                    (click)="navegarTelaFuncionario(funcionario.idFuncionario)">
+                    <ion-icon name="information"></ion-icon>
+                  </ion-fab-button>
+                  <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
+                    (click)="deletarFuncionario(funcionario.idFuncionario)">
+                    <ion-icon name="trash"></ion-icon>
+                  </ion-fab-button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template #semFuncionario>
+            <tr>
+              <td colspan="100%" style="text-align: center; font-weight: bold;">Selecione um Funcionario</td>
+            </tr>
+          </ng-template>
+          
+        </table>
+      </ion-row>
+      <!-- FIM TABELA DE FUNCIONARIOS -->
+    </ion-row>
+    <!-- FIM SOBRE FUNCIONARIO -->
+    <!-- INICIO SOBRE FUNCIONALIDADE -->
+    <ion-row>
+      <ion-row size="auto" style="width: 100%;">
+        <ion-col size="7" sizeLg="4" sizeMd="4">
+          <h3 style="margin-left: 5px; font-weight: bold;">Funcionalidade:</h3>
+        </ion-col>
+        <!-- INICIO INSERCAO FUNCIONALIDADES -->
+        <ion-col *ngIf="!isModoDetalhes()" offsetLg="2" offsetMd="2" size="12" sizeLg="6" sizeMd="6">
+          <form [formGroup]="formBuscaFuncionalidade">
+            <app-autocomplete formControlName="buscaFuncionalidade" idBusca="busca-funcionalidade" [listaItens]="nomeFuncionalidadesBusca" (onBusca)="adicionarFuncionalidade($event)" 
+              textoSemResultado="Funcionalidade não existe" icone="add"></app-autocomplete>
+          </form>
+        </ion-col>
+        <!-- FIM INSERCAO FUNCIONALIDADES -->
+      </ion-row>
+      <!-- INICIO TABELA DE FUNCIONALIDADES -->
+      <ion-row size="auto" style="width: 100%;">
+        <table style="margin-left: 5px; margin-right: 5px;">
+          <tr>
+            <th>Funcionalidade</th>
+            <th>Descrição</th>
+            <th></th>
+          </tr>
+          <ng-container *ngIf="listaFuncionalidadesTabela.length > 0; then comFuncionalidade; else semFuncionalidade"></ng-container>
+          <ng-template #comFuncionalidade>
+            <tr *ngFor="let funcionalidade of listaFuncionalidadesTabela">
+              <td style="width: 45%;">{{funcionalidade.nome}}</td>
+              <td style="width: 45%;">{{funcionalidade.descricao}}</td>
+              <td style="width: 10%;">
+                <div style="text-align: -webkit-right;">
+                  <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
+                    (click)="deletarFuncionalidade(funcionalidade.idFuncionalidade)">
+                    <ion-icon name="trash"></ion-icon>
+                  </ion-fab-button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template #semFuncionalidade>
+            <tr>
+              <td colspan="100%" style="text-align: center; font-weight: bold;">Selecione um Funcionalidade</td>
+            </tr>
+          </ng-template>
+          
+        </table>
+      </ion-row>
+      <!-- FIM TABELA DE FUNCIONALIDADES -->
+    </ion-row>
+    <!-- FIM SOBRE FUNCIONALIDADE -->
+    <ng-container id="botoesEditar" *ngIf="!isModoDetalhes()">
+      <ion-row style="flex-direction: row-reverse;">
+        <ion-col size="auto">
+          <ion-button shape="round" type="submit">Salvar</ion-button>
+        </ion-col>
+        <ion-col size="auto">
+          <ion-button shape="round" fill="outline" color="danger" (click)="cancelar()">Cancelar</ion-button>
+        </ion-col>
+      </ion-row>
+      <div style="height: 100px"></div>
+    </ng-container>
+  </form>
+  <!-- BOTOES DE CONTROLE -->
+  <ng-container *ngIf="isModoDetalhes()">
+    <app-botoes-controle (onEditar)="iniciarEdicao()" (onDeletar)="deletarAction()" 
+      header="Deseja deletar {{cargo.nome}}?"></app-botoes-controle>  
+  </ng-container>
+</ion-content>

@@ -32,6 +32,9 @@ import { SharedExampleComponent } from './components/shared-example/shared-examp
 import { ModalExampleComponent } from './components/modal-example/modal-example.component';
 import { FieldDatetimeComponent } from './components/field-datetime/field-datetime.component';
 import { ContentSegmentComponent } from './components/content-segment/content-segment.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { HeaderComponent } from './components/header/header.component';
+import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +43,7 @@ import { ContentSegmentComponent } from './components/content-segment/content-se
     ModalComponent,
     ModalExampleComponent,
     ButtonComponent,
+    FooterComponent,
     FieldErrorMessageComponent,
     FieldPasswordComponent,
     FieldInputComponent,
@@ -52,6 +56,8 @@ import { ContentSegmentComponent } from './components/content-segment/content-se
     FieldFileComponent,
     FieldDatetimeComponent,
     FieldValidationIconComponent,
+    HeaderComponent,
+    AutocompleteComponent,
   ],
   imports: [
     CommonModule,
@@ -68,6 +74,7 @@ import { ContentSegmentComponent } from './components/content-segment/content-se
     ModalExampleComponent,
     TranslateModule,
     ButtonComponent,
+    FooterComponent,
     FieldErrorMessageComponent,
     FieldPasswordComponent,
     FieldInputComponent,
@@ -80,6 +87,8 @@ import { ContentSegmentComponent } from './components/content-segment/content-se
     FieldFileComponent,
     FieldDatetimeComponent,
     FieldValidationIconComponent,
+    HeaderComponent,
+    AutocompleteComponent,
   ],
 })
 export class SharedModule {}

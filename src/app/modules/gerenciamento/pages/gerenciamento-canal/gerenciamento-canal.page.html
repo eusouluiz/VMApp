@@ -1,0 +1,23 @@
+<app-header titulo="Canal" [botaoRetorno]="true"></app-header>
+
+<ion-content class="ion-padding">
+  <ion-searchbar class="ion-no-padding"
+    placeholder="Canal" [debounce]="500" (ionInput)="filtarCanalNome($event)"></ion-searchbar>
+  <ion-row>
+  </ion-row>
+  <div *ngFor="let canal of listaCanais">
+    <ion-item class="c-item"
+      lines="none" detail="true" button="true" (click)="navegarTelaCanal(canal.idCanal)">
+      <ion-label>
+        <ion-row>
+          <ion-text class="c-item-titulo">{{canal.nome}}</ion-text>
+        </ion-row>
+      </ion-label>
+    </ion-item>
+  </div>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="navegarTelaCanal(-1)">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

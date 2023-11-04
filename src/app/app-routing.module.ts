@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { FooterComponent } from './shared/components/footer/footer.component';
+import { AuthGuardService } from './core/guards/auth/auth-guard.service';
 
 /*
   Please check the article below for understanding how to structure modules
@@ -7,15 +9,42 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 */
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: 'mensagem', pathMatch: 'full' },
   {
     path: 'home',
     loadChildren: () => import('./modules/example-feature/example-feature.module').then((m) => m.HomePageModule),
   },
+  {
+    path: 'gerenciamento',
+    loadChildren: () => import('./modules/gerenciamento/gerenciamento.module').then((m) => m.GerenciamentoModule),
+  },
+  {
+    path: 'mensagem',
+    loadChildren: () => import('./modules/mensagem/mensagem.module').then((m) => m.MensagemModule),
+  },
+  {
+    path: 'aviso',
+    loadChildren: () => import('./modules/aviso/aviso.module').then((m) => m.AvisoModule),
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
+  imports: [RouterModule.forRoot(
+    [
+      { path: '', redirectTo: 'login', pathMatch: 'full' },
+      {
+        path: 'login',
+        loadChildren: () => import('./modules/login/login.module').then((m) => m.LoginModule)
+      },
+      // necessario essa separacao por conta das tabs
+      {
+        path: 'app',
+        component: FooterComponent,
+        children:routes,
+        canActivate: [AuthGuardService]
+      }
+    ],
+    { preloadingStrategy: PreloadAllModules })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

@@ -1,0 +1,13 @@
+<ion-item lines="none" 
+  [class]="mensagem.idUsuario === idUsuario ? 'e-enviado': 'e-recebido'" class="e-recebido e-mensagem-item">
+  <ion-label
+    [slot]="mensagem.idUsuario === idUsuario ? 'end': 'start'" 
+    class="ion-text-wrap e-mensagem-label">
+    <ion-text class="e-mensagem-text">{{mensagem.texto}}</ion-text>
+    <ion-note class="e-mensagem-horario">
+      <small>{{resgatarHorario()}}</small>
+      <ion-icon [class]="mensagem.indVisualizacao ? 'e-mensagem-visualizada' : 'e-mensagem-naovisualizada'" 
+        name="checkmark-done-outline"></ion-icon>
+    </ion-note>
+  </ion-label>
+</ion-item>

@@ -6,12 +6,24 @@
       [control]="ngControl.control">
     </app-field-validation-icon>
 
-    <ion-input class="c-field__input" [type]="type" [placeholder]="placeholder"
-      [class.c-field__input--disabled]="isDisabled"
-      [class.c-field__input--has-validation-icon]="validationIcon"
-      [class.c-field__input--has-icon]="icon" [formControl]="ngControl.control"
-      (ionChange)="setValue($event)">
-    </ion-input>
+    <ng-container *ngIf="textArea; then textAreaTemplate; else inputTemplate"></ng-container>
+    <ng-template #textAreaTemplate>
+      <ion-textarea class="c-field__input" [cols]="colsTextArea" [rows]="rowsTextArea" 
+        [placeholder]="placeholder"
+        [class.c-field__input--disabled]="isDisabled"
+        [formControl]="ngControl.control"
+        (ionChange)="setValue($event)">
+      </ion-textarea>
+    </ng-template>
+    <ng-template #inputTemplate>
+      <ion-input class="c-field__input" [type]="type" [placeholder]="placeholder"
+        [class.c-field__input--disabled]="isDisabled"
+        [class.c-field__input--has-validation-icon]="validationIcon"
+        [class.c-field__input--has-icon]="icon" [formControl]="ngControl.control"
+        (ionChange)="setValue($event)">
+      </ion-input>
+    </ng-template>
+    
 
     <ion-icon *ngIf="icon" [name]="icon" class="c-field__icon"></ion-icon>
   </div>
