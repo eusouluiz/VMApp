@@ -19,16 +19,10 @@
       </ion-col>
     </ion-row>
     <!-- TURMA -->
-    <ion-row>
-      <ion-col size="12">
-        <app-autocomplete formControlName="turmaBusca" idBusca="busca-turma" [listaItens]="nomeTurmasBusca" (onBusca)="adicionarTurma($event)" 
-        textoSemResultado="Turma não encontrada"></app-autocomplete>
-      </ion-col>
-    </ion-row>
     <!-- TABELA TURMA -->
     <ion-row>
       <ion-col size="12">
-        <ng-container *ngIf="listaTurmasTabela.length > 0; else elseTemplate">
+        <ng-container>
           <ng-container *ngFor="let turma of listaTurmasTabela">
             <ion-item class="c-item"
               lines="none">
@@ -50,20 +44,16 @@
             </ion-item>
           </ng-container>
         </ng-container>
-        <ng-template #elseTemplate>
-          <ion-item class="c-item" color="light"
-            lines="none">
-            <ion-label>
-              <ion-row class="ion-align-items-center ion-justify-content-center">
-                <ion-text class="c-item-titulo">
-                  Insira um Turma
-                </ion-text>
-              </ion-row>
-            </ion-label>
-          </ion-item>
-        </ng-template>
       </ion-col>
     </ion-row>
+    <!-- BUSCA TURMA -->
+    <ion-row>
+      <ion-col size="12">
+        <app-autocomplete placeholder="Insira a turma" formControlName="turmaBusca" idBusca="busca-turma" [listaItens]="nomeTurmasBusca" (onBusca)="adicionarTurma($event)" 
+          textoSemResultado="Turma não encontrada" icone="add"></app-autocomplete>
+      </ion-col>
+    </ion-row>
+    <!-- BUSCA TURMA -->
     <!-- TABELA TURMA -->
     <!-- TURMA -->
     <ion-row size="12">
