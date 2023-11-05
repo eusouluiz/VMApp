@@ -4,9 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { ConstantesPrioridadesAvisos, ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { FieldSelectOption } from '../../../../shared/components/field-select/field-select.interface';
-import { Aviso, Canal, Turma, avisoVazio } from '../../../../shared/utilities/entidade/entidade.utility';
+import { Aviso, Canal, Lembrete, Turma, avisoVazio, lembreteVazio } from '../../../../shared/utilities/entidade/entidade.utility';
 import { CanalService } from '../../../../core/services/canal-service/canal.service';
 import { TurmaService } from '../../../../core/services/turma-service/turma.service';
+import { AvisoService } from '../../../../core/services/aviso-service/aviso.service';
+import { LembreteService } from '../../../../core/services/lembrete-service copy/lembrete.service';
 
 @Component({
   selector: 'app-novo-aviso',
@@ -19,10 +21,13 @@ export class NovoAvisoPage extends Pagina implements OnInit {
   form: UntypedFormGroup | undefined;
   listaTodosCanais: Canal[] = []
   listaTodasTurmas: Turma[] = [];
+  canalDuvidas?: Canal
 
   constructor(
     private formBuilder: UntypedFormBuilder,
     private router: Router,
+    private avisoService: AvisoService,
+    private lembreteService: LembreteService,
     private canalService: CanalService,
     private turmaService: TurmaService,
   ) { 
@@ -56,15 +61,34 @@ export class NovoAvisoPage extends Pagina implements OnInit {
       texto: ['', Validators.required],
       canal: ['', Validators.required],
       turmaBusca: ['', Validators.required],
+      dataLembrete: ['']
     })
   }
 
   // ---- controle ---- //
 
   salvar(){
-    console.log(this.form?.valid)
-    if (this.form?.valid){
+    if (this.form?.valid && this.canalDuvidas !== undefined){
+      this.aviso.titulo = this.form.value.titulo
+      this.aviso.texto = this.form.value.texto
+      this.aviso.prioridade = this.form.value.prioridade
+      this.aviso.idCanal = this.canalDuvidas.idCanal
+      this.listaTurmasTabela.forEach((turma) => {
+        this.aviso.idTurmas.push(turma.idTurma)
+      })
+      this.avisoService.incluirAviso(this.aviso)
 
+      if (this.form.value.dataLembrete !== ''){
+        var lembrete: Lembrete = lembreteVazio()
+        lembrete.idAviso = this.aviso.idAviso
+        lembrete.titulo = 'Lembrete: ' + this.aviso.titulo
+        lembrete.texto = this.aviso.texto.substring(0, 50)
+        lembrete.dataLembrete = this.form.value.dataLembrete
+        
+        this.lembreteService.incluirLembrete(lembrete)
+      }
+
+      this.navegarPara('')
     } else {
       this.form?.markAllAsTouched()
       // se tiver preenchido de alguma forma a lista entao nao precisa marcar
@@ -115,9 +139,11 @@ export class NovoAvisoPage extends Pagina implements OnInit {
     if (valor !== -1) {
       const canal = this.listaTodosCanais[valor]
   
-      this.form?.controls.canal.setValue(canal)
+      this.form?.controls.canal.setValue(canal.nome)
+      this.canalDuvidas = canal
     } else {
       this.form?.controls.canal.setValue('')
+      this.canalDuvidas = undefined
     }
   }
 

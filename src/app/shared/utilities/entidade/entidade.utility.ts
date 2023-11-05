@@ -94,6 +94,14 @@ export interface AvisoResponsavel {
     indVisualizacao: boolean
 }
 
+export interface Lembrete {
+    idLembrete: number,
+    idAviso: number,
+    titulo: string,
+    texto: string,
+    dataLembrete: Date,
+}
+
 export var USUARIO_DATA: Usuario[] = [
     { idUsuario: 0, cpf: '00000000000', senha: 'admin000', telefone: '041000000000', tipoUsuario: 'F' },
     { idUsuario: 1, cpf: '12345678900', senha: 'senha123', telefone: '041987654321', tipoUsuario: 'R' },
@@ -225,6 +233,8 @@ export var AVISO_DATA: Aviso[] = [
     },
 ]
 
+export var LEMBRETE_DATA: Lembrete[] = []
+
 export function preencheDados() {
     // preenche turmas
 
@@ -274,36 +284,36 @@ export function logaData(info: any = undefined) {
 }
 
 export function usuarioVazio(): Usuario {
-    return { idUsuario: 0, cpf: '', senha: '', telefone: '', tipoUsuario: '' }
+    return { idUsuario: -1, cpf: '', senha: '', telefone: '', tipoUsuario: '' }
 }
 
 export function responsavelVazio(): Responsavel {
-    return { idResponsavel: 0, nome: '', usuario: usuarioVazio(), alunos: [] }
+    return { idResponsavel: -1, nome: '', usuario: usuarioVazio(), alunos: [] }
 }
 
 export function turmaVazio(): Turma {
-    return { idTurma: 0, nome: '', alunos: [] }
+    return { idTurma: -1, nome: '', alunos: [] }
 }
 
 export function alunoVazio(): Aluno {
-    return { idAluno: 0, nome: '', cgm: '', responsaveis: [], turma: turmaVazio() }
+    return { idAluno: -1, nome: '', cgm: '', responsaveis: [], turma: turmaVazio() }
 }
 
 export function cargoVazio(): Cargo {
-    return { idCargo: 0, nome: '', funcionarios: [], funcionalidades: [] }
+    return { idCargo: -1, nome: '', funcionarios: [], funcionalidades: [] }
 }
 
 export function funcionarioVazio(): Funcionario {
-    return { idFuncionario: 0, nome: '', usuario: usuarioVazio(), cargo: cargoVazio() }
+    return { idFuncionario: -1, nome: '', usuario: usuarioVazio(), cargo: cargoVazio() }
 }
 
 export function canalVazio(): Canal {
-    return { idCanal: 0, nome: '', cargos: [] }
+    return { idCanal: -1, nome: '', cargos: [] }
 }
 
 export function avisoVazio(): Aviso {
     return {
-        idAviso: 0,
+        idAviso: -1,
         idFuncionario: -1,
         idCanal: -1,
         titulo: '',
@@ -313,5 +323,16 @@ export function avisoVazio(): Aviso {
         dataEncerramento: new Date(),
         prioridade: '3',        
         idTurmas: []
+    }
+}
+
+
+export function lembreteVazio(): Lembrete {
+    return {
+        idLembrete: -1,
+        idAviso: -1,
+        titulo: '',
+        texto: '',
+        dataLembrete: new Date(),
     }
 }

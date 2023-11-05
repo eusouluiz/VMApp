@@ -110,14 +110,11 @@
     padding: $size-base;
     text-align: left;
     width: 100%;
+    color: var(--ion-color-dark);
 
     &:active,
     &:focus {
       filter: var(--shadow-focus);
-    }
-
-    &--placeholder {
-      color: var(--color-text-medium);
     }
 
     &-component {
