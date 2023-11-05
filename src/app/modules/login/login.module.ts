@@ -7,16 +7,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-
 @NgModule({
   declarations: [LoginPage],
-  imports: [
-    CommonModule,
-    LoginRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SharedModule,
-    IonicModule
-  ]
+  imports: [CommonModule, LoginRoutingModule, FormsModule, ReactiveFormsModule, SharedModule, IonicModule],
 })
-export class LoginModule { }
+export class LoginModule {}

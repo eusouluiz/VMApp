@@ -3,42 +3,37 @@ import { SessionRepository } from './../../../core/state/session/session.reposit
 
 @Injectable({ providedIn: 'root' })
 export class UsuarioLogado {
+  constructor(private sessionRepository: SessionRepository) {}
 
-    constructor (
-        private sessionRepository: SessionRepository
-    ){
-    }
+  isResponsavel(): boolean {
+    return this.sessionRepository.userInfo()?.tipoUsuario === 'R';
+  }
 
-    isResponsavel(): boolean{
-        return this.sessionRepository.session()?.usuarioLogado.tipoUsuario === 'R'
-    }
+  isFuncionario(): boolean {
+    return this.sessionRepository.userInfo()?.tipoUsuario === 'F';
+  }
 
-    isFuncionario(): boolean{
-        return this.sessionRepository.session()?.usuarioLogado.tipoUsuario === 'F'
-    }
+  getFuncionalidadesAcessoId(): number[] | undefined {
+    return this.sessionRepository.userInfo()?.funcionalidadesAcessoId;
+  }
 
-    getFuncionalidadesAcessoId(): number[] | undefined{
-        return this.sessionRepository.session()?.usuarioLogado.funcionalidadesAcessoId
-    }
+  getIdCargo(): number | undefined {
+    return this.sessionRepository.userInfo()?.idCargo;
+  }
 
-    getIdCargo(): number | undefined{
-        return this.sessionRepository.session()?.usuarioLogado.idCargo
-    }
+  getNome(): string | undefined {
+    return this.sessionRepository.userInfo()?.nome;
+  }
 
-    getNome(): string | undefined{
-        return this.sessionRepository.session()?.usuarioLogado.nome
-    }
+  getIdResponsavel(): number | undefined {
+    return this.sessionRepository.userInfo()?.idFuncionarioResponsavel;
+  }
 
-    getIdResponsavel(): number | undefined{
-        return this.sessionRepository.session()?.usuarioLogado.idFuncionarioResponsavel
-    }
+  getIdFuncionario(): number | undefined {
+    return this.sessionRepository.userInfo()?.idFuncionarioResponsavel;
+  }
 
-    getIdFuncionario(): number | undefined{
-        return this.sessionRepository.session()?.usuarioLogado.idFuncionarioResponsavel
-    }
-
-    getIdUsuario(): number | undefined{
-        return this.sessionRepository.session()?.usuarioLogado.idUsuario
-    }
-
+  getIdUsuario(): number | undefined {
+    return this.sessionRepository.userInfo()?.idUsuario;
+  }
 }

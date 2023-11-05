@@ -31,11 +31,10 @@ export class ApiInterceptor implements HttpInterceptor {
   }
 
   private addAuthenticationHeader(request: HttpRequest<any>, session: Session): HttpRequest<any> {
-    const tokenType = session?.tokenType ?? '';
-    const accessToken = session?.accessToken ?? '';
+    const accessToken = session?.accessToken ? `Bearer ${session?.accessToken}` : '';
 
     return request.clone({
-      headers: request.headers.set(environment.api.authHeader, `${tokenType} ${accessToken}`),
+      headers: request.headers.set(environment.api.authHeader, accessToken),
     });
   }
 
