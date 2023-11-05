@@ -74,7 +74,9 @@ export class NovoAvisoPage extends Pagina implements OnInit {
     }
   }
 
-  cancelar(){}
+  cancelar(){
+    this.navegarPara('')
+  }
   
   // ---- controle ---- //
 
@@ -143,14 +145,7 @@ export class NovoAvisoPage extends Pagina implements OnInit {
       this.listaTurmasTabela.push(turma)
   
       this.removerTurmaDaListaBusca(valor)
-      this.limparCampoBuscaTurma()
     }
-  }
-
-  limparCampoBuscaTurma() {
-    // this.formBuscaTurma.setValue({
-    //   busca: ''
-    // })
   }
 
   private removerTurmaDaListaBusca(index: number) {
@@ -162,18 +157,6 @@ export class NovoAvisoPage extends Pagina implements OnInit {
       }
     }
   }
-
-  // private atualizarTurmas() {
-  //   this.responsavel.turmas = this.listaTurmasTabela.sort((t1, t2) => {
-  //     if (t1.nome.toLowerCase() > t2.nome.toLowerCase()) {
-  //       return 1
-  //     } else if (t2.nome.toLowerCase() > t1.nome.toLowerCase()) {
-  //       return -1
-  //     } else {
-  //       return 0
-  //     }
-  //   })
-  // }
 
   deletarTurma(id: number) {
     const indexTurma = this.listaTurmasTabela.findIndex((t) => {
