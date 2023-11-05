@@ -207,7 +207,7 @@ export var AVISO_DATA: Aviso[] = [
         dataPublicacao: new Date(),
         dataEncerramento: new Date(),
         prioridade: '1',        
-        idTurmas: []
+        idTurmas: [0]
     },{
         idAviso: 1,
         idFuncionario: 0,
@@ -218,7 +218,7 @@ export var AVISO_DATA: Aviso[] = [
         dataPublicacao: new Date(),
         dataEncerramento: new Date(),
         prioridade: '2',        
-        idTurmas: []
+        idTurmas: [0]
     },{
         idAviso: 2,
         idFuncionario: 0,
@@ -229,7 +229,7 @@ export var AVISO_DATA: Aviso[] = [
         dataPublicacao: new Date(),
         dataEncerramento: new Date(),
         prioridade: '3',        
-        idTurmas: []
+        idTurmas: [0]
     },
 ]
 

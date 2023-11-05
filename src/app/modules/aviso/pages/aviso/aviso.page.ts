@@ -16,6 +16,8 @@ import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuar
 export class AvisoPage extends Pagina implements OnInit {
 
   avisos: Aviso[] = []
+  //continuar restricao de avisos
+  idResponsavel?: number = this.usuarioLogado.getIdResponsavel()
 
   constructor(
     private router: Router,
