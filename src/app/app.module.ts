@@ -26,7 +26,6 @@ import { CustomTranslationsLoaderService } from './core/services/custom-translat
 import { ApiInterceptor } from './core/interceptors/api/api.interceptor';
 import { preencheDados } from './shared/utilities/entidade/entidade.utility';
 
-
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -59,9 +58,7 @@ import { preencheDados } from './shared/utilities/entidade/entidade.utility';
   bootstrap: [AppComponent],
 })
 export class AppModule {
-
-  constructor () {
-    preencheDados()
+  constructor() {
+    preencheDados();
   }
-
 }
