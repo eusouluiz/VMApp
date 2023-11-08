@@ -91,12 +91,7 @@ export class AvisoPage extends Pagina implements OnInit {
 
     modal.present()
 
-    
-    // var novoAviso = avisoVazio()
-    // novoAviso.titulo = data.titulo
-    // novoAviso.texto = data.texto
-
-    // this.avisoService.incluirAviso(novoAviso)
+    const { data, role } = await modal.onWillDismiss()
   }
 
 }

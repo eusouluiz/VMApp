@@ -9,7 +9,7 @@ import { TurmaService } from '../../../../core/services/turma-service/turma.serv
 import { AvisoService } from '../../../../core/services/aviso-service/aviso.service';
 import { LembreteService } from '../../../../core/services/lembrete-service copy/lembrete.service';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-novo-aviso',
@@ -34,6 +34,7 @@ export class NovoAvisoComponent implements OnInit {
 
   constructor(
     private formBuilder: UntypedFormBuilder,
+    private modalController: ModalController,
     private avisoService: AvisoService,
     private lembreteService: LembreteService,
     private canalService: CanalService,
@@ -93,6 +94,7 @@ export class NovoAvisoComponent implements OnInit {
         this.lembreteService.incluirLembrete(lembrete)
       }
 
+      return this.modalController.dismiss(undefined, 'salvarAviso')
     } else {
       this.form?.markAllAsTouched()
       // se tiver preenchido de alguma forma a lista entao nao precisa marcar
@@ -103,6 +105,7 @@ export class NovoAvisoComponent implements OnInit {
   }
 
   cancelar() {
+    return this.modalController.dismiss(undefined, 'cancelarAviso')
   }
 
   // ---- controle ---- //
