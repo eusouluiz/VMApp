@@ -31,11 +31,11 @@ export class NovoAvisoComponent implements OnInit {
   listaTodosCanais: Canal[] = []
   listaTodasTurmas: Turma[] = [];
   canalDuvidas?: Canal
+  prioridadeAviso?: any
 
   constructor(
     private formBuilder: UntypedFormBuilder,
     private modalController: ModalController,
-    private avisoService: AvisoService,
     private lembreteService: LembreteService,
     private canalService: CanalService,
     private turmaService: TurmaService,
@@ -54,6 +54,8 @@ export class NovoAvisoComponent implements OnInit {
     this.listaTodasTurmas = this.turmaService.buscarTodosTurmas().slice()
     this.listaTurmasBusca = this.listaTodasTurmas.slice()
     this.nomeTurmasBusca = this.resgatarNomeTurmasBusca(this.listaTodasTurmas)
+
+    this.nomePrioridadesBusca = this.resgatarNomePrioridadesBusca()
   }
 
   inicializarForms() {
@@ -74,15 +76,14 @@ export class NovoAvisoComponent implements OnInit {
   // ---- controle ---- //
 
   salvar() {
-    if (this.form?.valid && this.canalDuvidas !== undefined) {
+    if (this.form?.valid && this.canalDuvidas !== undefined && this.prioridadeAviso !== undefined) {
       this.aviso.titulo = this.form.value.titulo
       this.aviso.texto = this.form.value.texto
-      this.aviso.prioridade = this.form.value.prioridade
+      this.aviso.prioridade = this.prioridadeAviso
       this.aviso.idCanal = this.canalDuvidas.idCanal
       this.listaTurmasTabela.forEach((turma) => {
         this.aviso.idTurmas.push(turma.idTurma)
       })
-      this.avisoService.incluirAviso(this.aviso)
 
       if (this.form.value.dataLembrete !== '') {
         var lembrete: Lembrete = lembreteVazio()
@@ -94,7 +95,7 @@ export class NovoAvisoComponent implements OnInit {
         this.lembreteService.incluirLembrete(lembrete)
       }
 
-      return this.modalController.dismiss(undefined, 'salvarAviso')
+      return this.modalController.dismiss(this.aviso, 'salvarAviso')
     } else {
       this.form?.markAllAsTouched()
       // se tiver preenchido de alguma forma a lista entao nao precisa marcar
@@ -126,6 +127,31 @@ export class NovoAvisoComponent implements OnInit {
       value: ConstantesPrioridadesAvisos.ALTA,
     },
   ];
+  
+  nomePrioridadesBusca: string[] = []
+
+  private resgatarNomePrioridadesBusca(): string[] {
+    console.log('entrou')
+    var nomes: string[] = []
+    this.opcoesPrioridade.forEach(prioridade => {
+      nomes.push(prioridade.label)
+    });
+    return nomes
+  }
+
+  selecionarPrioridade(valor: number) {
+    if (valor !== -1) {
+      const prioridade = this.opcoesPrioridade[valor]
+
+      this.form?.controls.prioridade.setValue(prioridade.label)
+      if (typeof prioridade.value === 'string') {
+        this.prioridadeAviso = prioridade.value
+      }
+    } else {
+      this.form?.controls.prioridade.setValue('')
+      this.prioridadeAviso = undefined
+    }
+  }
 
   // ---- prioridades ---- //
 

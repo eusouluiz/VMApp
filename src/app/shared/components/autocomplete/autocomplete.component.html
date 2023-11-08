@@ -25,7 +25,7 @@
       </ng-template>
       <ng-template #elseTemplate>
         <!-- opcao quando sem resultado na busca -->
-        <ion-item
+        <ion-item *ngIf="textoSemResultado !== undefined"
         lines="full" button="true"
         (click)="selecionarItem(-1)">{{textoSemResultado}}</ion-item>
       </ng-template>

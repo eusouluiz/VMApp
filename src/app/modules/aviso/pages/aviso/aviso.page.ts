@@ -30,6 +30,7 @@ export class AvisoPage extends Pagina implements OnInit {
     super(router, ROTA_BASE)
 
     this.inicializarConteudo()
+    this.abrirModalNovoAviso()
   }
 
   ngOnInit() {
@@ -92,6 +93,12 @@ export class AvisoPage extends Pagina implements OnInit {
     modal.present()
 
     const { data, role } = await modal.onWillDismiss()
+
+    if (role === 'salvarAviso') {
+      console.log(data)
+
+      this.avisoService.incluirAviso(data)
+    }
   }
 
 }

@@ -8,8 +8,8 @@
     </ion-row>
     <ion-row>
       <ion-col size="12" sizeLg="6" sizeMd="6">
-        <app-field-select interface="action-sheet" formControlName="prioridade" label="Prioridade" [options]="opcoesPrioridade">
-        </app-field-select>
+        <app-autocomplete formControlName="prioridade" idBusca="busca-prioridade" [listaItens]="nomePrioridadesBusca" 
+          (onBusca)="selecionarPrioridade($event)" label="Prioridade"></app-autocomplete>
       </ion-col>
       <ion-col size="12" sizeLg="6" sizeMd="6">
         <app-autocomplete formControlName="canal" idBusca="busca-canal" [listaItens]="nomeCanaisBusca" 
@@ -27,12 +27,12 @@
               lines="none">
               <ion-label>
                 <ion-row class="ion-align-items-center">
-                  <ion-col class="ion-align-items-center" size="9" sizeLg="11" sizeMd="11">
+                  <ion-col class="ion-align-items-center" size="9" sizeLg="10" sizeMd="10">
                     <ion-row>
                       <ion-text class="c-item-titulo ion-text-wrap">{{turma.nome}}</ion-text>
                     </ion-row>
                   </ion-col>
-                  <ion-col size="3" sizeLg="1" sizeMd="1" style="text-align: -webkit-right">
+                  <ion-col size="3" sizeLg="2" sizeMd="2" style="text-align: -webkit-right">
                     <ion-fab-button color="danger" size="small" 
                         (click)="deletarTurma(turma.idTurma)">
                         <ion-icon name="trash"></ion-icon>

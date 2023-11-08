@@ -11,7 +11,7 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit {
   @ViewChild('popover') popover!: any
 
   @Input('listaItens') listaItens!: String[]
-  @Input('textoSemResultado') textoSemResultado!: String
+  @Input('textoSemResultado') textoSemResultado?: String
   @Input('icone') icone: String | null = null
   @Input('idBusca') idBusca!: String
   @Input('label') label!: String
