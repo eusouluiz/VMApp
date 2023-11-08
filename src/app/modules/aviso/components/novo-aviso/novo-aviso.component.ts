@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
+import { SharedModule } from '../../../../shared/shared.module';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ConstantesPrioridadesAvisos, ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { FieldSelectOption } from '../../../../shared/components/field-select/field-select.interface';
 import { Aviso, Canal, Lembrete, Turma, avisoVazio, lembreteVazio } from '../../../../shared/utilities/entidade/entidade.utility';
@@ -9,13 +8,23 @@ import { CanalService } from '../../../../core/services/canal-service/canal.serv
 import { TurmaService } from '../../../../core/services/turma-service/turma.service';
 import { AvisoService } from '../../../../core/services/aviso-service/aviso.service';
 import { LembreteService } from '../../../../core/services/lembrete-service copy/lembrete.service';
+import { CommonModule } from '@angular/common';
+import { IonicModule } from '@ionic/angular';
 
 @Component({
   selector: 'app-novo-aviso',
-  templateUrl: './novo-aviso.page.html',
-  styleUrls: ['./novo-aviso.page.scss'],
+  templateUrl: './novo-aviso.component.html',
+  styleUrls: ['./novo-aviso.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    IonicModule,
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ]
 })
-export class NovoAvisoPage extends Pagina implements OnInit {
+export class NovoAvisoComponent implements OnInit {
 
   aviso: Aviso = avisoVazio()
   form: UntypedFormGroup | undefined;
@@ -25,19 +34,15 @@ export class NovoAvisoPage extends Pagina implements OnInit {
 
   constructor(
     private formBuilder: UntypedFormBuilder,
-    private router: Router,
     private avisoService: AvisoService,
     private lembreteService: LembreteService,
     private canalService: CanalService,
     private turmaService: TurmaService,
-  ) { 
-    const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_AVISO
-    super(router, ROTA_BASE)
-    
+  ) {
     this.inicializarForms()
     this.inicializarConteudo()
   }
-  
+
   ngOnInit() {
   }
 
@@ -49,7 +54,7 @@ export class NovoAvisoPage extends Pagina implements OnInit {
     this.listaTurmasBusca = this.listaTodasTurmas.slice()
     this.nomeTurmasBusca = this.resgatarNomeTurmasBusca(this.listaTodasTurmas)
   }
-  
+
   inicializarForms() {
     this.inicializarFormAviso()
   }
@@ -67,8 +72,8 @@ export class NovoAvisoPage extends Pagina implements OnInit {
 
   // ---- controle ---- //
 
-  salvar(){
-    if (this.form?.valid && this.canalDuvidas !== undefined){
+  salvar() {
+    if (this.form?.valid && this.canalDuvidas !== undefined) {
       this.aviso.titulo = this.form.value.titulo
       this.aviso.texto = this.form.value.texto
       this.aviso.prioridade = this.form.value.prioridade
@@ -78,17 +83,16 @@ export class NovoAvisoPage extends Pagina implements OnInit {
       })
       this.avisoService.incluirAviso(this.aviso)
 
-      if (this.form.value.dataLembrete !== ''){
+      if (this.form.value.dataLembrete !== '') {
         var lembrete: Lembrete = lembreteVazio()
         lembrete.idAviso = this.aviso.idAviso
         lembrete.titulo = 'Lembrete: ' + this.aviso.titulo
         lembrete.texto = this.aviso.texto.substring(0, 50)
         lembrete.dataLembrete = this.form.value.dataLembrete
-        
+
         this.lembreteService.incluirLembrete(lembrete)
       }
 
-      this.navegarPara('')
     } else {
       this.form?.markAllAsTouched()
       // se tiver preenchido de alguma forma a lista entao nao precisa marcar
@@ -98,10 +102,9 @@ export class NovoAvisoPage extends Pagina implements OnInit {
     }
   }
 
-  cancelar(){
-    this.navegarPara('')
+  cancelar() {
   }
-  
+
   // ---- controle ---- //
 
   // ---- prioridades ---- //
@@ -120,13 +123,13 @@ export class NovoAvisoPage extends Pagina implements OnInit {
       value: ConstantesPrioridadesAvisos.ALTA,
     },
   ];
-  
+
   // ---- prioridades ---- //
 
   // ---- controle canal ---- //
-  
+
   nomeCanaisBusca: string[] = []
-  
+
   private resgatarNomeCanaisBusca(lista: Canal[]): string[] {
     var nomes: string[] = []
     lista.forEach(canal => {
@@ -135,10 +138,10 @@ export class NovoAvisoPage extends Pagina implements OnInit {
     return nomes
   }
 
-  selecionarCanal(valor: number){
+  selecionarCanal(valor: number) {
     if (valor !== -1) {
       const canal = this.listaTodosCanais[valor]
-  
+
       this.form?.controls.canal.setValue(canal.nome)
       this.canalDuvidas = canal
     } else {
@@ -150,7 +153,7 @@ export class NovoAvisoPage extends Pagina implements OnInit {
   // ---- controle canal ---- //
 
   // ---- controle turmas ---- //
-  
+
   listaTurmasBusca: Turma[] = []
   nomeTurmasBusca: string[] = []
 
@@ -167,9 +170,9 @@ export class NovoAvisoPage extends Pagina implements OnInit {
   adicionarTurma(valor: number) {
     if (valor !== -1) {
       const turma = this.listaTurmasBusca[valor]
-  
+
       this.listaTurmasTabela.push(turma)
-  
+
       this.removerTurmaDaListaBusca(valor)
     }
   }

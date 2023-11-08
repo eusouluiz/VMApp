@@ -1,7 +1,5 @@
-<app-header titulo="Novo Aviso" botaoRetorno="true"></app-header>
-
-<ion-content class="ion-padding">
-  
+<div class="c-modal-backdrop"></div>
+<div class="c-modal">
   <form [formGroup]="form">
     <ion-row size="12">
       <ion-col size="12">
@@ -23,7 +21,7 @@
     <ion-row>
       <ion-col size="12">
         <h6 class="c-field__label">Turmas para envio:</h6>
-        <ng-container>
+        <ng-container *ngIf="listaTurmasTabela.length > 0">
           <ng-container *ngFor="let turma of listaTurmasTabela">
             <ion-item class="c-item"
               lines="none">
@@ -77,5 +75,4 @@
       </ion-col>
     </ion-row>
   </form>
-
-</ion-content>
+</div>

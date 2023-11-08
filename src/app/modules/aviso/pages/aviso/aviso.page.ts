@@ -7,6 +7,7 @@ import { ConstantesFuncionalidades, ConstantesRotas } from '../../../../shared/u
 import { Aviso, avisoVazio } from '../../../../shared/utilities/entidade/entidade.utility';
 import { AvisoModalComponent } from '../../components/aviso-modal/aviso-modal.component';
 import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
+import { NovoAvisoComponent } from '../../components/novo-aviso/novo-aviso.component';
 
 @Component({
   selector: 'app-aviso',
@@ -24,7 +25,7 @@ export class AvisoPage extends Pagina implements OnInit {
     private avisoService: AvisoService,
     private modalController: ModalController,
     private usuarioLogado: UsuarioLogado,
-  ) { 
+  ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_AVISO
     super(router, ROTA_BASE)
 
@@ -41,64 +42,61 @@ export class AvisoPage extends Pagina implements OnInit {
   }
 
   protected inicializarConteudo(): void {
-      this.avisos = this.resgatarAvisos()
+    this.avisos = this.resgatarAvisos()
   }
 
   resgatarAvisos(): Aviso[] {
     return this.avisoService.buscarTodosAvisos()
   }
 
-  async abrirModalAviso(aviso?: Aviso){
+  async abrirModalAviso(aviso: Aviso) {
     var modal
-    if (aviso !== undefined) {
-      modal = await this.modalController.create({
-        component: AvisoModalComponent,
-        mode: 'md',
-        cssClass: 'c-ion-modal',
-        componentProps: {
-          modo: 'detalhes',
-          aviso: aviso,
-          hasAcessoGerenciamentoAviso: this.hasAcessoGerenciamentoAviso(),
-        },
-      });
-    } else {
-      modal = await this.modalController.create({
-        component: AvisoModalComponent,
-        mode: 'md',
-        cssClass: 'c-ion-modal',
-        componentProps: {
-          modo: 'cadastrar',
-          hasAcessoGerenciamentoAviso: this.hasAcessoGerenciamentoAviso(),
-        },
-      });
-    }
+    modal = await this.modalController.create({
+      component: AvisoModalComponent,
+      mode: 'md',
+      cssClass: 'c-ion-modal--sheet',
+      initialBreakpoint: 0.8,
+      componentProps: {
+        modo: 'detalhes',
+        aviso: aviso,
+        hasAcessoGerenciamentoAviso: this.hasAcessoGerenciamentoAviso(),
+      },
+    });
 
     modal.present();
 
-    const {data, role} = await modal.onWillDismiss()
-    
+    const { data, role } = await modal.onWillDismiss()
+
     if (role === 'salvarAviso') {
-      if (aviso !== undefined){
-        aviso.titulo = data.titulo
-        aviso.texto = data.texto
+      aviso.titulo = data.titulo
+      aviso.texto = data.texto
 
-        this.avisoService.alterarAviso(aviso)
-      } else {
-        var novoAviso = avisoVazio()
-        novoAviso.titulo = data.titulo
-        novoAviso.texto = data.texto
-
-        this.avisoService.incluirAviso(novoAviso)
-      }
+      this.avisoService.alterarAviso(aviso)
     }
   }
 
-  hasAcessoGerenciamentoAviso(){
+  hasAcessoGerenciamentoAviso() {
     return this.usuarioLogado.getFuncionalidadesAcessoId()?.includes(ConstantesFuncionalidades.GERENCIAMENTO_AVISO)
   }
 
-  navegarNovoAviso(){
-    this.navegarPara(ConstantesRotas.ROTA_AVISO_NOVO)
+  async abrirModalNovoAviso() {
+    const modal = await this.modalController.create({
+      component: NovoAvisoComponent,
+      mode: 'md',
+      cssClass: 'c-ion-modal--sheet',
+      initialBreakpoint: 0.95,
+      componentProps: {
+      },
+    });
+
+    modal.present()
+
+    
+    // var novoAviso = avisoVazio()
+    // novoAviso.titulo = data.titulo
+    // novoAviso.texto = data.texto
+
+    // this.avisoService.incluirAviso(novoAviso)
   }
 
 }

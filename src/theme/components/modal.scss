@@ -52,6 +52,14 @@ ion-modal::part(content) {
     z-index: 101;
   }
 
+  &--sheet::part(content) {
+    --border-radius: 30px 30px 0 0;
+    --height: auto;
+    --width: 640px;
+    --max-height: calc(100% - #{$size-xl});
+    --max-width: 640px !important;
+  }
+
   &--auto {
     &::part(content) {
       --border-radius: #{$size-md};
@@ -135,28 +143,3 @@ ion-modal::part(content) {
     padding-top: $size-md;
   }
 }
-
-/*
-@media (max-width: 600px) {
-  .c-ion-modal {
-    .modal-wrapper {
-      .ion-page {
-        padding-top: $size-xl * 2;
-        padding-bottom: 0;
-        justify-content: flex-end;
-      }
-    }
-  }
-
-  .c-modal {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    min-height: 60vh;
-    margin-bottom: 0;
-
-    &__footer {
-      border-top: 0;
-    }
-  }
-}
-*/
