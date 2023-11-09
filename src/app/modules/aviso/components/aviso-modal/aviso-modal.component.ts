@@ -6,6 +6,7 @@ import { Aviso, avisoVazio } from '../../../../shared/utilities/entidade/entidad
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AvisoModalTituloComponent } from '../aviso-modal-titulo/aviso-modal-titulo.component';
 import { AvisoModalTextoComponent } from '../aviso-modal-texto/aviso-modal-texto.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-aviso-modal',
@@ -27,12 +28,14 @@ export class AvisoModalComponent implements OnInit {
   @Input('modo') modo: 'cadastrar' | 'editar' | 'detalhes' = 'detalhes'
   @Input('aviso') aviso: Aviso = avisoVazio()
   @Input('hasAcessoGerenciamentoAviso') hasAcessoGerenciamentoAviso: boolean = false
+  @Input() isResponsavel: boolean = true
 
   form: UntypedFormGroup
 
   constructor(
+    private router: Router,
     private formBuilder: UntypedFormBuilder,
-    private modalController: ModalController
+    private modalController: ModalController,
   ) {
     this.form = formBuilder.group({
       titulo: ['', Validators.required],
@@ -107,6 +110,14 @@ export class AvisoModalComponent implements OnInit {
     this.modo = 'detalhes'
     this.form.controls.titulo.disable()
     this.form.controls.texto.disable()
+  }
+
+  navegarCanal(){
+
+    const caminho = '/app/mensagem/' + '0' + '/canal'
+    this.router.navigate([caminho])
+    
+    return this.modalController.dismiss(undefined, 'duvidaAviso')
   }
 
 }

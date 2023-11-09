@@ -211,7 +211,7 @@ export var AVISO_DATA: Aviso[] = [
     },{
         idAviso: 1,
         idFuncionario: 0,
-        idCanal: 0,
+        idCanal: 2,
         titulo: 'Aviso 1',
         texto: 'teste2',
         arquivo: '',
@@ -222,7 +222,7 @@ export var AVISO_DATA: Aviso[] = [
     },{
         idAviso: 2,
         idFuncionario: 0,
-        idCanal: 0,
+        idCanal: 1,
         titulo: 'Aviso 2',
         texto: 'teste3',
         arquivo: '',

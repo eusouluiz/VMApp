@@ -9,6 +9,10 @@
       </ion-label>
     </ion-row>
     <hr>
+    <ion-row *ngIf="isResponsavel" class="ion-justify-content-end">
+      <a class="c-link ion-align-items-center u-font-weight--bold" (click)="navegarCanal()">
+        Tire suas Dúvidas <ion-icon name="chevron-forward-outline"></ion-icon></a>
+    </ion-row>
   </form>
   <ng-container *ngIf="!isModoDetalhes() && hasAcessoGerenciamentoAviso">
     <app-botoes-controle modoBotoes="salvar" (onSalvar)="salvarAviso()" (onCancelar)="cancelar()"></app-botoes-controle>

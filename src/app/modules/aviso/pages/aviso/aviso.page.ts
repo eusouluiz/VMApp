@@ -8,6 +8,7 @@ import { Aviso, avisoVazio } from '../../../../shared/utilities/entidade/entidad
 import { AvisoModalComponent } from '../../components/aviso-modal/aviso-modal.component';
 import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
 import { NovoAvisoComponent } from '../../components/novo-aviso/novo-aviso.component';
+import { CanalService } from '../../../../core/services/canal-service/canal.service';
 
 @Component({
   selector: 'app-aviso',
@@ -19,14 +20,16 @@ export class AvisoPage extends Pagina implements OnInit {
   avisos: Aviso[] = []
   //continuar restricao de avisos
   idResponsavel?: number = this.usuarioLogado.getIdResponsavel()
+  isResponsavel?: boolean = this.usuarioLogado.isResponsavel()
 
   constructor(
     private router: Router,
     private avisoService: AvisoService,
     private modalController: ModalController,
     private usuarioLogado: UsuarioLogado,
+    private canalService: CanalService
   ) {
-    const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_AVISO
+    const ROTA_BASE = ConstantesRotas.ROTA_APP
     super(router, ROTA_BASE)
 
     this.inicializarConteudo()
@@ -59,6 +62,7 @@ export class AvisoPage extends Pagina implements OnInit {
       componentProps: {
         modo: 'detalhes',
         aviso: aviso,
+        isResponsavel: this.isResponsavel,
         hasAcessoGerenciamentoAviso: this.hasAcessoGerenciamentoAviso(),
       },
     });
@@ -74,6 +78,15 @@ export class AvisoPage extends Pagina implements OnInit {
       this.avisoService.alterarAviso(aviso)
     } else if (role === 'deletarAviso') {
       this.avisoService.deletarAviso(aviso.idAviso)
+    } else if (role === 'duvidaAviso'){
+      if (this.idResponsavel !== undefined) {
+        const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(aviso.idCanal, this.idResponsavel)
+        const caminho = ConstantesRotas.ROTA_MENSAGEM + ConstantesRotas.BARRA + idCanalResponsavel + ConstantesRotas.ROTA_MENSAGEM_CANAL
+
+        this.navegarPara(caminho)
+      } else {
+        throw new Error('Aviso: responsavel nao encontrado')
+      }
     }
   }
 
