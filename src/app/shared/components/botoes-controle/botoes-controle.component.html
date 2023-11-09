@@ -1,0 +1,21 @@
+<ng-container *ngIf="modoBotoes === 'editar'">
+  <ion-row size="12" class="ion-justify-content-between">
+    <ion-col size="2">
+      <ion-fab-button (click)="deletar()" color="danger">
+        <ion-icon name="trash"></ion-icon>
+      </ion-fab-button>
+    </ion-col>
+    <ion-col size="2">
+      <ion-fab-button (click)="editar()" style="float: right;">
+        <ion-icon name="pencil"></ion-icon>
+      </ion-fab-button>
+    </ion-col>
+  </ion-row>
+</ng-container>
+<ng-container *ngIf="modoBotoes === 'salvar'">
+  <ion-row size="12" class="ion-justify-content-between">
+    <ion-button class="e-btn-cancelar" shape="round" fill="outline" color="danger" (click)="cancelar()">Cancelar</ion-button>
+    <ion-button class="e-btn-salvar" shape="round" type="submit" (click)="salvar()">Salvar</ion-button>
+  </ion-row>
+</ng-container>
+

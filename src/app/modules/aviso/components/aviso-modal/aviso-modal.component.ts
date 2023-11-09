@@ -76,6 +76,10 @@ export class AvisoModalComponent implements OnInit {
     this.form.controls.texto.enable()
   }
 
+  deletar(){
+    return this.modalController.dismiss(undefined, 'deletarAviso')
+  }
+
   salvarAviso() {
     if (this.form.valid) {
       const formAviso = {

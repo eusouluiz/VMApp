@@ -1,33 +1,21 @@
 <div class="c-modal-backdrop"></div>
 <div class="c-modal">
   <form [formGroup]="form">
-    <app-aviso-modal-titulo formControlName="titulo" [isCadastrar]="!isModoDetalhes()"></app-aviso-modal-titulo>
+    <app-aviso-modal-titulo formControlName="titulo" [isEditar]="!isModoDetalhes()"></app-aviso-modal-titulo>
     <hr>
     <ion-row>
       <ion-label>
-        <app-aviso-modal-texto formControlName="texto" [isCadastrar]="!isModoDetalhes()"></app-aviso-modal-texto>
+        <app-aviso-modal-texto formControlName="texto" [isEditar]="!isModoDetalhes()"></app-aviso-modal-texto>
       </ion-label>
     </ion-row>
     <hr>
-    <ion-row *ngIf="hasAcessoGerenciamentoAviso">
-      <ng-container *ngIf="isModoDetalhes(); then modoDetalhes; else modoEdicao"></ng-container>
-      <ng-template #modoDetalhes>
-        <ion-row style="flex-direction: row-reverse;">
-          <ion-col size="auto">
-            <ion-button shape="round" type="submit" (click)="iniciarEdicao()">Editar</ion-button>
-          </ion-col>
-        </ion-row>
-      </ng-template>
-      <ng-template #modoEdicao>
-        <ion-row style="flex-direction: row-reverse;">
-          <ion-col size="auto">
-            <ion-button shape="round" type="submit" (click)="salvarAviso()">Salvar</ion-button>
-          </ion-col>
-          <ion-col size="auto">
-            <ion-button shape="round" fill="outline" color="danger" (click)="cancelar()">Cancelar</ion-button>
-          </ion-col>
-        </ion-row>
-      </ng-template>
-    </ion-row>
   </form>
+  <ng-container *ngIf="!isModoDetalhes() && hasAcessoGerenciamentoAviso">
+    <app-botoes-controle modoBotoes="salvar" (onSalvar)="salvarAviso()" (onCancelar)="cancelar()"></app-botoes-controle>
+  </ng-container>
+  <ng-container *ngIf="isModoDetalhes()">
+    <app-botoes-controle (onEditar)="iniciarEdicao()" (onDeletar)="deletar()" 
+      header="Deseja deletar {{aviso.titulo}}?"></app-botoes-controle>  
+  </ng-container>
+  <div style="height: 80px;"></div>
 </div>

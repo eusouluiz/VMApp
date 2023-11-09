@@ -30,7 +30,6 @@ export class AvisoPage extends Pagina implements OnInit {
     super(router, ROTA_BASE)
 
     this.inicializarConteudo()
-    this.abrirModalNovoAviso()
   }
 
   ngOnInit() {
@@ -56,7 +55,7 @@ export class AvisoPage extends Pagina implements OnInit {
       component: AvisoModalComponent,
       mode: 'md',
       cssClass: 'c-ion-modal--sheet',
-      initialBreakpoint: 0.8,
+      initialBreakpoint: 0.82,
       componentProps: {
         modo: 'detalhes',
         aviso: aviso,
@@ -73,6 +72,8 @@ export class AvisoPage extends Pagina implements OnInit {
       aviso.texto = data.texto
 
       this.avisoService.alterarAviso(aviso)
+    } else if (role === 'deletarAviso') {
+      this.avisoService.deletarAviso(aviso.idAviso)
     }
   }
 
