@@ -79,7 +79,7 @@ export class AvisoModalComponent implements OnInit {
     this.form.controls.texto.enable()
   }
 
-  deletar(){
+  deletar() {
     return this.modalController.dismiss(undefined, 'deletarAviso')
   }
 
@@ -89,7 +89,7 @@ export class AvisoModalComponent implements OnInit {
         titulo: this.form.controls.titulo.value,
         texto: this.form.controls.texto.value,
       }
-  
+
       this.modo = 'detalhes'
       return this.modalController.dismiss(formAviso, 'salvarAviso')
     } else {
@@ -112,7 +112,7 @@ export class AvisoModalComponent implements OnInit {
     this.form.controls.texto.disable()
   }
 
-  navegarCanal(){
+  navegarCanal() {
     return this.modalController.dismiss(undefined, 'duvidaAviso')
   }
 
