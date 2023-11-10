@@ -1,7 +1,7 @@
 <div class="c-field" ion-content>
   <h6 class="c-field__label">{{ label }}</h6>
 
-  <ion-select class="c-field__select" [interfaceOptions]="interfaceOptions"
+  <ion-select class="c-field__select" [interface]="interface" [interfaceOptions]="interfaceOptions"
     [placeholder]="placeholder || ('FIELDS.SELECT.PLACEHOLDER' | translate)" [required]="required"
     [formControl]="ngControl.control" [attr.multiple]="multiple"
     [okText]="'FIELDS.SELECT.OK_TEXT' | translate"

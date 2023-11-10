@@ -18,7 +18,6 @@ import { MatButtonModule } from '@angular/material/button'
 import { GerenciamentoResponsavelDetalhesPage } from './pages/gerenciamento-responsavel-detalhes/gerenciamento-responsavel-detalhes.page';
 import { GerenciamentoAlunoDetalhesPage } from './pages/gerenciamento-aluno-detalhes/gerenciamento-aluno-detalhes.page';
 import { GerenciamentoTurmaDetalhesPage } from './pages/gerenciamento-turma-detalhes/gerenciamento-turma-detalhes.page';
-import { BotoesControleComponent } from './components/botoes-controle/botoes-controle.component';
 import { GerenciamentoFuncionarioDetalhesPage } from './pages/gerenciamento-funcionario-detalhes/gerenciamento-funcionario-detalhes.page';
 import { GerenciamentoCargoDetalhesPage } from './pages/gerenciamento-cargo-detalhes/gerenciamento-cargo-detalhes.page';
 import { GerenciamentoCanalPage } from './pages/gerenciamento-canal/gerenciamento-canal.page';
@@ -45,7 +44,6 @@ import { GerenciamentoCanalDetalhesPage } from './pages/gerenciamento-canal-deta
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    BotoesControleComponent
   ]
 })
 export class GerenciamentoModule { }

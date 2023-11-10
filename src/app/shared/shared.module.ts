@@ -35,6 +35,7 @@ import { ContentSegmentComponent } from './components/content-segment/content-se
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
+import { BotoesControleComponent } from './components/botoes-controle/botoes-controle.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { AutocompleteComponent } from './components/autocomplete/autocomplete.co
     FieldValidationIconComponent,
     HeaderComponent,
     AutocompleteComponent,
+    BotoesControleComponent,
   ],
   imports: [
     CommonModule,
@@ -89,6 +91,7 @@ import { AutocompleteComponent } from './components/autocomplete/autocomplete.co
     FieldValidationIconComponent,
     HeaderComponent,
     AutocompleteComponent,
+    BotoesControleComponent,
   ],
 })
 export class SharedModule {}

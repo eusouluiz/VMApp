@@ -17,7 +17,7 @@ import { ControlValueAccessor, FormsModule, NgControl, ReactiveFormsModule } fro
 })
 export class AvisoModalTextoComponent implements ControlValueAccessor, OnInit {
 
-  @Input('isCadastrar') isCadastrar: boolean = false
+  @Input('isEditar') isEditar: boolean = false
 
   constructor(
     @Self() @Optional() public ngControl: NgControl

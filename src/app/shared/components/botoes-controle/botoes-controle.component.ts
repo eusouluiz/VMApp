@@ -1,26 +1,23 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { SharedModule } from '../../../../shared/shared.module';
-import { CommonModule } from '@angular/common';
 import { ActionSheetButton, ActionSheetController, IonicModule } from '@ionic/angular';
 
 @Component({
   selector: 'app-botoes-controle',
   templateUrl: './botoes-controle.component.html',
   styleUrls: ['./botoes-controle.component.scss'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    IonicModule,
-    SharedModule
-  ]
 })
 export class BotoesControleComponent implements OnInit {
+
+  @Input() modoBotoes: string = 'editar'
 
   @Input('header') header: string = ''
 
   @Output('onEditar') onEditar = new EventEmitter<boolean>()
   @Output('onDeletar') onDeletar = new EventEmitter<any>()
   
+  @Output('onSalvar') onSalvar = new EventEmitter<boolean>()
+  @Output('onCancelar') onCancelar = new EventEmitter<boolean>()
+
   //deletar
   actionDeletar: (string | ActionSheetButton<any>)[] = [
     {
@@ -46,9 +43,9 @@ export class BotoesControleComponent implements OnInit {
     private actionSheetController: ActionSheetController,
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  editar(){
+  editar() {
     this.onEditar.emit(true)
   }
 
@@ -61,4 +58,11 @@ export class BotoesControleComponent implements OnInit {
     actionSheet.present()
   }
 
+  salvar() {
+    this.onSalvar.emit(true)
+  }
+
+  cancelar() {
+    this.onCancelar.emit(true)
+  }
 }

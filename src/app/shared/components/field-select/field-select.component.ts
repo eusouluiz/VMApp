@@ -23,6 +23,8 @@ export class FieldSelectComponent implements ControlValueAccessor, OnInit {
 
   @Input() multiple = false;
 
+  @Input() interface = 'alert'
+
   value: string | null = null;
 
   isDisabled = false;
