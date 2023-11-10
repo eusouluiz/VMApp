@@ -113,10 +113,6 @@ export class AvisoModalComponent implements OnInit {
   }
 
   navegarCanal(){
-
-    const caminho = '/app/mensagem/' + '0' + '/canal'
-    this.router.navigate([caminho])
-    
     return this.modalController.dismiss(undefined, 'duvidaAviso')
   }
 
