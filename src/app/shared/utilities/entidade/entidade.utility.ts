@@ -2,6 +2,8 @@
 // ENTIDADES
 // ====================================
 
+import { ConstantesPrioridadesAvisos } from '../constantes/constantes.utility';
+
 export interface Usuario {
   idUsuario: number;
   cpf: string;
@@ -338,11 +340,11 @@ export function avisoVazio(): Aviso {
 }
 
 export function lembreteVazio(): Lembrete {
-  return {
-    idLembrete: -1,
-    idAviso: -1,
-    titulo: '',
-    texto: '',
-    dataLembrete: new Date(),
-  };
+    return {
+        idLembrete: -1,
+        idAviso: -1,
+        titulo: '',
+        texto: '',
+        dataLembrete: new Date(),
+    }
 }

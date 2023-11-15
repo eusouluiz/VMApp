@@ -6,6 +6,7 @@ import { TranslationsService } from './core/services/translations-service/transl
 import { BehaviorSubject } from 'rxjs';
 import { MenuArea } from './shared/components/page-menu/page-menu.interface';
 import { PageMenuService } from './core/services/page-menu/page-menu.service';
+import { SessionRepository } from './core/state/session/session.repository';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,8 @@ export class AppComponent {
   constructor(
     private translationsService: TranslationsService,
     private platform: Platform,
-    private pageMenuService: PageMenuService
+    private pageMenuService: PageMenuService,
+    private sessionRepository: SessionRepository
   ) {
     this.initializeApp();
 
@@ -28,11 +30,16 @@ export class AppComponent {
     this.currentTab = this.pageMenuService.currentTab;
   }
 
-  initializeApp() {
-    this.platform.ready().then(() => {
-      this.translationsService.init();
-      this.setMobileStarterAssets();
-    });
+  async initializeApp() {
+    await this.platform.ready();
+    this.translationsService.init();
+
+    // await this.localNotificationsService.init();
+    // await this.pushNotificationsService.init();
+
+    if (this.sessionRepository.isLoggedIn()) {
+      // this.startUpService.loggedStart();
+    }
   }
 
   onTabChange(newTab: MenuArea) {

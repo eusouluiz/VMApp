@@ -4,15 +4,15 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <form [formGroup]="form" (ngSubmit)="submit()">
+<ion-content [fullscreen]="true">
+  <form [formGroup]="form">
     <app-field-input
       formControlName="cpf"
       label="Usário (CPF)"
       placeholder="000.000.000-00"
       showValidationErrorMessage="true"></app-field-input>
-    <app-field-password formControlName="senha" label=" " placeholder="Senha"></app-field-password>
+    <app-field-password formControlName="password" label=" " placeholder="Senha"></app-field-password>
 
-    <app-button type="submit"> Entrar </app-button>
+    <app-button (click)="submit()"> Entrar </app-button>
   </form>
 </ion-content>

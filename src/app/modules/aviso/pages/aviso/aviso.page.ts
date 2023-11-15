@@ -3,7 +3,10 @@ import { AvisoService } from './../../../../core/services/aviso-service/aviso.se
 import { Component, OnInit } from '@angular/core';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { Router } from '@angular/router';
-import { ConstantesFuncionalidades, ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
+import {
+  ConstantesFuncionalidades,
+  ConstantesRotas,
+} from '../../../../shared/utilities/constantes/constantes.utility';
 import { Aviso, avisoVazio } from '../../../../shared/utilities/entidade/entidade.utility';
 import { AvisoModalComponent } from '../../components/aviso-modal/aviso-modal.component';
 import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
@@ -32,11 +35,10 @@ export class AvisoPage extends Pagina implements OnInit {
     const ROTA_BASE = ConstantesRotas.ROTA_APP
     super(router, ROTA_BASE)
 
-    this.inicializarConteudo()
+    this.inicializarConteudo();
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngAfterViewInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
@@ -49,7 +51,7 @@ export class AvisoPage extends Pagina implements OnInit {
   }
 
   resgatarAvisos(): Aviso[] {
-    return this.avisoService.buscarTodosAvisos()
+    return this.avisoService.buscarTodosAvisos();
   }
 
   async abrirModalAviso(aviso: Aviso) {
@@ -114,5 +116,4 @@ export class AvisoPage extends Pagina implements OnInit {
       this.avisoService.incluirAviso(data)
     }
   }
-
 }
