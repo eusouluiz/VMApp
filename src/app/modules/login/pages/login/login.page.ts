@@ -1,126 +1,162 @@
-import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SessionService } from '../../../../core/state/session/session.service';
-import { FUNCIONARIO_DATA, Funcionario, RESPONSAVEL_DATA, Responsavel, USUARIO_DATA, Usuario, logaData } from '../../../../shared/utilities/entidade/entidade.utility';
+import {
+  // FUNCIONARIO_DATA,
+  // Funcionario,
+  // RESPONSAVEL_DATA,
+  // Responsavel,
+  // USUARIO_DATA,
+  Usuario,
+  logaData,
+} from '../../../../shared/utilities/entidade/entidade.utility';
+import { LoginApiBody } from '../../../../core/state/session/session.interface';
+import { finalize, tap } from 'rxjs';
+import { ToastService } from '../../../../core/toasts/services/toast-service/toast.service';
+import { IonInput } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class LoginPage {
+  @ViewChild('password', { static: false }) password: IonInput | undefined;
 
-  usuario!: Usuario
-  form: UntypedFormGroup;
+  usuario!: Usuario;
+  // form: UntypedFormGroup;
+
+  form: FormGroup<{ cpf: FormControl; password: FormControl }>;
 
   constructor(
     private formBuilder: UntypedFormBuilder,
     private router: Router,
     private sessionService: SessionService,
+    private toastService: ToastService
   ) {
-
-    logaData()
-
     this.form = this.formBuilder.group({
-      cpf: ['', Validators.required],
-      senha: ['', Validators.required]
+      cpf: ['', [Validators.required]],
+      password: ['', Validators.required],
     });
-  }
-
-  ngOnInit() {
+    logaData();
   }
 
   submit() {
-    const cpfForm = this.form.value.cpf
-    const senhaForm = this.form.value.senha
+    // const cpfForm = this.form.value.cpf;
+    // const senhaForm = this.form.value.senha;
 
-    try {
-      this.usuario = autenticar(cpfForm, senhaForm)
-      var responsavelLogado: Responsavel | undefined = undefined
-      var funcionarioLogado: Funcionario | undefined = undefined
+    const body: LoginApiBody = {
+      cpf: this.form.controls.cpf.value,
+      password: this.form.controls.password.value,
+    };
 
-      if (this.usuario) {
-        console.log('logado com sucesso')
-        switch (this.usuario.tipoUsuario) {
-          case 'F': {
-            console.log('funcionario')
-            const funcionario = buscarFuncionario(this.usuario.idUsuario)
-            if (funcionario === undefined) {
-              throw new Error('Funcionario nao encontrado')
-            }
-            funcionarioLogado = funcionario
-            break
+    this.sessionService
+      .login(body)
+      .pipe(
+        tap(() => this.sessionService.getUserInfo().subscribe()),
+        finalize(() => {
+          // this.loading = false;
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.form.reset();
+          this.navegaParaApp();
+        },
+        error: (err) => {
+          this.toastService.error(err?.message);
+
+          if (err?.original?.status === 422) {
+            return;
           }
-          case 'R': {
-            console.log('responsavel')
-            const responsavel = buscarResponsavel(this.usuario.idUsuario)
-            if (responsavel === undefined) {
-              throw new Error('Responsavel nao encontrado')
-            }
-            responsavelLogado = responsavel
-            break
-          }
-          case 'A': {
-            console.log('ambos')
-            break
-          }
-          default: {
-            throw new Error('Usuario nao definido o tipo')
-          }
-        }
-        this.sessionService.login(responsavelLogado, funcionarioLogado).subscribe()
-        this.navegaParaApp()
-      }
-    } catch (e: any) {
-      console.log(e.message)
-    }
+        },
+      });
+
+    // try {
+    //   this.usuario = autenticar(cpfForm, senhaForm);
+    //   var responsavelLogado: Responsavel | undefined = undefined;
+    //   var funcionarioLogado: Funcionario | undefined = undefined;
+
+    //   if (this.usuario) {
+    //     console.log('logado com sucesso');
+    //     switch (this.usuario.tipoUsuario) {
+    //       case 'F': {
+    //         console.log('funcionario');
+    //         const funcionario = buscarFuncionario(this.usuario.idUsuario);
+    //         if (funcionario === undefined) {
+    //           throw new Error('Funcionario nao encontrado');
+    //         }
+    //         funcionarioLogado = funcionario;
+    //         break;
+    //       }
+    //       case 'R': {
+    //         console.log('responsavel');
+    //         const responsavel = buscarResponsavel(this.usuario.idUsuario);
+    //         if (responsavel === undefined) {
+    //           throw new Error('Responsavel nao encontrado');
+    //         }
+    //         responsavelLogado = responsavel;
+    //         break;
+    //       }
+    //       case 'A': {
+    //         console.log('ambos');
+    //         break;
+    //       }
+    //       default: {
+    //         throw new Error('Usuario nao definido o tipo');
+    //       }
+    //     }
+    //     this.sessionService.login(responsavelLogado, funcionarioLogado).subscribe();
+    //     this.navegaParaApp();
+    //   }
+    // } catch (e: any) {
+    //   console.log(e.message);
+    // }
   }
 
   private navegaParaApp() {
-    this.router.navigate(['/app'])
-  }
-
-}
-
-// autentica e retorna o usuario encontrado
-function autenticar(cpfForm: String, senhaForm: String): Usuario {
-  const usuario = buscarUsuarioPorCpf(cpfForm)
-  if (usuario === undefined) {
-    throw new Error("Usuario nao encontrado")
-  }
-  if (isSenhaCorreta(usuario, senhaForm)) {
-    return usuario
-  } else {
-    throw new Error("Senha incorreta")
+    this.router.navigate(['/app']);
   }
 }
 
-function buscarUsuarioPorCpf(cpfForm: String): Usuario | undefined {
-  const listaUsuarios = USUARIO_DATA
+// // autentica e retorna o usuario encontrado
+// function autenticar(cpfForm: String, senhaForm: String): Usuario {
+//   const usuario = buscarUsuarioPorCpf(cpfForm);
+//   if (usuario === undefined) {
+//     throw new Error('Usuario nao encontrado');
+//   }
+//   if (isSenhaCorreta(usuario, senhaForm)) {
+//     return usuario;
+//   } else {
+//     throw new Error('Senha incorreta');
+//   }
+// }
 
-  return listaUsuarios.find((u) => {
-    return u.cpf === cpfForm
-  })
-}
+// function buscarUsuarioPorCpf(cpfForm: String): Usuario | undefined {
+//   const listaUsuarios = USUARIO_DATA;
 
-function isSenhaCorreta(usuario: Usuario, senhaForm: String) {
-  return usuario.senha === senhaForm
-}
+//   return listaUsuarios.find((u) => {
+//     return u.cpf === cpfForm;
+//   });
+// }
 
-function buscarResponsavel(idUsuario: Number): Responsavel | undefined {
-  const listaResponsaveis = RESPONSAVEL_DATA
+// function isSenhaCorreta(usuario: Usuario, senhaForm: String) {
+//   return usuario.senha === senhaForm;
+// }
 
-  return listaResponsaveis.find((r) => {
-    return r.usuario.idUsuario === idUsuario
-  })
-}
+// function buscarResponsavel(idUsuario: Number): Responsavel | undefined {
+//   const listaResponsaveis = RESPONSAVEL_DATA;
 
-function buscarFuncionario(idUsuario: Number): Funcionario | undefined {
-  const listaFuncionarios = FUNCIONARIO_DATA
+//   return listaResponsaveis.find((r) => {
+//     return r.usuario.idUsuario === idUsuario;
+//   });
+// }
 
-  return listaFuncionarios.find((f) => {
-    return f.usuario.idUsuario === idUsuario
-  })
-}
+// function buscarFuncionario(idUsuario: Number): Funcionario | undefined {
+//   const listaFuncionarios = FUNCIONARIO_DATA;
 
+//   return listaFuncionarios.find((f) => {
+//     return f.usuario.idUsuario === idUsuario;
+//   });
+// }

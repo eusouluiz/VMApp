@@ -1,14 +1,16 @@
 import { createStore, select, withProps } from '@ngneat/elf';
 import { Injectable } from '@angular/core';
-import { Session } from './session.interface';
+import { Session, UserInfoApiResponse } from './session.interface';
 import { localStorageStrategy, persistState } from '@ngneat/elf-persist-state';
 
 interface SessionState {
   session: Session | undefined;
+  userInfo: UserInfoApiResponse | undefined;
 }
 
 const initialState: SessionState = {
   session: undefined,
+  userInfo: undefined,
 };
 
 const store = createStore({ name: 'session' }, withProps<SessionState>(initialState));
@@ -30,6 +32,10 @@ export class SessionRepository {
 
   session(): Session | undefined {
     return store.getValue().session;
+  }
+
+  userInfo(): UserInfoApiResponse | undefined {
+    return store.getValue().userInfo;
   }
 
   update(session: Partial<SessionState>) {

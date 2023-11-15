@@ -29,22 +29,25 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(
-    [
-      { path: '', redirectTo: 'login', pathMatch: 'full' },
-      {
-        path: 'login',
-        loadChildren: () => import('./modules/login/login.module').then((m) => m.LoginModule)
-      },
-      // necessario essa separacao por conta das tabs
-      {
-        path: 'app',
-        component: FooterComponent,
-        children:routes,
-        canActivate: [AuthGuardService]
-      }
-    ],
-    { preloadingStrategy: PreloadAllModules })],
+  imports: [
+    RouterModule.forRoot(
+      [
+        { path: '', redirectTo: 'login', pathMatch: 'full' },
+        {
+          path: 'login',
+          loadChildren: () => import('./modules/login/login.module').then((m) => m.LoginModule),
+        },
+        // necessario essa separacao por conta das tabs
+        {
+          path: 'app',
+          component: FooterComponent,
+          children: routes,
+          canActivate: [AuthGuardService],
+        },
+      ],
+      { preloadingStrategy: PreloadAllModules }
+    ),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

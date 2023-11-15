@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 
 import { TranslationsService } from './core/services/translations-service/translations.service';
+import { SessionRepository } from './core/state/session/session.repository';
 
 @Component({
   selector: 'app-root',
@@ -10,15 +11,24 @@ import { TranslationsService } from './core/services/translations-service/transl
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor(private translationsService: TranslationsService, private platform: Platform) {
+  constructor(
+    private translationsService: TranslationsService,
+    private platform: Platform,
+    private sessionRepository: SessionRepository
+  ) {
     this.initializeApp();
   }
 
-  initializeApp() {
-    this.platform.ready().then(() => {
-      this.translationsService.init();
-      this.setMobileStarterAssets();
-    });
+  async initializeApp() {
+    await this.platform.ready();
+    this.translationsService.init();
+
+    // await this.localNotificationsService.init();
+    // await this.pushNotificationsService.init();
+
+    if (this.sessionRepository.isLoggedIn()) {
+      // this.startUpService.loggedStart();
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
