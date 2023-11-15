@@ -17,7 +17,7 @@ import { IonicModule } from '@ionic/angular';
 })
 export class AvisoModalTituloComponent implements ControlValueAccessor, OnInit {
 
-  @Input('isCadastrar') isCadastrar: boolean = false
+  @Input('isEditar') isEditar: boolean = false
 
   constructor(
     @Self() @Optional() public ngControl: NgControl

@@ -2,13 +2,17 @@
 @import '../variables.scss';
 
 .c-link {
-  color: var(--color-primary-500);
+  color: var(--ion-color-primary);
   cursor: pointer;
-  text-decoration: underline;
   white-space: nowrap;
+  text-transform: uppercase;
+
+  &:visited {
+    text-decoration: none;
+  }
 
   &:hover {
-    color: var(--color-gray-900);
+    text-decoration: underline;
   }
 
   &--clear {

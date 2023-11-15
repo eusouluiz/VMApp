@@ -1,8 +1,6 @@
-<app-header titulo="Novo Aviso" botaoRetorno="true"></app-header>
-
-<ion-content class="ion-padding">
-  
-  <form [formGroup]="form" (ngSubmit)="salvar()">
+<div class="c-modal-backdrop"></div>
+<div class="c-modal">
+  <form [formGroup]="form">
     <ion-row size="12">
       <ion-col size="12">
         <app-field-input formControlName="titulo" label="Titulo"></app-field-input>
@@ -10,8 +8,8 @@
     </ion-row>
     <ion-row>
       <ion-col size="12" sizeLg="6" sizeMd="6">
-        <app-field-select formControlName="prioridade" label="Prioridade" [options]="opcoesPrioridade">
-        </app-field-select>
+        <app-autocomplete formControlName="prioridade" idBusca="busca-prioridade" [listaItens]="nomePrioridadesBusca" 
+          (onBusca)="selecionarPrioridade($event)" label="Prioridade"></app-autocomplete>
       </ion-col>
       <ion-col size="12" sizeLg="6" sizeMd="6">
         <app-autocomplete formControlName="canal" idBusca="busca-canal" [listaItens]="nomeCanaisBusca" 
@@ -22,18 +20,19 @@
     <!-- TABELA TURMA -->
     <ion-row>
       <ion-col size="12">
-        <ng-container>
+        <h6 class="c-field__label">Turmas para envio:</h6>
+        <ng-container *ngIf="listaTurmasTabela.length > 0">
           <ng-container *ngFor="let turma of listaTurmasTabela">
             <ion-item class="c-item"
               lines="none">
               <ion-label>
                 <ion-row class="ion-align-items-center">
-                  <ion-col class="ion-align-items-center" size="9" sizeLg="11" sizeMd="11">
+                  <ion-col class="ion-align-items-center" size="9" sizeLg="10" sizeMd="10">
                     <ion-row>
                       <ion-text class="c-item-titulo ion-text-wrap">{{turma.nome}}</ion-text>
                     </ion-row>
                   </ion-col>
-                  <ion-col size="3" sizeLg="1" sizeMd="1" style="text-align: -webkit-right">
+                  <ion-col size="3" sizeLg="2" sizeMd="2" style="text-align: -webkit-right">
                     <ion-fab-button color="danger" size="small" 
                         (click)="deletarTurma(turma.idTurma)">
                         <ion-icon name="trash"></ion-icon>
@@ -62,14 +61,18 @@
           rowsTextArea="20"></app-field-input>
       </ion-col>
     </ion-row>
+    <ion-row class="ion-justify-content-end">
+      <ion-col size="6" sizeLg="4" sizeMd="4">
+        <app-field-datetime placeholder="Lembrete" type="date" formControlName="dataLembrete"></app-field-datetime>
+      </ion-col>
+    </ion-row>
     <ion-row style="flex-direction: row-reverse;">
       <ion-col size="auto">
-        <ion-button shape="round" type="submit">Salvar</ion-button>
+        <ion-button shape="round" (click)="salvar()">Salvar</ion-button>
       </ion-col>
       <ion-col size="auto">
         <ion-button shape="round" fill="outline" color="danger" (click)="cancelar()">Cancelar</ion-button>
       </ion-col>
     </ion-row>
   </form>
-
-</ion-content>
+</div>

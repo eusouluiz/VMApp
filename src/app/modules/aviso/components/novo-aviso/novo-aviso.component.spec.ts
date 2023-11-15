@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { NovoAvisoPage } from './novo-aviso.page';
+import { NovoAvisoComponent } from './novo-aviso.component';
 
-describe('NovoAvisoPage', () => {
-  let component: NovoAvisoPage;
-  let fixture: ComponentFixture<NovoAvisoPage>;
+describe('NovoAvisoComponent', () => {
+  let component: NovoAvisoComponent;
+  let fixture: ComponentFixture<NovoAvisoComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ NovoAvisoPage ],
+      declarations: [NovoAvisoComponent],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(NovoAvisoPage);
+    fixture = TestBed.createComponent(NovoAvisoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
