@@ -2,7 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SessionService } from '../../../../core/state/session/session.service';
-import { FUNCIONARIO_DATA, Funcionario, RESPONSAVEL_DATA, Responsavel, USUARIO_DATA, Usuario, logaData } from '../../../../shared/utilities/entidade/entidade.utility';
+import {
+  FUNCIONARIO_DATA,
+  Funcionario,
+  RESPONSAVEL_DATA,
+  Responsavel,
+  USUARIO_DATA,
+  Usuario,
+  logaData,
+} from '../../../../shared/utilities/entidade/entidade.utility';
+import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 
 @Component({
   selector: 'app-login',
@@ -10,117 +19,120 @@ import { FUNCIONARIO_DATA, Funcionario, RESPONSAVEL_DATA, Responsavel, USUARIO_D
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  usuario!: Usuario;
 
-  usuario!: Usuario
   form: UntypedFormGroup;
 
   constructor(
     private formBuilder: UntypedFormBuilder,
     private router: Router,
     private sessionService: SessionService,
+    private pageMenuService: PageMenuService
   ) {
-
-    logaData()
+    logaData();
 
     this.form = this.formBuilder.group({
       cpf: ['', Validators.required],
-      senha: ['', Validators.required]
+      senha: ['', Validators.required],
     });
   }
 
   ngOnInit() {
+    console.log('ngOnInit');
+  }
+
+  ionViewWillEnter() {
+    this.pageMenuService.displayStatus.next(false);
   }
 
   submit() {
-    const cpfForm = this.form.value.cpf
-    const senhaForm = this.form.value.senha
+    const cpfForm = this.form.value.cpf;
+    const senhaForm = this.form.value.senha;
 
     try {
-      this.usuario = autenticar(cpfForm, senhaForm)
-      var responsavelLogado: Responsavel | undefined = undefined
-      var funcionarioLogado: Funcionario | undefined = undefined
+      this.usuario = this.autenticar(cpfForm, senhaForm);
+      var responsavelLogado: Responsavel | undefined = undefined;
+      var funcionarioLogado: Funcionario | undefined = undefined;
 
       if (this.usuario) {
-        console.log('logado com sucesso')
+        console.log('logado com sucesso');
         switch (this.usuario.tipoUsuario) {
           case 'F': {
-            console.log('funcionario')
-            const funcionario = buscarFuncionario(this.usuario.idUsuario)
+            console.log('funcionario');
+            const funcionario = this.buscarFuncionario(this.usuario.idUsuario);
             if (funcionario === undefined) {
-              throw new Error('Funcionario nao encontrado')
+              throw new Error('Funcionario nao encontrado');
             }
-            funcionarioLogado = funcionario
-            break
+            funcionarioLogado = funcionario;
+            break;
           }
           case 'R': {
-            console.log('responsavel')
-            const responsavel = buscarResponsavel(this.usuario.idUsuario)
+            console.log('responsavel');
+            const responsavel = this.buscarResponsavel(this.usuario.idUsuario);
             if (responsavel === undefined) {
-              throw new Error('Responsavel nao encontrado')
+              throw new Error('Responsavel nao encontrado');
             }
-            responsavelLogado = responsavel
-            break
+            responsavelLogado = responsavel;
+            break;
           }
           case 'A': {
-            console.log('ambos')
-            break
+            console.log('ambos');
+            break;
           }
           default: {
-            throw new Error('Usuario nao definido o tipo')
+            throw new Error('Usuario nao definido o tipo');
           }
         }
-        this.sessionService.login(responsavelLogado, funcionarioLogado).subscribe()
-        this.navegaParaApp()
+        this.sessionService.login(responsavelLogado, funcionarioLogado).subscribe();
+        this.navegaParaApp();
       }
     } catch (e: any) {
-      console.log(e.message)
+      console.log(e.message);
     }
   }
 
   private navegaParaApp() {
-    this.router.navigate(['/app'])
+    this.router.navigate(['/app']);
   }
 
-}
-
-// autentica e retorna o usuario encontrado
-function autenticar(cpfForm: String, senhaForm: String): Usuario {
-  const usuario = buscarUsuarioPorCpf(cpfForm)
-  if (usuario === undefined) {
-    throw new Error("Usuario nao encontrado")
+  // autentica e retorna o usuario encontrado
+  private autenticar(cpfForm: String, senhaForm: String): Usuario {
+    const usuario = this.buscarUsuarioPorCpf(cpfForm);
+    if (usuario === undefined) {
+      throw new Error('Usuario nao encontrado');
+    }
+    if (this.isSenhaCorreta(usuario, senhaForm)) {
+      return usuario;
+    } else {
+      throw new Error('Senha incorreta');
+    }
   }
-  if (isSenhaCorreta(usuario, senhaForm)) {
-    return usuario
-  } else {
-    throw new Error("Senha incorreta")
+
+  private buscarUsuarioPorCpf(cpfForm: String): Usuario | undefined {
+    const listaUsuarios = USUARIO_DATA;
+
+    return listaUsuarios.find((u) => {
+      return u.cpf === cpfForm;
+    });
+  }
+
+  private isSenhaCorreta(usuario: Usuario, senhaForm: String) {
+    return usuario.senha === senhaForm;
+  }
+
+  private buscarResponsavel(idUsuario: Number): Responsavel | undefined {
+    const listaResponsaveis = RESPONSAVEL_DATA;
+
+    return listaResponsaveis.find((r) => {
+      return r.usuario.idUsuario === idUsuario;
+    });
+  }
+
+  private buscarFuncionario(idUsuario: Number): Funcionario | undefined {
+    const listaFuncionarios = FUNCIONARIO_DATA;
+
+    return listaFuncionarios.find((f) => {
+      return f.usuario.idUsuario === idUsuario;
+    });
   }
 }
-
-function buscarUsuarioPorCpf(cpfForm: String): Usuario | undefined {
-  const listaUsuarios = USUARIO_DATA
-
-  return listaUsuarios.find((u) => {
-    return u.cpf === cpfForm
-  })
-}
-
-function isSenhaCorreta(usuario: Usuario, senhaForm: String) {
-  return usuario.senha === senhaForm
-}
-
-function buscarResponsavel(idUsuario: Number): Responsavel | undefined {
-  const listaResponsaveis = RESPONSAVEL_DATA
-
-  return listaResponsaveis.find((r) => {
-    return r.usuario.idUsuario === idUsuario
-  })
-}
-
-function buscarFuncionario(idUsuario: Number): Funcionario | undefined {
-  const listaFuncionarios = FUNCIONARIO_DATA
-
-  return listaFuncionarios.find((f) => {
-    return f.usuario.idUsuario === idUsuario
-  })
-}
-

@@ -1,0 +1,30 @@
+<div class="c-menu-container" [class.c-menu-container--hidden]="!visible">
+  <div class="c-menu" [class.c-menu--hidden]="!visible">
+    <div
+      class="c-menu__active"
+      [class.c-menu__active--left]="activeArea === 'mensagem'"
+      [class.c-menu__active--middle]="activeArea === 'aviso'"
+      [class.c-menu__active--right]="activeArea === 'gerenciamento'"></div>
+
+    <span class="c-menu__container" (click)="handleAreaSelected('mensagem')">
+      <ion-icon
+        class="c-menu__area"
+        name="chatbubbles"
+        [class.c-menu__area--active]="activeArea === 'mensagem'"></ion-icon>
+    </span>
+
+    <span class="c-menu__container" (click)="handleAreaSelected('aviso')">
+      <ion-icon
+        class="c-menu__area"
+        name="notifications"
+        [class.c-menu__area--active]="activeArea === 'aviso'"></ion-icon>
+    </span>
+
+    <span class="c-menu__container" (click)="handleAreaSelected('gerenciamento')">
+      <ion-icon
+        class="c-menu__area"
+        name="settings"
+        [class.c-menu__area--active]="activeArea === 'gerenciamento'"></ion-icon>
+    </span>
+  </div>
+</div>

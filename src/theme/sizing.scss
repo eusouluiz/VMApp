@@ -1,6 +1,9 @@
 $size-base: 1rem;
-$size-xs: $size-base * 0.25;
-$size-sm: $size-base * 0.5;
-$size-md: $size-base * 1;
-$size-lg: $size-base * 2;
-$size-xl: $size-base * 4;
+$size-mini: $size-base * 0.25; // 4px
+$size-tiny: $size-base * 0.375; // 6px
+$size-2xs: $size-base * 0.5; // 8px
+$size-xs: $size-base * 0.75; // 12px
+$size-sm: $size-base * 0.875; // 14px
+$size-md: $size-base * 1; // 16px
+$size-lg: $size-base * 1.5; // 24px
+$size-xl: $size-base * 2; //32px

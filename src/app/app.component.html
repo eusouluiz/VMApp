@@ -1,5 +1,10 @@
 <ion-app>
   <ion-router-outlet></ion-router-outlet>
+
+  <app-page-menu
+    [visible]="showPageMenu | async"
+    [activeArea]="currentTab | async"
+    (onChange)="onTabChange($event)"></app-page-menu>
 </ion-app>
 
 <app-toast-container></app-toast-container>

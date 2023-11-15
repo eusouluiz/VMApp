@@ -25,7 +25,7 @@ import { CustomTranslationsLoaderService } from './core/services/custom-translat
 
 import { ApiInterceptor } from './core/interceptors/api/api.interceptor';
 import { preencheDados } from './shared/utilities/entidade/entidade.utility';
-
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,6 +34,7 @@ import { preencheDados } from './shared/utilities/entidade/entidade.utility';
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
+    SharedModule,
     ToastModule,
     TranslateModule.forRoot({
       loader: {
@@ -59,9 +60,7 @@ import { preencheDados } from './shared/utilities/entidade/entidade.utility';
   bootstrap: [AppComponent],
 })
 export class AppModule {
-
-  constructor () {
-    preencheDados()
+  constructor() {
+    preencheDados();
   }
-
 }

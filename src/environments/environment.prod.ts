@@ -9,5 +9,5 @@ export const environment = {
     enabled: true,
     payload: {},
   },
-  availableLanguages: ['br', 'en', 'de'],
+  availableLanguages: ['br', 'en'],
 };
