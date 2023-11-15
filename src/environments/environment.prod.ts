@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   api: {
-    endpoint: '',
+    endpoint: 'https://vmapi.fly.dev/api',
     maxWaiting: 10000,
     authHeader: 'Authorization',
   },

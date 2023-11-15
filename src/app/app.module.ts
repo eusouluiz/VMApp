@@ -25,7 +25,10 @@ import { CustomTranslationsLoaderService } from './core/services/custom-translat
 
 import { ApiInterceptor } from './core/interceptors/api/api.interceptor';
 import { preencheDados } from './shared/utilities/entidade/entidade.utility';
+<<<<<<< HEAD
 import { SharedModule } from './shared/shared.module';
+=======
+>>>>>>> main
 
 @NgModule({
   declarations: [AppComponent],

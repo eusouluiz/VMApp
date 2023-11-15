@@ -3,9 +3,13 @@ import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 
 import { TranslationsService } from './core/services/translations-service/translations.service';
+<<<<<<< HEAD
 import { BehaviorSubject } from 'rxjs';
 import { MenuArea } from './shared/components/page-menu/page-menu.interface';
 import { PageMenuService } from './core/services/page-menu/page-menu.service';
+=======
+import { SessionRepository } from './core/state/session/session.repository';
+>>>>>>> main
 
 @Component({
   selector: 'app-root',
@@ -13,6 +17,7 @@ import { PageMenuService } from './core/services/page-menu/page-menu.service';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
+<<<<<<< HEAD
   readonly currentTab: BehaviorSubject<MenuArea>;
 
   readonly showPageMenu: BehaviorSubject<boolean>;
@@ -21,6 +26,12 @@ export class AppComponent {
     private translationsService: TranslationsService,
     private platform: Platform,
     private pageMenuService: PageMenuService
+=======
+  constructor(
+    private translationsService: TranslationsService,
+    private platform: Platform,
+    private sessionRepository: SessionRepository
+>>>>>>> main
   ) {
     this.initializeApp();
 
@@ -28,11 +39,16 @@ export class AppComponent {
     this.currentTab = this.pageMenuService.currentTab;
   }
 
-  initializeApp() {
-    this.platform.ready().then(() => {
-      this.translationsService.init();
-      this.setMobileStarterAssets();
-    });
+  async initializeApp() {
+    await this.platform.ready();
+    this.translationsService.init();
+
+    // await this.localNotificationsService.init();
+    // await this.pushNotificationsService.init();
+
+    if (this.sessionRepository.isLoggedIn()) {
+      // this.startUpService.loggedStart();
+    }
   }
 
   onTabChange(newTab: MenuArea) {
