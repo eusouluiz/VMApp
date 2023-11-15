@@ -9,40 +9,32 @@ import { Mensagem } from '../../../../shared/utilities/entidade/entidade.utility
   templateUrl: './mensagem.component.html',
   styleUrls: ['./mensagem.component.scss'],
   standalone: true,
-  imports: [
-    CommonModule,
-    IonicModule,
-    SharedModule,
-  ]
+  imports: [CommonModule, IonicModule, SharedModule],
 })
 export class MensagemComponent implements OnInit {
+  @Input('mensagem') mensagem!: Mensagem;
 
-  @Input('mensagem') mensagem!: Mensagem
-  @Input('idUsuario') idUsuario!: number
+  @Input('idUsuario') idUsuario!: number;
 
-  hora!: string
-  minuto!: string
+  hora!: string;
 
-  constructor() { 
-  }
+  minuto!: string;
 
   ngOnInit() {}
 
   ngAfterViewInit(): void {
     // console.log(this.mensagem)
     // console.log(this.idUsuario)
-
   }
 
-  resgatarHorario(){
-    this.hora = formatarNumero(this.mensagem.dataHoraEnvio.getHours())
-    this.minuto = formatarNumero(this.mensagem.dataHoraEnvio.getMinutes())
+  resgatarHorario() {
+    this.hora = this.formatarNumero(this.mensagem.dataHoraEnvio.getHours());
+    this.minuto = this.formatarNumero(this.mensagem.dataHoraEnvio.getMinutes());
 
-    return this.hora + ':' + this.minuto
+    return this.hora + ':' + this.minuto;
   }
 
-}
-
-function formatarNumero(num: number): string{
-  return num.toString().padStart(2, '00')
+  private formatarNumero(num: number): string {
+    return num.toString().padStart(2, '00');
+  }
 }

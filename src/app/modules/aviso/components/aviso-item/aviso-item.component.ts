@@ -9,24 +9,16 @@ import { Aviso } from '../../../../shared/utilities/entidade/entidade.utility';
   templateUrl: './aviso-item.component.html',
   styleUrls: ['./aviso-item.component.scss'],
   standalone: true,
-  imports: [
-    CommonModule,
-    IonicModule,
-    SharedModule
-  ]
+  imports: [CommonModule, IonicModule, SharedModule],
 })
 export class AvisoItemComponent implements OnInit {
+  @Input('aviso') aviso!: Aviso;
 
-  @Input('aviso') aviso!: Aviso
-
-  @Output() onSelecionado = new EventEmitter<Aviso>()
-
-  constructor() { }
+  @Output() onSelecionado = new EventEmitter<Aviso>();
 
   ngOnInit() {}
 
-  selecionar(){
-    this.onSelecionado.emit(this.aviso)
+  selecionar() {
+    this.onSelecionado.emit(this.aviso);
   }
-
 }

@@ -11,6 +11,8 @@ export class PageMenuComponent {
 
   @Input() activeArea!: MenuArea;
 
+  @Input() userIsFuncionario: boolean = false;
+
   @Output() onChange = new EventEmitter<MenuArea>();
 
   handleAreaSelected(targetArea: MenuArea) {
