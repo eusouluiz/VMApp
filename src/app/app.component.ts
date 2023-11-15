@@ -3,13 +3,10 @@ import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 
 import { TranslationsService } from './core/services/translations-service/translations.service';
-<<<<<<< HEAD
 import { BehaviorSubject } from 'rxjs';
 import { MenuArea } from './shared/components/page-menu/page-menu.interface';
 import { PageMenuService } from './core/services/page-menu/page-menu.service';
-=======
 import { SessionRepository } from './core/state/session/session.repository';
->>>>>>> main
 
 @Component({
   selector: 'app-root',
@@ -17,7 +14,6 @@ import { SessionRepository } from './core/state/session/session.repository';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-<<<<<<< HEAD
   readonly currentTab: BehaviorSubject<MenuArea>;
 
   readonly showPageMenu: BehaviorSubject<boolean>;
@@ -25,13 +21,8 @@ export class AppComponent {
   constructor(
     private translationsService: TranslationsService,
     private platform: Platform,
-    private pageMenuService: PageMenuService
-=======
-  constructor(
-    private translationsService: TranslationsService,
-    private platform: Platform,
+    private pageMenuService: PageMenuService,
     private sessionRepository: SessionRepository
->>>>>>> main
   ) {
     this.initializeApp();
 
