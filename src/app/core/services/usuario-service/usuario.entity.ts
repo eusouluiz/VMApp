@@ -5,7 +5,7 @@ export interface UsuarioInterface {
     cpf: string,
     telefone: string,
     tipo: string,
-    email: string,
+    senha?: string,
 }
 
 export class Usuario {
@@ -14,6 +14,7 @@ export class Usuario {
     private _cpf: string = '';
     private _telefone: string = '';
     private _tipo: string = '';
+    private _senha: string = '';
 
     constructor (
         private data?: UsuarioInterface
@@ -24,6 +25,9 @@ export class Usuario {
             this._cpf = data.cpf
             this._telefone = data.telefone
             this._tipo = data.tipo
+            if (data.senha !== undefined) {
+                this._senha = data.senha
+            }
         }
     }
     
@@ -56,5 +60,11 @@ export class Usuario {
     }
     public set tipo(value: string) {
         this._tipo = value
+    }
+    public get senha(): string {
+        return this._senha;
+    }
+    public set senha(value: string) {
+        this._senha = value;
     }
 }

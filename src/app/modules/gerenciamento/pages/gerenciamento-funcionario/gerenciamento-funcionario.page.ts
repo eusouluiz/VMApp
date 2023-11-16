@@ -1,10 +1,10 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Funcionario } from '../../../../shared/utilities/entidade/entidade.utility';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { FuncionarioService } from '../../../../core/services/funcionario-service/funcionario.service';
 import { Location } from '@angular/common';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
+import { Funcionario } from '../../../../core/services/funcionario-service/funcionario.entity';
 
 @Component({
   selector: 'app-gerenciamento-funcionario',
@@ -40,7 +40,7 @@ export class GerenciamentoFuncionarioPage extends Pagina implements OnInit {
 
     // se o valor for um valor valido
     this.listaFuncionarios = this.listaFuncionarios.filter((funcionario) => {
-      return (funcionario.nome.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      return (funcionario.usuario.nome.toLowerCase().indexOf(val.toLowerCase()) > -1);
     })
   }
 

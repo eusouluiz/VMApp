@@ -1,6 +1,7 @@
 import { ResponsavelService } from './../responsavel-service/responsavel.service';
 import { Injectable } from '@angular/core';
-import { CANAL_DATA, CANAL_RESPONSAVEL_DATA, Canal, CanalResponsavel } from '../../../shared/utilities/entidade/entidade.utility';
+import { CANAL_DATA, CANAL_RESPONSAVEL_DATA } from '../../../shared/utilities/entidade/entidade.utility';
+import { Canal, CanalResponsavel } from './canal.entity';
 
 @Injectable({
   providedIn: 'root',
@@ -16,20 +17,19 @@ export class CanalService {
         return CANAL_DATA
     }
 
-    buscarCanal(idCanal: number): Canal | undefined{
+    buscarCanal(idCanal: string): Canal | undefined{
         return CANAL_DATA.find((c) => {
-            return c.idCanal === idCanal
+            return c.canal_id === idCanal
         })
     }
 
     incluirCanal(canal: Canal) {
-        canal.idCanal = CANAL_DATA[CANAL_DATA.length-1].idCanal + 1
         CANAL_DATA.push(canal)
     }
 
     alterarCanal(canal: Canal) {
         var indexC = CANAL_DATA.findIndex((c) => {
-            return c.idCanal === canal.idCanal
+            return c.canal_id === canal.canal_id
         })
         if (indexC !== -1) {
             CANAL_DATA[indexC] = canal
@@ -38,9 +38,9 @@ export class CanalService {
         }
     }
 
-    deletarCanal(idCanal: number) {
+    deletarCanal(idCanal: string) {
         var indexC = CANAL_DATA.findIndex((c) => {
-            return c.idCanal === idCanal
+            return c.canal_id === idCanal
         })
         if (indexC !== -1){
             CANAL_DATA.splice(indexC, 1)
@@ -49,10 +49,10 @@ export class CanalService {
         }
     }
 
-    buscarIdCanalResponsavel(idCanal: number, idResponsavel: number): number | undefined{
+    buscarIdCanalResponsavel(idCanal: string, idResponsavel: string): string | undefined{
         var idCanalResponsavel = CANAL_RESPONSAVEL_DATA.find((cr) => {
-            return cr.canal.idCanal === idCanal && cr.responsavel.idResponsavel === idResponsavel
-        })?.idCanalResponsavel
+            return cr.canal.canal_id === idCanal && cr.responsavel.responsavel_id === idResponsavel
+        })?.canal_responsavel_id
 
         if (idCanalResponsavel !== undefined){
             return idCanalResponsavel
@@ -60,28 +60,30 @@ export class CanalService {
         return this.incluirCanalResponsavel(idCanal, idResponsavel)
     }
 
-    buscarCanalResponsavel(idCanalResponsavel: number): CanalResponsavel | undefined{
+    buscarCanalResponsavel(idCanalResponsavel: string): CanalResponsavel | undefined{
         return CANAL_RESPONSAVEL_DATA.find((cr) => {
-            return cr.idCanalResponsavel === idCanalResponsavel
+            return cr.canal_responsavel_id === idCanalResponsavel
         })
     }
 
-    incluirCanalResponsavel(idCanal: number, idResponsavel: number): number | undefined{
+    incluirCanalResponsavel(idCanal: string, idResponsavel: string): string | undefined{
         const canal = this.buscarCanal(idCanal)
         const responsavel = this.responsavelService.buscarResponsavel(idResponsavel)
 
         if (canal !== undefined && responsavel !== undefined) {
-            var canalResponsavel: CanalResponsavel = {
-                idCanalResponsavel: CANAL_RESPONSAVEL_DATA[CANAL_RESPONSAVEL_DATA.length-1].idCanalResponsavel + 1,
-                canal: canal,
-                responsavel: responsavel
-            }
+            var canalResponsavel: CanalResponsavel = new CanalResponsavel({
+                canal_responsavel_id: '',
+                canal_id: canal.canal_id,
+                responsavel_id: responsavel.responsavel_id,
+                updated_at: new Date(),
+                created_at: new Date(),
+            })
         } else {
             throw new Error('nao encontrado canal ou responsavel')
         }
 
         CANAL_RESPONSAVEL_DATA.push(canalResponsavel)
-        return canalResponsavel.idCanalResponsavel
+        return canalResponsavel.canal_responsavel_id
     }
 
 }

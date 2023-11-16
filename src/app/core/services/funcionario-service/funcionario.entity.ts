@@ -2,16 +2,16 @@ import { Cargo } from "../cargo-service/cargo.entity"
 import { Usuario } from "../usuario-service/usuario.entity"
 
 export interface FuncionarioInterface {
-    id: string,
+    funcionario_id: string,
     user_id: string,
     cargo_id: string | null,
     created_at: Date,
     updated_at: Date,
-    user_nome: string,
+    user_nome?: string,
 }
 
 export class Funcionario {
-    private _id: string = '';
+    private _funcionario_id: string = '';
     private _usuario: Usuario = new Usuario();
     private _cargo: Cargo = new Cargo();
     private _created_at: Date = new Date();
@@ -21,22 +21,22 @@ export class Funcionario {
         private data?: FuncionarioInterface
     ) {
         if (data !== undefined) {
-            this._id = data.id
+            this._funcionario_id = data.funcionario_id
             this._usuario.user_id = data.user_id
             this._created_at = data.created_at
             this._updated_at = data.updated_at
             
             if (data.cargo_id !== null) {
-                this._cargo.id = data.cargo_id
+                this._cargo.cargo_id = data.cargo_id
             }
         }
     }
     
-    public get id(): string {
-        return this._id
+    public get funcionario_id(): string {
+        return this._funcionario_id
     }
-    public set id(value: string) {
-        this._id = value
+    public set funcionario_id(value: string) {
+        this._funcionario_id = value
     }
     public get usuario(): Usuario {
         return this._usuario

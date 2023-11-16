@@ -7,9 +7,9 @@ import { ConstantesFuncionalidades } from '../../../../shared/utilities/constant
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 
 interface OpcoesGerenciamento {
-  nomeOpcao: String,
-  paginaRedirecionamento: String,
-  idFuncionalidade: number
+  nomeOpcao: string,
+  paginaRedirecionamento: string,
+  idFuncionalidade: string
 }
 
 @Component({
@@ -19,7 +19,7 @@ interface OpcoesGerenciamento {
 })
 export class GerenciamentoPage extends Pagina implements OnInit {
 
-  idFuncionalidadesAcesso: number[] = []
+  idFuncionalidadesAcesso: string[] = []
   opcoesGerenciamento: OpcoesGerenciamento[] = [
     { nomeOpcao: 'Responsavel', paginaRedirecionamento: ConstantesRotas.ROTA_GERENCIAMENTO_RESPONSAVEL, idFuncionalidade: ConstantesFuncionalidades.GERENCIAMENTO_RESPONSAVEL },
     { nomeOpcao: 'Aluno', paginaRedirecionamento: ConstantesRotas.ROTA_GERENCIAMENTO_ALUNO, idFuncionalidade: ConstantesFuncionalidades.GERENCIAMENTO_ALUNO },
@@ -45,7 +45,7 @@ export class GerenciamentoPage extends Pagina implements OnInit {
   ngOnInit() {
   }
 
-  public possuiAcessoFuncionalidade(id: number): boolean {
+  public possuiAcessoFuncionalidade(id: string): boolean {
     return this.idFuncionalidadesAcesso.includes(id)
   }
 

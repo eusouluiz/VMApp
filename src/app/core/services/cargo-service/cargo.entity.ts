@@ -1,7 +1,8 @@
+import { Funcionalidade } from '../funcionalidade-service/funcionalidade.entity';
 import { Funcionario } from '../funcionario-service/funcionario.entity';
 
 export interface CargoInterface {
-    id: string,
+    cargo_id: string,
     nome: string,
     descricao: string,
     updated_at: Date,
@@ -9,19 +10,21 @@ export interface CargoInterface {
 }
 
 export class Cargo {
-    private _id: string = '';
+    private _cargo_id: string = '';
     private _nome: string = '';
     private _descricao: string = '';
     private _funcionarios: Funcionario[] = [];
+    private _funcionalidades: Funcionalidade[] = [];
     private _updated_at: Date = new Date();
     private _created_at: Date = new Date();
 
     constructor (
         private data?: CargoInterface,
-        private listaFuncionarios?: Funcionario[]
+        private listaFuncionarios?: Funcionario[],
+        private listaFuncionalidades?: Funcionalidade[],
     ) {
         if (data !== undefined) {
-            this._id = data.id
+            this._cargo_id = data.cargo_id
             this._nome = data.nome
             this._descricao = data.descricao
             this._updated_at = data.updated_at
@@ -30,14 +33,17 @@ export class Cargo {
             if (listaFuncionarios !== undefined) {
                 this._funcionarios = listaFuncionarios
             }
+            if (listaFuncionalidades !== undefined) {
+                this._funcionalidades = listaFuncionalidades
+            }
         }
     }
     
-    public get id(): string {
-        return this._id;
+    public get cargo_id(): string {
+        return this._cargo_id;
     }
-    public set id(value: string) {
-        this._id = value;
+    public set cargo_id(value: string) {
+        this._cargo_id = value;
     }
     public get nome(): string {
         return this._nome;
@@ -56,6 +62,12 @@ export class Cargo {
     }
     public set funcionarios(value: Funcionario[]) {
         this._funcionarios = value;
+    }
+    public get funcionalidades(): Funcionalidade[] {
+        return this._funcionalidades;
+    }
+    public set funcionalidades(value: Funcionalidade[]) {
+        this._funcionalidades = value;
     }
     public get updated_at(): Date {
         return this._updated_at;

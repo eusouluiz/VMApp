@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FUNCIONARIO_DATA, Funcionario } from '../../../shared/utilities/entidade/entidade.utility';
+import { FUNCIONARIO_DATA } from '../../../shared/utilities/entidade/entidade.utility';
+import { Funcionario } from './funcionario.entity';
 
 @Injectable({
   providedIn: 'root',
@@ -10,20 +11,19 @@ export class FuncionarioService {
         return FUNCIONARIO_DATA
     }
 
-    buscarFuncionario(idFuncionario: number): Funcionario | undefined{
+    buscarFuncionario(idFuncionario: string): Funcionario | undefined{
         return FUNCIONARIO_DATA.find((f) => {
-            return f.idFuncionario === idFuncionario
+            return f.funcionario_id === idFuncionario
         })
     } 
 
     incluirFuncionario(funcionario: Funcionario) {
-        funcionario.idFuncionario = FUNCIONARIO_DATA[FUNCIONARIO_DATA.length-1].idFuncionario + 1
         FUNCIONARIO_DATA.push(funcionario)
     }
 
     alterarFuncionario(funcionario: Funcionario) {
         var indexF = FUNCIONARIO_DATA.findIndex((f) => {
-            return f.idFuncionario === funcionario.idFuncionario
+            return f.funcionario_id === funcionario.funcionario_id
         })
         if (indexF !== -1) {
             FUNCIONARIO_DATA[indexF] = funcionario
@@ -32,9 +32,9 @@ export class FuncionarioService {
         }
     }
 
-    deletarFuncionario(idFuncionario: number) {
+    deletarFuncionario(idFuncionario: string) {
         var indexF = FUNCIONARIO_DATA.findIndex((f) => {
-            return f.idFuncionario === idFuncionario
+            return f.funcionario_id === idFuncionario
         })
         if (indexF !== -1){
             FUNCIONARIO_DATA.splice(indexF, 1)

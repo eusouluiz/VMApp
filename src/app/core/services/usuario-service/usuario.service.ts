@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { USUARIO_DATA, Usuario } from '../../../shared/utilities/entidade/entidade.utility';
+import { USUARIO_DATA } from '../../../shared/utilities/entidade/entidade.utility';
+import { Usuario } from './usuario.entity';
 
 @Injectable({
   providedIn: 'root',
@@ -10,20 +11,19 @@ export class UsuarioService {
         return USUARIO_DATA
     }
 
-    buscarUsuario(idUsuario: number): Usuario | undefined{
+    buscarUsuario(idUsuario: string): Usuario | undefined{
         return USUARIO_DATA.find((u) => {
-            return u.idUsuario === idUsuario
+            return u.user_id === idUsuario
         })
     }
 
     incluirUsuario(usuario: Usuario) {
-        usuario.idUsuario = USUARIO_DATA[USUARIO_DATA.length-1].idUsuario + 1
         USUARIO_DATA.push(usuario)
     }
 
     alterarUsuario(usuario: Usuario) {
         var indexR = USUARIO_DATA.findIndex((u) => {
-            return u.idUsuario === usuario.idUsuario
+            return u.user_id === usuario.user_id
         })
         if (indexR !== -1) {
             USUARIO_DATA[indexR] = usuario
@@ -32,9 +32,9 @@ export class UsuarioService {
         }
     }
 
-    deletarUsuario(idUsuario: number) {
+    deletarUsuario(idUsuario: string) {
         var indexR = USUARIO_DATA.findIndex((u) => {
-            return u.idUsuario === idUsuario
+            return u.user_id === idUsuario
         })
         if (indexR !== -1){
             USUARIO_DATA.splice(indexR, 1)

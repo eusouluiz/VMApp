@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common'
-import { Cargo, Funcionario, funcionarioVazio } from '../../../../shared/utilities/entidade/entidade.utility';
 import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina-gerenciamento-detalhes/pagina-gerenciamento-detalhes.utility';
 import { FuncionarioService } from '../../../../core/services/funcionario-service/funcionario.service';
 import { CargoService } from '../../../../core/services/cargo-service/cargo.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
+import { Funcionario } from '../../../../core/services/funcionario-service/funcionario.entity';
+import { Cargo } from '../../../../core/services/cargo-service/cargo.entity';
 
 @Component({
   selector: 'app-gerenciamento-funcionario-detalhes',
@@ -15,7 +16,7 @@ import { ConstantesRotas } from '../../../../shared/utilities/constantes/constan
 })
 export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
 
-  funcionario: Funcionario = funcionarioVazio()
+  funcionario: Funcionario = new Funcionario()
   listaTodosCargos: Cargo[] | null = null
 
   constructor(
@@ -58,10 +59,10 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
 
     const id = this.activatedRoute.snapshot.paramMap.get('id')
     if (this.isModoDetalhes() && id !== null) {
-      this.funcionario = this.resgatarFuncionario(Number.parseInt(id))
+      this.funcionario = this.resgatarFuncionario(id)
 
       this.form?.setValue({
-        nome: this.funcionario.nome,
+        nome: this.funcionario.usuario.nome,
         telefone: this.funcionario.usuario.telefone,
         cpf: this.funcionario.usuario.cpf,
         senha: this.funcionario.usuario.senha,
@@ -76,12 +77,12 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
   }
 
   // ---- busca funcionario ----//
-  private resgatarFuncionario(id: number): Funcionario {
+  private resgatarFuncionario(id: string): Funcionario {
     const funcionario = this.funcionarioService.buscarFuncionario(id)
     if (funcionario !== undefined) {
       return funcionario
     }
-    return funcionarioVazio()
+    return new Funcionario()
   }
   // ---- busca funcionario ----//
 
@@ -89,7 +90,7 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
 
   //delecao
   protected deletar() {
-    this.funcionarioService.deletarFuncionario(this.funcionario.idFuncionario)
+    this.funcionarioService.deletarFuncionario(this.funcionario.funcionario_id)
     this.retornarPagina()
   }
 
@@ -110,7 +111,7 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
     this.modo = 'detalhes'
 
     this.form?.setValue({
-      nome: this.funcionario.nome,
+      nome: this.funcionario.usuario.nome,
       telefone: this.funcionario.usuario.telefone,
       cpf: this.funcionario.usuario.cpf,
       senha: this.funcionario.usuario.senha,
@@ -123,7 +124,7 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
   //salvar edicao
   salvar() {
     if (this.form?.valid) {
-      this.funcionario.nome = this.form?.value.nome
+      this.funcionario.usuario.nome = this.form?.value.nome
       this.funcionario.usuario.telefone = this.form?.value.telefone
       this.funcionario.usuario.cpf = this.form?.value.cpf
       this.funcionario.usuario.senha = this.form?.value.senha
@@ -174,12 +175,12 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
     this.listaCargosBusca = []
     if (this.listaTodosCargos !== null) {
       this.listaTodosCargos.forEach((c) => {
-        const idCargo = c.idCargo
+        const idCargo = c.cargo_id
         var isFuncionarioPossuiCargo = false
   
         for (let i = 0; i < this.listaCargosTabela.length; i++) {
           const funcionarioCargo = this.listaCargosTabela[i];
-          if (funcionarioCargo.idCargo === idCargo) {
+          if (funcionarioCargo.cargo_id === idCargo) {
             isFuncionarioPossuiCargo = true
             break
           }

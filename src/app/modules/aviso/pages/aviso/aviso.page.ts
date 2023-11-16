@@ -7,11 +7,11 @@ import {
   ConstantesFuncionalidades,
   ConstantesRotas,
 } from '../../../../shared/utilities/constantes/constantes.utility';
-import { Aviso, avisoVazio } from '../../../../shared/utilities/entidade/entidade.utility';
 import { AvisoModalComponent } from '../../components/aviso-modal/aviso-modal.component';
 import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
 import { NovoAvisoComponent } from '../../components/novo-aviso/novo-aviso.component';
 import { CanalService } from '../../../../core/services/canal-service/canal.service';
+import { Aviso } from '../../../../core/services/aviso-service/aviso.entity';
 
 @Component({
   selector: 'app-aviso',
@@ -22,7 +22,7 @@ export class AvisoPage extends Pagina implements OnInit {
 
   avisos: Aviso[] = []
   //continuar restricao de avisos
-  idResponsavel?: number = this.usuarioLogado.getIdResponsavel()
+  idResponsavel?: string = this.usuarioLogado.getIdResponsavel()
   isResponsavel?: boolean = this.usuarioLogado.isResponsavel()
 
   constructor(
@@ -79,10 +79,10 @@ export class AvisoPage extends Pagina implements OnInit {
 
       this.avisoService.alterarAviso(aviso)
     } else if (role === 'deletarAviso') {
-      this.avisoService.deletarAviso(aviso.idAviso)
+      this.avisoService.deletarAviso(aviso.aviso_id)
     } else if (role === 'duvidaAviso'){
       if (this.idResponsavel !== undefined) {
-        const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(aviso.idCanal, this.idResponsavel)
+        const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(aviso.aviso_id, this.idResponsavel)
         const caminho = ConstantesRotas.ROTA_MENSAGEM + ConstantesRotas.BARRA + idCanalResponsavel + ConstantesRotas.ROTA_MENSAGEM_CANAL
 
         this.navegarPara(caminho)

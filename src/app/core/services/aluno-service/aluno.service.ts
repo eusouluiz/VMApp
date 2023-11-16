@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ALUNO_DATA, Aluno } from '../../../shared/utilities/entidade/entidade.utility';
+import { ALUNO_DATA } from '../../../shared/utilities/entidade/entidade.utility';
+import { Aluno } from './aluno.entity';
 
 @Injectable({
   providedIn: 'root',
@@ -10,20 +11,19 @@ export class AlunoService {
         return ALUNO_DATA
     }
 
-    buscarAluno(idAluno: number): Aluno | undefined{
+    buscarAluno(idAluno: string): Aluno | undefined{
         return ALUNO_DATA.find((a) => {
-            return a.idAluno === idAluno
+            return a.aluno_id === idAluno
         })
     }
 
     incluirAluno(aluno: Aluno) {
-        aluno.idAluno = ALUNO_DATA[ALUNO_DATA.length-1].idAluno + 1
         ALUNO_DATA.push(aluno)
     }
 
     alterarAluno(aluno: Aluno) {
         var indexA = ALUNO_DATA.findIndex((a) => {
-            return a.idAluno === aluno.idAluno
+            return a.aluno_id === aluno.aluno_id
         })
         if (indexA !== -1) {
             ALUNO_DATA[indexA] = aluno
@@ -32,9 +32,9 @@ export class AlunoService {
         }
     }
 
-    deletarAluno(idAluno: number) {
+    deletarAluno(idAluno: string) {
         var indexA = ALUNO_DATA.findIndex((a) => {
-            return a.idAluno === idAluno
+            return a.aluno_id === idAluno
         })
         if (indexA !== -1){
             ALUNO_DATA.splice(indexA, 1)

@@ -1,6 +1,6 @@
 
 export interface MensagemInterface {
-    id: string,
+    mensagem_id: string,
     texto: string,
     arquivo: string,
     lida: boolean,
@@ -11,7 +11,7 @@ export interface MensagemInterface {
 }
 
 export class Mensagem {
-    private _id: string = ''
+    private _mensagem_id: string = ''
     private _texto: string = ''
     private _arquivo: string = ''
     private _lida: boolean = false
@@ -24,7 +24,7 @@ export class Mensagem {
         private data?: MensagemInterface,
     ) {
         if (data !== undefined) {
-            this._id = data.id
+            this._mensagem_id = data.mensagem_id
             this._texto = data.texto
             this._arquivo = data.arquivo
             this._lida = data.lida
@@ -35,11 +35,11 @@ export class Mensagem {
         }
     }
     
-    public get id(): string {
-        return this._id;
+    public get mensagem_id(): string {
+        return this._mensagem_id;
     }
-    public set id(value: string) {
-        this._id = value;
+    public set mensagem_id(value: string) {
+        this._mensagem_id = value;
     }
     public get texto(): string {
         return this._texto;

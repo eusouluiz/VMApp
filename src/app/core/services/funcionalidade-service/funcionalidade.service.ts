@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FUNCIONALIDADE_DATA, Funcionalidade } from '../../../shared/utilities/entidade/entidade.utility';
+import { CARGO_DATA, FUNCIONALIDADE_DATA } from '../../../shared/utilities/entidade/entidade.utility';
+import { Funcionalidade } from './funcionalidade.entity';
 
 @Injectable({
   providedIn: 'root',
@@ -10,9 +11,13 @@ export class FuncionalidadeService {
         return FUNCIONALIDADE_DATA
     }
 
-    buscarFuncionalidade(idFuncionalidade: number): Funcionalidade | undefined{
+    buscarFuncionalidade(idFuncionalidade: string): Funcionalidade | undefined{
         return FUNCIONALIDADE_DATA.find((f) => {
-            return f.idFuncionalidade === idFuncionalidade
+            return f.id === idFuncionalidade
         })
+    }
+
+    buscarFuncionalidadesCargo(idCargo: string): Funcionalidade[] | undefined{
+        return FUNCIONALIDADE_DATA
     }
 }

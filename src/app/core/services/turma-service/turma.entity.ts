@@ -1,7 +1,7 @@
 import { Aluno } from './../../../core/services/aluno-service/aluno.entity';
 
 export interface TurmaInterface {
-    id: string,
+    turma_id: string,
     nome: string,
     descricao: string,
     updated_at: Date,
@@ -9,7 +9,7 @@ export interface TurmaInterface {
 }
 
 export class Turma {
-    private _id: string = '';
+    private _turma_id: string = '';
     private _nome: string = '';
     private _descricao: string = '';
     private _alunos: Aluno[] = [];
@@ -21,7 +21,7 @@ export class Turma {
         private listaAlunos?: Aluno[]
     ) {
         if (data !== undefined) {
-            this._id = data.id
+            this._turma_id = data.turma_id
             this._nome = data.nome
             this._descricao = data.descricao
             this._updated_at = data.updated_at
@@ -33,11 +33,11 @@ export class Turma {
         }
     }
     
-    public get id(): string {
-        return this._id;
+    public get turma_id(): string {
+        return this._turma_id;
     }
-    public set id(value: string) {
-        this._id = value;
+    public set turma_id(value: string) {
+        this._turma_id = value;
     }
     public get nome(): string {
         return this._nome;

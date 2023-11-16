@@ -1,6 +1,6 @@
 
 export interface FuncionalidadeInterface {
-    id: string,
+    funcionalidade_id: string,
     nome: string,
     descricao: string,
     updated_at: Date,
@@ -8,7 +8,7 @@ export interface FuncionalidadeInterface {
 }
 
 export class Funcionalidade {
-    private _id: string = '';
+    private _funcionalidade_id: string = '';
     private _nome: string = '';
     private _descricao: string = '';
     private _updated_at: Date = new Date();
@@ -18,7 +18,7 @@ export class Funcionalidade {
         private data?: FuncionalidadeInterface,
     ) {
         if (data !== undefined) {
-            this._id = data.id
+            this._funcionalidade_id = data.funcionalidade_id
             this._nome = data.nome
             this._descricao = data.descricao
             this._updated_at = data.updated_at
@@ -27,11 +27,11 @@ export class Funcionalidade {
         }
     }
     
-    public get id(): string {
-        return this._id;
+    public get funcionalidade_id(): string {
+        return this._funcionalidade_id;
     }
     public set id(value: string) {
-        this._id = value;
+        this._funcionalidade_id = value;
     }
     public get nome(): string {
         return this._nome;
