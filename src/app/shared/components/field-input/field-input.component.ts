@@ -26,7 +26,7 @@ export class FieldInputComponent implements ControlValueAccessor, OnInit {
   @Input() textArea = false;
 
   @Input() colsTextArea = 100;
-  
+
   @Input() rowsTextArea = 1;
 
   // ---- text area ---- //

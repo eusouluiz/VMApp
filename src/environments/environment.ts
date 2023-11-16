@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   api: {
-    endpoint: '',
+    endpoint: 'https://vmapi.fly.dev/api',
     maxWaiting: 10000,
     authHeader: 'Authorization',
   },
@@ -13,7 +13,7 @@ export const environment = {
     enabled: false,
     payload: {},
   },
-  availableLanguages: ['br', 'en', 'de'],
+  availableLanguages: ['br', 'en'],
 };
 
 /*

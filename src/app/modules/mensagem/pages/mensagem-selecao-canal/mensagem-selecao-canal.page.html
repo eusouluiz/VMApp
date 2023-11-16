@@ -1,13 +1,18 @@
-<app-header titulo="Bem vindo, {{primeiroNome}}."></app-header>
+<app-header titulo="Bem vindo, {{ primeiroNome }}."></app-header>
 
 <ion-content class="ion-padding">
   <h5 class="u-font-weight--bold">Canais de Comunicação</h5>
   <ng-container *ngFor="let canal of canais">
-    <ion-item class="c-item" *ngIf="verificarAcesso(canal)" 
-      lines="none" detail="true" button="true" (click)="navegarParaCanal(canal.idCanal)">
+    <ion-item
+      class="c-item"
+      *ngIf="verificarAcesso(canal)"
+      lines="none"
+      detail="true"
+      button="true"
+      (click)="navegarParaCanal(canal.canal_id)">
       <ion-label>
         <ion-row><ion-text class="c-item-titulo">{{canal.nome}}</ion-text></ion-row>
-        <ion-row><ion-text class="c-item-subtitulo">{{resgatarUltimaMensagem(canal.idCanal)}}</ion-text></ion-row>
+        <!-- <ion-row><ion-text class="c-item-subtitulo">{{resgatarUltimaMensagem(canal.canal_id)}}</ion-text></ion-row> -->
       </ion-label>
     </ion-item>
   </ng-container>

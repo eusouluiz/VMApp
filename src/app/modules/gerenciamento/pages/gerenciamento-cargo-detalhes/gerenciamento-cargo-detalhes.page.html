@@ -34,16 +34,16 @@
           <ng-container *ngIf="listaFuncionariosTabela.length > 0; then comFuncionario; else semFuncionario"></ng-container>
           <ng-template #comFuncionario>
             <tr *ngFor="let funcionario of listaFuncionariosTabela">
-              <td style="width: 45%;">{{funcionario.nome}}</td>
+              <td style="width: 45%;">{{funcionario.usuario.nome}}</td>
               <td style="width: 45%;">{{funcionario.usuario.telefone}}</td>
               <td style="width: 10%;">
                 <div style="text-align: -webkit-right;">
                   <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small" 
-                    (click)="navegarTelaFuncionario(funcionario.idFuncionario)">
+                    (click)="navegarTelaFuncionario(funcionario.funcionario_id)">
                     <ion-icon name="information"></ion-icon>
                   </ion-fab-button>
                   <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
-                    (click)="deletarFuncionario(funcionario.idFuncionario)">
+                    (click)="deletarFuncionario(funcionario.funcionario_id)">
                     <ion-icon name="trash"></ion-icon>
                   </ion-fab-button>
                 </div>
@@ -92,7 +92,7 @@
               <td style="width: 10%;">
                 <div style="text-align: -webkit-right;">
                   <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
-                    (click)="deletarFuncionalidade(funcionalidade.idFuncionalidade)">
+                    (click)="deletarFuncionalidade(funcionalidade.funcionalidade_id)">
                     <ion-icon name="trash"></ion-icon>
                   </ion-fab-button>
                 </div>

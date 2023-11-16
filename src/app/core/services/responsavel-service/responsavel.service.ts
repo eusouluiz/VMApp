@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { RESPONSAVEL_DATA, Responsavel } from '../../../shared/utilities/entidade/entidade.utility';
+import { RESPONSAVEL_DATA } from '../../../shared/utilities/entidade/entidade.utility';
+import { Responsavel } from './responsavel.entity';
 
 @Injectable({
   providedIn: 'root',
@@ -10,20 +11,19 @@ export class ResponsavelService {
         return RESPONSAVEL_DATA
     }
 
-    buscarResponsavel(idResponsavel: number): Responsavel | undefined{
+    buscarResponsavel(idResponsavel: string): Responsavel | undefined{
         return RESPONSAVEL_DATA.find((r) => {
-            return r.idResponsavel === idResponsavel
+            return r.responsavel_id === idResponsavel
         })
     }
 
     incluirResponsavel(responsavel: Responsavel) {
-        responsavel.idResponsavel = RESPONSAVEL_DATA[RESPONSAVEL_DATA.length-1].idResponsavel + 1
         RESPONSAVEL_DATA.push(responsavel)
     }
 
     alterarResponsavel(responsavel: Responsavel) {
         var indexR = RESPONSAVEL_DATA.findIndex((r) => {
-            return r.idResponsavel === responsavel.idResponsavel
+            return r.responsavel_id === responsavel.responsavel_id
         })
         if (indexR !== -1) {
             RESPONSAVEL_DATA[indexR] = responsavel
@@ -32,9 +32,9 @@ export class ResponsavelService {
         }
     }
 
-    deletarResponsavel(idResponsavel: number) {
+    deletarResponsavel(idResponsavel: string) {
         var indexR = RESPONSAVEL_DATA.findIndex((r) => {
-            return r.idResponsavel === idResponsavel
+            return r.responsavel_id === idResponsavel
         })
         if (indexR !== -1){
             RESPONSAVEL_DATA.splice(indexR, 1)

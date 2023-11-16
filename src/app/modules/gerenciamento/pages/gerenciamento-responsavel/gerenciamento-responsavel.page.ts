@@ -1,10 +1,10 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Responsavel } from '../../../../shared/utilities/entidade/entidade.utility';
 import { ResponsavelService } from '../../../../core/services/responsavel-service/responsavel.service';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { Location } from '@angular/common';
+import { Responsavel } from '../../../../core/services/responsavel-service/responsavel.entity';
 
 @Component({
   selector: 'app-gerenciamento-responsavel',
@@ -40,7 +40,7 @@ export class GerenciamentoResponsavelPage extends Pagina implements OnInit {
 
     // se o valor for um valor valido
     this.listaResponsaveis = this.listaResponsaveis.filter((responsavel) => {
-      return (responsavel.nome.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      return (responsavel.usuario.nome.toLowerCase().indexOf(val.toLowerCase()) > -1);
     })
   }
 

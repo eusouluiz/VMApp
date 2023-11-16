@@ -37,11 +37,11 @@
               <td style="width: 10%;">
                 <div style="text-align: -webkit-right;">
                   <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small" 
-                    (click)="navegarTelaCargo(cargo.idCargo)">
+                    (click)="navegarTelaCargo(cargo.cargo_id)">
                     <ion-icon name="information"></ion-icon>
                   </ion-fab-button>
                   <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
-                    (click)="deletarCargo(cargo.idCargo)">
+                    (click)="deletarCargo(cargo.cargo_id)">
                     <ion-icon name="trash"></ion-icon>
                   </ion-fab-button>
                 </div>

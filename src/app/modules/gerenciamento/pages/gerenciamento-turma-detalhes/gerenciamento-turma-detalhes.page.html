@@ -39,11 +39,11 @@
               <td style="width: 10%;">
                 <div style="text-align: -webkit-right;">
                   <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small" 
-                    (click)="navegarTelaAluno(aluno.idAluno)">
+                    (click)="navegarTelaAluno(aluno.turma_id)">
                     <ion-icon name="information"></ion-icon>
                   </ion-fab-button>
                   <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
-                    (click)="deletarAluno(aluno.idAluno)">
+                    (click)="deletarAluno(aluno.turma_id)">
                     <ion-icon name="trash"></ion-icon>
                   </ion-fab-button>
                 </div>

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { CARGO_DATA, Cargo } from '../../../shared/utilities/entidade/entidade.utility';
+import { CARGO_DATA } from '../../../shared/utilities/entidade/entidade.utility';
+import { Cargo } from './cargo.entity';
 
 @Injectable({
   providedIn: 'root',
@@ -10,20 +11,19 @@ export class CargoService {
         return CARGO_DATA
     }
 
-    buscarCargo(idCargo: number): Cargo | undefined{
+    buscarCargo(idCargo: string): Cargo | undefined{
         return CARGO_DATA.find((c) => {
-            return c.idCargo === idCargo
+            return c.cargo_id === idCargo
         })
     }
 
     incluirCargo(cargo: Cargo) {
-        cargo.idCargo = CARGO_DATA[CARGO_DATA.length-1].idCargo + 1
         CARGO_DATA.push(cargo)
     }
 
     alterarCargo(cargo: Cargo) {
         var indexC = CARGO_DATA.findIndex((c) => {
-            return c.idCargo === cargo.idCargo
+            return c.cargo_id === cargo.cargo_id
         })
         if (indexC !== -1) {
             CARGO_DATA[indexC] = cargo
@@ -32,9 +32,9 @@ export class CargoService {
         }
     }
 
-    deletarCargo(idCargo: number) {
+    deletarCargo(idCargo: string) {
         var indexC = CARGO_DATA.findIndex((c) => {
-            return c.idCargo === idCargo
+            return c.cargo_id === idCargo
         })
         if (indexC !== -1){
             CARGO_DATA.splice(indexC, 1)

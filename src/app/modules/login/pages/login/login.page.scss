@@ -1,0 +1,33 @@
+@import '../../../../../theme/sizing.scss';
+
+.e-login-page {
+  height: calc(100vh - 76px - env(safe-area-inset-top));
+  // &__ion-content {
+  //   // background: url('https://i.imgur.com/olLunTc.jpg') no-repeat fixed;
+  //   // background-size: cover;
+  //   // background-repeat: no-repeat;
+  //   // background-position: center;
+  //   // height: 100vh;
+  // }
+
+  &__container {
+    height: calc(100vh - 76px - env(safe-area-inset-top));
+    justify-content: flex-end;
+  }
+
+  &__card-container {
+    position: relative;
+  }
+
+  &__card {
+    position: relative;
+    margin-bottom: $size-md;
+    z-index: 2;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25 * $size-base;
+  }
+}

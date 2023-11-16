@@ -1,65 +1,63 @@
 import { Injectable } from '@angular/core';
-import { MENSAGEM_DATA, Mensagem } from '../../../shared/utilities/entidade/entidade.utility';
+import { MENSAGEM_DATA } from '../../../shared/utilities/entidade/entidade.utility';
+import { Mensagem } from './mensagem.entity';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MensagemService {
+  buscarTodosMensagems(): Mensagem[] {
+    return MENSAGEM_DATA;
+  }
 
-    buscarTodosMensagems(): Mensagem[]{
-        return MENSAGEM_DATA
+  buscarMensagem(idMensagem: string): Mensagem | undefined {
+    return MENSAGEM_DATA.find((m) => {
+      return m.mensagem_id === idMensagem;
+    });
+  }
+
+  incluirMensagem(mensagem: Mensagem) {
+    MENSAGEM_DATA.push(mensagem);
+  }
+
+  alterarMensagem(mensagem: Mensagem) {
+    var indexA = MENSAGEM_DATA.findIndex((m) => {
+      return m.mensagem_id === mensagem.mensagem_id;
+    });
+    if (indexA !== -1) {
+      MENSAGEM_DATA[indexA] = mensagem;
+    } else {
+      throw new Error('mensagem nao encontrado');
     }
+  }
 
-    buscarMensagem(idMensagem: number): Mensagem | undefined{
-        return MENSAGEM_DATA.find((m) => {
-            return m.idMensagem === idMensagem
-        })
+  deletarMensagem(idMensagem: string) {
+    var indexA = MENSAGEM_DATA.findIndex((m) => {
+      return m.mensagem_id === idMensagem;
+    });
+    if (indexA !== -1) {
+      MENSAGEM_DATA.splice(indexA, 1);
+    } else {
+      throw new Error('mensagem nao encontrado');
     }
+  }
 
-    incluirMensagem(mensagem: Mensagem) {
-        mensagem.idMensagem = MENSAGEM_DATA[MENSAGEM_DATA.length-1].idMensagem + 1
-        MENSAGEM_DATA.push(mensagem)
+  buscarMensagensCanalResponsavel(idCanalResponsavel: string): Mensagem[] {
+    var mensagens = MENSAGEM_DATA.slice();
+    return mensagens.filter((m) => {
+      return m.canal_responsavel_id === idCanalResponsavel;
+    });
+  }
+
+  buscarUltimaMensagensCanalResponsavel(idCanalResponsavel: string): Mensagem | undefined {
+    var mensagens = MENSAGEM_DATA.slice();
+    mensagens = mensagens.filter((m) => {
+      return m.canal_responsavel_id === idCanalResponsavel;
+    });
+    if (mensagens.length > 0) {
+      return mensagens[mensagens.length - 1];
+    } else {
+      return undefined;
     }
-
-    alterarMensagem(mensagem: Mensagem) {
-        var indexA = MENSAGEM_DATA.findIndex((m) => {
-            return m.idMensagem === mensagem.idMensagem
-        })
-        if (indexA !== -1) {
-            MENSAGEM_DATA[indexA] = mensagem
-        } else {
-            throw new Error('mensagem nao encontrado')
-        }
-    }
-
-    deletarMensagem(idMensagem: number) {
-        var indexA = MENSAGEM_DATA.findIndex((m) => {
-            return m.idMensagem === idMensagem
-        })
-        if (indexA !== -1){
-            MENSAGEM_DATA.splice(indexA, 1)
-        } else {
-            throw new Error('mensagem nao encontrado')
-        }
-    }
-
-    buscarMensagensCanalResponsavel(idCanalResponsavel: number): Mensagem[]{
-        var mensagens = MENSAGEM_DATA.slice()
-        return mensagens.filter((m) => {
-            return m.idCanalResponsavel === idCanalResponsavel
-        })
-    }
-
-    buscarUltimaMensagensCanalResponsavel(idCanalResponsavel: number): Mensagem | undefined {
-        var mensagens = MENSAGEM_DATA.slice()
-        mensagens = mensagens.filter((m) => {
-            return m.idCanalResponsavel === idCanalResponsavel
-        })
-        if (mensagens.length > 0) {
-            return mensagens[mensagens.length-1]
-        } else {
-            return undefined
-        }
-    }
-
+  }
 }

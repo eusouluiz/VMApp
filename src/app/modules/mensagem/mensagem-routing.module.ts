@@ -5,19 +5,22 @@ import { MensagemSelecaoAlunoPage } from './pages/mensagem-selecao-aluno/mensage
 import { MensagemCanalPage } from './pages/mensagem-canal/mensagem-canal.page';
 
 const routes: Routes = [
-  {path: '', component: MensagemSelecaoCanalPage},
-  {path: ':idCanal/selecao-responsavel', component: MensagemSelecaoAlunoPage},
-  {path: ':idCanalResponsavel/canal', component: MensagemCanalPage},
+  {
+    path: '',
+    component: MensagemSelecaoCanalPage,
+  },
+  {
+    path: ':idCanal/selecao-responsavel',
+    component: MensagemSelecaoAlunoPage,
+  },
+  {
+    path: ':idCanalResponsavel/canal',
+    component: MensagemCanalPage,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class MensagemRoutingModule { 
-  static components = [
-    MensagemSelecaoCanalPage,
-    MensagemSelecaoAlunoPage,
-    MensagemCanalPage,
-  ]
-}
+export class MensagemRoutingModule {}

@@ -6,17 +6,11 @@ import { LoginPage } from './pages/login/login.page';
 import { SharedModule } from '../../shared/shared.module';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { LoginFieldInputComponent } from './components/field-input/field-input.component';
+import { LoginFieldPasswordComponent } from './components/field-password/field-password.component';
 
 @NgModule({
-  declarations: [LoginPage],
-  imports: [
-    CommonModule,
-    LoginRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SharedModule,
-    IonicModule
-  ]
+  declarations: [LoginPage, LoginFieldInputComponent, LoginFieldPasswordComponent],
+  imports: [CommonModule, LoginRoutingModule, FormsModule, ReactiveFormsModule, SharedModule, IonicModule],
 })
-export class LoginModule { }
+export class LoginModule {}

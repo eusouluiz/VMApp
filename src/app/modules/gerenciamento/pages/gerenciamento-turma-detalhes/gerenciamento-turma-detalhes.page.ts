@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common'
-import { Aluno, Turma, turmaVazio } from '../../../../shared/utilities/entidade/entidade.utility';
 import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina-gerenciamento-detalhes/pagina-gerenciamento-detalhes.utility';
 import { TurmaService } from '../../../../core/services/turma-service/turma.service';
 import { AlunoService } from '../../../../core/services/aluno-service/aluno.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
+import { Turma } from '../../../../core/services/turma-service/turma.entity';
+import { Aluno } from '../../../../core/services/aluno-service/aluno.entity';
 
 @Component({
   selector: 'app-gerenciamento-turma-detalhes',
@@ -15,7 +16,7 @@ import { ConstantesRotas } from '../../../../shared/utilities/constantes/constan
 })
 export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
 
-  turma: Turma = turmaVazio()
+  turma: Turma = new Turma()
   listaTodosAlunos: Aluno[] | null = null
 
   constructor(
@@ -55,7 +56,7 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
 
     const id = this.activatedRoute.snapshot.paramMap.get('id')
     if (this.isModoDetalhes() && id !== null) {
-      this.turma = this.resgatarTurma(Number.parseInt(id))
+      this.turma = this.resgatarTurma(id)
 
       this.form?.setValue({
         nome: this.turma.nome,
@@ -69,12 +70,12 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   // ---- busca turma ----//
-  private resgatarTurma(id: number): Turma {
+  private resgatarTurma(id: string): Turma {
     const turma = this.turmaService.buscarTurma(id)
     if (turma !== undefined) {
       return turma
     }
-    return turmaVazio()
+    return new Turma()
   }
   // ---- busca turma ----//
 
@@ -82,7 +83,7 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
 
   //delecao
   protected deletar() {
-    this.turmaService.deletarTurma(this.turma.idTurma)
+    this.turmaService.deletarTurma(this.turma.turma_id)
     this.retornarPagina()
   }
 
@@ -157,12 +158,12 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
     this.listaAlunosBusca = []
     if (this.listaTodosAlunos !== null) {
       this.listaTodosAlunos.forEach((f) => {
-        const idAluno = f.idAluno
+        const idAluno = f.aluno_id
         var isAlunoPossuiAluno = false
   
         for (let i = 0; i < this.listaAlunosTabela.length; i++) {
           const alunoAluno = this.listaAlunosTabela[i];
-          if (alunoAluno.idAluno === idAluno) {
+          if (alunoAluno.aluno_id === idAluno) {
             isAlunoPossuiAluno = true
             break
           }
@@ -239,9 +240,9 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
     this.navegarPara(rota)
   }
 
-  deletarAluno(id: number) {
+  deletarAluno(id: string) {
     const indexAluno = this.listaAlunosTabela.findIndex((r) => {
-      return r.idAluno === id
+      return r.aluno_id === id
     })
     if (indexAluno !== -1) {
       const aluno = this.listaAlunosTabela[indexAluno]

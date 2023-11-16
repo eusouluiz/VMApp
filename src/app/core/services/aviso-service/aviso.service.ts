@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AVISO_DATA, Aviso } from '../../../shared/utilities/entidade/entidade.utility';
+import { AVISO_DATA } from '../../../shared/utilities/entidade/entidade.utility';
+import { Aviso } from './aviso.entity';
 
 @Injectable({
   providedIn: 'root',
@@ -10,20 +11,19 @@ export class AvisoService {
         return AVISO_DATA
     }
 
-    buscarAviso(idAviso: number): Aviso | undefined{
+    buscarAviso(idAviso: string): Aviso | undefined{
         return AVISO_DATA.find((m) => {
-            return m.idAviso === idAviso
+            return m.aviso_id === idAviso
         })
     }
 
     incluirAviso(aviso: Aviso) {
-        aviso.idAviso = AVISO_DATA[AVISO_DATA.length-1].idAviso + 1
         AVISO_DATA.push(aviso)
     }
 
     alterarAviso(aviso: Aviso) {
         var indexA = AVISO_DATA.findIndex((a) => {
-            return a.idAviso === aviso.idAviso
+            return a.aviso_id === aviso.aviso_id
         })
         if (indexA !== -1) {
             AVISO_DATA[indexA] = aviso
@@ -32,9 +32,9 @@ export class AvisoService {
         }
     }
 
-    deletarAviso(idAviso: number) {
+    deletarAviso(idAviso: string) {
         var indexA = AVISO_DATA.findIndex((a) => {
-            return a.idAviso === idAviso
+            return a.aviso_id === idAviso
         })
         if (indexA !== -1){
             AVISO_DATA.splice(indexA, 1)
@@ -42,24 +42,5 @@ export class AvisoService {
             throw new Error('aviso nao encontrado')
         }
     }
-
-    // buscarMensagensCanalResponsavel(idCanalResponsavel: number): Aviso[]{
-    //     var mensagens = AVISO_DATA.slice()
-    //     return mensagens.filter((a) => {
-    //         return a.idCanalResponsavel === idCanalResponsavel
-    //     })
-    // }
-
-    // buscarUltimaMensagensCanalResponsavel(idCanalResponsavel: number): Aviso | undefined {
-    //     var mensagens = AVISO_DATA.slice()
-    //     mensagens = mensagens.filter((a) => {
-    //         return a.idCanalResponsavel === idCanalResponsavel
-    //     })
-    //     if (mensagens.length > 0) {
-    //         return mensagens[mensagens.length-1]
-    //     } else {
-    //         return undefined
-    //     }
-    // }
 
 }

@@ -3,12 +3,16 @@ import { AvisoService } from './../../../../core/services/aviso-service/aviso.se
 import { Component, OnInit } from '@angular/core';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { Router } from '@angular/router';
-import { ConstantesFuncionalidades, ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
-import { Aviso, avisoVazio } from '../../../../shared/utilities/entidade/entidade.utility';
+import {
+  ConstantesFuncionalidades,
+  ConstantesRotas,
+} from '../../../../shared/utilities/constantes/constantes.utility';
 import { AvisoModalComponent } from '../../components/aviso-modal/aviso-modal.component';
 import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
 import { NovoAvisoComponent } from '../../components/novo-aviso/novo-aviso.component';
 import { CanalService } from '../../../../core/services/canal-service/canal.service';
+import { Aviso } from '../../../../core/services/aviso-service/aviso.entity';
+import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 
 @Component({
   selector: 'app-aviso',
@@ -16,44 +20,45 @@ import { CanalService } from '../../../../core/services/canal-service/canal.serv
   styleUrls: ['./aviso.page.scss'],
 })
 export class AvisoPage extends Pagina implements OnInit {
+  avisos: Aviso[] = [];
 
-  avisos: Aviso[] = []
   //continuar restricao de avisos
-  idResponsavel?: number = this.usuarioLogado.getIdResponsavel()
-  isResponsavel?: boolean = this.usuarioLogado.isResponsavel()
+  idResponsavel?: string = this.usuarioLogado.getIdResponsavel();
+
+  isResponsavel?: boolean = this.usuarioLogado.isResponsavel();
 
   constructor(
     private router: Router,
     private avisoService: AvisoService,
     private modalController: ModalController,
     private usuarioLogado: UsuarioLogado,
-    private canalService: CanalService
+    private canalService: CanalService,
+    private pageMenuService: PageMenuService
   ) {
-    const ROTA_BASE = ConstantesRotas.ROTA_APP
-    super(router, ROTA_BASE)
+    const ROTA_BASE = ConstantesRotas.ROTA_APP;
+    super(router, ROTA_BASE);
 
-    this.inicializarConteudo()
+    this.inicializarConteudo();
   }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ionViewWillEnter() {
+    this.pageMenuService.displayStatus.next(true);
   }
 
   ngAfterViewInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
-    console.log(this.avisos)
-  }
-
-  protected inicializarConteudo(): void {
-    this.avisos = this.resgatarAvisos()
+    console.log(this.avisos);
   }
 
   resgatarAvisos(): Aviso[] {
-    return this.avisoService.buscarTodosAvisos()
+    return this.avisoService.buscarTodosAvisos();
   }
 
   async abrirModalAviso(aviso: Aviso) {
-    var modal
+    var modal;
     modal = await this.modalController.create({
       component: AvisoModalComponent,
       mode: 'md',
@@ -69,29 +74,38 @@ export class AvisoPage extends Pagina implements OnInit {
 
     modal.present();
 
-    const { data, role } = await modal.onWillDismiss()
+    const { data, role } = await modal.onWillDismiss();
 
     if (role === 'salvarAviso') {
-      aviso.titulo = data.titulo
-      aviso.texto = data.texto
+      aviso.titulo = data.titulo;
+      aviso.texto = data.texto;
 
-      this.avisoService.alterarAviso(aviso)
+      this.avisoService.alterarAviso(aviso);
     } else if (role === 'deletarAviso') {
-      this.avisoService.deletarAviso(aviso.idAviso)
-    } else if (role === 'duvidaAviso'){
+      this.avisoService.deletarAviso(aviso.aviso_id);
+    } else if (role === 'duvidaAviso') {
       if (this.idResponsavel !== undefined) {
-        const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(aviso.idCanal, this.idResponsavel)
-        const caminho = ConstantesRotas.ROTA_MENSAGEM + ConstantesRotas.BARRA + idCanalResponsavel + ConstantesRotas.ROTA_MENSAGEM_CANAL
+        const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(
+          aviso.canal.canal_id,
+          this.idResponsavel
+        );
+        const caminho =
+          ConstantesRotas.ROTA_MENSAGEM +
+          ConstantesRotas.BARRA +
+          idCanalResponsavel +
+          ConstantesRotas.ROTA_MENSAGEM_CANAL;
 
-        this.navegarPara(caminho)
+        this.navegarPara(caminho);
       } else {
-        throw new Error('Aviso: responsavel nao encontrado')
+        throw new Error('Aviso: responsavel nao encontrado');
       }
     }
   }
 
   hasAcessoGerenciamentoAviso() {
-    return this.usuarioLogado.getFuncionalidadesAcessoId()?.includes(ConstantesFuncionalidades.GERENCIAMENTO_AVISO)
+    return this.usuarioLogado
+      .getFuncionalidadesAcessoId()
+      ?.includes(ConstantesFuncionalidades.GERENCIAMENTO_AVISO);
   }
 
   async abrirModalNovoAviso() {
@@ -100,19 +114,21 @@ export class AvisoPage extends Pagina implements OnInit {
       mode: 'md',
       cssClass: 'c-ion-modal--sheet',
       initialBreakpoint: 0.95,
-      componentProps: {
-      },
+      componentProps: {},
     });
 
-    modal.present()
+    modal.present();
 
-    const { data, role } = await modal.onWillDismiss()
+    const { data, role } = await modal.onWillDismiss();
 
     if (role === 'salvarAviso') {
-      console.log(data)
+      console.log(data);
 
-      this.avisoService.incluirAviso(data)
+      this.avisoService.incluirAviso(data);
     }
   }
 
+  protected inicializarConteudo(): void {
+    this.avisos = this.resgatarAvisos();
+  }
 }
