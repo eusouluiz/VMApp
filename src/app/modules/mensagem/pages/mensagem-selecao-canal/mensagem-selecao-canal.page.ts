@@ -78,12 +78,11 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
     if (this.isResponsavel) {
       const idResponsavel = this.usuarioLogado.getIdResponsavel();
       if (idResponsavel !== undefined) {
-        const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(idCanal, idResponsavel);
-        if (idCanalResponsavel !== undefined) {
-          rota = idCanalResponsavel.toString() + ConstantesRotas.ROTA_MENSAGEM_CANAL;
-        } else {
-          throw new Error('Canal Responsavel nao encontrado');
-        }
+        var idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(idCanal, idResponsavel);
+        if (idCanalResponsavel === undefined) {
+          idCanalResponsavel = this.canalService.incluirCanalResponsavel(idCanal, idResponsavel)
+        } 
+        rota = idCanalResponsavel.toString() + ConstantesRotas.ROTA_MENSAGEM_CANAL;
       } else {
         throw new Error('id responsavel nao definido');
       }

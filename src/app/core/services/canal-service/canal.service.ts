@@ -50,11 +50,7 @@ export class CanalService {
       return cr.canal.canal_id === idCanal && cr.responsavel.responsavel_id === idResponsavel;
     })?.canal_responsavel_id;
 
-    console.log('idCanalResponsavel: ' + idCanalResponsavel);
-    if (idCanalResponsavel !== undefined) {
-      return idCanalResponsavel;
-    }
-    return this.incluirCanalResponsavel(idCanal, idResponsavel);
+    return idCanalResponsavel;
   }
 
   buscarCanalResponsavel(idCanalResponsavel: string): CanalResponsavel | undefined {
@@ -63,7 +59,7 @@ export class CanalService {
     });
   }
 
-  incluirCanalResponsavel(idCanal: string, idResponsavel: string): string | undefined {
+  incluirCanalResponsavel(idCanal: string, idResponsavel: string): string {
     const canal = this.buscarCanal(idCanal);
     const responsavel = this.responsavelService.buscarResponsavel(idResponsavel);
 
