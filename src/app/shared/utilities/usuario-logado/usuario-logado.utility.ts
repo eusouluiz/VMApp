@@ -6,11 +6,11 @@ export class UsuarioLogado {
   constructor(private sessionRepository: SessionRepository) {}
 
   isResponsavel(): boolean {
-    return this.sessionRepository.userInfo()?.tipoUsuario === 'R';
+    return this.sessionRepository.userInfo()?.tipo === 'R';
   }
 
   isFuncionario(): boolean {
-    return this.sessionRepository.userInfo()?.tipoUsuario === 'F';
+    return this.sessionRepository.userInfo()?.tipo === 'F';
   }
 
   getFuncionalidadesAcessoId(): number[] | undefined {

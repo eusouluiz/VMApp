@@ -43,3 +43,40 @@ p {
   font-weight: 400;
   margin-bottom: $size-md;
 }
+
+.t-display--sm {
+  font-size: 1.25rem !important;
+  line-height: 1.75rem !important;
+  letter-spacing: -0.02em !important;
+}
+
+.t-display--xs {
+  font-size: 1.125rem !important;
+  line-height: 1.5rem !important;
+  letter-spacing: -0.02em !important;
+}
+
+.t-text--xl {
+  font-size: 1.25rem !important;
+  line-height: 1.875rem !important;
+}
+
+.t-text--lg {
+  font-size: 1.125rem !important;
+  line-height: 1.75rem !important;
+}
+
+.t-text--md {
+  font-size: 1rem !important;
+  line-height: 1.5rem !important;
+}
+
+.t-text--sm {
+  font-size: 0.875rem !important;
+  line-height: 1.25rem !important;
+}
+
+.t-text--xs {
+  font-size: 0.75rem !important;
+  line-height: 1.125rem !important;
+}

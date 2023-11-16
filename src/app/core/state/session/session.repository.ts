@@ -26,6 +26,8 @@ export class SessionRepository {
 
   session$ = store.pipe(select((state) => state.session));
 
+  userInfo$ = store.pipe(select((state) => state.userInfo));
+
   isLoggedIn(): boolean {
     return Boolean(store.getValue().session?.accessToken);
   }

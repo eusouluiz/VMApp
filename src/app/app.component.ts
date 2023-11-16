@@ -18,6 +18,8 @@ export class AppComponent {
 
   readonly showPageMenu: BehaviorSubject<boolean>;
 
+  userIsFuncionario = new BehaviorSubject<boolean>(false);
+
   constructor(
     private translationsService: TranslationsService,
     private platform: Platform,
@@ -26,6 +28,13 @@ export class AppComponent {
   ) {
     this.initializeApp();
 
+    this.sessionRepository.userInfo$.subscribe((tipoUsuario) => {
+      if (tipoUsuario?.tipo === 'R') {
+        this.userIsFuncionario = new BehaviorSubject<boolean>(false);
+      } else {
+        this.userIsFuncionario = new BehaviorSubject<boolean>(true);
+      }
+    });
     this.showPageMenu = this.pageMenuService.displayStatus;
     this.currentTab = this.pageMenuService.currentTab;
   }

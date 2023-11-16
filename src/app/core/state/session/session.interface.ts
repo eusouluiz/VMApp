@@ -27,7 +27,7 @@ export interface UserInfoApiResponse {
   idUsuario: number;
   nome: string;
   idFuncionarioResponsavel: number;
-  tipoUsuario: 'F' | 'R';
+  tipo: 'F' | 'R' | 'A';
   idCargo?: number;
   funcionalidadesAcessoId?: number[];
 }

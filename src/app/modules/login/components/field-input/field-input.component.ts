@@ -1,39 +1,34 @@
-import { Component, Input, Self, OnInit, Optional } from '@angular/core';
+import { Component, Input, Self, OnInit, Optional, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Validators, ControlValueAccessor, NgControl, ValidatorFn } from '@angular/forms';
+import { IonInput } from '@ionic/angular';
 
 @Component({
-  selector: 'app-field-input',
+  selector: 'app-login-field-input',
   templateUrl: './field-input.component.html',
   styleUrls: ['./field-input.component.scss'],
 })
-export class FieldInputComponent implements ControlValueAccessor, OnInit {
+export class LoginFieldInputComponent implements ControlValueAccessor, OnInit {
+  @ViewChild('ionInput') ionInput: IonInput | undefined = undefined;
+
   @Input() type: 'text' | 'number' | 'email' = 'text';
 
   @Input() mask: 'phone' | 'zip-code' | 'svnr' = 'phone';
 
-  @Input() label: string | null = null;
+  @Input() label: string | undefined = undefined;
 
-  @Input() placeholder: string | null = null;
+  @Input() placeholder: string | undefined = undefined;
 
-  @Input() validationIcon: string | null = null;
+  @Input() icon: string | undefined = undefined;
 
-  @Input() icon: string | null = null;
+  @Input() helperText: string | undefined = undefined;
+
+  @Input() required = false;
 
   @Input() showValidationErrorMessage = true;
 
-  // ---- text area ---- //
+  @Output() enter = new EventEmitter();
 
-  @Input() textArea = false;
-
-  @Input() colsTextArea = 100;
-
-  @Input() rowsTextArea = 1;
-
-  // ---- text area ---- //
-
-  value: string | null = null;
-
-  isDisabled = false;
+  value: string | undefined = undefined;
 
   onChange: (_: any) => void = () => {};
 
@@ -77,8 +72,23 @@ export class FieldInputComponent implements ControlValueAccessor, OnInit {
     this.onTouched = fn;
   }
 
-  setDisabledState(isDisabled: boolean) {
-    this.isDisabled = isDisabled;
+  setDisabled(state: boolean) {
+    if (state) {
+      this.ngControl.control?.enable();
+      return;
+    }
+
+    this.ngControl.control?.disable();
+  }
+
+  setFocus() {
+    this.ionInput?.setFocus();
+  }
+
+  onKeyDown(event: KeyboardEvent) {
+    if (event?.keyCode === 13 || event?.key === 'Enter') {
+      this.enter.emit();
+    }
   }
 
   // PRIVATE

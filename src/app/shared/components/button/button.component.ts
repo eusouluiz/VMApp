@@ -22,7 +22,7 @@ export class ButtonComponent implements OnInit {
 
   @Input() disabled: boolean = false;
 
-  @Input() type: String = 'button'
+  @Input() type: String = 'button';
 
   ngOnInit() {}
 }

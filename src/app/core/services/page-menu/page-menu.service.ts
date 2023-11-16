@@ -24,13 +24,5 @@ export class PageMenuService {
 
   updateDisplay(newTab: MenuArea) {
     this.currentTab.next(newTab);
-    // this.userIsFuncionario = this.setTabStyle();
   }
-
-  // setTabStyle() {
-  //   if (this.sessionRepository.session()?.usuarioLogado.tipo === 'R') {
-  //     return new BehaviorSubject<boolean>(false);
-  //   }
-  //   return new BehaviorSubject<boolean>(true);
-  // }
 }
