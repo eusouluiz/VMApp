@@ -50,7 +50,6 @@ export class CanalService {
       return cr.canal.canal_id === idCanal && cr.responsavel.responsavel_id === idResponsavel;
     })?.canal_responsavel_id;
 
-    console.log('idCanalResponsavel: ' + idCanalResponsavel);
     return idCanalResponsavel;
   }
 
