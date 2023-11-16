@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CanalResponsavel, Mensagem } from '../../../../shared/utilities/entidade/entidade.utility';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CanalService } from '../../../../core/services/canal-service/canal.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
@@ -7,6 +6,8 @@ import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
 import { MensagemService } from '../../../../core/services/mensagem-service/mensagem.service';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
+import { CanalResponsavel } from '../../../../core/services/canal-service/canal.entity';
+import { Mensagem } from '../../../../core/services/mensagem-service/mensagem.entity';
 
 @Component({
   selector: 'app-mensagem-canal',
@@ -16,7 +17,7 @@ import { PageMenuService } from '../../../../core/services/page-menu/page-menu.s
 export class MensagemCanalPage extends Pagina implements OnInit {
   canalResponsavel!: CanalResponsavel;
 
-  idUsuario: number | undefined = this.usuarioLogado.getIdUsuario();
+  idUsuario: string | undefined = this.usuarioLogado.getIdUsuario();
 
   mensagens: Mensagem[] = [];
 
@@ -40,7 +41,7 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     this.pageMenuService.displayStatus.next(true);
   }
 
-  resgatarCanalResponsavel(id: number): CanalResponsavel {
+  resgatarCanalResponsavel(id: string): CanalResponsavel {
     const canalResponsavel = this.canalService.buscarCanalResponsavel(id);
     if (canalResponsavel !== undefined) {
       return canalResponsavel;
@@ -48,7 +49,7 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     throw new Error('Canal nao encontrado');
   }
 
-  resgatarMensagens(idCanalResponsavel: number): Mensagem[] {
+  resgatarMensagens(idCanalResponsavel: string): Mensagem[] {
     return this.mensagemService.buscarMensagensCanalResponsavel(idCanalResponsavel);
   }
 
@@ -56,13 +57,13 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     if (this.usuarioLogado.isResponsavel()) {
       return this.canalResponsavel.canal.nome;
     }
-    return this.canalResponsavel.responsavel.nome;
+    return this.canalResponsavel.responsavel.usuario.nome;
   }
 
   enviarMensagem(mensagem: Mensagem) {
     if (this.idUsuario !== undefined) {
-      mensagem.idUsuario = this.idUsuario;
-      mensagem.idCanalResponsavel = this.canalResponsavel.idCanalResponsavel;
+      mensagem.user_id = this.idUsuario;
+      mensagem.canal_responsavel_id = this.canalResponsavel.canal_responsavel_id;
     } else {
       throw new Error('Usuario nao definido');
     }
@@ -74,8 +75,8 @@ export class MensagemCanalPage extends Pagina implements OnInit {
   protected inicializarConteudo(): void {
     const id = this.activatedRoute.snapshot.paramMap.get('idCanalResponsavel');
     if (id !== null) {
-      this.canalResponsavel = this.resgatarCanalResponsavel(Number.parseInt(id));
-      this.mensagens = this.resgatarMensagens(Number.parseInt(id));
+      this.canalResponsavel = this.resgatarCanalResponsavel(id);
+      this.mensagens = this.resgatarMensagens(id);
     } else {
       throw new Error('idCanal nao especificado na url');
     }

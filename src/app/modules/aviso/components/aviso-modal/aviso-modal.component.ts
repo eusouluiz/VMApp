@@ -2,11 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { SharedModule } from '../../../../shared/shared.module';
 import { IonicModule, ModalController } from '@ionic/angular';
-import { Aviso, avisoVazio } from '../../../../shared/utilities/entidade/entidade.utility';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AvisoModalTituloComponent } from '../aviso-modal-titulo/aviso-modal-titulo.component';
 import { AvisoModalTextoComponent } from '../aviso-modal-texto/aviso-modal-texto.component';
 import { Router } from '@angular/router';
+import { Aviso } from '../../../../core/services/aviso-service/aviso.entity';
 
 @Component({
   selector: 'app-aviso-modal',
@@ -26,7 +26,7 @@ import { Router } from '@angular/router';
 export class AvisoModalComponent implements OnInit {
 
   @Input('modo') modo: 'cadastrar' | 'editar' | 'detalhes' = 'detalhes'
-  @Input('aviso') aviso: Aviso = avisoVazio()
+  @Input('aviso') aviso: Aviso = new Aviso()
   @Input('hasAcessoGerenciamentoAviso') hasAcessoGerenciamentoAviso: boolean = false
   @Input() isResponsavel: boolean = true
 

@@ -3,13 +3,16 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ConstantesPrioridadesAvisos, ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { FieldSelectOption } from '../../../../shared/components/field-select/field-select.interface';
-import { Aviso, Canal, Lembrete, Turma, avisoVazio, lembreteVazio } from '../../../../shared/utilities/entidade/entidade.utility';
 import { CanalService } from '../../../../core/services/canal-service/canal.service';
 import { TurmaService } from '../../../../core/services/turma-service/turma.service';
 import { AvisoService } from '../../../../core/services/aviso-service/aviso.service';
 import { LembreteService } from '../../../../core/services/lembrete-service copy/lembrete.service';
 import { CommonModule } from '@angular/common';
 import { IonicModule, ModalController } from '@ionic/angular';
+import { Aviso } from '../../../../core/services/aviso-service/aviso.entity';
+import { Canal } from '../../../../core/services/canal-service/canal.entity';
+import { Turma } from '../../../../core/services/turma-service/turma.entity';
+import { Lembrete } from '../../../../core/services/lembrete-service copy/lembrete.entity';
 
 @Component({
   selector: 'app-novo-aviso',
@@ -26,7 +29,7 @@ import { IonicModule, ModalController } from '@ionic/angular';
 })
 export class NovoAvisoComponent implements OnInit {
 
-  aviso: Aviso = avisoVazio()
+  aviso: Aviso = new Aviso()
   form: UntypedFormGroup | undefined;
   listaTodosCanais: Canal[] = []
   listaTodasTurmas: Turma[] = [];
@@ -80,17 +83,17 @@ export class NovoAvisoComponent implements OnInit {
       this.aviso.titulo = this.form.value.titulo
       this.aviso.texto = this.form.value.texto
       this.aviso.prioridade = this.prioridadeAviso
-      this.aviso.idCanal = this.canalDuvidas.idCanal
+      this.aviso.canal = this.canalDuvidas
       this.listaTurmasTabela.forEach((turma) => {
-        this.aviso.idTurmas.push(turma.idTurma)
+        this.aviso.turmas.push(turma)
       })
 
       if (this.form.value.dataLembrete !== '') {
-        var lembrete: Lembrete = lembreteVazio()
-        lembrete.idAviso = this.aviso.idAviso
+        var lembrete: Lembrete = new Lembrete()
+        lembrete.aviso = this.aviso
         lembrete.titulo = 'Lembrete: ' + this.aviso.titulo
         lembrete.texto = this.aviso.texto.substring(0, 50)
-        lembrete.dataLembrete = this.form.value.dataLembrete
+        lembrete.data_lembrete = this.form.value.dataLembrete
 
         this.lembreteService.incluirLembrete(lembrete)
       }
@@ -216,9 +219,9 @@ export class NovoAvisoComponent implements OnInit {
     }
   }
 
-  deletarTurma(id: number) {
+  deletarTurma(id: string) {
     const indexTurma = this.listaTurmasTabela.findIndex((t) => {
-      return t.idTurma === id
+      return t.turma_id === id
     })
     if (indexTurma !== -1) {
       const turma = this.listaTurmasTabela[indexTurma]

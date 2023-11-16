@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { TURMA_DATA, Turma } from '../../../shared/utilities/entidade/entidade.utility';
+import { TURMA_DATA } from '../../../shared/utilities/entidade/entidade.utility';
+import { Turma } from './turma.entity';
 
 @Injectable({
   providedIn: 'root',
@@ -10,20 +11,19 @@ export class TurmaService {
         return TURMA_DATA
     }
 
-    buscarTurma(idTurma: number): Turma | undefined{
+    buscarTurma(idTurma: string): Turma | undefined{
         return TURMA_DATA.find((t) => {
-            return t.idTurma === idTurma
+            return t.turma_id === idTurma
         })
     }
 
     incluirTurma(turma: Turma) {
-        turma.idTurma = TURMA_DATA[TURMA_DATA.length-1].idTurma + 1
         TURMA_DATA.push(turma)
     }
 
     alterarTurma(turma: Turma) {
         var indexT = TURMA_DATA.findIndex((t) => {
-            return t.idTurma === turma.idTurma
+            return t.turma_id === turma.turma_id
         })
         if (indexT !== -1) {
             TURMA_DATA[indexT] = turma
@@ -32,9 +32,9 @@ export class TurmaService {
         }
     }
 
-    deletarTurma(idTurma: number) {
+    deletarTurma(idTurma: string) {
         var indexT = TURMA_DATA.findIndex((t) => {
-            return t.idTurma === idTurma
+            return t.turma_id === idTurma
         })
         if (indexT !== -1){
             TURMA_DATA.splice(indexT, 1)

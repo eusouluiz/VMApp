@@ -3,10 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { Router } from '@angular/router';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
-import { Canal } from '../../../../shared/utilities/entidade/entidade.utility';
 import { CanalService } from '../../../../core/services/canal-service/canal.service';
 import { MensagemService } from '../../../../core/services/mensagem-service/mensagem.service';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
+import { Canal } from '../../../../core/services/canal-service/canal.entity';
 
 @Component({
   selector: 'app-mensagem-selecao-canal',
@@ -52,7 +52,7 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
     return this.verificarListaCargo(canal, this.idCargo);
   }
 
-  navegarParaCanal(idCanal: number) {
+  navegarParaCanal(idCanal: string) {
     var rota: string;
     if (this.isResponsavel) {
       const idResponsavel = this.usuarioLogado.getIdResponsavel();
@@ -72,7 +72,7 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
     this.navegarPara(rota);
   }
 
-  resgatarUltimaMensagem(idCanal: number): string {
+  resgatarUltimaMensagem(idCanal: string): string {
     if (this.isResponsavel) {
       const idResponsavel = this.usuarioLogado.getIdResponsavel();
 
@@ -99,15 +99,16 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
 
   protected inicializarConteudo(): void {
     this.canais = this.canalService.buscarTodosCanais();
+    console.log(this.canais)
   }
 
-  private verificarListaCargo(canal: Canal, idCargo?: number): boolean {
+  private verificarListaCargo(canal: Canal, idCargo?: string | null): boolean {
     if (idCargo === undefined) {
       return false;
     }
     for (let i = 0; i < canal.cargos.length; i++) {
       const cargo = canal.cargos[i];
-      if (cargo.idCargo === idCargo) {
+      if (cargo.cargo_id === idCargo) {
         return true;
       }
     }

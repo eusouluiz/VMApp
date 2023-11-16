@@ -3,14 +3,14 @@
 // ====================================
 
 export class ConstantesFuncionalidades {
-  static readonly GERENCIAMENTO_RESPONSAVEL = 0;
-  static readonly GERENCIAMENTO_ALUNO = 1;
-  static readonly GERENCIAMENTO_TURMA = 2;
-  static readonly GERENCIAMENTO_FUNCIONARIO = 3;
-  static readonly GERENCIAMENTO_CARGO = 4;
-  static readonly GERENCIAMENTO_CANAL = 5;
+  static readonly GERENCIAMENTO_RESPONSAVEL = '0';
+  static readonly GERENCIAMENTO_ALUNO = '1';
+  static readonly GERENCIAMENTO_TURMA = '2';
+  static readonly GERENCIAMENTO_FUNCIONARIO = '3';
+  static readonly GERENCIAMENTO_CARGO = '4';
+  static readonly GERENCIAMENTO_CANAL = '5';
 
-  static readonly GERENCIAMENTO_AVISO = 6;
+  static readonly GERENCIAMENTO_AVISO = '6';
 }
 
 // ====================================

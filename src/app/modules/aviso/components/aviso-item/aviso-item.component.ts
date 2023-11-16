@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { SharedModule } from '../../../../shared/shared.module';
-import { Aviso } from '../../../../shared/utilities/entidade/entidade.utility';
+import { Aviso } from '../../../../core/services/aviso-service/aviso.entity';
 
 @Component({
   selector: 'app-aviso-item',

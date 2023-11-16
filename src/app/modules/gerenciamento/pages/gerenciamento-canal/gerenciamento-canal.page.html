@@ -7,7 +7,7 @@
   </ion-row>
   <div *ngFor="let canal of listaCanais">
     <ion-item class="c-item"
-      lines="none" detail="true" button="true" (click)="navegarTelaCanal(canal.idCanal)">
+      lines="none" detail="true" button="true" (click)="navegarTelaCanal(canal.canal_id)">
       <ion-label>
         <ion-row>
           <ion-text class="c-item-titulo">{{canal.nome}}</ion-text>

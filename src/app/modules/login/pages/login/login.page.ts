@@ -2,19 +2,11 @@ import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SessionService } from '../../../../core/state/session/session.service';
-import {
-  // FUNCIONARIO_DATA,
-  // Funcionario,
-  // RESPONSAVEL_DATA,
-  // Responsavel,
-  // USUARIO_DATA,
-  Usuario,
-  logaData,
-} from '../../../../shared/utilities/entidade/entidade.utility';
 import { LoginApiBody } from '../../../../core/state/session/session.interface';
 import { finalize, tap } from 'rxjs';
 import { ToastService } from '../../../../core/toasts/services/toast-service/toast.service';
 import { IonInput } from '@ionic/angular';
+import { Usuario } from '../../../../core/services/usuario-service/usuario.entity';
 
 @Component({
   selector: 'app-login',
@@ -39,7 +31,6 @@ export class LoginPage {
       cpf: ['', [Validators.required]],
       password: ['', Validators.required],
     });
-    logaData();
   }
 
   submit() {

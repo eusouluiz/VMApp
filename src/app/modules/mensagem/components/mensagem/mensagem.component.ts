@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { SharedModule } from '../../../../shared/shared.module';
-import { Mensagem } from '../../../../shared/utilities/entidade/entidade.utility';
+import { Mensagem } from '../../../../core/services/mensagem-service/mensagem.entity';
 
 @Component({
   selector: 'app-mensagem',
@@ -12,9 +12,8 @@ import { Mensagem } from '../../../../shared/utilities/entidade/entidade.utility
   imports: [CommonModule, IonicModule, SharedModule],
 })
 export class MensagemComponent implements OnInit {
-  @Input('mensagem') mensagem!: Mensagem;
-
-  @Input('idUsuario') idUsuario!: number;
+  @Input('mensagem') mensagem!: Mensagem
+  @Input('idUsuario') idUsuario!: string
 
   hora!: string;
 
@@ -27,9 +26,9 @@ export class MensagemComponent implements OnInit {
     // console.log(this.idUsuario)
   }
 
-  resgatarHorario() {
-    this.hora = this.formatarNumero(this.mensagem.dataHoraEnvio.getHours());
-    this.minuto = this.formatarNumero(this.mensagem.dataHoraEnvio.getMinutes());
+  resgatarHorario(){
+    this.hora = this.formatarNumero(this.mensagem.data_envio.getHours())
+    this.minuto = this.formatarNumero(this.mensagem.data_envio.getMinutes())
 
     return this.hora + ':' + this.minuto;
   }
