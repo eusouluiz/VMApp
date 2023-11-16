@@ -6,7 +6,7 @@ import { SessionRepository } from './../../../core/state/session/session.reposit
 export class UsuarioLogado {
   constructor(
     private sessionRepository: SessionRepository,
-    private funcionalidadeService: FuncionalidadeService 
+    private funcionalidadeService: FuncionalidadeService
   ) {}
 
   isResponsavel(): boolean {
@@ -18,24 +18,27 @@ export class UsuarioLogado {
   }
 
   getFuncionalidadesAcessoId(): string[] {
-    let funcionalidadesId: string[] = []
-    const cargoId = this.getIdCargo() 
+    let funcionalidadesId: string[] = [];
+    const cargoId = this.getIdCargo();
     if (cargoId !== null && cargoId !== undefined) {
       this.funcionalidadeService.buscarFuncionalidadesCargo(cargoId)?.forEach((funcionalidade) => {
-        funcionalidadesId.push(funcionalidade.funcionalidade_id)
-      })
+        funcionalidadesId.push(funcionalidade.funcionalidade_id);
+      });
     } else {
-      return []
+      return [];
     }
 
     return funcionalidadesId;
   }
 
   getIdCargo(): string | null | undefined {
-    if (this.sessionRepository.userInfo()?.funcionario !== null && this.sessionRepository.userInfo()?.funcionario.cargo !== undefined) {
+    if (
+      this.sessionRepository.userInfo()?.funcionario !== null &&
+      this.sessionRepository.userInfo()?.funcionario.cargo !== undefined
+    ) {
       return this.sessionRepository.userInfo()?.funcionario.cargo.cargo_id;
     } else {
-      return undefined
+      return undefined;
     }
   }
 
@@ -47,7 +50,7 @@ export class UsuarioLogado {
     if (this.sessionRepository.userInfo()?.responsavel !== null) {
       return this.sessionRepository.userInfo()?.responsavel.responsavel_id;
     } else {
-      return undefined
+      return undefined;
     }
   }
 
@@ -55,7 +58,7 @@ export class UsuarioLogado {
     if (this.sessionRepository.userInfo()?.funcionario !== null) {
       return this.sessionRepository.userInfo()?.funcionario.funcionario_id;
     } else {
-      return undefined
+      return undefined;
     }
   }
 

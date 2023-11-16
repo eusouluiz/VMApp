@@ -3,10 +3,14 @@ import { Component, OnInit } from '@angular/core';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { Router } from '@angular/router';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
-import { CanalService } from '../../../../core/services/canal-service/canal.service';
 import { MensagemService } from '../../../../core/services/mensagem-service/mensagem.service';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
-import { Canal } from '../../../../core/services/canal-service/canal.entity';
+import { Canal, CanalInterface } from '../../../../core/services/canal-service/canal.entity';
+import { SessionRepository } from '../../../../core/state/session/session.repository';
+import { CanalApiService } from '../../state/canal.api.service';
+import { CanalService } from '../../../../core/services/canal-service/canal.service';
+import { CanalRepository } from '../../state/canal.repository';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-mensagem-selecao-canal',
@@ -14,7 +18,7 @@ import { Canal } from '../../../../core/services/canal-service/canal.entity';
   styleUrls: ['./mensagem-selecao-canal.page.scss'],
 })
 export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
-  canais: Canal[] = [];
+  canais: CanalInterface[] | undefined = undefined;
 
   isResponsavel = this.usuarioLogado.isResponsavel();
 
@@ -22,26 +26,43 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
 
   primeiroNome: string = '';
 
+  userInfoSubscription: Subscription | undefined;
+
+  canaisSubscription: Subscription | undefined;
+
+  dataAvailable = false;
+
   constructor(
     private router: Router,
     private canalService: CanalService,
+    private canalApiService: CanalApiService,
     public usuarioLogado: UsuarioLogado,
     private mensagemService: MensagemService,
-    private pageMenuService: PageMenuService
+    private pageMenuService: PageMenuService,
+    private sessionRepository: SessionRepository,
+    private canalRepository: CanalRepository
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_MENSAGEM;
     super(router, ROTA_BASE);
 
-    const nome = usuarioLogado.getNome();
-    if (nome !== undefined) {
-      this.primeiroNome = nome.split(' ')[0];
-    }
     this.inicializarConteudo();
   }
 
   ngOnInit() {}
 
+  OnDestroy() {
+    this.userInfoSubscription?.unsubscribe();
+  }
+
   ionViewWillEnter() {
+    this.userInfoSubscription = this.sessionRepository.userInfo$.subscribe((info) => {
+      if (info !== undefined) {
+        if (info.nome !== undefined) {
+          this.primeiroNome = info.nome.split(' ')[0];
+        }
+      }
+    });
+
     this.pageMenuService.displayStatus.next(true);
   }
 
@@ -99,11 +120,14 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
 
   protected inicializarConteudo(): void {
     this.canais = this.canalService.buscarTodosCanais();
-    console.log(this.canais)
+    console.log(this.canais);
   }
 
   private verificarListaCargo(canal: Canal, idCargo?: string | null): boolean {
     if (idCargo === undefined) {
+      return false;
+    }
+    if (canal.cargos === undefined) {
       return false;
     }
     for (let i = 0; i < canal.cargos.length; i++) {

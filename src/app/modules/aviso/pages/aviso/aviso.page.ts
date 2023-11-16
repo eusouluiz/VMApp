@@ -23,8 +23,9 @@ export class AvisoPage extends Pagina implements OnInit {
   avisos: Aviso[] = [];
 
   //continuar restricao de avisos
-  idResponsavel?: string = this.usuarioLogado.getIdResponsavel()
-  isResponsavel?: boolean = this.usuarioLogado.isResponsavel()
+  idResponsavel?: string = this.usuarioLogado.getIdResponsavel();
+
+  isResponsavel?: boolean = this.usuarioLogado.isResponsavel();
 
   constructor(
     private router: Router,
@@ -50,10 +51,6 @@ export class AvisoPage extends Pagina implements OnInit {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
     console.log(this.avisos);
-  }
-
-  protected inicializarConteudo(): void {
-    this.avisos = this.resgatarAvisos()
   }
 
   resgatarAvisos(): Aviso[] {
@@ -85,11 +82,18 @@ export class AvisoPage extends Pagina implements OnInit {
 
       this.avisoService.alterarAviso(aviso);
     } else if (role === 'deletarAviso') {
-      this.avisoService.deletarAviso(aviso.aviso_id)
-    } else if (role === 'duvidaAviso'){
+      this.avisoService.deletarAviso(aviso.aviso_id);
+    } else if (role === 'duvidaAviso') {
       if (this.idResponsavel !== undefined) {
-        const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(aviso.canal.canal_id, this.idResponsavel)
-        const caminho = ConstantesRotas.ROTA_MENSAGEM + ConstantesRotas.BARRA + idCanalResponsavel + ConstantesRotas.ROTA_MENSAGEM_CANAL
+        const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(
+          aviso.canal.canal_id,
+          this.idResponsavel
+        );
+        const caminho =
+          ConstantesRotas.ROTA_MENSAGEM +
+          ConstantesRotas.BARRA +
+          idCanalResponsavel +
+          ConstantesRotas.ROTA_MENSAGEM_CANAL;
 
         this.navegarPara(caminho);
       } else {
@@ -122,5 +126,9 @@ export class AvisoPage extends Pagina implements OnInit {
 
       this.avisoService.incluirAviso(data);
     }
+  }
+
+  protected inicializarConteudo(): void {
+    this.avisos = this.resgatarAvisos();
   }
 }
