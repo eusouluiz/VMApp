@@ -1,18 +1,21 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>LOGIN</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="e-login" [scrollY]="false" [fullscreen]="true">
+  <app-header titulo="LOGIN"></app-header>
 
-<ion-content [fullscreen]="true">
-  <form [formGroup]="form">
-    <app-field-input
-      formControlName="cpf"
-      label="Usário (CPF)"
-      placeholder="000.000.000-00"
-      showValidationErrorMessage="true"></app-field-input>
-    <app-field-password formControlName="password" label=" " placeholder="Senha"></app-field-password>
+  <main
+    class="u-display--flex u-flex-direction--column u-flex-align--center u-flex-justify--space-around e-login-page">
+    <form [formGroup]="form" class="e-login-page__form">
+      <app-login-field-input
+        formControlName="cpf"
+        label="Usuário (CPF)"
+        placeholder="000.000.000-00"></app-login-field-input>
+      <div class="u-margin-top--xl">
+        <app-login-field-password
+          #password
+          formControlName="password"
+          placeholder="Senha"></app-login-field-password>
+      </div>
+    </form>
 
-    <app-button (click)="submit()"> Entrar </app-button>
-  </form>
+    <app-button class="" (click)="submit()"> Entrar </app-button>
+  </main>
 </ion-content>

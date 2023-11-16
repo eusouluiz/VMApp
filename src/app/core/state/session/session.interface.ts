@@ -32,5 +32,5 @@ export interface UserInfoApiResponse {
   cpf: string;
   funcionario: Funcionario;
   responsavel: Responsavel;
-  tipo: 'F' | 'R';
+  tipo: 'F' | 'R' | 'A';
 }
