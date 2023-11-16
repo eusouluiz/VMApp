@@ -75,9 +75,9 @@ export var CANAL_DATA: Canal[] = [
 
 export var CANAL_RESPONSAVEL_DATA: CanalResponsavel[] = [
   new CanalResponsavel({ canal_responsavel_id: '0', canal_id: CANAL_DATA[0].canal_id, responsavel_id: RESPONSAVEL_DATA[0].responsavel_id, updated_at: new Date(), created_at: new Date() }),
-  new CanalResponsavel({ canal_responsavel_id: '1', canal_id: CANAL_DATA[0].canal_id, responsavel_id: RESPONSAVEL_DATA[1].responsavel_id, updated_at: new Date(), created_at: new Date() }),
-  new CanalResponsavel({ canal_responsavel_id: '2', canal_id: CANAL_DATA[1].canal_id, responsavel_id: RESPONSAVEL_DATA[2].responsavel_id, updated_at: new Date(), created_at: new Date() }),
-  new CanalResponsavel({ canal_responsavel_id: '3', canal_id: CANAL_DATA[2].canal_id, responsavel_id: RESPONSAVEL_DATA[0].responsavel_id, updated_at: new Date(), created_at: new Date() }),
+  new CanalResponsavel({ canal_responsavel_id: '1', canal_id: CANAL_DATA[1].canal_id, responsavel_id: RESPONSAVEL_DATA[0].responsavel_id, updated_at: new Date(), created_at: new Date() }),
+  new CanalResponsavel({ canal_responsavel_id: '2', canal_id: CANAL_DATA[2].canal_id, responsavel_id: RESPONSAVEL_DATA[0].responsavel_id, updated_at: new Date(), created_at: new Date() }),
+  new CanalResponsavel({ canal_responsavel_id: '3', canal_id: CANAL_DATA[3].canal_id, responsavel_id: RESPONSAVEL_DATA[0].responsavel_id, updated_at: new Date(), created_at: new Date() }),
 ];
 
 export var MENSAGEM_DATA: Mensagem[] = [

@@ -1,0 +1,191 @@
+@import '../sizing.scss';
+
+.c-menu {
+  position: relative;
+  width: 90vw;
+  height: 5 * $size-base;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 $size-base;
+  padding-bottom: $size-base;
+
+  background-color: var(--color-blue-background);
+  border-radius: 3vw 3vw 0 0;
+  box-shadow: 0px 4px 8px rgba(24, 12, 35, 0.08);
+
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  opacity: 1;
+
+  // Entering transition
+  transition: transform 300ms cubic-bezier(0.05, 0.7, 0.1, 1), opacity 200ms cubic-bezier(0.05, 0.7, 0.1, 1);
+
+  &--hidden {
+    transform: translateY(30px);
+    opacity: 0;
+
+    // Leaving transition
+    transition: transform 300ms cubic-bezier(0.3, 0, 0.8, 0.15), opacity 200ms cubic-bezier(0.3, 0, 0.8, 0.15);
+  }
+
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: calc(#{7.5 * $size-base} / 3);
+    cursor: pointer;
+
+    &:first-of-type {
+      justify-content: flex-start;
+    }
+
+    &:last-of-type {
+      justify-content: flex-end;
+    }
+  }
+
+  &__area {
+    z-index: 9999;
+    width: 1.5 * $size-base;
+    height: 1.5 * $size-base;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: color 250ms cubic-bezier(0.2, 0, 0, 1);
+
+    color: var(--color-primary);
+
+    &--active {
+      color: white;
+    }
+  }
+
+  &__active {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(90vw / 3);
+    height: 5 * $size-base;
+    border-radius: 3vw 3vw 0 0;
+
+    transition: left 250ms ease-in, background-color 250ms cubic-bezier(0.2, 0, 0, 1);
+
+    &--left {
+      background-color: var(--ion-color-primary);
+    }
+
+    &--middle {
+      left: calc(calc(90vw / 3));
+      background-color: var(--ion-color-primary);
+    }
+
+    &--right {
+      left: calc(calc(90vw / 3) * 2);
+      background-color: var(--ion-color-primary);
+    }
+  }
+}
+
+.c-menu-container {
+  z-index: 9999;
+  position: fixed;
+  // bottom: calc($size-base + env(safe-area-inset-bottom));
+  bottom: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+
+  &--hidden {
+    pointer-events: none;
+  }
+}
+
+.c-menu-two-tabs {
+  position: relative;
+  width: 90vw;
+  height: 5 * $size-base;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 $size-base;
+  padding-bottom: $size-base;
+
+  background-color: var(--color-blue-background);
+  border-radius: 3vw 3vw 0 0;
+  box-shadow: 0px 4px 8px rgba(24, 12, 35, 0.08);
+
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  opacity: 1;
+
+  // Entering transition
+  transition: transform 300ms cubic-bezier(0.05, 0.7, 0.1, 1), opacity 200ms cubic-bezier(0.05, 0.7, 0.1, 1);
+
+  &--hidden {
+    transform: translateY(30px);
+    opacity: 0;
+
+    // Leaving transition
+    transition: transform 300ms cubic-bezier(0.3, 0, 0.8, 0.15), opacity 200ms cubic-bezier(0.3, 0, 0.8, 0.15);
+  }
+
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: calc(#{7.5 * $size-base} / 3);
+    cursor: pointer;
+
+    &:first-of-type {
+      justify-content: flex-start;
+    }
+
+    &:last-of-type {
+      justify-content: flex-end;
+    }
+  }
+
+  &__area {
+    z-index: 9999;
+    width: 1.5 * $size-base;
+    height: 1.5 * $size-base;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: color 250ms cubic-bezier(0.2, 0, 0, 1);
+
+    color: var(--color-primary);
+
+    &--active {
+      color: white;
+    }
+  }
+
+  &__active {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(90vw / 2);
+    height: 5 * $size-base;
+    border-radius: 3vw 3vw 0 0;
+
+    transition: left 250ms ease-in, background-color 250ms cubic-bezier(0.2, 0, 0, 1);
+
+    &--left {
+      background-color: var(--ion-color-primary);
+    }
+
+    &--right {
+      left: calc(calc(90vw / 2));
+      background-color: var(--ion-color-primary);
+    }
+  }
+}
