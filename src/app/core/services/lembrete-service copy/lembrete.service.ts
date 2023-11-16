@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { LEMBRETE_DATA, Lembrete } from '../../../shared/utilities/entidade/entidade.utility';
+import { LEMBRETE_DATA } from '../../../shared/utilities/entidade/entidade.utility';
+import { Lembrete } from './lembrete.entity';
 
 @Injectable({
   providedIn: 'root',
@@ -10,20 +11,19 @@ export class LembreteService {
         return LEMBRETE_DATA
     }
 
-    buscarLembrete(idLembrete: number): Lembrete | undefined{
+    buscarLembrete(idLembrete: string): Lembrete | undefined{
         return LEMBRETE_DATA.find((l) => {
-            return l.idLembrete === idLembrete
+            return l.id === idLembrete
         })
     }
 
     incluirLembrete(lembrete: Lembrete) {
-        lembrete.idLembrete = LEMBRETE_DATA[LEMBRETE_DATA.length-1].idLembrete + 1
         LEMBRETE_DATA.push(lembrete)
     }
 
     alterarLembrete(lembrete: Lembrete) {
         var indexL = LEMBRETE_DATA.findIndex((l) => {
-            return l.idLembrete === lembrete.idLembrete
+            return l.id === lembrete.id
         })
         if (indexL !== -1) {
             LEMBRETE_DATA[indexL] = lembrete
@@ -32,9 +32,9 @@ export class LembreteService {
         }
     }
 
-    deletarLembrete(idLembrete: number) {
+    deletarLembrete(idLembrete: string) {
         var indexL = LEMBRETE_DATA.findIndex((l) => {
-            return l.idLembrete === idLembrete
+            return l.id === idLembrete
         })
         if (indexL !== -1){
             LEMBRETE_DATA.splice(indexL, 1)

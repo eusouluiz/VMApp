@@ -1,10 +1,10 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Canal } from '../../../../shared/utilities/entidade/entidade.utility';
 import { CanalService } from '../../../../core/services/canal-service/canal.service';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { Location } from '@angular/common';
+import { Canal } from '../../../../core/services/canal-service/canal.entity';
 
 @Component({
   selector: 'app-gerenciamento-canal',
@@ -13,7 +13,7 @@ import { Location } from '@angular/common';
 })
 export class GerenciamentoCanalPage extends Pagina implements OnInit {
 
-  responsaveis: Canal[] = []
+  canais: Canal[] = []
   listaCanais: Canal[] = []
 
 
@@ -30,13 +30,13 @@ export class GerenciamentoCanalPage extends Pagina implements OnInit {
   }
 
   protected inicializarConteudo(): void {
-    this.responsaveis = this.canalService.buscarTodosCanais()
-    this.listaCanais = this.responsaveis.slice()
+    this.canais = this.canalService.buscarTodosCanais()
+    this.listaCanais = this.canais.slice()
   }
 
   filtarCanalNome(ev: any) {
     var val = ev.target.value;
-    this.listaCanais = this.responsaveis.slice()
+    this.listaCanais = this.canais.slice()
 
     // se o valor for um valor valido
     this.listaCanais = this.listaCanais.filter((canal) => {

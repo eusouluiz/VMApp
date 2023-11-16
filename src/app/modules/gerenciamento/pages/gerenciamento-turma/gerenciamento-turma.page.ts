@@ -1,10 +1,10 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Turma } from '../../../../shared/utilities/entidade/entidade.utility';
 import { TurmaService } from '../../../../core/services/turma-service/turma.service';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { Location } from '@angular/common';
+import { Turma } from '../../../../core/services/turma-service/turma.entity';
 
 @Component({
   selector: 'app-gerenciamento-turma',

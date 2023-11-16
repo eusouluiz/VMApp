@@ -36,6 +36,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { BotoesControleComponent } from './components/botoes-controle/botoes-controle.component';
+import { PageMenuComponent } from './components/page-menu/page-menu.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { BotoesControleComponent } from './components/botoes-controle/botoes-con
     HeaderComponent,
     AutocompleteComponent,
     BotoesControleComponent,
+    PageMenuComponent,
   ],
   imports: [
     CommonModule,
@@ -92,6 +94,7 @@ import { BotoesControleComponent } from './components/botoes-controle/botoes-con
     HeaderComponent,
     AutocompleteComponent,
     BotoesControleComponent,
+    PageMenuComponent,
   ],
 })
 export class SharedModule {}

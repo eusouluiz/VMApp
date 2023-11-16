@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common'
-import { Funcionario, Cargo, cargoVazio, Funcionalidade } from '../../../../shared/utilities/entidade/entidade.utility';
 import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina-gerenciamento-detalhes/pagina-gerenciamento-detalhes.utility';
 import { CargoService } from '../../../../core/services/cargo-service/cargo.service';
 import { FuncionarioService } from '../../../../core/services/funcionario-service/funcionario.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { FuncionalidadeService } from '../../../../core/services/funcionalidade-service/funcionalidade.service';
+import { Cargo } from '../../../../core/services/cargo-service/cargo.entity';
+import { Funcionario } from '../../../../core/services/funcionario-service/funcionario.entity';
+import { Funcionalidade } from '../../../../core/services/funcionalidade-service/funcionalidade.entity';
 
 @Component({
   selector: 'app-gerenciamento-cargo-detalhes',
@@ -16,7 +18,7 @@ import { FuncionalidadeService } from '../../../../core/services/funcionalidade-
 })
 export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
 
-  cargo: Cargo = cargoVazio()
+  cargo: Cargo = new Cargo
   listaTodosFuncionarios: Funcionario[] | null = null
   listaTodasFuncionalidades: Funcionalidade[] | null = null
 
@@ -59,7 +61,7 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
 
     const id = this.activatedRoute.snapshot.paramMap.get('id')
     if (this.isModoDetalhes() && id !== null) {
-      this.cargo = this.resgatarCargo(Number.parseInt(id))
+      this.cargo = this.resgatarCargo(id)
 
       this.form?.setValue({
         nome: this.cargo.nome,
@@ -74,12 +76,12 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   // ---- busca cargo ----//
-  private resgatarCargo(id: number): Cargo {
+  private resgatarCargo(id: string): Cargo {
     const cargo = this.cargoService.buscarCargo(id)
     if (cargo !== undefined) {
       return cargo
     }
-    return cargoVazio()
+    return new Cargo()
   }
   // ---- busca cargo ----//
 
@@ -87,7 +89,7 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
 
   //delecao
   protected deletar() {
-    this.cargoService.deletarCargo(this.cargo.idCargo)
+    this.cargoService.deletarCargo(this.cargo.cargo_id)
     this.retornarPagina()
   }
 
@@ -166,18 +168,18 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
     this.listaFuncionariosBusca = []
     if (this.listaTodosFuncionarios !== null) {
       this.listaTodosFuncionarios.forEach((f) => {
-        const idFuncionario = f.idFuncionario
-        var isFuncionarioPossuiFuncionario = false
+        const idFuncionario = f.funcionario_id
+        var isCargoPossuiFuncionario = false
   
         for (let i = 0; i < this.listaFuncionariosTabela.length; i++) {
-          const funcionarioFuncionario = this.listaFuncionariosTabela[i];
-          if (funcionarioFuncionario.idFuncionario === idFuncionario) {
-            isFuncionarioPossuiFuncionario = true
+          const cargoFuncionario = this.listaFuncionariosTabela[i];
+          if (cargoFuncionario.funcionario_id === idFuncionario) {
+            isCargoPossuiFuncionario = true
             break
           }
         }
   
-        if (!isFuncionarioPossuiFuncionario) {
+        if (!isCargoPossuiFuncionario) {
           this.listaFuncionariosBusca.push(f)
         }
       })
@@ -190,7 +192,7 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
   private resgatarNomeFuncionariosBusca(lista: Funcionario[]): string[] {
     var nomes: string[] = []
     lista.forEach(funcionario => {
-      nomes.push(funcionario.nome)
+      nomes.push(funcionario.usuario.nome)
     });
     return nomes
   }
@@ -228,9 +230,9 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
 
   private atualizarFuncionarios() {
     this.cargo.funcionarios = this.listaFuncionariosTabela.sort((f1, f2) => {
-      if (f1.nome.toLowerCase() > f2.nome.toLowerCase()) {
+      if (f1.usuario.nome.toLowerCase() > f2.usuario.nome.toLowerCase()) {
         return 1
-      } else if (f2.nome.toLowerCase() > f1.nome.toLowerCase()) {
+      } else if (f2.usuario.nome.toLowerCase() > f1.usuario.nome.toLowerCase()) {
         return -1
       } else {
         return 0
@@ -248,9 +250,9 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
     this.navegarPara(rota)
   }
 
-  deletarFuncionario(id: number) {
+  deletarFuncionario(id: string) {
     const indexFuncionario = this.listaFuncionariosTabela.findIndex((r) => {
-      return r.idFuncionario === id
+      return r.funcionario_id === id
     })
     if (indexFuncionario !== -1) {
       const funcionario = this.listaFuncionariosTabela[indexFuncionario]
@@ -258,7 +260,7 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
 
 
       this.listaFuncionariosBusca.push(funcionario)
-      this.nomeFuncionariosBusca.push(funcionario.nome)
+      this.nomeFuncionariosBusca.push(funcionario.usuario.nome)
     }
   }
 
@@ -291,18 +293,18 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
     this.listaFuncionalidadesBusca = []
     if (this.listaTodasFuncionalidades !== null) {
       this.listaTodasFuncionalidades.forEach((f) => {
-        const idFuncionalidade = f.idFuncionalidade
-        var isFuncionalidadePossuiFuncionalidade = false
+        const idFuncionalidade = f.id
+        var isCargoPossuiFuncionalidade = false
   
         for (let i = 0; i < this.listaFuncionalidadesTabela.length; i++) {
-          const funcionalidadeFuncionalidade = this.listaFuncionalidadesTabela[i];
-          if (funcionalidadeFuncionalidade.idFuncionalidade === idFuncionalidade) {
-            isFuncionalidadePossuiFuncionalidade = true
+          const cargoFuncionalidade = this.listaFuncionalidadesTabela[i];
+          if (cargoFuncionalidade.id === idFuncionalidade) {
+            isCargoPossuiFuncionalidade = true
             break
           }
         }
   
-        if (!isFuncionalidadePossuiFuncionalidade) {
+        if (!isCargoPossuiFuncionalidade) {
           this.listaFuncionalidadesBusca.push(f)
         }
       })
@@ -357,9 +359,9 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
     })
   }
 
-  deletarFuncionalidade(id: number) {
+  deletarFuncionalidade(id: string) {
     const indexFuncionalidade = this.listaFuncionalidadesTabela.findIndex((r) => {
-      return r.idFuncionalidade === id
+      return r.id === id
     })
     if (indexFuncionalidade !== -1) {
       const funcionalidade = this.listaFuncionalidadesTabela[indexFuncionalidade]

@@ -4,7 +4,7 @@
 /** Ionic CSS Variables **/
 :root {
   /** primary **/
-  --ion-color-primary: #150B96;
+  --ion-color-primary: #150b96;
   --ion-color-primary-rgb: 56, 128, 255;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
@@ -12,7 +12,7 @@
   --ion-color-primary-tint: #4c8dff;
 
   /** secondary **/
-  --ion-color-secondary: #3124D9;
+  --ion-color-secondary: #3124d9;
   --ion-color-secondary-rgb: 61, 194, 255;
   --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
@@ -20,7 +20,7 @@
   --ion-color-secondary-tint: #50c8ff;
 
   /** tertiary **/
-  --ion-color-tertiary: #CECDF9;
+  --ion-color-tertiary: #cecdf9;
   --ion-color-tertiary-rgb: 82, 96, 255;
   --ion-color-tertiary-contrast: #ffffff;
   --ion-color-tertiary-contrast-rgb: 255, 255, 255;
@@ -75,34 +75,56 @@
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 
-  --color-gray-100: #fafafa;
-  --color-gray-200: #f5f5f5;
-  --color-gray-300: #eee;
-  --color-gray-400: #e0e0e0;
-  --color-gray-500: #bdbdbd;
-  --color-gray-600: #707577;
-  --color-gray-800: #393c4b;
-  --color-gray-900: #111122;
+  --color-primary: #150b96;
+  --color-secondary: #8a82e4;
+  --color-tertiary: #aba7dd;
 
-  --color-blue-100: #fafbfc;
-  --color-blue-200: #f4f7fa;
-  --color-blue-300: #eef2fa;
-  --color-blue-400: #c4d2df;
-  --color-blue-500: #aebcc9;
-  --color-blue-700: #8091a5;
+  --color-gray-50: #b9bac4;
+  --color-gray-30: #d5d6dc;
+  --color-gray-10: #f1f2f4;
+  --color-white: #ffffff;
 
-  --color-text-dark: #334155;
-  --color-text-medium: #94a3b8;
-  --color-text-light: #f8fafc;
+  --color-font-primary: #26272f;
+  --color-font-secondary: #424357;
+  --color-font-tertiary: #727489;
+  --color-font-orange: #cc7523;
+  --color-font-cobalt: #446bd8;
+  --color-font-emerald: #14b065;
 
-  --color-primary-300: #1892dc;
-  --color-primary-500: #005ca9;
-  --color-primary-700: #004282;
+  --color-cobalt: #517df7;
+  --color-sapphire: #7d9efa;
+  --color-blue-background: #d9e3ff;
+  --color-purple-background: #f1f0ff;
+  --color-sky: #d1d8ea;
 
-  --color-error: #ff5863;
+  --color-red-1: #b1155f;
+  --color-red-2: #d93785;
+  --color-red-3: #f7d7e7;
+
+  --color-orange-background: #fff4e4;
+  --color-tangerine: #f2ad6c;
+  --color-orange: #f28f33;
+  --color-peach: #f6d8bc;
+
+  --color-emerald: #0cbc68;
+  --color-teal: #b6ecd2;
+  --color-mint: #58e5a1;
+  --color-green-1: #417a15;
+  --color-green-2: #68c122;
+  --color-green-3: #e8f6dd;
+  --color-green-background: #f0fff8;
+
+  --color-error: var(--color-red-2);
   --color-warning: #f7c662;
-  --color-success: #1b9a8f;
-  --color-message: #007fff;
+  --color-success: var(--color-green-1);
+  --color-message: var(--color-cobalt);
 
   --shadow-focus: drop-shadow(0 0 2px #0084ff);
+
+  --shadow-xs: 0px 1px 2px rgba(15, 15, 16, 0.05);
+  --shadow-sm: 0px 1px 3px rgba(15, 15, 16, 0.1), 0px 1px 2px rgba(15, 15, 16, 0.06);
+  --shadow-md: 0px 4px 6px -1px rgba(15, 15, 16, 0.08), 0px 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0px 4px 6px -2px rgba(15, 15, 16, 0.05), 0px 10px 15px -3px rgba(15, 15, 16, 0.1);
+  --shadow-xl: 0px 10px 10px -5px rgba(15, 15, 16, 0.04), 0px 20px 25px -5px rgba(15, 15, 16, 0.1);
+  --shadow-2xl: 0px 24px 48px -12px rgba(15, 15, 16, 0.18);
 }

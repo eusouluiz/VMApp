@@ -10,13 +10,8 @@ import { MensagemCanalPage } from './pages/mensagem-canal/mensagem-canal.page';
 import { MensagemComponent } from './components/mensagem/mensagem.component';
 import { EnvioMensagemComponent } from './components/envio-mensagem/envio-mensagem.component';
 
-
 @NgModule({
-  declarations: [
-    MensagemSelecaoCanalPage,
-    MensagemSelecaoAlunoPage,
-    MensagemCanalPage,
-  ],
+  declarations: [MensagemSelecaoCanalPage, MensagemSelecaoAlunoPage, MensagemCanalPage],
   imports: [
     CommonModule,
     MensagemRoutingModule,
@@ -24,6 +19,6 @@ import { EnvioMensagemComponent } from './components/envio-mensagem/envio-mensag
     IonicModule,
     MensagemComponent,
     EnvioMensagemComponent,
-  ]
+  ],
 })
-export class MensagemModule { }
+export class MensagemModule {}

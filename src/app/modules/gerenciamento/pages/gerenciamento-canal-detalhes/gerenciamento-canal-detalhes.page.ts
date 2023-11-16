@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common'
-import { Cargo, Canal, canalVazio } from '../../../../shared/utilities/entidade/entidade.utility';
 import { CanalService } from '../../../../core/services/canal-service/canal.service';
 import { CargoService } from '../../../../core/services/cargo-service/cargo.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina-gerenciamento-detalhes/pagina-gerenciamento-detalhes.utility';
+import { Canal } from '../../../../core/services/canal-service/canal.entity';
+import { Cargo } from '../../../../core/services/cargo-service/cargo.entity';
 
 @Component({
   selector: 'app-gerenciamento-canal-detalhes',
@@ -15,7 +16,7 @@ import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina
 })
 export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
 
-  canal: Canal = canalVazio()
+  canal: Canal = new Canal()
   listaTodosCargos: Cargo[] | null = null
 
   constructor(
@@ -54,7 +55,7 @@ export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamentoDetalhes 
 
     const id = this.activatedRoute.snapshot.paramMap.get('id')
     if (this.isModoDetalhes() && id !== null) {
-      this.canal = this.resgatarCanal(Number.parseInt(id))
+      this.canal = this.resgatarCanal(id)
 
       this.form?.setValue({
         nome: this.canal.nome,
@@ -69,12 +70,12 @@ export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   // ---- busca canal ----//
-  private resgatarCanal(id: number): Canal {
+  private resgatarCanal(id: string): Canal {
     const canal = this.canalService.buscarCanal(id)
     if (canal !== undefined) {
       return canal
     }
-    return canalVazio()
+    return new Canal()
   }
   // ---- busca canal ----//
 
@@ -82,7 +83,7 @@ export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamentoDetalhes 
 
   //delecao
   protected deletar() {
-    this.canalService.deletarCanal(this.canal.idCanal)
+    this.canalService.deletarCanal(this.canal.canal_id)
     this.retornarPagina()
   }
 
@@ -158,12 +159,12 @@ export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamentoDetalhes 
     this.listaCargosBusca = []
     if (this.listaTodosCargos !== null) {
       this.listaTodosCargos.forEach((c) => {
-        const idCargo = c.idCargo
+        const idCargo = c.cargo_id
         var isCanalPossuiCargo = false
   
         for (let i = 0; i < this.listaCargosTabela.length; i++) {
           const canalCargo = this.listaCargosTabela[i];
-          if (canalCargo.idCargo === idCargo) {
+          if (canalCargo.cargo_id === idCargo) {
             isCanalPossuiCargo = true
             break
           }
@@ -240,9 +241,9 @@ export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamentoDetalhes 
     this.navegarPara(rota)
   }
 
-  deletarCargo(id: number) {
+  deletarCargo(id: string) {
     const indexCargo = this.listaCargosTabela.findIndex((c) => {
-      return c.idCargo === id
+      return c.cargo_id === id
     })
     if (indexCargo !== -1) {
       const cargo = this.listaCargosTabela[indexCargo]

@@ -5,10 +5,10 @@
     placeholder="Responsavel" [debounce]="500" (ionInput)="filtrarResponsavelNome($event)"></ion-searchbar>
   <div *ngFor="let responsavel of listaResponsaveis">
     <ion-item class="c-item"
-      lines="none" detail="true" button="true" (click)="navegarTelaResponsavel(responsavel.idResponsavel)">
+      lines="none" detail="true" button="true" (click)="navegarTelaResponsavel(responsavel.responsavel_id)">
       <ion-label>
         <ion-row>
-          <ion-text class="c-item-titulo">{{responsavel.nome}}</ion-text>
+          <ion-text class="c-item-titulo">{{responsavel.usuario.nome}}</ion-text>
         </ion-row>
         <ion-row>
           <ion-text class="c-item-subtitulo">Tel: {{responsavel.usuario.telefone}}</ion-text>

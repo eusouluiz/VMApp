@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common'
-import { Aluno, Responsavel, responsavelVazio } from '../../../../shared/utilities/entidade/entidade.utility';
 import { ResponsavelService } from '../../../../core/services/responsavel-service/responsavel.service';
 import { AlunoService } from '../../../../core/services/aluno-service/aluno.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina-gerenciamento-detalhes/pagina-gerenciamento-detalhes.utility';
+import { Responsavel } from '../../../../core/services/responsavel-service/responsavel.entity';
+import { Aluno } from '../../../../core/services/aluno-service/aluno.entity';
 
 @Component({
   selector: 'app-gerenciamento-responsavel-detalhes',
@@ -15,7 +16,7 @@ import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina
 })
 export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
 
-  responsavel: Responsavel = responsavelVazio()
+  responsavel: Responsavel = new Responsavel()
   listaTodosAlunos: Aluno[] | null = null
 
   constructor(
@@ -57,9 +58,9 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
 
     const id = this.activatedRoute.snapshot.paramMap.get('id')
     if (this.isModoDetalhes() && id !== null) {
-      this.responsavel = this.resgatarResponsavel(Number.parseInt(id))
+      this.responsavel = this.resgatarResponsavel(id)
       this.form?.setValue({
-        nome: this.responsavel.nome,
+        nome: this.responsavel.usuario.nome,
         telefone: this.responsavel.usuario.telefone,
         cpf: this.responsavel.usuario.cpf,
         senha: this.responsavel.usuario.senha,
@@ -75,12 +76,12 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
   }
 
   // ---- busca responsavel ----//
-  private resgatarResponsavel(id: number): Responsavel {
+  private resgatarResponsavel(id: string): Responsavel {
     const responsavel = this.responsavelService.buscarResponsavel(id)
     if (responsavel !== undefined) {
       return responsavel
     }
-    return responsavelVazio()
+    return new Responsavel()
   }
   // ---- busca responsavel ----//
 
@@ -88,7 +89,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
 
   //delecao
   protected deletar() {
-    this.responsavelService.deletarResponsavel(this.responsavel.idResponsavel)
+    this.responsavelService.deletarResponsavel(this.responsavel.responsavel_id)
     this.retornarPagina()
   }
 
@@ -119,7 +120,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
     this.modo = 'detalhes'
 
     this.form?.setValue({
-      nome: this.responsavel.nome,
+      nome: this.responsavel.usuario.nome,
       telefone: this.responsavel.usuario.telefone,
       cpf: this.responsavel.usuario.cpf,
       senha: this.responsavel.usuario.senha,
@@ -132,7 +133,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
   //salvar edicao
   salvar() {
     if (this.form?.valid) {
-      this.responsavel.nome = this.form?.value.nome
+      this.responsavel.usuario.nome = this.form?.value.nome
       this.responsavel.usuario.telefone = this.form?.value.telefone
       this.responsavel.usuario.cpf = this.form?.value.cpf
       this.responsavel.usuario.senha = this.form?.value.senha
@@ -178,12 +179,12 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
     this.listaAlunosBusca = []
     if (this.listaTodosAlunos !== null) {
       this.listaTodosAlunos.forEach((a) => {
-        const idAluno = a.idAluno
+        const idAluno = a.aluno_id
         var isResponsavelPossuiAluno = false
 
         for (let i = 0; i < this.listaAlunosTabela.length; i++) {
           const responsavelAluno = this.listaAlunosTabela[i];
-          if (responsavelAluno.idAluno === idAluno) {
+          if (responsavelAluno.aluno_id === idAluno) {
             isResponsavelPossuiAluno = true
             break
           }
@@ -262,9 +263,9 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
     }
   }
 
-  deletarAluno(id: number) {
+  deletarAluno(id: string) {
     const indexAluno = this.listaAlunosTabela.findIndex((a) => {
-      return a.idAluno === id
+      return a.aluno_id === id
     })
     if (indexAluno !== -1) {
       const aluno = this.listaAlunosTabela[indexAluno]

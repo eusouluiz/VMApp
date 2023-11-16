@@ -1,10 +1,10 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Cargo } from '../../../../shared/utilities/entidade/entidade.utility';
 import { CargoService } from '../../../../core/services/cargo-service/cargo.service';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { Location } from '@angular/common';
+import { Cargo } from '../../../../core/services/cargo-service/cargo.entity';
 
 @Component({
   selector: 'app-gerenciamento-cargo',

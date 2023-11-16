@@ -37,16 +37,16 @@
           <ng-container *ngIf="listaResponsaveisTabela.length > 0; then comResponsavel; else semResponsavel"></ng-container>
           <ng-template #comResponsavel>
             <tr *ngFor="let responsavel of listaResponsaveisTabela">
-              <td style="width: 45%;">{{responsavel.nome}}</td>
+              <td style="width: 45%;">{{responsavel.usuario.nome}}</td>
               <td style="width: 45%;">{{responsavel.usuario.telefone}}</td>
               <td style="width: 10%;">
                 <div style="text-align: -webkit-right;">
                   <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small" 
-                    (click)="navegarTelaResponsavel(responsavel.idResponsavel)">
+                    (click)="navegarTelaResponsavel(responsavel.responsavel_id)">
                     <ion-icon name="information"></ion-icon>
                   </ion-fab-button>
                   <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
-                    (click)="deletarResponsavel(responsavel.idResponsavel)">
+                    (click)="deletarResponsavel(responsavel.responsavel_id)">
                     <ion-icon name="trash"></ion-icon>
                   </ion-fab-button>
                 </div>
@@ -93,7 +93,7 @@
               <td style="width: 10%;">
                 <div style="text-align: -webkit-right;">
                   <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small" 
-                    (click)="navegarTelaTurma(turma.idTurma)">
+                    (click)="navegarTelaTurma(turma.turma_id)">
                     <ion-icon name="information"></ion-icon>
                   </ion-fab-button>
                   <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 

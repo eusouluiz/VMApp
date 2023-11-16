@@ -7,6 +7,9 @@
 //   funcionalidadesAcessoId?: number[];
 // }
 
+import { Funcionario } from "../../services/funcionario-service/funcionario.entity";
+import { Responsavel } from "../../services/responsavel-service/responsavel.entity";
+
 export interface LoginApiBody {
   cpf: string;
   password: string;
@@ -24,10 +27,10 @@ export interface Session {
 }
 
 export interface UserInfoApiResponse {
-  idUsuario: number;
+  user_id: string;
   nome: string;
-  idFuncionarioResponsavel: number;
-  tipoUsuario: 'F' | 'R';
-  idCargo?: number;
-  funcionalidadesAcessoId?: number[];
+  cpf: string;
+  funcionario: Funcionario;
+  responsavel: Responsavel;
+  tipo: 'F' | 'R';
 }

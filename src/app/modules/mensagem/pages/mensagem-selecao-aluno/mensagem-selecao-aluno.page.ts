@@ -3,14 +3,15 @@ import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { CanalService } from '../../../../core/services/canal-service/canal.service';
-import { Aluno, Canal } from '../../../../shared/utilities/entidade/entidade.utility';
 import { AlunoService } from '../../../../core/services/aluno-service/aluno.service';
 import { MensagemService } from '../../../../core/services/mensagem-service/mensagem.service';
+import { Canal } from '../../../../core/services/canal-service/canal.entity';
+import { Aluno } from '../../../../core/services/aluno-service/aluno.entity';
 
 interface ItemCanalResponsavel{
   nomeAluno: string,
   nomeResponsavel: string,
-  idResponsavel: number,
+  idResponsavel: string,
 }
 
 @Component({
@@ -46,7 +47,7 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
 
     const id = this.activatedRoute.snapshot.paramMap.get('idCanal')
     if (id !== null) {
-      this.canal = this.resgatarCanal(Number.parseInt(id))
+      this.canal = this.resgatarCanal(id)
     } else {
       throw new Error('idCanal nao especificado na url')
     }
@@ -61,15 +62,15 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
         a.responsaveis.forEach((r) => {
           this.listaCanalResponsavel.push({
             nomeAluno: a.nome,
-            nomeResponsavel: r.nome,
-            idResponsavel: r.idResponsavel
+            nomeResponsavel: r.usuario.nome,
+            idResponsavel: r.responsavel_id
           })
         })
       }
     })
   }
 
-  private resgatarCanal(id: number): Canal {
+  private resgatarCanal(id: string): Canal {
     const canal = this.canalService.buscarCanal(id)
     if (canal !== undefined) {
       return canal
@@ -77,8 +78,8 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
     throw new Error('Canal nao encontrado')
   }
 
-  resgatarUltimaMensagem(idResponsavel: number): string {
-    const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(this.canal.idCanal, idResponsavel)
+  resgatarUltimaMensagem(idResponsavel: string): string {
+    const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(this.canal.canal_id, idResponsavel)
 
     if (idCanalResponsavel !== undefined) {
       const mensagem = this.mensagemService.buscarUltimaMensagensCanalResponsavel(idCanalResponsavel)
@@ -92,10 +93,10 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
     }
   }
 
-  navegarParaCanalResponsavel(idResponsavel: number) {
+  navegarParaCanalResponsavel(idResponsavel: string) {
     var rota
 
-    const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(this.canal.idCanal, idResponsavel)
+    const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(this.canal.canal_id, idResponsavel)
     if (idCanalResponsavel !== undefined) {
       rota = idCanalResponsavel.toString() + ConstantesRotas.ROTA_MENSAGEM_CANAL
     } else {
