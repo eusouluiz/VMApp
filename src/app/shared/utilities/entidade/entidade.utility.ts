@@ -23,7 +23,7 @@ export var USUARIO_DATA: Usuario[] = [
     tipo: 'F',
   }),
   new Usuario({
-    user_id: '1',
+    user_id: "9a9f8466-1760-4ed2-aa57-f691a8547d5e",
     nome: 'Gabriel Falavinha Gomes',
     cpf: '12345678900',
     telefone: '041987654321',
@@ -122,7 +122,7 @@ export var ALUNO_DATA: Aluno[] = [
 
 export var RESPONSAVEL_DATA: Responsavel[] = [
   new Responsavel({
-    responsavel_id: '0',
+    responsavel_id: "9a9f8466-1bb8-46ea-8318-58b68ad8f328",
     user_id: USUARIO_DATA[1].user_id,
     updated_at: new Date(),
     created_at: new Date(),
