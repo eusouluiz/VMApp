@@ -31,3 +31,16 @@
 @import 'src/theme/fonts.scss';
 @import 'src/theme/utilities.scss';
 @import 'src/theme/components.scss';
+
+ion-content {
+  --keyboard-offset: 0px !important;
+  // background-size: cover !important;
+  // background-color: aqua !important;
+  //   background-size: auto;
+  //   background-position: center;
+  //   background-repeat: repeat;
+  // --background: background-image: url('https://cdn.aluno.app/alunos/98bbd20b-0566-4ede-ae8d-ac4dad7609e4/perfil/0fe17bef-5c24-490d-ac5d-4be121e367ad/large.png') !important;
+  //   --background-color: white;
+  // background: url('https://cdn.aluno.app/alunos/98bbd20b-0566-4ede-ae8d-ac4dad7609e4/perfil/0fe17bef-5c24-490d-ac5d-4be121e367ad/large.png') !important;
+  // background-color: var(--ion-color-primary) !important;
+}

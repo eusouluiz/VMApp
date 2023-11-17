@@ -5,6 +5,7 @@ import { FuncionarioService } from '../../../../core/services/funcionario-servic
 import { Location } from '@angular/common';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { Funcionario } from '../../../../core/services/funcionario-service/funcionario.entity';
+import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 
 @Component({
   selector: 'app-gerenciamento-funcionario',
@@ -12,45 +13,47 @@ import { Funcionario } from '../../../../core/services/funcionario-service/funci
   styleUrls: ['./gerenciamento-funcionario.page.scss'],
 })
 export class GerenciamentoFuncionarioPage extends Pagina implements OnInit {
-
-  funcionarios: Funcionario[] = []
-  listaFuncionarios: Funcionario[] = []
-
+  funcionarios: Funcionario[] = [];
+  listaFuncionarios: Funcionario[] = [];
 
   constructor(
     private router: Router,
     private funcionarioService: FuncionarioService,
     public location: Location,
+    private pageMenuService: PageMenuService
   ) {
-    const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO
-    super(router, ROTA_BASE, location)
+    const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO;
+    super(router, ROTA_BASE, location);
   }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ionViewWillEnter() {
+    this.pageMenuService.displayStatus.next(false);
   }
 
   protected inicializarConteudo(): void {
-    this.funcionarios = this.funcionarioService.buscarTodosFuncionarios()
-    this.listaFuncionarios = this.funcionarios.slice()
+    this.funcionarios = this.funcionarioService.buscarTodosFuncionarios();
+    this.listaFuncionarios = this.funcionarios.slice();
   }
 
   filtarFuncionarioNome(ev: any) {
     var val = ev.target.value;
-    this.listaFuncionarios = this.funcionarios.slice()
+    this.listaFuncionarios = this.funcionarios.slice();
 
     // se o valor for um valor valido
     this.listaFuncionarios = this.listaFuncionarios.filter((funcionario) => {
-      return (funcionario.usuario.nome.toLowerCase().indexOf(val.toLowerCase()) > -1);
-    })
+      return funcionario.usuario.nome.toLowerCase().indexOf(val.toLowerCase()) > -1;
+    });
   }
 
   navegarTelaFuncionario(id: number) {
-    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_FUNCIONARIO
+    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_FUNCIONARIO;
     if (id !== -1) {
-      rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES
+      rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
     } else {
-      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO
+      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
     }
-    this.navegarPara(rota)
+    this.navegarPara(rota);
   }
 }

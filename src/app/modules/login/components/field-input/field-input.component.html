@@ -1,16 +1,16 @@
-<div class="e-login-field">
+<div class="c-field">
   <span
     *ngIf="label"
-    class="e-login-field__label"
-    [class.e-login-field__label--error]="ngControl.errors && ngControl.touched"
-    [class.e-login-field__label--disabled]="ngControl.control?.disabled">
+    class="c-field__label"
+    [class.c-field__label--error]="ngControl.errors && ngControl.touched"
+    [class.c-field__label--disabled]="ngControl.control?.disabled">
     {{ label }}
   </span>
   <ion-input
     #ionInput
-    class="e-login-field__input"
-    [class.e-login-field__input--has-icon]="icon"
-    [class.e-login-field__input--no-label]="!label"
+    class="c-field__input"
+    [class.c-field__input--has-icon]="icon"
+    [class.c-field__input--no-label]="!label"
     [type]="type"
     [placeholder]="placeholder"
     labelPlacement="stacked"
@@ -20,11 +20,11 @@
     (ionChange)="setValue($event)"
     (keydown)="onKeyDown($event)"
     maxlength="100">
-    <ion-icon *ngIf="icon" [name]="icon" class="e-login-field__input-icon"></ion-icon>
+    <ion-icon *ngIf="icon" [name]="icon" class="c-field__input-icon"></ion-icon>
     <ion-icon
       *ngIf="showValidationErrorMessage && ngControl.touched && ngControl.invalid"
       name="warning"
-      class="e-login-field__input-icon e-login-field__input-icon--error"></ion-icon>
+      class="c-field__input-icon c-field__input-icon--error"></ion-icon>
   </ion-input>
 
   <app-field-error-message [visible]="showValidationErrorMessage" [currentControl]="ngControl.control">

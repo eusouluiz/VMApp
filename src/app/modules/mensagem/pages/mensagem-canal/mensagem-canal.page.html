@@ -1,13 +1,18 @@
 <ion-content [fullscreen]="true">
-  <app-header titulo="{{nomeCanal()}}" botaoRetorno="true"></app-header>
+  <main
+    class="u-display--flex u-flex-direction--column u-flex-justify--space-between u-height--100 e-mensagem-canal__main">
+    <app-header class="" titulo="{{nomeCanal()}}" botaoRetorno="true"></app-header>
 
-  <ion-content>
-    <ng-container *ngFor="let mensagem of mensagens">
-      <app-mensagem [mensagem]="mensagem" [idUsuario]="idUsuario"></app-mensagem>
-    </ng-container>
-  </ion-content>
+    <section>
+      <div #mensagemList class="e-mensagem-canal__content">
+        <ng-container *ngFor="let mensagem of mensagens">
+          <app-mensagem [mensagem]="mensagem" [idUsuario]="idUsuario"></app-mensagem>
+        </ng-container>
+      </div>
 
-  <ion-footer>
-    <app-envio-mensagem (onEnvio)="enviarMensagem($event)"></app-envio-mensagem>
-  </ion-footer>
+      <ion-footer>
+        <app-envio-mensagem (onEnvio)="enviarMensagem($event)"></app-envio-mensagem>
+      </ion-footer>
+    </section>
+  </main>
 </ion-content>

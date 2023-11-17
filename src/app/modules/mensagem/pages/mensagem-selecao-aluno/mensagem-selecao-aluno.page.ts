@@ -7,6 +7,7 @@ import { AlunoService } from '../../../../core/services/aluno-service/aluno.serv
 import { MensagemService } from '../../../../core/services/mensagem-service/mensagem.service';
 import { Canal } from '../../../../core/services/canal-service/canal.entity';
 import { Aluno } from '../../../../core/services/aluno-service/aluno.entity';
+import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 
 interface ItemCanalResponsavel {
   nomeAluno: string;
@@ -31,7 +32,8 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
     private router: Router,
     private canalService: CanalService,
     private alunoService: AlunoService,
-    private mensagemService: MensagemService
+    private mensagemService: MensagemService,
+    private pageMenuService: PageMenuService
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_MENSAGEM;
     super(router, ROTA_BASE);
@@ -40,6 +42,10 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
   }
 
   ngOnInit() {}
+
+  ionViewWillEnter(): void {
+    this.pageMenuService.displayStatus.next(false);
+  }
 
   inicializarCanalResponsavel() {
     // esvaziar para encher

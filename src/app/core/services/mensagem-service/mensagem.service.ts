@@ -17,7 +17,7 @@ export class MensagemService {
   }
 
   incluirMensagem(mensagem: Mensagem) {
-    MENSAGEM_DATA.push(mensagem);
+    MENSAGEM_DATA.unshift(mensagem);
   }
 
   alterarMensagem(mensagem: Mensagem) {

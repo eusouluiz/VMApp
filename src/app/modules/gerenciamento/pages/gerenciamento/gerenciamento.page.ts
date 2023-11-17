@@ -8,9 +8,9 @@ import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 
 interface OpcoesGerenciamento {
-  nomeOpcao: string,
-  paginaRedirecionamento: string,
-  idFuncionalidade: string
+  nomeOpcao: string;
+  paginaRedirecionamento: string;
+  idFuncionalidade: string;
 }
 
 @Component({
@@ -19,7 +19,8 @@ interface OpcoesGerenciamento {
   styleUrls: ['./gerenciamento.page.scss'],
 })
 export class GerenciamentoPage extends Pagina implements OnInit {
-  idFuncionalidadesAcesso: string[] = []
+  idFuncionalidadesAcesso: string[] = [];
+
   opcoesGerenciamento: OpcoesGerenciamento[] = [
     {
       nomeOpcao: 'Responsavel',
@@ -74,6 +75,6 @@ export class GerenciamentoPage extends Pagina implements OnInit {
   }
 
   public possuiAcessoFuncionalidade(id: string): boolean {
-    return this.idFuncionalidadesAcesso.includes(id)
+    return this.idFuncionalidadesAcesso.includes(id);
   }
 }

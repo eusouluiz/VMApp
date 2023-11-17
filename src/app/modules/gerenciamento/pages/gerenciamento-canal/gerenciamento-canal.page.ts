@@ -5,6 +5,7 @@ import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { Location } from '@angular/common';
 import { Canal } from '../../../../core/services/canal-service/canal.entity';
+import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 
 @Component({
   selector: 'app-gerenciamento-canal',
@@ -12,45 +13,47 @@ import { Canal } from '../../../../core/services/canal-service/canal.entity';
   styleUrls: ['./gerenciamento-canal.page.scss'],
 })
 export class GerenciamentoCanalPage extends Pagina implements OnInit {
-
-  canais: Canal[] = []
-  listaCanais: Canal[] = []
-
+  canais: Canal[] = [];
+  listaCanais: Canal[] = [];
 
   constructor(
     private router: Router,
     private canalService: CanalService,
     public location: Location,
+    private pageMenuService: PageMenuService
   ) {
-    const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO
-    super(router, ROTA_BASE, location)
+    const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO;
+    super(router, ROTA_BASE, location);
   }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ionViewWillEnter() {
+    this.pageMenuService.displayStatus.next(false);
   }
 
   protected inicializarConteudo(): void {
-    this.canais = this.canalService.buscarTodosCanais()
-    this.listaCanais = this.canais.slice()
+    this.canais = this.canalService.buscarTodosCanais();
+    this.listaCanais = this.canais.slice();
   }
 
   filtarCanalNome(ev: any) {
     var val = ev.target.value;
-    this.listaCanais = this.canais.slice()
+    this.listaCanais = this.canais.slice();
 
     // se o valor for um valor valido
     this.listaCanais = this.listaCanais.filter((canal) => {
-      return (canal.nome.toLowerCase().indexOf(val.toLowerCase()) > -1);
-    })
+      return canal.nome.toLowerCase().indexOf(val.toLowerCase()) > -1;
+    });
   }
 
   navegarTelaCanal(id: number) {
-    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_CANAL
+    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_CANAL;
     if (id !== -1) {
-      rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES
+      rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
     } else {
-      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO
+      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
     }
-    this.navegarPara(rota)
+    this.navegarPara(rota);
   }
 }

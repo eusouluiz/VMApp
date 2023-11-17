@@ -9,35 +9,33 @@ import { Mensagem } from '../../../../core/services/mensagem-service/mensagem.en
   templateUrl: './envio-mensagem.component.html',
   styleUrls: ['./envio-mensagem.component.scss'],
   standalone: true,
-  imports:[
-    CommonModule,
-    IonicModule,
-    SharedModule,
-  ],
+  imports: [CommonModule, IonicModule, SharedModule],
 })
 export class EnvioMensagemComponent implements OnInit {
+  @Output() onEnvio = new EventEmitter<Mensagem>();
 
-  @Output() onEnvio  = new EventEmitter<Mensagem>()
+  @ViewChild('campoTexto') campoTexto!: HTMLIonTextareaElement;
 
-  @ViewChild('campoTexto') campoTexto!: HTMLIonTextareaElement
+  constructor() {}
 
-  constructor() { }
+  preventEnter(ev: any) {
+    ev.preventDefault();
+  }
 
   ngOnInit() {}
 
   enviarMensagem() {
-    const val = this.campoTexto.value
+    const val = this.campoTexto.value;
     if (val !== undefined && val !== null) {
-      const mensagem: Mensagem = new Mensagem()
-      mensagem.texto = val
-      this.onEnvio.emit(mensagem)
+      const mensagem: Mensagem = new Mensagem();
+      mensagem.texto = val;
+      this.onEnvio.emit(mensagem);
     }
 
-    this.apagarCampoMensagem()
+    this.apagarCampoMensagem();
   }
 
-  apagarCampoMensagem(){
-    this.campoTexto.value = ''
+  apagarCampoMensagem() {
+    this.campoTexto.value = '';
   }
-
 }

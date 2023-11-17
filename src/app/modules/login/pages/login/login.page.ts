@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SessionService } from '../../../../core/state/session/session.service';
@@ -104,6 +104,10 @@ export class LoginPage {
     // } catch (e: any) {
     //   console.log(e.message);
     // }
+  }
+
+  focusin(ev: any) {
+    ev.stopPropagation();
   }
 
   private navegaParaApp() {

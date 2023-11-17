@@ -99,6 +99,10 @@ export class LoginFieldInputComponent implements ControlValueAccessor, OnInit {
       validators.push(Validators.email);
     }
 
+    if (this.type === 'number') {
+      validators.push(Validators.pattern('^[0-9]*$'));
+    }
+
     return validators;
   }
 }

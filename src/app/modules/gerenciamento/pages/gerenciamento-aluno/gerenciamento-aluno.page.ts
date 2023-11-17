@@ -5,6 +5,7 @@ import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { Location } from '@angular/common';
 import { Aluno } from '../../../../core/services/aluno-service/aluno.entity';
+import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 
 @Component({
   selector: 'app-gerenciamento-aluno',
@@ -12,46 +13,48 @@ import { Aluno } from '../../../../core/services/aluno-service/aluno.entity';
   styleUrls: ['./gerenciamento-aluno.page.scss'],
 })
 export class GerenciamentoAlunoPage extends Pagina implements OnInit {
+  responsaveis: Aluno[] = [];
 
-  responsaveis: Aluno[] = []
-  listaAlunos: Aluno[] = []
-
+  listaAlunos: Aluno[] = [];
 
   constructor(
     private router: Router,
     private alunoService: AlunoService,
     public location: Location,
+    private pageMenuService: PageMenuService
   ) {
-    const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO
-    super(router, ROTA_BASE, location)
+    const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO;
+    super(router, ROTA_BASE, location);
   }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ionViewWillEnter() {
+    this.pageMenuService.displayStatus.next(false);
   }
 
   protected inicializarConteudo(): void {
-    this.responsaveis = this.alunoService.buscarTodosAlunos()
-    this.listaAlunos = this.responsaveis.slice()
+    this.responsaveis = this.alunoService.buscarTodosAlunos();
+    this.listaAlunos = this.responsaveis.slice();
   }
 
   filtarAlunoNome(ev: any) {
     var val = ev.target.value;
-    this.listaAlunos = this.responsaveis.slice()
+    this.listaAlunos = this.responsaveis.slice();
 
     // se o valor for um valor valido
     this.listaAlunos = this.listaAlunos.filter((aluno) => {
-      return (aluno.nome.toLowerCase().indexOf(val.toLowerCase()) > -1);
-    })
+      return aluno.nome.toLowerCase().indexOf(val.toLowerCase()) > -1;
+    });
   }
 
   navegarTelaAluno(id: number) {
-    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_ALUNO
+    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_ALUNO;
     if (id !== -1) {
-      rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES
+      rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
     } else {
-      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO
+      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
     }
-    this.navegarPara(rota)
+    this.navegarPara(rota);
   }
-
 }

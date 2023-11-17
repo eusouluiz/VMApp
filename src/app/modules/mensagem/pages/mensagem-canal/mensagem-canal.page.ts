@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CanalService } from '../../../../core/services/canal-service/canal.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
@@ -15,6 +15,8 @@ import { Mensagem } from '../../../../core/services/mensagem-service/mensagem.en
   styleUrls: ['./mensagem-canal.page.scss'],
 })
 export class MensagemCanalPage extends Pagina implements OnInit {
+  @ViewChild('mensagemList') mensagemList: ElementRef | undefined = undefined;
+
   canalResponsavel!: CanalResponsavel;
 
   idUsuario: string | undefined = this.usuarioLogado.getIdUsuario();
@@ -38,7 +40,12 @@ export class MensagemCanalPage extends Pagina implements OnInit {
   ngOnInit() {}
 
   ionViewWillEnter() {
-    this.pageMenuService.displayStatus.next(true);
+    this.pageMenuService.displayStatus.next(false);
+  }
+
+  scrollToBottom() {
+    const container = this.mensagemList?.nativeElement;
+    container.scrollTop = 0;
   }
 
   resgatarCanalResponsavel(id: string): CanalResponsavel {
@@ -68,8 +75,9 @@ export class MensagemCanalPage extends Pagina implements OnInit {
       throw new Error('Usuario nao definido');
     }
     console.log(mensagem);
-    this.mensagens.push(mensagem);
+    this.mensagens.unshift(mensagem);
     this.mensagemService.incluirMensagem(mensagem);
+    this.scrollToBottom();
   }
 
   protected inicializarConteudo(): void {

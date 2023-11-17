@@ -1,15 +1,33 @@
 <ion-toolbar class="e-envio-mensagem" color="light">
-  <ion-textarea class=""
-    #campoTexto
-    autoGrow rows="1" placeholder="Mensagem" 
-    (keyup.enter)="enviarMensagem()">
-  </ion-textarea>
-  <ion-buttons slot="end">
-    <ion-fab-button size="small" color="primary" (click)="enviarMensagem()">
-      <ion-icon name="send"></ion-icon>
-    </ion-fab-button>
-    <!-- <ion-fab-button *ngIf="isLoading" size="small" color="primary">
+  <div
+    class="u-display--flex u-margin-bottom--md u-margin-left--xs u-margin-right--xs u-flex-justify--space-between">
+    <ion-textarea
+      class=""
+      #campoTexto
+      autoGrow
+      rows="1"
+      placeholder="Mensagem"
+      (keyup.enter)="enviarMensagem()"
+      (keydown.enter)="preventEnter($event)">
+    </ion-textarea>
+
+    <section class="u-display--flex u-flex-align--center u-flex-justify--end u-margin-left--md">
+      <app-button
+        class=""
+        variant="icon-round-primary"
+        size="lg"
+        icon="send"
+        (click)="enviarMensagem()"
+        [disabled]="!campoTexto.value"></app-button>
+    </section>
+    <!-- <ion-buttons slot="end">
+      <ion-fab-button size="small" color="primary" (click)="enviarMensagem()">
+        <ion-icon name="send"></ion-icon>
+      </ion-fab-button>
+
+      <ion-fab-button *ngIf="isLoading" size="small" color="primary">
       <ion-spinner name="crescent" color="white"></ion-spinner>
-    </ion-fab-button> -->
-  </ion-buttons>
+    </ion-fab-button>
+    </ion-buttons> -->
+  </div>
 </ion-toolbar>

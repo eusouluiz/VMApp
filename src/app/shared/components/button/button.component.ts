@@ -1,28 +1,32 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-button',
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.scss'],
 })
-export class ButtonComponent implements OnInit {
-  @Input() size: 'lg' | 'sm' | '' = '';
+export class ButtonComponent {
+  @Input() variant:
+    | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'icon'
+    | 'icon-round'
+    | 'icon-round-primary'
+    | 'danger'
+    | 'success' = 'primary';
 
-  @Input('clear') isClear: boolean = false;
+  @Input() size: 'lg' | 'md' | 'sm' = 'sm';
 
-  @Input('outline') isOutline: boolean = false;
-
-  @Input('inverted') isInverted: boolean = false;
-
-  @Input('arrow') hasArrow: boolean = false;
+  @Input() width: 'full' | 'fit-content' = 'full';
 
   @Input() icon: string | null = null;
 
-  @Input() loading: boolean = false;
+  @Input() iconSize: 'md' | 'sm' = 'sm';
+
+  @Input() iconSlot: 'start' | 'end' = 'start';
 
   @Input() disabled: boolean = false;
 
-  @Input() type: String = 'button';
-
-  ngOnInit() {}
+  @Input() loading: boolean = false;
 }

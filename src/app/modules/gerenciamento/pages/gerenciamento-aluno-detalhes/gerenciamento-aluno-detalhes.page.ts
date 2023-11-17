@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common'
+import { Location } from '@angular/common';
 import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina-gerenciamento-detalhes/pagina-gerenciamento-detalhes.utility';
 import { AlunoService } from '../../../../core/services/aluno-service/aluno.service';
 import { ResponsavelService } from '../../../../core/services/responsavel-service/responsavel.service';
@@ -10,6 +10,7 @@ import { TurmaService } from '../../../../core/services/turma-service/turma.serv
 import { Aluno } from '../../../../core/services/aluno-service/aluno.entity';
 import { Responsavel } from '../../../../core/services/responsavel-service/responsavel.entity';
 import { Turma } from '../../../../core/services/turma-service/turma.entity';
+import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 
 @Component({
   selector: 'app-gerenciamento-aluno-detalhes',
@@ -17,10 +18,11 @@ import { Turma } from '../../../../core/services/turma-service/turma.entity';
   styleUrls: ['./gerenciamento-aluno-detalhes.page.scss'],
 })
 export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
+  aluno: Aluno = new Aluno();
 
-  aluno: Aluno = new Aluno
-  listaTodosResponsaveis: Responsavel[] | null = null
-  listaTodasTurmas: Turma[] | null = null
+  listaTodosResponsaveis: Responsavel[] | null = null;
+
+  listaTodasTurmas: Turma[] | null = null;
 
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -30,61 +32,64 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
     private alunoService: AlunoService,
     private responsavelService: ResponsavelService,
     private turmaService: TurmaService,
+    private pageMenuService: PageMenuService
   ) {
-    const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO
-    super(router, ROTA_BASE, location)
+    const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO;
+    super(router, ROTA_BASE, location);
 
-    this.inicializarForms()
-    this.inicializarConteudo()
+    this.inicializarForms();
+    this.inicializarConteudo();
   }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ionViewWillEnter() {
+    this.pageMenuService.displayStatus.next(false);
   }
 
   inicializarForms() {
-    this.inicializarFormAluno()
-    this.inicializarFormBuscaResponsavel()
-    this.inicializarFormBuscaTurma()
+    this.inicializarFormAluno();
+    this.inicializarFormBuscaResponsavel();
+    this.inicializarFormBuscaTurma();
   }
 
   inicializarFormAluno() {
     this.form = this.formBuilder.group({
       nome: ['', Validators.required],
       cgm: ['', Validators.required],
-    })
+    });
   }
 
   protected inicializarConteudo(): void {
-    this.listaTodosResponsaveis = this.responsavelService.buscarTodosResponsaveis().slice()
-    this.listaTodasTurmas = this.turmaService.buscarTodosTurmas().slice()
+    this.listaTodosResponsaveis = this.responsavelService.buscarTodosResponsaveis().slice();
+    this.listaTodasTurmas = this.turmaService.buscarTodosTurmas().slice();
 
-    this.definirModo()
+    this.definirModo();
 
-    const id = this.activatedRoute.snapshot.paramMap.get('id')
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (this.isModoDetalhes() && id !== null) {
-      this.aluno = this.resgatarAluno(id)
+      this.aluno = this.resgatarAluno(id);
 
       this.form?.setValue({
         nome: this.aluno.nome,
         cgm: this.aluno.cgm,
-      })
+      });
     }
-    this.inicializarTabelaResponsaveis()
-    this.inicializarTabelaTurmas()
+    this.inicializarTabelaResponsaveis();
+    this.inicializarTabelaTurmas();
 
     if (this.isModoDetalhes()) {
-      this.form?.disable()
+      this.form?.disable();
     }
-
   }
 
   // ---- busca aluno ----//
   private resgatarAluno(id: string): Aluno {
-    const aluno = this.alunoService.buscarAluno(id)
+    const aluno = this.alunoService.buscarAluno(id);
     if (aluno !== undefined) {
-      return aluno
+      return aluno;
     }
-    return new Aluno()
+    return new Aluno();
   }
   // ---- busca aluno ----//
 
@@ -92,142 +97,139 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
 
   //delecao
   protected deletar() {
-    this.alunoService.deletarAluno(this.aluno.aluno_id)
-    this.retornarPagina()
+    this.alunoService.deletarAluno(this.aluno.aluno_id);
+    this.retornarPagina();
   }
 
   //edicao
 
   protected inicializarComponentesEdicao() {
-    this.inicializarTabelaResponsaveis()
-    this.inicializarTabelaTurmas()
+    this.inicializarTabelaResponsaveis();
+    this.inicializarTabelaTurmas();
   }
 
   //cancelar edicao
   cancelar() {
-
     if (this.isModoCadastrar()) {
-      this.retornarPagina()
-      return
+      this.retornarPagina();
+      return;
     }
 
-    this.modo = 'detalhes'
+    this.modo = 'detalhes';
 
     this.form?.setValue({
       nome: this.aluno.nome,
       cgm: this.aluno.cgm,
-    })
-    this.form?.disable()
+    });
+    this.form?.disable();
 
-    this.inicializarTabelaResponsaveis()
-    this.inicializarTabelaTurmas()
+    this.inicializarTabelaResponsaveis();
+    this.inicializarTabelaTurmas();
   }
 
   //salvar edicao
   salvar() {
     if (this.form?.valid) {
-      this.aluno.nome = this.form?.value.nome
-      this.aluno.cgm = this.form?.value.telefone
+      this.aluno.nome = this.form?.value.nome;
+      this.aluno.cgm = this.form?.value.telefone;
 
-      this.atualizarResponsaveis()
-      this.atualizarTurmas()
+      this.atualizarResponsaveis();
+      this.atualizarTurmas();
 
       if (this.isModoCadastrar()) {
-        this.alunoService.incluirAluno(this.aluno)
+        this.alunoService.incluirAluno(this.aluno);
       } else {
-        this.alunoService.alterarAluno(this.aluno)
+        this.alunoService.alterarAluno(this.aluno);
       }
 
-      this.modo = 'detalhes'
-      this.form?.disable()
+      this.modo = 'detalhes';
+      this.form?.disable();
     } else {
-      this.form?.markAllAsTouched()
+      this.form?.markAllAsTouched();
     }
   }
   // ---- controle botoes ----//
 
   // ---- controle responsaveis ----//
 
-  formBuscaResponsavel!: UntypedFormGroup
+  formBuscaResponsavel!: UntypedFormGroup;
 
   inicializarFormBuscaResponsavel() {
     this.formBuscaResponsavel = this.formBuilder.group({
-      buscaResponsavel: ''
-    })
+      buscaResponsavel: '',
+    });
   }
 
-  listaResponsaveisBusca: Responsavel[] = []
-  nomeResponsaveisBusca: string[] = []
+  listaResponsaveisBusca: Responsavel[] = [];
+  nomeResponsaveisBusca: string[] = [];
 
-  listaResponsaveisTabela!: Responsavel[]
+  listaResponsaveisTabela!: Responsavel[];
 
   private inicializarTabelaResponsaveis() {
-    this.listaResponsaveisTabela = this.aluno.responsaveis.slice()
+    this.listaResponsaveisTabela = this.aluno.responsaveis.slice();
     if (!this.isModoDetalhes()) {
-      this.inicializarBuscaResponsaveis()
+      this.inicializarBuscaResponsaveis();
     }
   }
 
   private inicializarBuscaResponsaveis() {
-
-    this.listaResponsaveisBusca = []
+    this.listaResponsaveisBusca = [];
     if (this.listaTodosResponsaveis !== null) {
       this.listaTodosResponsaveis.forEach((r) => {
-        const idResponsavel = r.responsavel_id
-        var isResponsavelPossuiResponsavel = false
-  
+        const idResponsavel = r.responsavel_id;
+        var isResponsavelPossuiResponsavel = false;
+
         for (let i = 0; i < this.listaResponsaveisTabela.length; i++) {
           const responsavelResponsavel = this.listaResponsaveisTabela[i];
           if (responsavelResponsavel.responsavel_id === idResponsavel) {
-            isResponsavelPossuiResponsavel = true
-            break
+            isResponsavelPossuiResponsavel = true;
+            break;
           }
         }
-  
+
         if (!isResponsavelPossuiResponsavel) {
-          this.listaResponsaveisBusca.push(r)
+          this.listaResponsaveisBusca.push(r);
         }
-      })
+      });
     }
 
-    this.nomeResponsaveisBusca = this.resgatarNomeResponsaveisBusca(this.listaResponsaveisBusca)
-    this.limparCampoBuscaResponsavel()
+    this.nomeResponsaveisBusca = this.resgatarNomeResponsaveisBusca(this.listaResponsaveisBusca);
+    this.limparCampoBuscaResponsavel();
   }
 
   private resgatarNomeResponsaveisBusca(lista: Responsavel[]): string[] {
-    var nomes: string[] = []
-    lista.forEach(responsavel => {
-      nomes.push(responsavel.usuario.nome)
+    var nomes: string[] = [];
+    lista.forEach((responsavel) => {
+      nomes.push(responsavel.usuario.nome);
     });
-    return nomes
+    return nomes;
   }
 
   adicionarResponsavel(valor: number) {
-
     if (valor === -1) {
-      this.navegarTelaResponsavel(valor)
-      return
+      this.navegarTelaResponsavel(valor);
+      return;
     }
 
-    const responsavel = this.listaResponsaveisBusca[valor]
+    const responsavel = this.listaResponsaveisBusca[valor];
 
-    this.listaResponsaveisTabela.push(responsavel)
+    this.listaResponsaveisTabela.push(responsavel);
 
-    this.removerResponsavelDaListaBusca(valor)
-    this.limparCampoBuscaResponsavel()
+    this.removerResponsavelDaListaBusca(valor);
+    this.limparCampoBuscaResponsavel();
   }
 
   limparCampoBuscaResponsavel() {
     this.formBuscaResponsavel.setValue({
-      buscaResponsavel: ''
-    })
+      buscaResponsavel: '',
+    });
   }
 
   private removerResponsavelDaListaBusca(index: number) {
     for (let i = 0; i < this.listaResponsaveisBusca.length; i++) {
       if (index === i) {
-        this.listaResponsaveisBusca.splice(index, 1)
-        this.nomeResponsaveisBusca.splice(index, 1)
+        this.listaResponsaveisBusca.splice(index, 1);
+        this.nomeResponsaveisBusca.splice(index, 1);
         break;
       }
     }
@@ -236,36 +238,35 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
   private atualizarResponsaveis() {
     this.aluno.responsaveis = this.listaResponsaveisTabela.sort((r1, r2) => {
       if (r1.usuario.nome.toLowerCase() > r2.usuario.nome.toLowerCase()) {
-        return 1
+        return 1;
       } else if (r2.usuario.nome.toLowerCase() > r1.usuario.nome.toLowerCase()) {
-        return -1
+        return -1;
       } else {
-        return 0
+        return 0;
       }
-    })
+    });
   }
 
   navegarTelaResponsavel(id: number) {
-    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_RESPONSAVEL
+    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_RESPONSAVEL;
     if (id !== -1) {
-      rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES
+      rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
     } else {
-      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO
+      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
     }
-    this.navegarPara(rota)
+    this.navegarPara(rota);
   }
 
   deletarResponsavel(id: string) {
     const indexResponsavel = this.listaResponsaveisTabela.findIndex((r) => {
-      return r.responsavel_id === id
-    })
+      return r.responsavel_id === id;
+    });
     if (indexResponsavel !== -1) {
-      const responsavel = this.listaResponsaveisTabela[indexResponsavel]
-      this.listaResponsaveisTabela.splice(indexResponsavel, 1)
+      const responsavel = this.listaResponsaveisTabela[indexResponsavel];
+      this.listaResponsaveisTabela.splice(indexResponsavel, 1);
 
-
-      this.listaResponsaveisBusca.push(responsavel)
-      this.nomeResponsaveisBusca.push(responsavel.usuario.nome)
+      this.listaResponsaveisBusca.push(responsavel);
+      this.nomeResponsaveisBusca.push(responsavel.usuario.nome);
     }
   }
 
@@ -273,120 +274,117 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
 
   // ---- controle turmas ----//
 
-  formBuscaTurma!: UntypedFormGroup
+  formBuscaTurma!: UntypedFormGroup;
 
   inicializarFormBuscaTurma() {
     this.formBuscaTurma = this.formBuilder.group({
-      buscaTurma: ''
-    })
+      buscaTurma: '',
+    });
   }
 
-  listaTurmasBusca: Turma[] = []
-  nomeTurmasBusca: string[] = []
+  listaTurmasBusca: Turma[] = [];
+  nomeTurmasBusca: string[] = [];
 
-  listaTurmasTabela: Turma[] = []
+  listaTurmasTabela: Turma[] = [];
 
   private inicializarTabelaTurmas() {
-    this.listaTurmasTabela = []
+    this.listaTurmasTabela = [];
     if (this.aluno.turma.nome !== '') {
-      this.listaTurmasTabela.push(this.aluno.turma)
+      this.listaTurmasTabela.push(this.aluno.turma);
     }
     if (!this.isModoDetalhes()) {
-      this.inicializarBuscaTurmas()
+      this.inicializarBuscaTurmas();
     }
   }
 
   private inicializarBuscaTurmas() {
-
-    this.listaTurmasBusca = []
+    this.listaTurmasBusca = [];
     if (this.listaTodasTurmas !== null) {
       this.listaTodasTurmas.forEach((t) => {
-        const idTurma = t.turma_id
-        var isFuncionarioPossuiTurma = false
-  
+        const idTurma = t.turma_id;
+        var isFuncionarioPossuiTurma = false;
+
         for (let i = 0; i < this.listaTurmasTabela.length; i++) {
           const alunoTurma = this.listaTurmasTabela[i];
           if (alunoTurma.turma_id === idTurma) {
-            isFuncionarioPossuiTurma = true
-            break
+            isFuncionarioPossuiTurma = true;
+            break;
           }
         }
-  
+
         if (!isFuncionarioPossuiTurma) {
-          this.listaTurmasBusca.push(t)
+          this.listaTurmasBusca.push(t);
         }
-      })
+      });
     }
 
-    this.nomeTurmasBusca = this.resgatarNomeTurmasBusca(this.listaTurmasBusca)
-    this.limparCampoBuscaTurma()
+    this.nomeTurmasBusca = this.resgatarNomeTurmasBusca(this.listaTurmasBusca);
+    this.limparCampoBuscaTurma();
   }
 
   private resgatarNomeTurmasBusca(lista: Turma[]): string[] {
-    var nomes: string[] = []
-    lista.forEach(turma => {
-      nomes.push(turma.nome)
+    var nomes: string[] = [];
+    lista.forEach((turma) => {
+      nomes.push(turma.nome);
     });
-    return nomes
+    return nomes;
   }
 
   adicionarTurma(valor: number) {
-
     if (valor === -1) {
-      this.navegarTelaTurma(valor)
-      return
+      this.navegarTelaTurma(valor);
+      return;
     }
 
-    const turma = this.listaTurmasBusca[valor]
+    const turma = this.listaTurmasBusca[valor];
 
     // remove 1 para colocar outro
     if (this.listaTurmasTabela.length > 0) {
-      this.deletarTurma()
+      this.deletarTurma();
     }
-    this.listaTurmasTabela.push(turma)
+    this.listaTurmasTabela.push(turma);
 
-    this.removerTurmaDaListaBusca(valor)
-    this.limparCampoBuscaTurma()
+    this.removerTurmaDaListaBusca(valor);
+    this.limparCampoBuscaTurma();
   }
 
   limparCampoBuscaTurma() {
     this.formBuscaTurma.setValue({
-      buscaTurma: ''
-    })
+      buscaTurma: '',
+    });
   }
 
   private removerTurmaDaListaBusca(index: number) {
     for (let i = 0; i < this.listaTurmasBusca.length; i++) {
       if (index === i) {
-        this.listaTurmasBusca.splice(index, 1)
-        this.nomeTurmasBusca.splice(index, 1)
+        this.listaTurmasBusca.splice(index, 1);
+        this.nomeTurmasBusca.splice(index, 1);
         break;
       }
     }
   }
 
   private atualizarTurmas() {
-    this.aluno.turma = this.listaTurmasTabela[0]
+    this.aluno.turma = this.listaTurmasTabela[0];
   }
 
   navegarTelaTurma(id: number) {
-    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_TURMA
+    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_TURMA;
     if (id !== -1) {
-      rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES
+      rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
     } else {
-      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO
+      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
     }
-    this.navegarPara(rota)
+    this.navegarPara(rota);
   }
 
   deletarTurma() {
-    const turma = this.listaTurmasTabela[0]
-    this.listaTurmasTabela.splice(0, 1)
+    const turma = this.listaTurmasTabela[0];
+    this.listaTurmasTabela.splice(0, 1);
 
-    this.listaTurmasBusca.push(turma)
-    this.nomeTurmasBusca.push(turma.nome)
+    this.listaTurmasBusca.push(turma);
+    this.nomeTurmasBusca.push(turma.nome);
   }
 
   // ---- controle turmas ----//
-
 }

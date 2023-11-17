@@ -1,12 +1,17 @@
 <app-header titulo="Gerenciamento"></app-header>
 
 <ion-content class="ion-padding">
-  <ng-container *ngFor="let opcao of opcoesGerenciamento">
-    <ion-item class="c-item__grande" *ngIf="possuiAcessoFuncionalidade(opcao.idFuncionalidade)"
-      lines="none" detail="true" button="true" (click)="navegarPara(opcao.paginaRedirecionamento)">
-      <ion-text class="c-item-titulo">
-        {{opcao.nomeOpcao}}
-      </ion-text>
-    </ion-item>
-  </ng-container>
+  <div class="u-padding-bottom--3xl">
+    <ng-container *ngFor="let opcao of opcoesGerenciamento">
+      <ion-item
+        class="c-item__grande"
+        *ngIf="possuiAcessoFuncionalidade(opcao.idFuncionalidade)"
+        lines="none"
+        detail="true"
+        button="true"
+        (click)="navegarPara(opcao.paginaRedirecionamento)">
+        <ion-text class="c-item-titulo"> {{opcao.nomeOpcao}} </ion-text>
+      </ion-item>
+    </ng-container>
+  </div>
 </ion-content>

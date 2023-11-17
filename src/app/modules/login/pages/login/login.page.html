@@ -1,21 +1,30 @@
-<ion-content class="e-login" [scrollY]="false" [fullscreen]="true">
-  <app-header titulo="LOGIN"></app-header>
+<ion-content class="e-login-page" [scrollY]="true" [fullscreen]="true">
+  <!-- <app-header titulo=""> </app-header> -->
 
   <main
-    class="u-display--flex u-flex-direction--column u-flex-align--center u-flex-justify--space-around e-login-page">
+    class="u-display--flex u-flex-direction--column u-flex-align--center u-flex-justify--space-between u-height--100">
+    <div class="e-login-page__logo">
+      <img
+        class="e-login-page__logo__image"
+        src="../../../../../assets/images/illustration/VMLogo.jpg"
+        slot="start" />
+    </div>
+
     <form [formGroup]="form" class="e-login-page__form">
       <app-login-field-input
         formControlName="cpf"
+        type="number"
         label="Usuário (CPF)"
         placeholder="000.000.000-00"></app-login-field-input>
       <div class="u-margin-top--xl">
         <app-login-field-password
           #password
           formControlName="password"
-          placeholder="Senha"></app-login-field-password>
+          placeholder="Senha"
+          (ionFocus)="focusin($event)"></app-login-field-password>
       </div>
     </form>
 
-    <app-button class="" (click)="submit()"> Entrar </app-button>
+    <app-button class="e-login-page__button" (click)="submit()"> Entrar </app-button>
   </main>
 </ion-content>

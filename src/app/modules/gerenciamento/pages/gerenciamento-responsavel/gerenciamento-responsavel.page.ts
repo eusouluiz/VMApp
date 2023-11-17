@@ -5,6 +5,7 @@ import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { Location } from '@angular/common';
 import { Responsavel } from '../../../../core/services/responsavel-service/responsavel.entity';
+import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 
 @Component({
   selector: 'app-gerenciamento-responsavel',
@@ -12,45 +13,48 @@ import { Responsavel } from '../../../../core/services/responsavel-service/respo
   styleUrls: ['./gerenciamento-responsavel.page.scss'],
 })
 export class GerenciamentoResponsavelPage extends Pagina implements OnInit {
+  responsaveis: Responsavel[] = [];
 
-  responsaveis: Responsavel[] = []
-  listaResponsaveis: Responsavel[] = []
-
+  listaResponsaveis: Responsavel[] = [];
 
   constructor(
     private router: Router,
     private responsavelService: ResponsavelService,
     public location: Location,
+    private pageMenuService: PageMenuService
   ) {
-    const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO
-    super(router, ROTA_BASE, location)
+    const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO;
+    super(router, ROTA_BASE, location);
   }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ionViewWillEnter() {
+    this.pageMenuService.displayStatus.next(false);
   }
 
   protected inicializarConteudo(): void {
-    this.responsaveis = this.responsavelService.buscarTodosResponsaveis()
-    this.listaResponsaveis = this.responsaveis.slice()
+    this.responsaveis = this.responsavelService.buscarTodosResponsaveis();
+    this.listaResponsaveis = this.responsaveis.slice();
   }
 
   filtrarResponsavelNome(ev: any) {
     var val = ev.target.value;
-    this.listaResponsaveis = this.responsaveis.slice()
+    this.listaResponsaveis = this.responsaveis.slice();
 
     // se o valor for um valor valido
     this.listaResponsaveis = this.listaResponsaveis.filter((responsavel) => {
-      return (responsavel.usuario.nome.toLowerCase().indexOf(val.toLowerCase()) > -1);
-    })
+      return responsavel.usuario.nome.toLowerCase().indexOf(val.toLowerCase()) > -1;
+    });
   }
 
   navegarTelaResponsavel(id: number) {
-    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_RESPONSAVEL
+    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_RESPONSAVEL;
     if (id !== -1) {
-      rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES
+      rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
     } else {
-      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO
+      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
     }
-    this.navegarPara(rota)
+    this.navegarPara(rota);
   }
 }

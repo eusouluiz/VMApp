@@ -32,6 +32,7 @@ ion-modal::part(content) {
   .ion-page {
     position: relative;
     contain: content !important;
+    max-width: 90vh;
   }
 
   &::part(content) {
@@ -57,7 +58,7 @@ ion-modal::part(content) {
     --height: auto;
     --width: 640px;
     --max-height: calc(100% - #{$size-xl});
-    --max-width: 640px !important;
+    --max-width: 90vw !important;
   }
 
   &--auto {
@@ -89,7 +90,7 @@ ion-modal::part(content) {
   display: flex;
   flex-direction: column;
   overflow: auto;
-  padding: $size-lg;
+  padding: $size-xl;
   position: relative;
 
   &__close {

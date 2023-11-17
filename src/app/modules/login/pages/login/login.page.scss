@@ -1,22 +1,26 @@
 @import '../../../../../theme/sizing.scss';
+@import '../../../../../theme/variables.scss';
+
+ion-content {
+  --background: url('/assets/images/illustration/background-pattern.svg') center var(--color-background);
+}
 
 .e-login-page {
-  height: calc(100vh - 76px - env(safe-area-inset-top));
-  // &__ion-content {
-  //   // background: url('https://i.imgur.com/olLunTc.jpg') no-repeat fixed;
-  //   // background-size: cover;
-  //   // background-repeat: no-repeat;
-  //   // background-position: center;
-  //   // height: 100vh;
-  // }
+  &__logo {
+    padding-top: 10vh;
 
-  &__container {
-    height: calc(100vh - 76px - env(safe-area-inset-top));
-    justify-content: flex-end;
+    &__image {
+      height: 13rem;
+      width: 13rem;
+      object-fit: cover;
+      border-radius: 50%;
+    }
   }
 
-  &__card-container {
+  &__container {
     position: relative;
+    background-color: var(--color-background);
+    padding: 2rem;
   }
 
   &__card {
@@ -29,5 +33,10 @@
     display: flex;
     flex-direction: column;
     gap: 0.25 * $size-base;
+  }
+
+  &__button {
+    margin-top: $size-lg;
+    padding-bottom: 15vh;
   }
 }
