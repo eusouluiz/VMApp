@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina-gerenciamento-detalhes/pagina-gerenciamento-detalhes.utility';
 import { FuncionarioService } from '../../../../core/services/funcionario-service/funcionario.service';
 import { CargoService } from '../../../../core/services/cargo-service/cargo.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
+import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina-gerenciamento-detalhes/pagina-gerenciamento-detalhes.utility';
 import { Funcionario } from '../../../../core/services/funcionario-service/funcionario.entity';
 import { Cargo } from '../../../../core/services/cargo-service/cargo.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
@@ -64,7 +64,6 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (this.isModoDetalhes() && id !== null) {
       this.funcionario = this.resgatarFuncionario(id);
-
       this.form?.setValue({
         nome: this.funcionario.usuario.nome,
         telefone: this.funcionario.usuario.telefone,
@@ -76,6 +75,7 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
 
     if (this.isModoDetalhes()) {
       this.form?.disable();
+      this.formBuscaCargo.disable();
     }
   }
 
@@ -103,6 +103,16 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
     this.inicializarTabelaCargos();
   }
 
+  protected habilitarForms(): void {
+    this.form?.enable();
+    this.formBuscaCargo?.enable();
+  }
+
+  protected desabilitarForms(): void {
+    this.form?.disable();
+    this.formBuscaCargo?.disable();
+  }
+
   //cancelar edicao
   cancelar() {
     if (this.isModoCadastrar()) {
@@ -118,7 +128,7 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
       cpf: this.funcionario.usuario.cpf,
       senha: this.funcionario.usuario.senha,
     });
-    this.form?.disable();
+    this.desabilitarForms();
 
     this.inicializarTabelaCargos();
   }
@@ -167,9 +177,7 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
     if (this.funcionario.cargo.nome !== '') {
       this.listaCargosTabela.push(this.funcionario.cargo);
     }
-    if (!this.isModoDetalhes()) {
-      this.inicializarBuscaCargos();
-    }
+    this.inicializarBuscaCargos();
   }
 
   private inicializarBuscaCargos() {

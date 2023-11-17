@@ -29,6 +29,7 @@ export class GerenciamentoFuncionarioPage extends Pagina implements OnInit {
   ngOnInit() {}
 
   ionViewWillEnter() {
+    this.inicializarConteudo()
     this.pageMenuService.displayStatus.next(false);
   }
 

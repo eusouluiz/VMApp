@@ -1,4 +1,4 @@
-<app-header titulo="gerenciamento-funcionario-detalhes" [botaoRetorno]="true"></app-header>
+<app-header [titulo]="isModoCadastrar() ? 'Novo Funcionario' : funcionario.usuario.nome" [botaoRetorno]="true"></app-header>
 
 <ion-content class="ion-padding">
   <form [formGroup]="form" (ngSubmit)="salvar()">
@@ -11,79 +11,70 @@
       </ion-col>
     </ion-row>
     <hr>
-    <!-- INICIO SOBRE CARGO -->
+    <!-- INICIO SOBRE ALUNO -->
     <ion-row>
-      <ion-row size="auto" style="width: 100%;">
-        <ion-col size="7" sizeLg="4" sizeMd="4">
-          <h3 style="margin-left: 5px; font-weight: bold;">Cargo:</h3>
+      <ion-row class="ion-align-items-center" size="auto">
+        <ion-col size="12" sizeLg="4" sizeMd="4">
+          <h3 class="u-font-weight--bold">Cargo:</h3>
         </ion-col>
-        <!-- INICIO INSERCAO CARGOS -->
-        <ion-col *ngIf="!isModoDetalhes()" offsetLg="2" offsetMd="2" size="12" sizeLg="6" sizeMd="6">
+      </ion-row>
+      <!-- INICIO TABELA DE ALUNOS -->
+      <ion-row>
+        <ion-col size="12">
+          <ng-container *ngIf="listaCargosTabela.length > 0">
+            <ng-container *ngFor="let cargo of listaCargosTabela">
+              <ion-item class="c-item c-item-round"
+                lines="none" [detail]="isModoDetalhes()" [button]="isModoDetalhes()" (click)="navegarTelaCargo(cargo.cargo_id)">
+                <ion-label>
+                  <ion-row class="ion-align-items-center">
+                    <ion-col class="ion-align-items-center" size="9" sizeLg="11" sizeMd="11">
+                      <ion-row>
+                        <ion-text class="c-item-titulo ion-text-wrap">{{cargo.nome}}</ion-text>
+                      </ion-row>
+                    </ion-col>
+                    <ion-col size="3" sizeLg="1" sizeMd="1" style="min-height: 70px; text-align: -webkit-right">
+                      <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
+                          (click)="deletarCargo()">
+                          <ion-icon name="trash"></ion-icon>
+                      </ion-fab-button>
+                    </ion-col>
+                  </ion-row>
+                </ion-label>
+              </ion-item>
+            </ng-container>
+          </ng-container>
+        </ion-col>
+      </ion-row>
+      <!-- INICIO INSERCAO ALUNOS -->
+      <ion-row>
+        <ion-col size="12">
           <form [formGroup]="formBuscaCargo">
-            <app-autocomplete formControlName="busca" idBusca="busca-cargo" [listaItens]="nomeCargosBusca" (onBusca)="adicionarCargo($event)" 
+            <app-autocomplete placeholder="Insira o nome do cargo" formControlName="busca" idBusca="busca-cargo" [listaItens]="nomeCargosBusca" (onBusca)="adicionarCargo($event)" 
               textoSemResultado="Cadastrar novo cargo" icone="add" (onCliqueIcone)="navegarTelaCargo(-1)"></app-autocomplete>
           </form>
         </ion-col>
-        <!-- FIM INSERCAO CARGOS -->
       </ion-row>
-      <!-- INICIO TABELA DE CARGOS -->
-      <ion-row size="auto" style="width: 100%;">
-        <table style="margin-left: 5px; margin-right: 5px;">
-          <tr>
-            <th>Cargo</th>
-            <th></th>
-          </tr>
-          <ng-container *ngIf="listaCargosTabela.length > 0; then thenTemplate; else elseTemplate"></ng-container>
-          <ng-template #thenTemplate>
-            <tr *ngFor="let cargo of listaCargosTabela">
-              <td style="width: 90%;">{{cargo.nome}}</td>
-              <td style="width: 10%;">
-                <div style="text-align: -webkit-right;">
-                  <ion-fab-button *ngIf="isModoDetalhes()" color="secondary" size="small" 
-                    (click)="navegarTelaCargo(cargo.cargo_id)">
-                    <ion-icon name="information"></ion-icon>
-                  </ion-fab-button>
-                  <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
-                    (click)="deletarCargo()">
-                    <ion-icon name="trash"></ion-icon>
-                  </ion-fab-button>
-                </div>
-              </td>
-            </tr>
-          </ng-template>
-          <ng-template #elseTemplate>
-            <tr>
-              <td colspan="100%" style="text-align: center; font-weight: bold;">Selecione um Cargo</td>
-            </tr>
-          </ng-template>
-          
-        </table>
-      </ion-row>
-      <!-- FIM TABELA DE CARGOS -->
+      <!-- FIM INSERCAO ALUNOS -->
+      <!-- FIM TABELA DE ALUNOS -->
     </ion-row>
-    <!-- FIM SOBRE CARGO -->
-    <ion-row>
+    <!-- FIM SOBRE ALUNO -->
+    <ion-row class="ion-margin-vertical">
       <ion-row>
-        <h3 style="margin-left: 5px; font-weight: bold;">Informações para Login:</h3>
+        <ion-col size="12">
+          <h3 class="u-font-weight--bold">Informações Usuário:</h3>
+        </ion-col>
       </ion-row>
-      <ion-row size="12" style="width: 100%;">
+      <ion-row size="12">
         <ion-col size="12" size-md="6" size-lg="6">
           <app-field-input formControlName="cpf" label="CPF"></app-field-input>
         </ion-col>
         <ion-col size="12" size-md="6" size-lg="6">
-          <app-field-password formControlName="senha" label="Senha"></app-field-password>
+          <app-field-password placeholder=" " formControlName="senha" label="Senha"></app-field-password>
         </ion-col>
       </ion-row>
     </ion-row>
     <ng-container id="botoesEditar" *ngIf="!isModoDetalhes()">
-      <ion-row style="flex-direction: row-reverse;">
-        <ion-col size="auto">
-          <ion-button shape="round" type="submit">Salvar</ion-button>
-        </ion-col>
-        <ion-col size="auto">
-          <ion-button shape="round" fill="outline" color="danger" (click)="cancelar()">Cancelar</ion-button>
-        </ion-col>
-      </ion-row>
+      <app-botoes-controle modoBotoes="salvar" (onSalvar)="salvar()" (onCancelar)="cancelar()"></app-botoes-controle>
     </ng-container>
   </form>
   <!-- BOTOES DE CONTROLE -->
