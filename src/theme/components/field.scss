@@ -68,6 +68,8 @@
     &.textarea-disabled {
       --border-color: var(--color-gray-30) !important;
       --placeholder-color: var(--color-font-tertiary) !important;
+      --color: var(--color-gray-50);
+      opacity: 1;
 
       .native-wrapper {
         background: var(--color-gray-10);

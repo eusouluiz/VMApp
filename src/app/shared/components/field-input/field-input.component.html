@@ -1,37 +1,49 @@
-<div class="c-field" ion-content>
-  <h6 class="c-field__label" *ngIf="label">{{ label }}</h6>
-
-  <div class="c-field__input-wrapper">
-    <app-field-validation-icon *ngIf="validationIcon" [icon]="validationIcon" [control]="ngControl.control">
-    </app-field-validation-icon>
-
-    <ng-container *ngIf="textArea; then textAreaTemplate; else inputTemplate"></ng-container>
-    <ng-template #textAreaTemplate>
-      <ion-textarea
-        class="c-field__input"
-        [cols]="colsTextArea"
-        [rows]="rowsTextArea"
-        [placeholder]="placeholder"
-        [class.c-field__input--disabled]="isDisabled"
-        [formControl]="ngControl.control"
-        (ionChange)="setValue($event)">
-      </ion-textarea>
-    </ng-template>
-    <ng-template #inputTemplate>
-      <ion-input
-        class="c-field__input"
-        [type]="type"
-        [placeholder]="placeholder"
-        [class.c-field__input--disabled]="isDisabled"
-        [class.c-field__input--has-validation-icon]="validationIcon"
-        [class.c-field__input--has-icon]="icon"
-        [formControl]="ngControl.control"
-        (ionChange)="setValue($event)">
-      </ion-input>
-    </ng-template>
-
-    <ion-icon *ngIf="icon" [name]="icon" class="c-field__icon"></ion-icon>
-  </div>
+<div class="c-field">
+  <span
+    *ngIf="label"
+    class="c-field__label"
+    [class.c-field__label--error]="ngControl.errors && ngControl.touched"
+    [class.c-field__label--disabled]="ngControl.control?.disabled">
+    {{ label }}
+  </span>
+  
+  <ng-container *ngIf="textArea; then textAreaTemplate; else inputTemplate"></ng-container>
+  <ng-template #textAreaTemplate>
+    <ion-textarea
+      class="c-field__input"
+      [class.c-field__input--no-label]="!label"
+      [cols]="colsTextArea"
+      [rows]="rowsTextArea"
+      [placeholder]="placeholder"
+      [helperText]="helperText"
+      [required]="required"
+      [formControl]="ngControl.control"
+      (ionChange)="setValue($event)"
+      (keydown)="onKeyDown($event)">
+    </ion-textarea>
+  </ng-template>
+  <ng-template #inputTemplate>
+    <ion-input
+      #ionInput
+      class="c-field__input"
+      [class.c-field__input--has-icon]="icon"
+      [class.c-field__input--no-label]="!label"
+      [type]="type"
+      [placeholder]="placeholder"
+      labelPlacement="stacked"
+      [helperText]="helperText"
+      [required]="required"
+      [formControl]="ngControl.control"
+      (ionChange)="setValue($event)"
+      (keydown)="onKeyDown($event)"
+      maxlength="100">
+      <ion-icon *ngIf="icon" [name]="icon" class="c-field__input-icon"></ion-icon>
+      <ion-icon
+        *ngIf="showValidationErrorMessage && ngControl.touched && ngControl.invalid"
+        name="warning"
+        class="c-field__input-icon c-field__input-icon--error"></ion-icon>
+    </ion-input>
+  </ng-template>
 
   <app-field-error-message [visible]="showValidationErrorMessage" [currentControl]="ngControl.control">
   </app-field-error-message>

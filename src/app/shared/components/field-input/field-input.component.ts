@@ -1,5 +1,6 @@
-import { Component, Input, Self, OnInit, Optional } from '@angular/core';
+import { Component, Input, Self, OnInit, Optional, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Validators, ControlValueAccessor, NgControl, ValidatorFn } from '@angular/forms';
+import { IonInput } from '@ionic/angular';
 
 @Component({
   selector: 'app-field-input',
@@ -7,19 +8,29 @@ import { Validators, ControlValueAccessor, NgControl, ValidatorFn } from '@angul
   styleUrls: ['./field-input.component.scss'],
 })
 export class FieldInputComponent implements ControlValueAccessor, OnInit {
-  @Input() type: 'text' | 'number' | 'email' = 'text';
+  @ViewChild('ionInput') ionInput: IonInput | undefined = undefined;
 
-  @Input() mask: 'phone' | 'zip-code' | 'svnr' = 'phone';
+  @Input() type: 'text' | 'cpf' | 'email' = 'text';
 
-  @Input() label: string | null = null;
+  @Input() label: string | undefined = undefined;
 
-  @Input() placeholder: string | null = null;
+  @Input() placeholder: string | undefined = undefined;
 
-  @Input() validationIcon: string | null = null;
+  @Input() icon: string | undefined = undefined;
 
-  @Input() icon: string | null = null;
+  @Input() helperText: string | undefined = undefined;
+
+  @Input() required = false;
 
   @Input() showValidationErrorMessage = true;
+
+  @Output() enter = new EventEmitter();
+
+  value: string | undefined = undefined;
+
+  onChange: (_: any) => void = () => { };
+
+  onTouched: () => void = () => { };
 
   // ---- text area ---- //
 
@@ -30,14 +41,6 @@ export class FieldInputComponent implements ControlValueAccessor, OnInit {
   @Input() rowsTextArea = 1;
 
   // ---- text area ---- //
-
-  value: string | null = null;
-
-  isDisabled = false;
-
-  onChange: (_: any) => void = () => {};
-
-  onTouched: () => void = () => {};
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   constructor(@Self() @Optional() public ngControl: NgControl) {
@@ -77,8 +80,23 @@ export class FieldInputComponent implements ControlValueAccessor, OnInit {
     this.onTouched = fn;
   }
 
-  setDisabledState(isDisabled: boolean) {
-    this.isDisabled = isDisabled;
+  setDisabled(state: boolean) {
+    if (state) {
+      this.ngControl.control?.enable();
+      return;
+    }
+
+    this.ngControl.control?.disable();
+  }
+
+  setFocus() {
+    this.ionInput?.setFocus();
+  }
+
+  onKeyDown(event: KeyboardEvent) {
+    if (event?.keyCode === 13 || event?.key === 'Enter') {
+      this.enter.emit();
+    }
   }
 
   // PRIVATE
@@ -87,6 +105,12 @@ export class FieldInputComponent implements ControlValueAccessor, OnInit {
 
     if (this.type === 'email') {
       validators.push(Validators.email);
+    }
+
+    if (this.type === 'cpf') {
+      validators.push(Validators.pattern('^[0-9]*$'));
+      validators.push(Validators.minLength(11));
+      validators.push(Validators.maxLength(11));
     }
 
     return validators;
