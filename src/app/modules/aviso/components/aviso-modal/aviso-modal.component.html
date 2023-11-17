@@ -1,25 +1,32 @@
 <div class="c-modal-backdrop"></div>
 <div class="c-modal">
-  <form [formGroup]="form">
-    <app-aviso-modal-titulo formControlName="titulo" [isEditar]="!isModoDetalhes()"></app-aviso-modal-titulo>
-    <hr>
-    <ion-row>
-      <ion-label>
-        <app-aviso-modal-texto formControlName="texto" [isEditar]="!isModoDetalhes()"></app-aviso-modal-texto>
-      </ion-label>
-    </ion-row>
-    <hr>
-    <ion-row *ngIf="isResponsavel" class="ion-justify-content-end">
-      <ion-button shape="round" class=" ion-align-items-center u-font-weight--bold" (click)="navegarCanal()">
-        Tire suas Dúvidas <ion-icon name="chevron-forward-outline"></ion-icon></ion-button>
-    </ion-row>
-  </form>
-  <ng-container *ngIf="!isModoDetalhes() && hasAcessoGerenciamentoAviso">
-    <app-botoes-controle modoBotoes="salvar" (onSalvar)="salvarAviso()" (onCancelar)="cancelar()"></app-botoes-controle>
+  <ion-button *ngIf="hasAcessoGerenciamentoAviso" (click)="alterarModoVisualizacao()">visualizacao</ion-button>
+  <hr>
+  <ng-container *ngIf="isModoVisualizacao">
+    <app-aviso-indicador-visualizacao [listaAvisoResponsavel]="listaAvisoResponsavel"></app-aviso-indicador-visualizacao>
   </ng-container>
-  <ng-container *ngIf="isModoDetalhes() && hasAcessoGerenciamentoAviso">
-    <app-botoes-controle (onEditar)="iniciarEdicao()" (onDeletar)="deletar()" 
-      header="Deseja deletar {{aviso.titulo}}?"></app-botoes-controle>  
+  <ng-container *ngIf="!isModoVisualizacao">
+    <form [formGroup]="form">
+      <app-aviso-modal-titulo formControlName="titulo" [isEditar]="!isModoDetalhes()"></app-aviso-modal-titulo>
+      <hr>
+      <ion-row>
+        <ion-label>
+          <app-aviso-modal-texto formControlName="texto" [isEditar]="!isModoDetalhes()"></app-aviso-modal-texto>
+        </ion-label>
+      </ion-row>
+      <hr>
+      <ion-row *ngIf="isResponsavel" class="ion-justify-content-end">
+        <ion-button shape="round" class=" ion-align-items-center u-font-weight--bold" (click)="navegarCanal()">
+          Tire suas Dúvidas <ion-icon name="chevron-forward-outline"></ion-icon></ion-button>
+      </ion-row>
+      <ng-container *ngIf="!isModoDetalhes() && hasAcessoGerenciamentoAviso">
+        <app-botoes-controle modoBotoes="salvar" (onSalvar)="salvarAviso()" (onCancelar)="cancelar()"></app-botoes-controle>
+      </ng-container>
+      <ng-container *ngIf="isModoDetalhes() && hasAcessoGerenciamentoAviso">
+        <app-botoes-controle (onEditar)="iniciarEdicao()" (onDeletar)="deletar()" 
+          header="Deseja deletar {{aviso.titulo}}?"></app-botoes-controle>  
+      </ng-container>
+    </form>
   </ng-container>
-  <div style="height: 80px;"></div>
+  <div style="height: 150px;"></div>
 </div>

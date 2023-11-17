@@ -1,5 +1,6 @@
 import { Canal } from "../canal-service/canal.entity";
 import { Funcionario } from "../funcionario-service/funcionario.entity";
+import { Responsavel } from "../responsavel-service/responsavel.entity";
 import { Turma } from "../turma-service/turma.entity";
 
 export interface AvisoInterface {
@@ -122,3 +123,54 @@ export class Aviso {
     }
 }
 
+export interface AvisoResponsavelInterface {
+    aviso_responsavel_id: string,
+    aviso_id: string,
+    responsavel_id: string,
+    ind_visualizacao: boolean,
+}
+
+export class AvisoResponsavel {
+    
+    private _aviso_responsavel_id: string = '';
+    private _aviso: Aviso = new Aviso();
+    private _responsavel: Responsavel = new Responsavel();
+    private _ind_visualizacao: boolean = false;
+
+    constructor(
+        data?: AvisoResponsavelInterface,
+    ) {
+        if (data !== undefined) {
+            this._aviso_responsavel_id = data.aviso_responsavel_id
+            this._aviso.aviso_id = data.aviso_id
+            this._responsavel.responsavel_id = data.responsavel_id
+            this._ind_visualizacao = data.ind_visualizacao
+        }
+    }
+    
+    public get aviso_responsavel_id(): string {
+        return this._aviso_responsavel_id;
+    }
+    public set aviso_responsavel_id(value: string) {
+        this._aviso_responsavel_id = value;
+    }
+    public get aviso(): Aviso {
+        return this._aviso;
+    }
+    public set aviso(value: Aviso) {
+        this._aviso = value;
+    }
+    public get responsavel(): Responsavel {
+        return this._responsavel;
+    }
+    public set responsavel(value: Responsavel) {
+        this._responsavel = value;
+    }
+    public get ind_visualizacao(): boolean {
+        return this._ind_visualizacao;
+    }
+    public set ind_visualizacao(value: boolean) {
+        this._ind_visualizacao = value;
+    }
+
+}

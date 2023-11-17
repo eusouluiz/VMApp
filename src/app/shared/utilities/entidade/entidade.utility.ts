@@ -3,7 +3,7 @@
 // ====================================
 
 import { Aluno } from '../../../core/services/aluno-service/aluno.entity';
-import { Aviso } from '../../../core/services/aviso-service/aviso.entity';
+import { Aviso, AvisoResponsavel } from '../../../core/services/aviso-service/aviso.entity';
 import { Canal, CanalResponsavel } from '../../../core/services/canal-service/canal.entity';
 import { Cargo } from '../../../core/services/cargo-service/cargo.entity';
 import { Funcionalidade } from '../../../core/services/funcionalidade-service/funcionalidade.entity';
@@ -379,6 +379,27 @@ export var AVISO_DATA: Aviso[] = [
   }),
 ];
 
+export var AVISO_RESPONSAVEL_DATA: AvisoResponsavel[] = [
+  new AvisoResponsavel({
+    aviso_responsavel_id: '0',
+    aviso_id: AVISO_DATA[0].aviso_id,
+    responsavel_id: RESPONSAVEL_DATA[0].responsavel_id,
+    ind_visualizacao: false,
+  }),
+  new AvisoResponsavel({
+    aviso_responsavel_id: '1',
+    aviso_id: AVISO_DATA[0].aviso_id,
+    responsavel_id: RESPONSAVEL_DATA[1].responsavel_id,
+    ind_visualizacao: true,
+  }),
+  new AvisoResponsavel({
+    aviso_responsavel_id: '2',
+    aviso_id: AVISO_DATA[0].aviso_id,
+    responsavel_id: RESPONSAVEL_DATA[2].responsavel_id,
+    ind_visualizacao: false,
+  }),
+]
+
 export var LEMBRETE_DATA: Lembrete[] = [];
 
 export function preencheDados() {
@@ -444,6 +465,16 @@ export function preencheDados() {
   CANAL_RESPONSAVEL_DATA[1].responsavel = RESPONSAVEL_DATA[1];
   CANAL_RESPONSAVEL_DATA[2].responsavel = RESPONSAVEL_DATA[2];
   CANAL_RESPONSAVEL_DATA[3].responsavel = RESPONSAVEL_DATA[0];
+
+  // preenche aviso responsavel
+
+  AVISO_RESPONSAVEL_DATA[0].aviso = AVISO_DATA[0];
+  AVISO_RESPONSAVEL_DATA[1].aviso = AVISO_DATA[0];
+  AVISO_RESPONSAVEL_DATA[2].aviso = AVISO_DATA[0];
+
+  AVISO_RESPONSAVEL_DATA[0].responsavel = RESPONSAVEL_DATA[0];
+  AVISO_RESPONSAVEL_DATA[1].responsavel = RESPONSAVEL_DATA[1];
+  AVISO_RESPONSAVEL_DATA[2].responsavel = RESPONSAVEL_DATA[2];
 }
 
 export function logaData(info: any = undefined) {

@@ -1,3 +1,4 @@
+import { AvisoService } from './../../../../core/services/aviso-service/aviso.service';
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { SharedModule } from '../../../../shared/shared.module';
@@ -6,7 +7,9 @@ import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup,
 import { AvisoModalTituloComponent } from '../aviso-modal-titulo/aviso-modal-titulo.component';
 import { AvisoModalTextoComponent } from '../aviso-modal-texto/aviso-modal-texto.component';
 import { Router } from '@angular/router';
-import { Aviso } from '../../../../core/services/aviso-service/aviso.entity';
+import { Aviso, AvisoResponsavel } from '../../../../core/services/aviso-service/aviso.entity';
+import { Responsavel } from '../../../../core/services/responsavel-service/responsavel.entity';
+import { AvisoIndicadorVisualizacaoComponent } from '../aviso-indicador-visualizacao/aviso-indicador-visualizacao.component';
 
 @Component({
   selector: 'app-aviso-modal',
@@ -21,6 +24,7 @@ import { Aviso } from '../../../../core/services/aviso-service/aviso.entity';
     ReactiveFormsModule,
     AvisoModalTituloComponent,
     AvisoModalTextoComponent,
+    AvisoIndicadorVisualizacaoComponent,
   ]
 })
 export class AvisoModalComponent implements OnInit {
@@ -32,10 +36,13 @@ export class AvisoModalComponent implements OnInit {
 
   form: UntypedFormGroup
 
+  isModoVisualizacao: boolean = false
+
   constructor(
     private router: Router,
     private formBuilder: UntypedFormBuilder,
     private modalController: ModalController,
+    private avisoService: AvisoService,
   ) {
     this.form = formBuilder.group({
       titulo: ['', Validators.required],
@@ -116,4 +123,23 @@ export class AvisoModalComponent implements OnInit {
     return this.modalController.dismiss(undefined, 'duvidaAviso')
   }
 
+  // ---- indicador visualizacao ---- //
+
+  listaAvisoResponsavel: AvisoResponsavel[] = []
+
+  alterarModoVisualizacao(){
+    this.isModoVisualizacao = !this.isModoVisualizacao
+    if(this.isModoVisualizacao){
+      this.buscarAvisoResponsavel()
+    }
+  }
+
+  buscarAvisoResponsavel(){
+    const lista = this.avisoService.buscarAvisoResponsavel({idAviso: this.aviso.aviso_id})?.slice()
+    if (lista !== undefined){
+      this.listaAvisoResponsavel = lista
+    }
+
+    console.log(this.listaAvisoResponsavel)
+  }
 }

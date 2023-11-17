@@ -9,6 +9,7 @@ import { AvisoItemComponent } from './components/aviso-item/aviso-item.component
 import { AvisoModalComponent } from './components/aviso-modal/aviso-modal.component';
 import { NovoAvisoComponent } from './components/novo-aviso/novo-aviso.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AvisoIndicadorVisualizacaoComponent } from './components/aviso-indicador-visualizacao/aviso-indicador-visualizacao.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AvisoItemComponent,
     AvisoModalComponent,
     NovoAvisoComponent,
-    
+    NovoAvisoComponent,
+    AvisoIndicadorVisualizacaoComponent,
   ]
 })
 export class AvisoModule { }
