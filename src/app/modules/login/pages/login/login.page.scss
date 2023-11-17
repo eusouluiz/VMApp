@@ -1,10 +1,6 @@
 @import '../../../../../theme/sizing.scss';
 @import '../../../../../theme/variables.scss';
 
-ion-content {
-  --background: url('/assets/images/illustration/background-pattern.svg') center var(--color-background);
-}
-
 .e-login-page {
   &__logo {
     padding-top: 10vh;
