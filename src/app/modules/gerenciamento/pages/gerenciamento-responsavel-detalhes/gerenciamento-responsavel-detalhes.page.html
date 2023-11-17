@@ -23,7 +23,7 @@
         <ion-col size="12">
           <ng-container *ngIf="listaAlunosTabela.length > 0">
             <ng-container *ngFor="let aluno of listaAlunosTabela">
-              <ion-item class="c-item"
+              <ion-item class="c-item c-item-round"
                 lines="none" [detail]="isModoDetalhes()" [button]="isModoDetalhes()" (click)="navegarTelaAluno(aluno.aluno_id)">
                 <ion-label>
                   <ion-row class="ion-align-items-center">

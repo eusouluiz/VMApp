@@ -15,7 +15,7 @@
       }
 
       .cls-3 {
-        fill: rgba(108,112,229,0.456);
+        fill: rgba(215,217,255,0.646);
       }
     </style>
     <pattern id="pattern" data-name="pattern" x="0" y="0" width="389.35" height="315.34" patternTransform="translate(-381.47 -331.21)" patternUnits="userSpaceOnUse" viewBox="0 0 389.35 315.34">

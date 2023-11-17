@@ -1,5 +1,7 @@
 @mixin c-item {
-    --border-width: 1px;
+
+    border: 2px solid;
+    border-color: var(--color-gray-10);
     
     margin: 10px 0;
     width: 100%;
@@ -27,4 +29,8 @@
     @include c-item();
 
     --min-height: 100px;
+}
+
+.c-item-round {
+    border-radius: 20px;
 }
