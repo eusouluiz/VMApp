@@ -1,6 +1,10 @@
 <div class="c-modal-backdrop"></div>
 <div class="c-modal">
-  <ion-button *ngIf="hasAcessoGerenciamentoAviso" (click)="alterarModoVisualizacao()">visualizacao</ion-button>
+  <ion-row class="ion-justify-content-end">
+    <ion-button shape="round" class="u-font-weight--bold"  
+      *ngIf="hasAcessoGerenciamentoAviso && isModoDetalhes()" (click)="alterarModoVisualizacao()"
+      >{{isModoVisualizacao ? 'Voltar' : 'Detalhes'}}</ion-button>
+  </ion-row>
   <hr>
   <ng-container *ngIf="isModoVisualizacao">
     <app-aviso-indicador-visualizacao [listaAvisoResponsavel]="listaAvisoResponsavel"></app-aviso-indicador-visualizacao>
