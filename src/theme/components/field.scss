@@ -113,12 +113,12 @@
       border: 1px solid var(--border-color);
       border-radius: $size-xs;
       padding: 0 !important;
-      height: 3 * $size-base;
       box-shadow: var(--shadow-xs);
       background-color: var(--color-white);
       transition: all 0.2s ease-out;
 
       .native-input {
+        height: 3 * $size-base;
         padding: 0  #{3 * $size-base} 0 $size-sm;
       }
 
@@ -126,11 +126,6 @@
         padding: $size-xs !important;
         margin: 0 !important;
       }
-    }
-
-    .native-wrapper.sc-ion-textarea-md {
-      height: 7.875 * $size-base;
-      max-height: 7.875 * $size-base;
     }
 
     &--auto {

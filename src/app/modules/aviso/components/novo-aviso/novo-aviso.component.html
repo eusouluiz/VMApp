@@ -1,5 +1,5 @@
 <div class="c-modal-backdrop"></div>
-<div class="c-modal">
+<div class="c-modal e-novo-aviso">
   <form [formGroup]="form">
     <ion-row size="12">
       <ion-col size="12">
@@ -23,7 +23,7 @@
         <h6 class="c-field__label">Turmas para envio:</h6>
         <ng-container *ngIf="listaTurmasTabela.length > 0">
           <ng-container *ngFor="let turma of listaTurmasTabela">
-            <ion-item class="c-item"
+            <ion-item class="c-item c-item-round"
               lines="none">
               <ion-label>
                 <ion-row class="ion-align-items-center">
@@ -58,7 +58,7 @@
     <ion-row size="12">
       <ion-col size="12">
         <app-field-input textArea="true" formControlName="texto" label="Texto"
-          rowsTextArea="20"></app-field-input>
+          rowsTextArea="14"></app-field-input>
       </ion-col>
     </ion-row>
     <ion-row class="ion-justify-content-end">

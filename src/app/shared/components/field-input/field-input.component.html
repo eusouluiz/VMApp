@@ -10,7 +10,7 @@
   <ng-container *ngIf="textArea; then textAreaTemplate; else inputTemplate"></ng-container>
   <ng-template #textAreaTemplate>
     <ion-textarea
-      class="c-field__input"
+      class="c-field__textarea"
       [class.c-field__input--no-label]="!label"
       [cols]="colsTextArea"
       [rows]="rowsTextArea"
