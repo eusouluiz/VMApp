@@ -99,8 +99,8 @@ export class LoginFieldInputComponent implements ControlValueAccessor, OnInit {
 
     if (this.type === 'cpf') {
       validators.push(Validators.pattern('^[0-9]*$'));
-      validators.push(Validators.min(11));
-      validators.push(Validators.max(11));
+      validators.push(Validators.minLength(11));
+      validators.push(Validators.maxLength(11));
     }
 
     return validators;

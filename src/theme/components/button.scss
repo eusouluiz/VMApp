@@ -6,7 +6,7 @@
   --button-color: white;
   --icon-color: var(--button-color);
 
-  padding: 0 $size-md;
+  padding: 0 $size-3xl;
   height: 3 * $size-base;
   width: 100%;
 
@@ -20,7 +20,7 @@
   border: 0;
   border-radius: $size-xs;
 
-  @extend .t-text--sm;
+  @extend .t-text--md;
   font-weight: 500;
   color: var(--button-color);
   text-align: center;
@@ -193,5 +193,6 @@
     height: 1.15em;
     width: 1.15em;
     flex-shrink: 0;
+    color: var(--color-white);
   }
 }

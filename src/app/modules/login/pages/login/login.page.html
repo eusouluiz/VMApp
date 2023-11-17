@@ -25,6 +25,8 @@
       </div>
     </form>
 
-    <app-button class="e-login-page__button" (click)="submit()"> Entrar </app-button>
+    <app-button class="e-login-page__button" size="md" [loading]="loading" (click)="submit()"
+      >{{ !loading ? "Entrar" : "" }}</app-button
+    >
   </main>
 </ion-content>

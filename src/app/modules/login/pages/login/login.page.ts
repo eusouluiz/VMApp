@@ -16,6 +16,8 @@ import { Usuario } from '../../../../core/services/usuario-service/usuario.entit
 export class LoginPage {
   @ViewChild('password', { static: false }) password: IonInput | undefined;
 
+  loading = false;
+
   usuario!: Usuario;
   // form: UntypedFormGroup;
 
@@ -33,9 +35,15 @@ export class LoginPage {
     });
   }
 
+  ionViewWillEnter() {
+    this.loading = false;
+  }
+
   submit() {
     // const cpfForm = this.form.value.cpf;
     // const senhaForm = this.form.value.senha;
+
+    this.loading = true;
 
     const body: LoginApiBody = {
       cpf: this.form.controls.cpf.value,
@@ -57,6 +65,7 @@ export class LoginPage {
         },
         error: (err) => {
           this.toastService.error(err?.message);
+          this.loading = false;
 
           if (err?.original?.status === 422) {
             return;
