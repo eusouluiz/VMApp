@@ -10,9 +10,7 @@ import { IonInput } from '@ionic/angular';
 export class LoginFieldInputComponent implements ControlValueAccessor, OnInit {
   @ViewChild('ionInput') ionInput: IonInput | undefined = undefined;
 
-  @Input() type: 'text' | 'number' | 'email' = 'text';
-
-  @Input() mask: 'phone' | 'zip-code' | 'svnr' = 'phone';
+  @Input() type: 'text' | 'cpf' | 'email' = 'text';
 
   @Input() label: string | undefined = undefined;
 
@@ -99,8 +97,10 @@ export class LoginFieldInputComponent implements ControlValueAccessor, OnInit {
       validators.push(Validators.email);
     }
 
-    if (this.type === 'number') {
+    if (this.type === 'cpf') {
       validators.push(Validators.pattern('^[0-9]*$'));
+      validators.push(Validators.min(11));
+      validators.push(Validators.max(11));
     }
 
     return validators;
