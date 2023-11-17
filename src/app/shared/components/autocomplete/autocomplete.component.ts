@@ -19,6 +19,8 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit {
   @Output() onCliqueIcone = new EventEmitter<boolean>();
   @Output() onSelecionado = new EventEmitter<boolean>();
   @Output() onDesselecionado = new EventEmitter<boolean>();
+  
+  @Input() showValidationErrorMessage = true;
 
   isItensVisiveis = false;
   itens!: String[];

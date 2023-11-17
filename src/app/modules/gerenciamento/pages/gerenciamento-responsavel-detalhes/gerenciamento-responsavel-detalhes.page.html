@@ -17,19 +17,11 @@
         <ion-col size="12" sizeLg="4" sizeMd="4">
           <h3 class="u-font-weight--bold">Responsável por:</h3>
         </ion-col>
-        <!-- INICIO INSERCAO ALUNOS -->
-        <ion-col offsetLg="2" offsetMd="2" size="12" sizeLg="6" sizeMd="6">
-          <form [formGroup]="formBuscaAluno">
-            <app-autocomplete placeholder="Insira o nome do aluno" formControlName="busca" idBusca="busca-aluno" [listaItens]="nomeAlunosBusca" (onBusca)="adicionarAluno($event)" 
-              textoSemResultado="Cadastrar novo aluno" icone="add" (onCliqueIcone)="navegarTelaAluno(-1)"></app-autocomplete>
-          </form>
-        </ion-col>
-        <!-- FIM INSERCAO ALUNOS -->
       </ion-row>
       <!-- INICIO TABELA DE ALUNOS -->
       <ion-row>
         <ion-col size="12">
-          <ng-container *ngIf="listaAlunosTabela.length > 0; else elseTemplate">
+          <ng-container *ngIf="listaAlunosTabela.length > 0">
             <ng-container *ngFor="let aluno of listaAlunosTabela">
               <ion-item class="c-item"
                 lines="none" [detail]="isModoDetalhes()" [button]="isModoDetalhes()" (click)="navegarTelaAluno(aluno.aluno_id)">
@@ -54,20 +46,18 @@
               </ion-item>
             </ng-container>
           </ng-container>
-          <ng-template #elseTemplate>
-            <ion-item class="c-item" color="light"
-              lines="none">
-              <ion-label>
-                <ion-row class="ion-align-items-center ion-justify-content-center" style="min-height: 70px;">
-                  <ion-text class="c-item-titulo">
-                    Insira um Aluno
-                  </ion-text>
-                </ion-row>
-              </ion-label>
-            </ion-item>
-          </ng-template>
         </ion-col>
       </ion-row>
+      <!-- INICIO INSERCAO ALUNOS -->
+      <ion-row>
+        <ion-col size="12">
+          <form [formGroup]="formBuscaAluno">
+            <app-autocomplete placeholder="Insira o nome do aluno" formControlName="busca" idBusca="busca-aluno" [listaItens]="nomeAlunosBusca" (onBusca)="adicionarAluno($event)" 
+              textoSemResultado="Cadastrar novo aluno" icone="add" (onCliqueIcone)="navegarTelaAluno(-1)"></app-autocomplete>
+          </form>
+        </ion-col>
+      </ion-row>
+      <!-- FIM INSERCAO ALUNOS -->
       <!-- FIM TABELA DE ALUNOS -->
     </ion-row>
     <!-- FIM SOBRE ALUNO -->

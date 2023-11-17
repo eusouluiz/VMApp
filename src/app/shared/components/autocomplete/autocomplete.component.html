@@ -1,24 +1,29 @@
-<div class="ion-align-items-center" ion-content>
-  <h6 class="c-field__label" *ngIf="label">{{ label }}</h6>
+<div class="c-field">
+  <span
+    *ngIf="label"
+    class="c-field__label"
+    [class.c-field__label--error]="ngControl.errors && ngControl.touched"
+    [class.c-field__label--disabled]="ngControl.control?.disabled">
+    {{ label }}
+  </span>
 
-  <div class="c-field__input-wrapper">
-    <ion-input
-      id="{{ idBusca }}"
-      class="c-field__input"
-      type="text"
-      [placeholder]="placeholder"
-      [class.c-field__input--disabled]="isDisabled"
-      [class.c-field__input--has-icon]="icon"
-      [formControl]="ngControl.control"
-      debounce="100"
-      (ionInput)="getItens($event)"
-      (ionFocus)="mostrarItens()"
-      (ionBlur)="esconderItens()"
-      (keyup.enter)="selecionarPrimeiro($event.target.value)">
-    </ion-input>
-
-    <ion-icon *ngIf="icone" [name]="icone" class="c-field__icon" (click)="indicaBotaoClicado()"></ion-icon>
-  </div>
+  <ion-input
+    id="{{ idBusca }}"
+    class="c-field__input"
+    type="text"
+    [placeholder]="placeholder"
+    [class.c-field__input--has-icon]="icon"
+    [formControl]="ngControl.control"
+    debounce="100"
+    (ionInput)="getItens($event)"
+    (ionFocus)="mostrarItens()"
+    (ionBlur)="esconderItens()"
+    (keyup.enter)="selecionarPrimeiro($event.target.value)">
+    <ion-icon *ngIf="icone"
+      [name]="icone"
+      class="c-field__input-icon c-field__input-icon--right"
+      [class.c-field__input-icon--error]="showValidationErrorMessage && ngControl.touched && ngControl.invalid"></ion-icon>
+  </ion-input>
   <ion-popover
     #popover
     size="cover"
