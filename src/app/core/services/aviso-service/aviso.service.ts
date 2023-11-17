@@ -94,4 +94,15 @@ export class AvisoService {
     return avisoResponsavel.aviso_responsavel_id;
   }
 
+  alterarAvisoResponsavel(avisoResponsavel: AvisoResponsavel){
+    var indexA = AVISO_RESPONSAVEL_DATA.findIndex((ar) => {
+      return ar.aviso_responsavel_id === avisoResponsavel.aviso_responsavel_id
+    })
+    if (indexA !== -1) {
+      AVISO_RESPONSAVEL_DATA[indexA] = avisoResponsavel
+    } else {
+      throw new Error('aviso nao encontrado')
+    }
+  }
+
 }

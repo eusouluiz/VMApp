@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 import { Aviso, AvisoResponsavel } from '../../../../core/services/aviso-service/aviso.entity';
 import { Responsavel } from '../../../../core/services/responsavel-service/responsavel.entity';
 import { AvisoIndicadorVisualizacaoComponent } from '../aviso-indicador-visualizacao/aviso-indicador-visualizacao.component';
+import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
+import { AVISO_RESPONSAVEL_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
 
 @Component({
   selector: 'app-aviso-modal',
@@ -32,28 +34,30 @@ export class AvisoModalComponent implements OnInit {
   @Input('modo') modo: 'cadastrar' | 'editar' | 'detalhes' = 'detalhes'
   @Input('aviso') aviso: Aviso = new Aviso()
   @Input('hasAcessoGerenciamentoAviso') hasAcessoGerenciamentoAviso: boolean = false
-  @Input() isResponsavel: boolean = true
-
+  
   form: UntypedFormGroup
-
+  
   isModoVisualizacao: boolean = false
+  isResponsavel: boolean = this.usuarioLogado.isResponsavel()
 
   constructor(
     private router: Router,
     private formBuilder: UntypedFormBuilder,
     private modalController: ModalController,
     private avisoService: AvisoService,
+    private usuarioLogado: UsuarioLogado,
   ) {
     this.form = formBuilder.group({
       titulo: ['', Validators.required],
       texto: ['', Validators.required],
     })
   }
-
+  
   ngOnInit() { }
-
+  
   ionViewWillEnter() {
     this.inicializarConteudo()
+    this.indicarVisualizacaoAviso()
   }
 
   inicializarConteudo() {
@@ -141,5 +145,19 @@ export class AvisoModalComponent implements OnInit {
     }
 
     console.log(this.listaAvisoResponsavel)
+  }
+
+  indicarVisualizacaoAviso(){
+    var avisoResponsavel = this.avisoService.buscarAvisoResponsavel({
+      idAviso: this.aviso.aviso_id, 
+      idResponsavel: this.usuarioLogado.getIdResponsavel()
+    })?.slice()
+
+    if(avisoResponsavel !== undefined && avisoResponsavel.length > 0){
+      if(!avisoResponsavel[0].ind_visualizacao){
+        avisoResponsavel[0].ind_visualizacao = true
+        this.avisoService.alterarAvisoResponsavel(avisoResponsavel[0])
+      }
+    }
   }
 }
