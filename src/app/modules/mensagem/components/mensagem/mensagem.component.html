@@ -1,12 +1,13 @@
-<ion-item lines="none" 
-  [class]="mensagem.user_id === idUsuario ? 'e-enviado': 'e-recebido'" class="e-recebido e-mensagem-item">
-  <ion-label
-    [slot]="mensagem.user_id === idUsuario ? 'end': 'start'" 
-    class="ion-text-wrap e-mensagem-label">
-    <ion-text class="e-mensagem-text">{{mensagem.texto}}</ion-text>
+<ion-item
+  lines="none"
+  [class]="mensagem.user_id === idUsuario ? 'e-enviado' : 'e-recebido'"
+  class="e-recebido e-mensagem-item">
+  <ion-label [slot]="mensagem.user_id === idUsuario ? 'end' : 'start'" class="ion-text-wrap e-mensagem-label">
+    <ion-text class="e-mensagem-text">{{ mensagem.texto }}</ion-text>
     <ion-note class="e-mensagem-horario">
-      <small>{{resgatarHorario()}}</small>
-      <ion-icon [class]="true ? 'e-mensagem-visualizada' : 'e-mensagem-naovisualizada'" 
+      <small>{{ resgatarHorario() }}</small>
+      <ion-icon
+        [class]="true ? 'e-mensagem-visualizada' : 'e-mensagem-naovisualizada'"
         name="checkmark-done-outline"></ion-icon>
     </ion-note>
   </ion-label>
