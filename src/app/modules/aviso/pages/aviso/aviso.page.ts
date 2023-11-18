@@ -40,6 +40,7 @@ export class AvisoPage extends Pagina implements OnInit {
     super(router, ROTA_BASE);
 
     this.inicializarConteudo();
+    this.abrirModalNovoAviso()
   }
 
   ngOnInit() {}

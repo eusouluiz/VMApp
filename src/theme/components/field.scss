@@ -259,14 +259,16 @@
 
   &__datetime {
     --border-color: var(--color-gray-30);
-    --background-color: var(--color-white);
+    --background-color: var(--color-gray-10);
     --font-color: var(--color-font-primary);
     --icon-color: var(--color-font-tertiary);
 
     display: flex;
     justify-items: center;
+    justify-content: center;
     align-items: center;
     height: 3 * $size-base;
+    min-width: 100px;
     width: fit-content;
     background-color: var(--background-color);
     padding: 0 $size-sm;
@@ -323,7 +325,7 @@
     }
 
     &-component {
-      --background: var(--color-gray-10);
+      // --background: var(--color-gray-10);
       --ion-color-base: var(--color-primary) !important;
       --ion-color-step-300: var(--color-font-secondary);
       --ion-text-color: var(--color-font-tertiary);

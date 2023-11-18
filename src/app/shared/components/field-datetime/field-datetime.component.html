@@ -7,18 +7,20 @@
   <button
     class="c-field__datetime"
     (click)="showModal(true)">
-    <ng-container *ngIf="ngControl.value === ''">
+    <label class="c-field__datetime-label" *ngIf="ngControl.value === ''">
       {{ placeholder || 'FIELDS.DATE.PLACEHOLDER' | translate }}
-    </ng-container>
-    <ng-container *ngIf="ngControl.value !== ''">
+    </label>
+    <label class="c-field__datetime-label" *ngIf="ngControl.value !== ''">
       {{ ngControl.value || ngControl.value?.seconds * 1000 | date: 'dd/MM/YYYY' }}
-    </ng-container>
+    </label>
   </button>
 </div>
 
 <ion-modal class="c-ion-modal c-ion-modal--auto" [isOpen]="isModalOpen" (didDismiss)="showModal(false)">
   <ng-template>
     <div class="c-modal">
+      <button class="c-modal__close" (click)="showModal(false)"><ion-icon size="large" name="close-outline"></ion-icon></button>
+      <hr>
       <ion-datetime
         class="c-field__datetime-component"
         size="cover"
