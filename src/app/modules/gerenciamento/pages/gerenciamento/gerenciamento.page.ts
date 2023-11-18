@@ -23,7 +23,7 @@ export class GerenciamentoPage extends Pagina implements OnInit {
 
   opcoesGerenciamento: OpcoesGerenciamento[] = [
     {
-      nomeOpcao: 'Responsavel',
+      nomeOpcao: 'Responsável',
       paginaRedirecionamento: ConstantesRotas.ROTA_GERENCIAMENTO_RESPONSAVEL,
       idFuncionalidade: ConstantesFuncionalidades.GERENCIAMENTO_RESPONSAVEL,
     },
@@ -38,7 +38,7 @@ export class GerenciamentoPage extends Pagina implements OnInit {
       idFuncionalidade: ConstantesFuncionalidades.GERENCIAMENTO_TURMA,
     },
     {
-      nomeOpcao: 'Funcionario',
+      nomeOpcao: 'Funcionário',
       paginaRedirecionamento: ConstantesRotas.ROTA_GERENCIAMENTO_FUNCIONARIO,
       idFuncionalidade: ConstantesFuncionalidades.GERENCIAMENTO_FUNCIONARIO,
     },

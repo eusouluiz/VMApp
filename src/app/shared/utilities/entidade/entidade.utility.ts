@@ -43,7 +43,7 @@ export var USUARIO_DATA: Usuario[] = [
     nome: 'Luiz Nascimento',
     cpf: '35345610070',
     telefone: '98988477611',
-    tipo: 'F',
+    tipo: 'R',
     senha: 'pacoca03'
   }),
   new Usuario({
@@ -144,7 +144,7 @@ export var RESPONSAVEL_DATA: Responsavel[] = [
   }),
   new Responsavel({
     responsavel_id: '2',
-    user_id: USUARIO_DATA[4].user_id,
+    user_id: USUARIO_DATA[3].user_id,
     updated_at: new Date(),
     created_at: new Date(),
   }),
@@ -341,8 +341,8 @@ export var MENSAGEM_DATA: Mensagem[] = [
 export var AVISO_DATA: Aviso[] = [
   new Aviso({
     aviso_id: '0',
-    titulo: 'Aviso 0',
-    texto: 'teste1',
+    titulo: 'Aula Aberta: Conectando Pais e Alunos',
+    texto: 'Convidamos todos os pais a participar de nossa Aula Aberta, uma oportunidade para vivenciar o ambiente de aprendizado de seus filhos. Conecte-se com professores, compreenda as metodologias de ensino e compartilhe momentos educativos únicos com seus filhos.',
     arquivo: '',
     prioridade: '1',
     data_publicacao: new Date(),
@@ -354,23 +354,10 @@ export var AVISO_DATA: Aviso[] = [
   }),
   new Aviso({
     aviso_id: '1',
-    titulo: 'Aviso 1',
-    texto: 'teste2',
+    titulo: 'Campanha Solidária: Espalhando o Amor',
+    texto: 'Participe de nossa campanha solidária para arrecadar itens essenciais para comunidades carentes. Juntos, podemos fazer a diferença! Contribua com alimentos não perecíveis, roupas e produtos de higiene. Vamos espalhar o amor e construir um mundo mais compassivo.',
     arquivo: '',
     prioridade: '2',
-    data_publicacao: new Date(),
-    data_encerramento: new Date(),
-    funcionario_id: FUNCIONARIO_DATA[0].funcionario_id,
-    canal_id: CANAL_DATA[0].canal_id,
-    updated_at: new Date(),
-    created_at: new Date(),
-  }),
-  new Aviso({
-    aviso_id: '2',
-    titulo: 'Aviso 2',
-    texto: 'teste3',
-    arquivo: '',
-    prioridade: '3',
     data_publicacao: new Date(),
     data_encerramento: new Date(),
     funcionario_id: FUNCIONARIO_DATA[0].funcionario_id,
@@ -434,7 +421,7 @@ export function preencheDados() {
 
   RESPONSAVEL_DATA[0].usuario = USUARIO_DATA[1];
   RESPONSAVEL_DATA[1].usuario = USUARIO_DATA[2];
-  RESPONSAVEL_DATA[2].usuario = USUARIO_DATA[4];
+  RESPONSAVEL_DATA[2].usuario = USUARIO_DATA[3];
 
   // preenche funcionarios
 
