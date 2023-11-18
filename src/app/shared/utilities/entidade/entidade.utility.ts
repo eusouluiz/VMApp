@@ -17,38 +17,47 @@ import { Usuario } from '../../../core/services/usuario-service/usuario.entity';
 export var USUARIO_DATA: Usuario[] = [
   new Usuario({
     user_id: '9a9f86a8-bc35-468d-bfc8-2f2197d5823f',
-    nome: 'Admin',
-    cpf: '00000000000',
-    telefone: '041000000000',
+    nome: 'Vivian Marçal',
+    cpf: '80798419008',
+    telefone: '91984232701',
     tipo: 'F',
+    senha: 'password'
   }),
   new Usuario({
-    user_id: '9a9f8466-1760-4ed2-aa57-f691a8547d5e',
+    user_id: "9a9f8466-1760-4ed2-aa57-f691a8547d5e",
     nome: 'Gabriel Falavinha Gomes',
-    cpf: '12345678900',
-    telefone: '041987654321',
+    cpf: '47683610054',
+    telefone: '19985094994',
     tipo: 'R',
+    senha: 'julho013'
+  }),
+  new Usuario({ 
+    user_id: '2', 
+    nome: 'Giacomo Vaz', 
+    cpf: '08918011970', 
+    telefone: '041988222527', 
+    tipo: 'R' 
   }),
   new Usuario({
-    user_id: '2',
-    nome: 'Luiz Gustavo Nascimento',
-    cpf: '98765432100',
-    telefone: '041123456789',
-    tipo: 'R',
+    user_id: 'ed232b7e-3c33-44b1-9e81-8514f6620079',
+    nome: 'Luiz Nascimento',
+    cpf: '35345610070',
+    telefone: '98988477611',
+    tipo: 'F',
+    senha: 'pacoca03'
   }),
-  new Usuario({ user_id: '3', nome: 'Giacomo Vaz', cpf: '08918011970', telefone: '041988222527', tipo: 'F' }),
   new Usuario({
     user_id: '4',
     nome: 'Maria Eduarda Almeida',
     cpf: '00011122233',
-    telefone: '041999666333',
+    telefone: '62993507254',
     tipo: 'F',
   }),
   new Usuario({
     user_id: '5',
     nome: 'Ana Vitoria Oliveira',
     cpf: '55555555555',
-    telefone: '041555555555',
+    telefone: '68988704784',
     tipo: 'A',
   }),
 ];
@@ -80,7 +89,7 @@ export var TURMA_DATA: Turma[] = [
 export var ALUNO_DATA: Aluno[] = [
   new Aluno({
     aluno_id: '0',
-    nome: 'Luizinho a0',
+    nome: 'Stephanie Falavinha',
     cgm: '123456789012345',
     turma_id: TURMA_DATA[0].turma_id,
     updated_at: new Date(),
@@ -88,7 +97,7 @@ export var ALUNO_DATA: Aluno[] = [
   }),
   new Aluno({
     aluno_id: '1',
-    nome: 'Gabrielzinho a1',
+    nome: 'Eduardo Nascimento',
     cgm: '123456789012345',
     turma_id: TURMA_DATA[0].turma_id,
     updated_at: new Date(),
@@ -96,7 +105,7 @@ export var ALUNO_DATA: Aluno[] = [
   }),
   new Aluno({
     aluno_id: '2',
-    nome: 'Rafaelzinho a2',
+    nome: 'Diogo Pluma',
     cgm: '123456789012345',
     turma_id: TURMA_DATA[0].turma_id,
     updated_at: new Date(),
@@ -104,7 +113,7 @@ export var ALUNO_DATA: Aluno[] = [
   }),
   new Aluno({
     aluno_id: '3',
-    nome: 'Jaiminho a3',
+    nome: 'Felipe Prezado',
     cgm: '123456789012345',
     turma_id: TURMA_DATA[2].turma_id,
     updated_at: new Date(),
@@ -112,7 +121,7 @@ export var ALUNO_DATA: Aluno[] = [
   }),
   new Aluno({
     aluno_id: '4',
-    nome: 'Felipinho a4',
+    nome: 'Mozart Murilo',
     cgm: '123456789012345',
     turma_id: TURMA_DATA[2].turma_id,
     updated_at: new Date(),
@@ -122,7 +131,7 @@ export var ALUNO_DATA: Aluno[] = [
 
 export var RESPONSAVEL_DATA: Responsavel[] = [
   new Responsavel({
-    responsavel_id: '9a9f8466-1bb8-46ea-8318-58b68ad8f328',
+    responsavel_id: "9a9f8466-1bb8-46ea-8318-58b68ad8f328",
     user_id: USUARIO_DATA[1].user_id,
     updated_at: new Date(),
     created_at: new Date(),
@@ -197,7 +206,7 @@ export var CARGO_DATA: Cargo[] = [
   new Cargo(
     {
       cargo_id: '9a9f8804-94e5-4f5e-a0e5-d44b67731b0f',
-      nome: 'Admin',
+      nome: 'Administração',
       descricao: '',
       updated_at: new Date(),
       created_at: new Date(),
@@ -207,7 +216,7 @@ export var CARGO_DATA: Cargo[] = [
   ),
   new Cargo({
     cargo_id: '1',
-    nome: 'Funcionarios - Responsavel',
+    nome: 'Secretaria',
     descricao: '',
     updated_at: new Date(),
     created_at: new Date(),
@@ -253,24 +262,23 @@ export var FUNCIONARIO_DATA: Funcionario[] = [
 ];
 
 export var CANAL_DATA: Canal[] = [
-  new Canal({ canal_id: '0', nome: 'Admin c0', descricao: '', updated_at: new Date(), created_at: new Date() }, [
+  new Canal({ canal_id: '0', nome: 'Administração', descricao: '', updated_at: new Date(), created_at: new Date() }, [
     CARGO_DATA[0],
   ]),
   new Canal({
     canal_id: '1',
-    nome: 'Secretaria c1',
+    nome: 'Secretária',
     descricao: '',
     updated_at: new Date(),
     created_at: new Date(),
   }),
   new Canal({
     canal_id: '2',
-    nome: 'Pedagogia c2',
+    nome: 'Pedagogia',
     descricao: '',
     updated_at: new Date(),
     created_at: new Date(),
   }),
-  new Canal({ canal_id: '3', nome: 'Outro c3', descricao: '', updated_at: new Date(), created_at: new Date() }),
 ];
 
 export var CANAL_RESPONSAVEL_DATA: CanalResponsavel[] = [
@@ -295,45 +303,38 @@ export var CANAL_RESPONSAVEL_DATA: CanalResponsavel[] = [
     updated_at: new Date(),
     created_at: new Date(),
   }),
-  new CanalResponsavel({
-    canal_responsavel_id: '3',
-    canal_id: CANAL_DATA[3].canal_id,
-    responsavel_id: RESPONSAVEL_DATA[0].responsavel_id,
-    updated_at: new Date(),
-    created_at: new Date(),
-  }),
 ];
 
 export var MENSAGEM_DATA: Mensagem[] = [
   new Mensagem({
-    mensagem_id: '0',
-    texto: 'teste teste teste teste teste teste teste',
+    mensagem_id: '2',
+    texto: 'Olá! Precisamos atualizar nossos registros e gostaríamos de solicitar uma cópia do comprovante de endereço atualizado. Isso nos ajudará a manter nossas informações atualizadas.',
     arquivo: '',
     lida: false,
-    data_envio: new Date(),
-    data_leitura: new Date(),
-    user_id: USUARIO_DATA[0].user_id,
-    canal_responsavel_id: CANAL_RESPONSAVEL_DATA[0].canal_responsavel_id,
-  }),
-  new Mensagem({
-    mensagem_id: '1',
-    texto: 'teste teste teste teste teste teste teste2',
-    arquivo: '',
-    lida: false,
-    data_envio: new Date(),
+    data_envio: new Date('1995-12-17T10:13:00'),
     data_leitura: new Date(),
     user_id: USUARIO_DATA[0].user_id,
     canal_responsavel_id: CANAL_RESPONSAVEL_DATA[1].canal_responsavel_id,
   }),
   new Mensagem({
-    mensagem_id: '2',
-    texto: 'teste teste teste teste teste teste teste3',
+    mensagem_id: '1',
+    texto: 'Olá! Com certeza estarei lá. Mal posso esperar para conversar sobre o futuro da escola.',
     arquivo: '',
     lida: false,
-    data_envio: new Date(),
+    data_envio: new Date('1995-12-17T12:01:00'),
+    data_leitura: new Date(),
+    user_id: USUARIO_DATA[1].user_id,
+    canal_responsavel_id: CANAL_RESPONSAVEL_DATA[0].canal_responsavel_id,
+  }),
+  new Mensagem({
+    mensagem_id: '0',
+    texto: 'Olá, Gabriel! Gostaríamos de confirmar a sua presença na reunião de pais e professores agendada para amanhã às 18h. É uma ótima oportunidade para discutirmos questõs importantes sobre a educação de nossos alunos',
+    arquivo: '',
+    lida: false,
+    data_envio: new Date('1995-12-17T11:33:00'),
     data_leitura: new Date(),
     user_id: USUARIO_DATA[0].user_id,
-    canal_responsavel_id: CANAL_RESPONSAVEL_DATA[2].canal_responsavel_id,
+    canal_responsavel_id: CANAL_RESPONSAVEL_DATA[0].canal_responsavel_id,
   }),
 ];
 
@@ -398,7 +399,7 @@ export var AVISO_RESPONSAVEL_DATA: AvisoResponsavel[] = [
     responsavel_id: RESPONSAVEL_DATA[2].responsavel_id,
     ind_visualizacao: false,
   }),
-];
+]
 
 export var LEMBRETE_DATA: Lembrete[] = [];
 
@@ -413,8 +414,8 @@ export function preencheDados() {
 
   // preenche alunos
 
-  ALUNO_DATA[0].responsaveis.push(RESPONSAVEL_DATA[1]);
-  ALUNO_DATA[1].responsaveis.push(RESPONSAVEL_DATA[0]);
+  ALUNO_DATA[0].responsaveis.push(RESPONSAVEL_DATA[0]);
+  ALUNO_DATA[2].responsaveis.push(RESPONSAVEL_DATA[0]);
   ALUNO_DATA[1].responsaveis.push(RESPONSAVEL_DATA[1]);
   ALUNO_DATA[3].responsaveis.push(RESPONSAVEL_DATA[2]);
 
@@ -426,8 +427,8 @@ export function preencheDados() {
 
   // preenche responsaveis
 
-  RESPONSAVEL_DATA[0].alunos.push(ALUNO_DATA[1]);
-  RESPONSAVEL_DATA[1].alunos.push(ALUNO_DATA[0]);
+  RESPONSAVEL_DATA[0].alunos.push(ALUNO_DATA[2]);
+  RESPONSAVEL_DATA[0].alunos.push(ALUNO_DATA[0]);
   RESPONSAVEL_DATA[1].alunos.push(ALUNO_DATA[1]);
   RESPONSAVEL_DATA[2].alunos.push(ALUNO_DATA[3]);
 
@@ -459,12 +460,10 @@ export function preencheDados() {
   CANAL_RESPONSAVEL_DATA[0].canal = CANAL_DATA[0];
   CANAL_RESPONSAVEL_DATA[1].canal = CANAL_DATA[0];
   CANAL_RESPONSAVEL_DATA[2].canal = CANAL_DATA[1];
-  CANAL_RESPONSAVEL_DATA[3].canal = CANAL_DATA[2];
 
   CANAL_RESPONSAVEL_DATA[0].responsavel = RESPONSAVEL_DATA[0];
   CANAL_RESPONSAVEL_DATA[1].responsavel = RESPONSAVEL_DATA[1];
   CANAL_RESPONSAVEL_DATA[2].responsavel = RESPONSAVEL_DATA[2];
-  CANAL_RESPONSAVEL_DATA[3].responsavel = RESPONSAVEL_DATA[0];
 
   // preenche aviso responsavel
 
