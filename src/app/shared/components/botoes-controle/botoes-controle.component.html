@@ -1,21 +1,25 @@
 <ng-container *ngIf="modoBotoes === 'editar'">
-  <ion-row size="12" class="ion-justify-content-between">
-    <ion-col size="2">
-      <ion-fab-button (click)="deletar()" color="danger">
+  <ion-row size="12" class="u-flex-justify--end">
+    <ion-col class="e-fab-delete" size="auto">
+      <ion-fab-button class="e-fab__btn" (click)="deletar()">
         <ion-icon name="trash"></ion-icon>
       </ion-fab-button>
     </ion-col>
-    <ion-col size="2">
-      <ion-fab-button (click)="editar()" style="float: right;">
+    <ion-col class="e-fab-edit u-margin-left--xs" size="auto">
+      <ion-fab-button (click)="editar()" style="float: right">
         <ion-icon name="pencil"></ion-icon>
       </ion-fab-button>
     </ion-col>
   </ion-row>
 </ng-container>
 <ng-container *ngIf="modoBotoes === 'salvar'">
-  <ion-row size="12" class="ion-justify-content-between">
-    <ion-button class="e-btn-cancelar" shape="round" fill="outline" color="danger" (click)="cancelar()">Cancelar</ion-button>
-    <ion-button class="e-btn-salvar" shape="round" type="submit" (click)="salvar()">Salvar</ion-button>
+  <ion-row size="12" class="u-flex-justify--end">
+    <!-- <ion-button class="e-btn-cancelar" shape="round" fill="outline" color="danger" (click)="cancelar()"
+      >Cancelar</ion-button
+    > -->
+    <app-button variant="danger" padding="sm" size="md" (click)="cancelar()">Cancelar</app-button>
+
+    <!-- <ion-button class="e-btn-salvar" shape="round" type="submit" (click)="salvar()">Salvar</ion-button> -->
+    <app-button class="u-margin-left--xs" padding="sm" size="md" (click)="salvar()">Salvar</app-button>
   </ion-row>
 </ng-container>
-

@@ -53,6 +53,14 @@ export class MensagemService {
     var mensagens = MENSAGEM_DATA.slice();
     mensagens = mensagens.filter((m) => {
       return m.canal_responsavel_id === idCanalResponsavel;
+    }).sort((m1, m2) => {
+      if (m1.data_envio > m2.data_envio) {
+        return 1;
+      } else if (m2.data_envio > m1.data_envio) {
+        return -1;
+      } else {
+        return 0;
+      }
     });
     if (mensagens.length > 0) {
       return mensagens[mensagens.length - 1];

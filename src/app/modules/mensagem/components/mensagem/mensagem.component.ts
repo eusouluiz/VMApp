@@ -12,8 +12,9 @@ import { Mensagem } from '../../../../core/services/mensagem-service/mensagem.en
   imports: [CommonModule, IonicModule, SharedModule],
 })
 export class MensagemComponent implements OnInit {
-  @Input('mensagem') mensagem!: Mensagem
-  @Input('idUsuario') idUsuario!: string
+  @Input('mensagem') mensagem!: Mensagem;
+
+  @Input('idUsuario') idUsuario!: string;
 
   hora!: string;
 
@@ -26,9 +27,9 @@ export class MensagemComponent implements OnInit {
     // console.log(this.idUsuario)
   }
 
-  resgatarHorario(){
-    this.hora = this.formatarNumero(this.mensagem.data_envio.getHours())
-    this.minuto = this.formatarNumero(this.mensagem.data_envio.getMinutes())
+  resgatarHorario() {
+    this.hora = this.formatarNumero(this.mensagem.data_envio.getHours());
+    this.minuto = this.formatarNumero(this.mensagem.data_envio.getMinutes());
 
     return this.hora + ':' + this.minuto;
   }

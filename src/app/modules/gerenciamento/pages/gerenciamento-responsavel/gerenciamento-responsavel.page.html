@@ -1,8 +1,8 @@
-<app-header titulo="Responsavel" [botaoRetorno]="true"></app-header>
+<app-header titulo="Responsável" [botaoRetorno]="true"></app-header>
 
 <ion-content class="ion-padding">
   <ion-searchbar class="ion-no-padding"
-    placeholder="Responsavel" [debounce]="500" (ionInput)="filtrarResponsavelNome($event)"></ion-searchbar>
+    placeholder="Responsável" [debounce]="500" (ionInput)="filtrarResponsavelNome($event)"></ion-searchbar>
   <div *ngFor="let responsavel of listaResponsaveis">
     <ion-item class="c-item"
       lines="none" detail="true" button="true" (click)="navegarTelaResponsavel(responsavel.responsavel_id)">

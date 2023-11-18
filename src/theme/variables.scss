@@ -75,7 +75,7 @@
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 
-  --color-primary: #4036bd;
+  --color-primary: #150b96;
   --color-secondary: #8a82e4;
   --color-tertiary: #aba7dd;
   --color-background: #ffffff;
@@ -128,4 +128,7 @@
   --shadow-lg: 0px 4px 6px -2px rgba(15, 15, 16, 0.05), 0px 10px 15px -3px rgba(15, 15, 16, 0.1);
   --shadow-xl: 0px 10px 10px -5px rgba(15, 15, 16, 0.04), 0px 20px 25px -5px rgba(15, 15, 16, 0.1);
   --shadow-2xl: 0px 24px 48px -12px rgba(15, 15, 16, 0.18);
+
+  --background-pattern: url('/assets/images/illustration/background-pattern.svg') center var(--color-background);
+  --background-pattern2: url('/assets/images/illustration/background-pattern2.svg') center var(--color-background);
 }

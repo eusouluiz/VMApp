@@ -30,6 +30,7 @@ export class GerenciamentoResponsavelPage extends Pagina implements OnInit {
   ngOnInit() {}
 
   ionViewWillEnter() {
+    this.inicializarConteudo()
     this.pageMenuService.displayStatus.next(false);
   }
 

@@ -1,19 +1,28 @@
-<h2>Lido por:</h2>
-<ng-container *ngFor="let avisoResponsavel of retornarListaAvisoResponsavelPorIndVisualizacao(true)">
-  <ion-item class="c-item"
-    lines="none">
-    <ion-text class="c-item-titulo">
-      {{avisoResponsavel.responsavel.usuario.nome}}
-    </ion-text>
-  </ion-item>
-</ng-container>
-<hr>
-<h2>Não lido por:</h2>
-<ng-container *ngFor="let avisoResponsavel of retornarListaAvisoResponsavelPorIndVisualizacao(false)">
-  <ion-item class="c-item"
-    lines="none">
-    <ion-text class="c-item-titulo">
-      {{avisoResponsavel.responsavel.usuario.nome}}
-    </ion-text>
-  </ion-item>
-</ng-container>
+<div
+  *ngIf="avisoResponsavelVisualizado?.length > 0 || avisoResponsavelNaoVisualizado?.length > 0; else empty_state">
+  <div *ngIf="avisoResponsavelVisualizado?.length > 0">
+    <h2 class="t-text--lg">Lido por:</h2>
+    <ng-container *ngFor="let avisoResponsavel of avisoResponsavelVisualizado">
+      <ion-item class="c-item" lines="none">
+        <ion-text class="c-item-titulo t-text--md">
+          {{ avisoResponsavel.responsavel.usuario.nome }}
+        </ion-text>
+      </ion-item>
+    </ng-container>
+  </div>
+  <hr />
+  <div *ngIf="avisoResponsavelNaoVisualizado?.length > 0">
+    <h2 class="t-text--lg">Não lido por:</h2>
+    <ng-container *ngFor="let avisoResponsavel of avisoResponsavelNaoVisualizado">
+      <ion-item class="c-item" lines="none">
+        <ion-text class="c-item-titulo t-text--md">
+          {{ avisoResponsavel.responsavel.usuario.nome }}
+        </ion-text>
+      </ion-item>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #empty_state>
+  <h2 class="c-item-titulo t-text--lg">Não há visualizações disponíveis.</h2>
+</ng-template>

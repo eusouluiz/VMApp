@@ -1,6 +1,7 @@
-import { Component, Input, OnInit, Optional, Self } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Optional, Output, Self, ViewChild } from '@angular/core';
 import { Validators, ControlValueAccessor, NgControl } from '@angular/forms';
 
+import { IonInput } from '@ionic/angular';
 import { passwordStrengthValidator } from '../../../core/validators/password-strength/password-strenght.validator';
 
 @Component({
@@ -9,17 +10,21 @@ import { passwordStrengthValidator } from '../../../core/validators/password-str
   styleUrls: ['./field-password.component.scss'],
 })
 export class FieldPasswordComponent implements ControlValueAccessor, OnInit {
-  @Input() label: string | null = null;
+  @ViewChild('ionInput') ionInput: IonInput | undefined = undefined;
 
-  @Input() placeholder: string | null = null;
+  @Input() label: string | undefined = undefined;
+
+  @Input() placeholder: string | undefined = undefined;
+
+  @Input() helperText: string | undefined = undefined;
 
   @Input() required = false;
-
-  @Input() disabled = false;
 
   @Input() showValidationErrorMessage = true;
 
   @Input() validatePasswordStrength = false;
+
+  @Output() enter = new EventEmitter();
 
   showPassword = false;
 
@@ -56,6 +61,10 @@ export class FieldPasswordComponent implements ControlValueAccessor, OnInit {
     this.updateChanges();
   }
 
+  setFocus() {
+    this.ionInput?.setFocus();
+  }
+
   updateChanges() {
     this.onChange(this.value);
   }
@@ -77,11 +86,18 @@ export class FieldPasswordComponent implements ControlValueAccessor, OnInit {
     this.isDisabled = isDisabled;
   }
 
+  onKeyDown(event: KeyboardEvent) {
+    if (event?.keyCode === 13 || event?.key === 'Enter') {
+      this.enter.emit();
+    }
+  }
+
   // PRIVATE
   private getValidators() {
-    const validators = [Validators.minLength(8)];
+    const validators = [];
 
     if (this.validatePasswordStrength) {
+      Validators.minLength(8);
       validators.push(passwordStrengthValidator());
     }
 

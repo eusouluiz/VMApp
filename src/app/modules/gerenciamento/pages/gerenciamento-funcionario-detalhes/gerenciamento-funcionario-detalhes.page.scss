@@ -1,3 +1,6 @@
-ion-content {
-  --background: url('/assets/images/illustration/background-pattern.svg') center var(--color-background);
+.e-fab {
+  --background: var(--color-red-2);
+  --background-hover: var(--color-red-1);
+  height: 3rem;
+  width: 3rem;
 }
