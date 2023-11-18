@@ -31,27 +31,32 @@
           </ion-label>
         </ion-row>
         <hr />
-        <ion-row *ngIf="isResponsavel" class="ion-justify-content-end">
-          <ion-button shape="round" class="ion-align-items-center u-font-weight--bold" (click)="navegarCanal()">
-            Tire suas Dúvidas <ion-icon name="chevron-forward-outline"></ion-icon
-          ></ion-button>
-        </ion-row>
       </form>
     </ng-container>
   </div>
 
-  <ng-container *ngIf="!isModoVisualizacao">
-    <ng-container *ngIf="!isModoDetalhes() && hasAcessoGerenciamentoAviso">
-      <app-botoes-controle
-        modoBotoes="salvar"
-        (onSalvar)="salvarAviso()"
-        (onCancelar)="cancelar()"></app-botoes-controle>
+  <div>
+    <ng-container *ngIf="isModoVisualizacao">
+      <ion-row *ngIf="isResponsavel" class="u-flex-justify--end u-padding-bottom--md">
+        <app-button padding="sm" size="md" (click)="navegarCanal()">Tire suas Dúvidas</app-button>
+        <!-- <ion-button shape="round" class="ion-align-items-center u-font-weight--bold" (click)="navegarCanal()">
+          Tire suas Dúvidas <ion-icon name="chevron-forward-outline"></ion-icon
+        ></ion-button> -->
+      </ion-row>
     </ng-container>
-    <ng-container *ngIf="isModoDetalhes() && hasAcessoGerenciamentoAviso">
-      <app-botoes-controle
-        (onEditar)="iniciarEdicao()"
-        (onDeletar)="deletar()"
-        header="Deseja deletar {{ aviso.titulo }}?"></app-botoes-controle>
+    <ng-container *ngIf="!isModoVisualizacao">
+      <ng-container *ngIf="!isModoDetalhes() && hasAcessoGerenciamentoAviso">
+        <app-botoes-controle
+          modoBotoes="salvar"
+          (onSalvar)="salvarAviso()"
+          (onCancelar)="cancelar()"></app-botoes-controle>
+      </ng-container>
+      <ng-container *ngIf="isModoDetalhes() && hasAcessoGerenciamentoAviso">
+        <app-botoes-controle
+          (onEditar)="iniciarEdicao()"
+          (onDeletar)="deletar()"
+          header="Deseja deletar {{ aviso.titulo }}?"></app-botoes-controle>
+      </ng-container>
     </ng-container>
-  </ng-container>
+  </div>
 </div>

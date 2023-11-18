@@ -1,8 +1,22 @@
+@import '../../../../theme/variables.scss';
 
 .e-btn-salvar {
-    width: 120px;
+  width: 120px;
 }
-  
+
 .e-btn-cancelar {
-    width: 120px;
+  width: 120px;
+}
+
+.e-fab-delete {
+  padding: 0;
+
+  ion-fab-button {
+    --background: var(--color-red-2);
+    --background-hover: var(--color-red-1);
+  }
+}
+
+.e-fab-edit {
+  padding: 0;
 }

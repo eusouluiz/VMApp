@@ -40,15 +40,11 @@
                             <ion-text class="c-item-titulo ion-text-wrap">{{cargo.nome}}</ion-text>
                           </ion-row>
                         </ion-col>
-                        <ion-col
-                          size="3"
-                          sizeLg="1"
-                          sizeMd="1"
-                          style="min-height: 70px; text-align: -webkit-right">
+                        <ion-col size="3" sizeLg="1" sizeMd="1" style="text-align: -webkit-right">
                           <ion-fab-button
                             *ngIf="!isModoDetalhes()"
-                            color="danger"
-                            size="small"
+                            class="e-fab"
+                            size="medium"
                             (click)="deletarCargo()">
                             <ion-icon name="trash"></ion-icon>
                           </ion-fab-button>

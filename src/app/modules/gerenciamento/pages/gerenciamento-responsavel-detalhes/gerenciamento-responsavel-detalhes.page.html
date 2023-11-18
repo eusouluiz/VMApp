@@ -43,15 +43,11 @@
                             <ion-text class="c-item-subtitulo ion-text-wrap">Turma: {{aluno.turma.nome}}</ion-text>
                           </ion-row>
                         </ion-col>
-                        <ion-col
-                          size="3"
-                          sizeLg="1"
-                          sizeMd="1"
-                          style="min-height: 70px; text-align: -webkit-right">
+                        <ion-col size="3" sizeLg="1" sizeMd="1" style="text-align: -webkit-right">
                           <ion-fab-button
                             *ngIf="!isModoDetalhes()"
-                            color="danger"
-                            size="small"
+                            class="e-fab"
+                            size="medium"
                             (click)="deletarAluno(aluno.aluno_id)">
                             <ion-icon name="trash"></ion-icon>
                           </ion-fab-button>
