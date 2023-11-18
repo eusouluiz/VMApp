@@ -1,36 +1,37 @@
 @mixin c-item {
+  border: 2px solid;
+  border-color: var(--color-gray-10);
 
-    border: 2px solid;
-    border-color: var(--color-gray-10);
-    
-    margin: 10px 0;
-    width: 100%;
+  margin: 10px 0;
+  width: 100%;
 
-    ion-text {
-        margin: 2px 0;
-    }
+  ion-text {
+    margin: 2px 0;
 
-    .c-item-titulo {
-        font-size: $size-base * 1.25;
-    }
-    
-    .c-item-subtitulo {
-        
-    }
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .c-item-titulo {
+    font-size: $size-base * 1.25;
+  }
+
+  .c-item-subtitulo {
+  }
 }
 
 .c-item {
-    @include c-item();
-    
-    --min-height: 75px;
+  @include c-item();
+
+  --min-height: 75px;
 }
 
 .c-item__grande {
-    @include c-item();
+  @include c-item();
 
-    --min-height: 100px;
+  --min-height: 100px;
 }
 
 .c-item-round {
-    border-radius: 20px;
+  border-radius: 20px;
 }
