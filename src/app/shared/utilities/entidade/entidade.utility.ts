@@ -16,7 +16,7 @@ import { Usuario } from '../../../core/services/usuario-service/usuario.entity';
 
 export var USUARIO_DATA: Usuario[] = [
   new Usuario({
-    user_id: '9a8b41aa-1fab-4be5-a047-4759d0ce1a4f',
+    user_id: '9a9f86a8-bc35-468d-bfc8-2f2197d5823f',
     nome: 'Admin',
     cpf: '00000000000',
     telefone: '041000000000',
