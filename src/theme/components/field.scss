@@ -259,8 +259,8 @@
 
   &__datetime {
     --border-color: var(--color-gray-30);
-    --background-color: var(--color-gray-10);
-    --font-color: var(--color-font-primary);
+    --highlight-color: var(--color-primary)
+    --placeholder-color: var(--color-font-tertiary);
     --icon-color: var(--color-font-tertiary);
 
     display: flex;
@@ -269,13 +269,14 @@
     align-items: center;
     height: 3 * $size-base;
     min-width: 100px;
-    width: fit-content;
-    background-color: var(--background-color);
+    width: 100%;
+    background: var(--color-purple-background);
     padding: 0 $size-sm;
     border-radius: 12px;
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow-xs);
     gap: $size-2xs;
+    margin-bottom: $size-md;
 
     cursor: pointer;
     user-select: none;
@@ -285,6 +286,10 @@
     &-placeholder {
       @extend .t-text--sm;
       color: var(--font-color);
+      font-family: 'Inter', sans-serif;
+      color: var(--color-secondary);
+      height: 1.375 * $size-base;
+      font-weight: 600;
     }
 
     &-placeholder {

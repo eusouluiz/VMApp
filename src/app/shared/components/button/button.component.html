@@ -13,6 +13,8 @@
   [class.c-btn--sm]="size === 'sm'"
   [class.c-btn--fit-content]="width === 'fit-content'"
   [class.c-btn--icon-right]="iconSlot === 'end'"
+  [class.c-btn--no-padding]="padding === 'none'"
+  [class.c-btn--sm-padding]="padding === 'sm'"
   [disabled]="disabled">
   <ion-spinner class="c-btn__loading" *ngIf="loading" name="crescent"></ion-spinner>
   <ion-icon

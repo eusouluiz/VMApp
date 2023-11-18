@@ -18,6 +18,8 @@ export class ButtonComponent {
 
   @Input() size: 'lg' | 'md' | 'sm' = 'sm';
 
+  @Input() padding: 'default' | 'sm' | 'none' = 'default';
+
   @Input() width: 'full' | 'fit-content' = 'full';
 
   @Input() icon: string | null = null;

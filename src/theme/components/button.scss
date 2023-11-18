@@ -41,6 +41,14 @@
     --button-background: var(--color-gray-30);
   }
 
+  &--no-padding {
+    padding: 0 0 !important;
+  }
+
+  &--sm-padding {
+    padding: 0 2rem !important;
+  }
+
   &--secondary,
   &--tertiary {
     --button-background: none;

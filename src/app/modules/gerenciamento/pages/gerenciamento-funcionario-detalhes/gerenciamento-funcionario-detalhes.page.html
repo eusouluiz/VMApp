@@ -1,85 +1,116 @@
-<app-header [titulo]="isModoCadastrar() ? 'Novo Funcionario' : funcionario.usuario.nome" [botaoRetorno]="true"></app-header>
+<app-header
+  [titulo]="isModoCadastrar() ? 'Novo Funcionario' : funcionario.usuario.nome"
+  [botaoRetorno]="true"></app-header>
 
 <ion-content class="ion-padding">
-  <form [formGroup]="form" (ngSubmit)="salvar()">
-    <ion-row size="12">
-      <ion-col size="12" size-md="6" size-lg="6">
-        <app-field-input formControlName="nome" label="Nome"></app-field-input>
-      </ion-col>
-      <ion-col size="12" size-md="6" size-lg="6">
-        <app-field-input formControlName="telefone" label="Telefone"></app-field-input>
-      </ion-col>
-    </ion-row>
-    <hr>
-    <!-- INICIO SOBRE ALUNO -->
-    <ion-row>
-      <ion-row class="ion-align-items-center" size="auto">
-        <ion-col size="12" sizeLg="4" sizeMd="4">
-          <h3 class="u-font-weight--bold ion-no-margin">Cargo:</h3>
-        </ion-col>
-      </ion-row>
-      <!-- INICIO TABELA DE ALUNOS -->
-      <ion-row>
-        <ion-col size="12">
-          <ng-container *ngIf="listaCargosTabela.length > 0">
-            <ng-container *ngFor="let cargo of listaCargosTabela">
-              <ion-item class="c-item c-item-round"
-                lines="none" [detail]="isModoDetalhes()" [button]="isModoDetalhes()" (click)="navegarTelaCargo(cargo.cargo_id)">
-                <ion-label>
-                  <ion-row class="ion-align-items-center">
-                    <ion-col class="ion-align-items-center" size="9" sizeLg="11" sizeMd="11">
-                      <ion-row>
-                        <ion-text class="c-item-titulo ion-text-wrap">{{cargo.nome}}</ion-text>
+  <div class="u-display--flex u-flex-direction--column u-flex-justify--space-between u-height--100">
+    <div>
+      <form [formGroup]="form" (ngSubmit)="salvar()">
+        <ion-row size="12">
+          <ion-col size="12" size-md="6" size-lg="6">
+            <app-field-input formControlName="nome" label="Nome"></app-field-input>
+          </ion-col>
+          <ion-col size="12" size-md="6" size-lg="6">
+            <app-field-input formControlName="telefone" label="Telefone"></app-field-input>
+          </ion-col>
+        </ion-row>
+        <hr />
+        <!-- INICIO SOBRE ALUNO -->
+        <ion-row>
+          <ion-row class="ion-align-items-center" size="auto">
+            <ion-col size="12" sizeLg="4" sizeMd="4">
+              <h3 class="u-font-weight--bold ion-no-margin">Cargo:</h3>
+            </ion-col>
+          </ion-row>
+          <!-- INICIO TABELA DE ALUNOS -->
+          <ion-row>
+            <ion-col size="12">
+              <ng-container *ngIf="listaCargosTabela.length > 0">
+                <ng-container *ngFor="let cargo of listaCargosTabela">
+                  <ion-item
+                    class="c-item c-item-round"
+                    lines="none"
+                    [detail]="isModoDetalhes()"
+                    [button]="isModoDetalhes()"
+                    (click)="navegarTelaCargo(cargo.cargo_id)">
+                    <ion-label>
+                      <ion-row class="ion-align-items-center">
+                        <ion-col class="ion-align-items-center" size="9" sizeLg="11" sizeMd="11">
+                          <ion-row>
+                            <ion-text class="c-item-titulo ion-text-wrap">{{cargo.nome}}</ion-text>
+                          </ion-row>
+                        </ion-col>
+                        <ion-col
+                          size="3"
+                          sizeLg="1"
+                          sizeMd="1"
+                          style="min-height: 70px; text-align: -webkit-right">
+                          <ion-fab-button
+                            *ngIf="!isModoDetalhes()"
+                            color="danger"
+                            size="small"
+                            (click)="deletarCargo()">
+                            <ion-icon name="trash"></ion-icon>
+                          </ion-fab-button>
+                        </ion-col>
                       </ion-row>
-                    </ion-col>
-                    <ion-col size="3" sizeLg="1" sizeMd="1" style="min-height: 70px; text-align: -webkit-right">
-                      <ion-fab-button *ngIf="!isModoDetalhes()" color="danger" size="small" 
-                          (click)="deletarCargo()">
-                          <ion-icon name="trash"></ion-icon>
-                      </ion-fab-button>
-                    </ion-col>
-                  </ion-row>
-                </ion-label>
-              </ion-item>
-            </ng-container>
-          </ng-container>
-        </ion-col>
-      </ion-row>
-      <!-- INICIO INSERCAO ALUNOS -->
-      <ion-row>
-        <ion-col size="12">
-          <form [formGroup]="formBuscaCargo">
-            <app-autocomplete placeholder="Insira o nome do cargo" formControlName="busca" idBusca="busca-cargo" [listaItens]="nomeCargosBusca" (onBusca)="adicionarCargo($event)" 
-              textoSemResultado="Cadastrar novo cargo" icone="add" (onCliqueIcone)="navegarTelaCargo(-1)"></app-autocomplete>
-          </form>
-        </ion-col>
-      </ion-row>
-      <!-- FIM INSERCAO ALUNOS -->
-      <!-- FIM TABELA DE ALUNOS -->
-    </ion-row>
-    <!-- FIM SOBRE ALUNO -->
-    <ion-row class="ion-margin-vertical">
-      <ion-row>
-        <ion-col size="12">
-          <h3 class="u-font-weight--bold">Informações Usuário:</h3>
-        </ion-col>
-      </ion-row>
-      <ion-row size="12">
-        <ion-col size="12" size-md="6" size-lg="6">
-          <app-field-input formControlName="cpf" label="CPF"></app-field-input>
-        </ion-col>
-        <ion-col size="12" size-md="6" size-lg="6">
-          <app-field-password placeholder=" " formControlName="senha" label="Senha"></app-field-password>
-        </ion-col>
-      </ion-row>
-    </ion-row>
-    <ng-container id="botoesEditar" *ngIf="!isModoDetalhes()">
-      <app-botoes-controle modoBotoes="salvar" (onSalvar)="salvar()" (onCancelar)="cancelar()"></app-botoes-controle>
-    </ng-container>
-  </form>
-  <!-- BOTOES DE CONTROLE -->
-  <ng-container *ngIf="isModoDetalhes()">
-    <app-botoes-controle (onEditar)="iniciarEdicao()" (onDeletar)="deletarAction()" 
-      header="Deseja deletar {{funcionario.usuario.nome}}?"></app-botoes-controle>  
-  </ng-container>
+                    </ion-label>
+                  </ion-item>
+                </ng-container>
+              </ng-container>
+            </ion-col>
+          </ion-row>
+          <!-- INICIO INSERCAO ALUNOS -->
+          <ion-row>
+            <ion-col size="12">
+              <form [formGroup]="formBuscaCargo">
+                <app-autocomplete
+                  placeholder="Insira o nome do cargo"
+                  formControlName="busca"
+                  idBusca="busca-cargo"
+                  [listaItens]="nomeCargosBusca"
+                  (onBusca)="adicionarCargo($event)"
+                  textoSemResultado="Cadastrar novo cargo"
+                  icone="add"
+                  (onCliqueIcone)="navegarTelaCargo(-1)"></app-autocomplete>
+              </form>
+            </ion-col>
+          </ion-row>
+          <!-- FIM INSERCAO ALUNOS -->
+          <!-- FIM TABELA DE ALUNOS -->
+        </ion-row>
+        <!-- FIM SOBRE ALUNO -->
+        <ion-row class="ion-margin-vertical">
+          <ion-row>
+            <ion-col size="12">
+              <h3 class="u-font-weight--bold">Informações Usuário:</h3>
+            </ion-col>
+          </ion-row>
+          <ion-row size="12">
+            <ion-col size="12" size-md="6" size-lg="6">
+              <app-field-input formControlName="cpf" label="CPF"></app-field-input>
+            </ion-col>
+            <ion-col size="12" size-md="6" size-lg="6">
+              <app-field-password placeholder=" " formControlName="senha" label="Senha"></app-field-password>
+            </ion-col>
+          </ion-row>
+        </ion-row>
+      </form>
+    </div>
+    <!-- BOTOES DE CONTROLE -->
+    <div>
+      <ng-container id="botoesEditar" *ngIf="!isModoDetalhes()">
+        <app-botoes-controle
+          modoBotoes="salvar"
+          (onSalvar)="salvar()"
+          (onCancelar)="cancelar()"></app-botoes-controle>
+      </ng-container>
+      <ng-container *ngIf="isModoDetalhes()">
+        <app-botoes-controle
+          (onEditar)="iniciarEdicao()"
+          (onDeletar)="deletarAction()"
+          header="Deseja deletar {{funcionario.usuario.nome}}?"></app-botoes-controle>
+      </ng-container>
+    </div>
+  </div>
 </ion-content>

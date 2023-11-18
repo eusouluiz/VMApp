@@ -8,30 +8,25 @@ import { IonicModule } from '@ionic/angular';
   templateUrl: './aviso-modal-titulo.component.html',
   styleUrls: ['./aviso-modal-titulo.component.scss'],
   standalone: true,
-  imports: [
-    CommonModule,
-    IonicModule,
-    FormsModule,
-    ReactiveFormsModule,
-  ]
+  imports: [CommonModule, IonicModule, FormsModule, ReactiveFormsModule],
 })
 export class AvisoModalTituloComponent implements ControlValueAccessor, OnInit {
+  @Input('isEditar') isEditar: boolean = false;
 
-  @Input('isEditar') isEditar: boolean = false
+  // ---- controle formulario ---- //
 
-  constructor(
-    @Self() @Optional() public ngControl: NgControl
-  ) {
+  value: String | null = null;
+
+  isDisabled = false;
+
+  constructor(@Self() @Optional() public ngControl: NgControl) {
     this.ngControl.valueAccessor = this;
   }
 
   ngOnInit() {}
-  
-  // ---- controle formulario ---- //
-  
-  value: String | null = null
-  isDisabled = false;
+
   onChange: (_: any) => void = () => {};
+
   onTouched: () => void = () => {};
 
   updateChanges() {
@@ -56,5 +51,4 @@ export class AvisoModalTituloComponent implements ControlValueAccessor, OnInit {
   }
 
   // ---- controle formulario ---- //
-
 }

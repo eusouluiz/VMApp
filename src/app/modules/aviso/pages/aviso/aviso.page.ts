@@ -113,7 +113,7 @@ export class AvisoPage extends Pagina implements OnInit {
     const modal = await this.modalController.create({
       component: NovoAvisoComponent,
       mode: 'md',
-      cssClass: 'c-ion-modal--sheet',
+      cssClass: 'c-ion-modal--sheet u-flex-direction--column u-flex-justify--end',
       initialBreakpoint: 0.95,
       componentProps: {},
     });
