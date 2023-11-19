@@ -153,7 +153,7 @@ export class ToastService {
       case 'warning':
         return 'warning';
       default:
-        return 'information-circle-outline';
+        return '';
     }
   }
 }
