@@ -6,13 +6,13 @@ import { FieldSelectOption } from '../../../../shared/components/field-select/fi
 import { CanalService } from '../../../../core/services/canal-service/canal.service';
 import { TurmaService } from '../../../../core/services/turma-service/turma.service';
 import { AvisoService } from '../../../../core/services/aviso-service/aviso.service';
-import { LembreteService } from '../../../../core/services/lembrete-service copy/lembrete.service';
+import { LembreteService } from '../../../../core/services/lembrete-service/lembrete.service';
 import { CommonModule } from '@angular/common';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { Aviso } from '../../../../core/services/aviso-service/aviso.entity';
 import { Canal } from '../../../../core/services/canal-service/canal.entity';
 import { Turma } from '../../../../core/services/turma-service/turma.entity';
-import { Lembrete } from '../../../../core/services/lembrete-service copy/lembrete.entity';
+import { Lembrete } from '../../../../core/services/lembrete-service/lembrete.entity';
 
 @Component({
   selector: 'app-novo-aviso',

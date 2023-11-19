@@ -8,7 +8,7 @@ import { Canal, CanalResponsavel } from '../../../core/services/canal-service/ca
 import { Cargo } from '../../../core/services/cargo-service/cargo.entity';
 import { Funcionalidade } from '../../../core/services/funcionalidade-service/funcionalidade.entity';
 import { Funcionario } from '../../../core/services/funcionario-service/funcionario.entity';
-import { Lembrete } from '../../../core/services/lembrete-service copy/lembrete.entity';
+import { Lembrete } from '../../../core/services/lembrete-service/lembrete.entity';
 import { Mensagem } from '../../../core/services/mensagem-service/mensagem.entity';
 import { Responsavel } from '../../../core/services/responsavel-service/responsavel.entity';
 import { Turma } from '../../../core/services/turma-service/turma.entity';
