@@ -53,7 +53,7 @@
   border-radius: $size-sm;
   box-shadow: 0 5px 15px 0 rgba(0, 30, 92, 0.12);
   background-color: #ffffff;
-  color: var(--color-gray-900);
+  color: var(--color-font-primary);
   animation: fadeInSlideIn var(--toast-message-duration) forwards 1
     cubic-bezier(0.075, 0.82, 0.165, 1);
 
