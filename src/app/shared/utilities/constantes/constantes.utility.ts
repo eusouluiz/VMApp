@@ -70,3 +70,11 @@ export class ConstantesPrioridadesAvisos {
 
   static readonly BAIXA = '3';
 }
+
+export class ConstantesSupabase {
+  static readonly CANAL_NOTIFICACAO_MENSAGEM = 'notificacao-mensagem'
+
+  static readonly CANAL_NOTIFICACAO_AVISO = 'notificacao-aviso'
+
+  static readonly CANAL_MENSAGEM = 'mensagens'
+}
