@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RESPONSAVEL_DATA } from '../../../shared/utilities/entidade/entidade.utility';
+import { RESPONSAVEL_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
 import { Responsavel } from './responsavel.entity';
 
 @Injectable({

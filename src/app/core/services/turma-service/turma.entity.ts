@@ -1,4 +1,4 @@
-import { Aluno } from './../../../core/services/aluno-service/aluno.entity';
+import { Aluno } from '../../state/gerenciamento/aluno/aluno.entity';
 
 export interface TurmaInterface {
     turma_id: string,

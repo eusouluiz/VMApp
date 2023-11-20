@@ -1,5 +1,5 @@
-import { Responsavel } from "../responsavel-service/responsavel.entity";
-import { Turma } from "../turma-service/turma.entity"
+import { Responsavel } from "../responsavel/responsavel.entity";
+import { Turma } from "../../../services/turma-service/turma.entity"
 
 export interface AlunoInterface {
     aluno_id: string,
@@ -20,7 +20,7 @@ export class Aluno {
     private _updated_at: Date = new Date();
 
     constructor (
-        private data?: AlunoInterface
+        data?: AlunoInterface
     ) {
         if (data !== undefined) {
             this._aluno_id = data.aluno_id

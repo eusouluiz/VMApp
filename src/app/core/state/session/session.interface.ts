@@ -8,7 +8,7 @@
 // }
 
 import { Funcionario } from "../../services/funcionario-service/funcionario.entity";
-import { Responsavel } from "../../services/responsavel-service/responsavel.entity";
+import { Responsavel } from "../gerenciamento/responsavel/responsavel.entity";
 
 export interface LoginApiBody {
   cpf: string;

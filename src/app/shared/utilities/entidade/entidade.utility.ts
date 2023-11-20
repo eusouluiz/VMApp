@@ -2,7 +2,7 @@
 // ENTIDADES
 // ====================================
 
-import { Aluno } from '../../../core/services/aluno-service/aluno.entity';
+import { Aluno } from '../../../core/state/gerenciamento/aluno/aluno.entity';
 import { Aviso, AvisoResponsavel } from '../../../core/services/aviso-service/aviso.entity';
 import { Canal, CanalResponsavel } from '../../../core/services/canal-service/canal.entity';
 import { Cargo } from '../../../core/services/cargo-service/cargo.entity';
@@ -10,7 +10,7 @@ import { Funcionalidade } from '../../../core/services/funcionalidade-service/fu
 import { Funcionario } from '../../../core/services/funcionario-service/funcionario.entity';
 import { Lembrete } from '../../../core/services/lembrete-service/lembrete.entity';
 import { Mensagem } from '../../../core/services/mensagem-service/mensagem.entity';
-import { Responsavel } from '../../../core/services/responsavel-service/responsavel.entity';
+import { Responsavel } from '../../../core/state/gerenciamento/responsavel/responsavel.entity';
 import { Turma } from '../../../core/services/turma-service/turma.entity';
 import { Usuario } from '../../../core/services/usuario-service/usuario.entity';
 

@@ -1,5 +1,5 @@
-import { Aluno } from "../aluno-service/aluno.entity";
-import { Usuario } from "../usuario-service/usuario.entity"
+import { Aluno } from "../aluno/aluno.entity";
+import { Usuario } from "../../../services/usuario-service/usuario.entity"
 
 export interface ResponsavelInterface {
     responsavel_id: string,

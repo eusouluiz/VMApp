@@ -28,12 +28,12 @@ export class HeaderComponent implements OnInit {
   ngOnInit() { }
 
   // nao precisaria remover os canais, pois esses canais persistem por toda aplicacao
-  // OnDestroy(){
-  //   HeaderComponent.supabase.removeAllChannels()
-  // }
+  OnDestroy(){
+    HeaderComponent.supabase.removeAllChannels()
+  }
 
   inscreverNotificacao(){
-    const mensage = HeaderComponent.supabase.channel(ConstantesSupabase.CANAL_MENSAGEM)
+    const mensagem = HeaderComponent.supabase.channel(ConstantesSupabase.CANAL_MENSAGEM)
       .on(
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'mensagens' },
@@ -46,16 +46,16 @@ export class HeaderComponent implements OnInit {
         }
       )
       .subscribe()
-      const aviso = HeaderComponent.supabase.channel(ConstantesSupabase.CANAL_NOTIFICACAO_AVISO)
-        .on(
-          'postgres_changes',
-          { event: 'INSERT', schema: 'public', table: 'avisos' },
-          async (payload:any) => {
-            console.log('Aviso Change received!', payload)
-            this.toastService.message(payload.new.texto)
-          }
-        )
-        .subscribe()
+    const aviso = HeaderComponent.supabase.channel(ConstantesSupabase.CANAL_NOTIFICACAO_AVISO)
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'avisos' },
+        async (payload:any) => {
+          console.log('Aviso Change received!', payload)
+          this.toastService.message(payload.new.texto)
+        }
+      )
+      .subscribe()
   }
 
   async getUsuarioNome(id: string): Promise<string>{

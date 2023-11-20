@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { ResponsavelService } from '../../../../core/services/responsavel-service/responsavel.service';
-import { AlunoService } from '../../../../core/services/aluno-service/aluno.service';
+import { ResponsavelService } from '../../../../core/state/gerenciamento/responsavel/responsavel.service';
+import { AlunoService } from '../../../../core/state/gerenciamento/aluno/aluno.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina-gerenciamento-detalhes/pagina-gerenciamento-detalhes.utility';
-import { Responsavel } from '../../../../core/services/responsavel-service/responsavel.entity';
-import { Aluno } from '../../../../core/services/aluno-service/aluno.entity';
+import { Responsavel } from '../../../../core/state/gerenciamento/responsavel/responsavel.entity';
+import { Aluno } from '../../../../core/state/gerenciamento/aluno/aluno.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 
 @Component({
@@ -57,7 +57,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
   }
 
   protected inicializarConteudo(): void {
-    this.listaTodosAlunos = this.alunoService.buscarTodosAlunos().slice();
+    this.alunoService.buscarTodosAlunos();
 
     this.definirModo();
 

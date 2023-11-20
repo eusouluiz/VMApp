@@ -8,7 +8,7 @@ import { AvisoModalTituloComponent } from '../aviso-modal-titulo/aviso-modal-tit
 import { AvisoModalTextoComponent } from '../aviso-modal-texto/aviso-modal-texto.component';
 import { Router } from '@angular/router';
 import { Aviso, AvisoResponsavel } from '../../../../core/services/aviso-service/aviso.entity';
-import { Responsavel } from '../../../../core/services/responsavel-service/responsavel.entity';
+import { Responsavel } from '../../../../core/state/gerenciamento/responsavel/responsavel.entity';
 import { AvisoIndicadorVisualizacaoComponent } from '../aviso-indicador-visualizacao/aviso-indicador-visualizacao.component';
 import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
 import { AVISO_RESPONSAVEL_DATA } from '../../../../shared/utilities/entidade/entidade.utility';

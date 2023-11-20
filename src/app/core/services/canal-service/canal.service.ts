@@ -1,4 +1,4 @@
-import { ResponsavelService } from './../responsavel-service/responsavel.service';
+import { ResponsavelService } from '../../state/gerenciamento/responsavel/responsavel.service';
 import { Injectable } from '@angular/core';
 import { CANAL_DATA, CANAL_RESPONSAVEL_DATA } from '../../../shared/utilities/entidade/entidade.utility';
 import { Canal, CanalResponsavel } from './canal.entity';

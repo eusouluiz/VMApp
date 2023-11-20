@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AVISO_DATA, AVISO_RESPONSAVEL_DATA } from '../../../shared/utilities/entidade/entidade.utility';
 import { Aviso, AvisoResponsavel } from './aviso.entity';
-import { ResponsavelService } from '../responsavel-service/responsavel.service';
+import { ResponsavelService } from '../../state/gerenciamento/responsavel/responsavel.service';
 
 @Injectable({
   providedIn: 'root',

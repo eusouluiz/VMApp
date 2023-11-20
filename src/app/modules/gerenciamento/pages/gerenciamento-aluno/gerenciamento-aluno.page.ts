@@ -1,11 +1,13 @@
+import { GerenciamentoRepository } from './../../../../core/state/gerenciamento/gerenciamento.repository';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlunoService } from '../../../../core/services/aluno-service/aluno.service';
+import { AlunoService } from '../../../../core/state/gerenciamento/aluno/aluno.service';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { Location } from '@angular/common';
-import { Aluno } from '../../../../core/services/aluno-service/aluno.entity';
+import { Aluno } from '../../../../core/state/gerenciamento/aluno/aluno.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
+import { ALUNO_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
 
 @Component({
   selector: 'app-gerenciamento-aluno',
@@ -21,10 +23,14 @@ export class GerenciamentoAlunoPage extends Pagina implements OnInit {
     private router: Router,
     private alunoService: AlunoService,
     public location: Location,
-    private pageMenuService: PageMenuService
+    private pageMenuService: PageMenuService,
+    private gerenciamentoRepository: GerenciamentoRepository,
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO;
     super(router, ROTA_BASE, location);
+    
+    alunoService.buscarTodosAlunos().subscribe();
+    this.inicializarConteudo()
   }
 
   ngOnInit() {}
@@ -34,8 +40,19 @@ export class GerenciamentoAlunoPage extends Pagina implements OnInit {
   }
 
   protected inicializarConteudo(): void {
-    this.responsaveis = this.alunoService.buscarTodosAlunos();
-    this.listaAlunos = this.responsaveis.slice();
+    const alunos = this.gerenciamentoRepository.alunos()
+    this.listaAlunos = []
+    alunos.forEach((aluno) => {
+      this.listaAlunos.push(new Aluno(aluno))
+    })
+  }
+
+  buscarAlunos(ev: any){
+    this.alunoService.buscarTodosAlunos().subscribe();
+    this.inicializarConteudo()
+
+    //TODO so completar quando finalizar a chamada
+    ev.target.complete()
   }
 
   filtarAlunoNome(ev: any) {

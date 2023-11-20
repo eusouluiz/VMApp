@@ -78,3 +78,13 @@ export class ConstantesSupabase {
 
   static readonly CANAL_MENSAGEM = 'mensagens'
 }
+
+export class ConstantesEndpoints {
+  static readonly ENDPOINT_BARRA = '/'
+  
+  static readonly ENDPOINT_USUARIO = '/user'
+
+  static readonly ENDPOINT_RESPONSAVEL = '/responsavel'
+  static readonly ENDPOINT_ALUNO = '/aluno'
+  static readonly ENDPOINT_TURMA = '/turma'
+}

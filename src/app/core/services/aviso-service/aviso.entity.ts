@@ -1,6 +1,6 @@
 import { Canal } from "../canal-service/canal.entity";
 import { Funcionario } from "../funcionario-service/funcionario.entity";
-import { Responsavel } from "../responsavel-service/responsavel.entity";
+import { Responsavel } from "../../state/gerenciamento/responsavel/responsavel.entity";
 import { Turma } from "../turma-service/turma.entity";
 
 export interface AvisoInterface {

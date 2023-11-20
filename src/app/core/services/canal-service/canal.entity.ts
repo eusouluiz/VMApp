@@ -1,5 +1,5 @@
 import { Cargo } from '../cargo-service/cargo.entity';
-import { Responsavel } from '../responsavel-service/responsavel.entity';
+import { Responsavel } from '../../state/gerenciamento/responsavel/responsavel.entity';
 
 export interface CanalInterface {
   canal_id: string;

@@ -1,10 +1,10 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ResponsavelService } from '../../../../core/services/responsavel-service/responsavel.service';
+import { ResponsavelService } from '../../../../core/state/gerenciamento/responsavel/responsavel.service';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { Location } from '@angular/common';
-import { Responsavel } from '../../../../core/services/responsavel-service/responsavel.entity';
+import { Responsavel } from '../../../../core/state/gerenciamento/responsavel/responsavel.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 
 @Component({

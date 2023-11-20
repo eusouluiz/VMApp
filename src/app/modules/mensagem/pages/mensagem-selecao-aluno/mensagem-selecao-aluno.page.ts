@@ -3,10 +3,10 @@ import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { CanalService } from '../../../../core/services/canal-service/canal.service';
-import { AlunoService } from '../../../../core/services/aluno-service/aluno.service';
+import { AlunoService } from '../../../../core/state/gerenciamento/aluno/aluno.service';
 import { MensagemService } from '../../../../core/services/mensagem-service/mensagem.service';
 import { Canal } from '../../../../core/services/canal-service/canal.entity';
-import { Aluno } from '../../../../core/services/aluno-service/aluno.entity';
+import { Aluno } from '../../../../core/state/gerenciamento/aluno/aluno.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 
 interface ItemCanalResponsavel {
@@ -105,7 +105,7 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
   }
 
   protected inicializarConteudo(): void {
-    this.listaTodosAlunos = this.alunoService.buscarTodosAlunos();
+    this.alunoService.buscarTodosAlunos();
 
     const id = this.activatedRoute.snapshot.paramMap.get('idCanal');
     if (id !== null) {

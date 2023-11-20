@@ -4,10 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina-gerenciamento-detalhes/pagina-gerenciamento-detalhes.utility';
 import { TurmaService } from '../../../../core/services/turma-service/turma.service';
-import { AlunoService } from '../../../../core/services/aluno-service/aluno.service';
+import { AlunoService } from '../../../../core/state/gerenciamento/aluno/aluno.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { Turma } from '../../../../core/services/turma-service/turma.entity';
-import { Aluno } from '../../../../core/services/aluno-service/aluno.entity';
+import { Aluno } from '../../../../core/state/gerenciamento/aluno/aluno.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 
 @Component({
@@ -54,7 +54,7 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   protected inicializarConteudo(): void {
-    this.listaTodosAlunos = this.alunoService.buscarTodosAlunos().slice();
+    this.alunoService.buscarTodosAlunos();
 
     this.definirModo();
 
