@@ -132,19 +132,19 @@ export var ALUNO_DATA: Aluno[] = [
 export var RESPONSAVEL_DATA: Responsavel[] = [
   new Responsavel({
     responsavel_id: "9a9f8466-1bb8-46ea-8318-58b68ad8f328",
-    user_id: USUARIO_DATA[1].user_id,
+    user: USUARIO_DATA[1],
     updated_at: new Date(),
     created_at: new Date(),
   }),
   new Responsavel({
     responsavel_id: '1',
-    user_id: USUARIO_DATA[2].user_id,
+    user: USUARIO_DATA[2],
     updated_at: new Date(),
     created_at: new Date(),
   }),
   new Responsavel({
     responsavel_id: '2',
-    user_id: USUARIO_DATA[3].user_id,
+    user: USUARIO_DATA[3],
     updated_at: new Date(),
     created_at: new Date(),
   }),

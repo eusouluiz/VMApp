@@ -19,8 +19,6 @@ export class AlunoService {
     }
 
     buscarTodosAlunos(): Observable<AlunoInterface[]> {
-        console.log(`${environment.api.endpoint}/aluno`)
-        // return ALUNO_DATA
         return this.http
             .get<AlunoInterface[]>(`${environment.api.endpoint}/aluno`)
             .pipe(tap((alunos) => this.saveAlunosInStorage(alunos)));

@@ -1,6 +1,9 @@
 <app-header titulo="Responsável" [botaoRetorno]="true"></app-header>
 
 <ion-content class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="buscarResponsaveis($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-searchbar class="ion-no-padding"
     placeholder="Responsável" [debounce]="500" (ionInput)="filtrarResponsavelNome($event)"></ion-searchbar>
   <div *ngFor="let responsavel of listaResponsaveis">

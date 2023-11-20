@@ -61,7 +61,7 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   protected inicializarConteudo(): void {
-    this.listaTodosResponsaveis = this.responsavelService.buscarTodosResponsaveis().slice();
+    this.responsavelService.buscarTodosResponsaveis().subscribe();
     this.listaTodasTurmas = this.turmaService.buscarTodosTurmas().slice();
 
     this.definirModo();

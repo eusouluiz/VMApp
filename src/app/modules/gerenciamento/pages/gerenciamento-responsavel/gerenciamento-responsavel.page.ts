@@ -6,6 +6,7 @@ import { ConstantesRotas } from '../../../../shared/utilities/constantes/constan
 import { Location } from '@angular/common';
 import { Responsavel } from '../../../../core/state/gerenciamento/responsavel/responsavel.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
+import { GerenciamentoRepository } from '../../../../core/state/gerenciamento/gerenciamento.repository';
 
 @Component({
   selector: 'app-gerenciamento-responsavel',
@@ -21,22 +22,39 @@ export class GerenciamentoResponsavelPage extends Pagina implements OnInit {
     private router: Router,
     private responsavelService: ResponsavelService,
     public location: Location,
-    private pageMenuService: PageMenuService
+    private pageMenuService: PageMenuService,
+    private gerenciamentoRepository: GerenciamentoRepository
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO;
     super(router, ROTA_BASE, location);
+
+    this.buscarResponsaveis()
   }
 
   ngOnInit() {}
 
   ionViewWillEnter() {
-    this.inicializarConteudo()
     this.pageMenuService.displayStatus.next(false);
   }
 
   protected inicializarConteudo(): void {
-    this.responsaveis = this.responsavelService.buscarTodosResponsaveis();
-    this.listaResponsaveis = this.responsaveis.slice();
+    const responsaveis = this.gerenciamentoRepository.responsaveis()
+    console.log(responsaveis)
+    this.responsaveis = []
+    responsaveis.forEach((responsavel) => {
+      this.responsaveis.push(new Responsavel(responsavel))
+    })
+    this.listaResponsaveis = this.responsaveis.slice()
+  }
+
+  buscarResponsaveis(ev?: any){
+    this.responsavelService.buscarTodosResponsaveis().subscribe();
+    this.inicializarConteudo()
+
+    //TODO so completar quando finalizar a chamada
+    if (ev !== undefined) {
+      ev.target.complete()
+    }
   }
 
   filtrarResponsavelNome(ev: any) {

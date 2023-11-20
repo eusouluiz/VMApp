@@ -3,7 +3,7 @@ import { Usuario } from "../../../services/usuario-service/usuario.entity"
 
 export interface ResponsavelInterface {
     responsavel_id: string,
-    user_id: string,
+    user: Usuario,
     created_at: Date,
     updated_at: Date,
     user_nome?: string,
@@ -21,7 +21,7 @@ export class Responsavel {
     ) {
         if (data !== undefined) {
             this._responsavel_id = data.responsavel_id
-            this._usuario.user_id = data.user_id
+            this._usuario = data.user
             this._created_at = data.created_at
             this._updated_at = data.updated_at
         }
