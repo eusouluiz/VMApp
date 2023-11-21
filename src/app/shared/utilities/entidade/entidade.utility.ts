@@ -21,7 +21,7 @@ export var USUARIO_DATA: Usuario[] = [
     cpf: '80798419008',
     telefone: '91984232701',
     tipo: 'F',
-    senha: 'password'
+    password: 'password'
   }),
   new Usuario({
     user_id: "9a9f8466-1760-4ed2-aa57-f691a8547d5e",
@@ -29,7 +29,7 @@ export var USUARIO_DATA: Usuario[] = [
     cpf: '47683610054',
     telefone: '19985094994',
     tipo: 'R',
-    senha: 'julho013'
+    password: 'julho013'
   }),
   new Usuario({ 
     user_id: '2', 
@@ -44,7 +44,7 @@ export var USUARIO_DATA: Usuario[] = [
     cpf: '35345610070',
     telefone: '98988477611',
     tipo: 'R',
-    senha: 'pacoca03'
+    password: 'pacoca03'
   }),
   new Usuario({
     user_id: '4',

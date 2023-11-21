@@ -1,3 +1,4 @@
+import { UsuarioService } from './../../../../core/services/usuario-service/usuario.service';
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,6 +11,7 @@ import { Responsavel } from '../../../../core/state/gerenciamento/responsavel/re
 import { Aluno } from '../../../../core/state/gerenciamento/aluno/aluno.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 import { GerenciamentoRepository } from '../../../../core/state/gerenciamento/gerenciamento.repository';
+import { UsuarioInterface } from '../../../../core/services/usuario-service/usuario.entity';
 
 @Component({
   selector: 'app-gerenciamento-responsavel-detalhes',
@@ -26,6 +28,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
     private activatedRoute: ActivatedRoute,
     private router: Router,
     public location: Location,
+    private usuarioService: UsuarioService,
     private responsavelService: ResponsavelService,
     private alunoService: AlunoService,
     private pageMenuService: PageMenuService,
@@ -34,6 +37,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO;
     super(router, ROTA_BASE, location);
 
+    this.definirModo();
     this.inicializarForms();
     this.inicializarConteudo();
   }
@@ -50,18 +54,18 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
   }
 
   inicializarFormResponsavel() {
+    const senhaForm = this.isModoCadastrar() ? ['', Validators.required] : ['']
+
     this.form = this.formBuilder.group({
       nome: ['', Validators.required],
       telefone: ['', Validators.required],
       cpf: ['', Validators.required],
-      senha: [''],
+      senha: senhaForm,
     });
   }
 
   protected inicializarConteudo(): void {
     this.alunoService.buscarTodosAlunos();
-
-    this.definirModo();
 
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (this.isModoDetalhes() && id !== null) {
@@ -97,6 +101,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
   //delecao
   protected deletar() {
     this.responsavelService.deletarResponsavel(this.responsavel.responsavel_id).subscribe();
+    // this.usuarioService.deletarUsuario(this.responsavel.usuario.user_id).subscribe();
     this.retornarPagina();
   }
 
@@ -129,7 +134,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
       nome: this.responsavel.usuario.nome,
       telefone: this.responsavel.usuario.telefone,
       cpf: this.responsavel.usuario.cpf,
-      senha: this.responsavel.usuario.senha,
+      senha: this.responsavel.usuario.password,
     });
     this.desabilitarForms();
 
@@ -142,14 +147,27 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
       this.responsavel.usuario.nome = this.form?.value.nome;
       this.responsavel.usuario.telefone = this.form?.value.telefone;
       this.responsavel.usuario.cpf = this.form?.value.cpf;
-      this.responsavel.usuario.senha = this.form?.value.senha;
+      this.responsavel.usuario.password = this.form?.value.senha;
 
       this.atualizarAlunos();
 
+      var usuario: UsuarioInterface = {
+        nome: this.form.value.nome,
+        cpf: this.form.value.cpf,
+        telefone: this.form.value.telefone,
+        tipo: 'R',
+      }
+
       if (this.isModoCadastrar()) {
-        this.responsavelService.incluirResponsavel(this.responsavel);
+        usuario.password = this.form?.value.senha
+        this.usuarioService.incluirUsuario(usuario).subscribe();
       } else {
-        this.responsavelService.alterarResponsavel(this.responsavel);
+        if (this.form.value.senha !== ''){
+          usuario.password = this.form?.value.senha
+        }
+        usuario.user_id = this.responsavel.usuario.user_id
+        usuario.email = null
+        this.usuarioService.alterarUsuario(usuario).subscribe()
       }
 
       this.modo = 'detalhes';

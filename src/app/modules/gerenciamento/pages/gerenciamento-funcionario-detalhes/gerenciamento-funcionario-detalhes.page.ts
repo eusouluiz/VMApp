@@ -68,7 +68,7 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
         nome: this.funcionario.usuario.nome,
         telefone: this.funcionario.usuario.telefone,
         cpf: this.funcionario.usuario.cpf,
-        senha: this.funcionario.usuario.senha,
+        senha: this.funcionario.usuario.password,
       });
     }
     this.inicializarTabelaCargos();
@@ -126,7 +126,7 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
       nome: this.funcionario.usuario.nome,
       telefone: this.funcionario.usuario.telefone,
       cpf: this.funcionario.usuario.cpf,
-      senha: this.funcionario.usuario.senha,
+      senha: this.funcionario.usuario.password,
     });
     this.desabilitarForms();
 
@@ -139,7 +139,7 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
       this.funcionario.usuario.nome = this.form?.value.nome;
       this.funcionario.usuario.telefone = this.form?.value.telefone;
       this.funcionario.usuario.cpf = this.form?.value.cpf;
-      this.funcionario.usuario.senha = this.form?.value.senha;
+      this.funcionario.usuario.password = this.form?.value.senha;
 
       this.atualizarCargos();
 

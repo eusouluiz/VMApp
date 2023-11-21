@@ -1,11 +1,12 @@
 
 export interface UsuarioInterface {
-    user_id: string,
+    user_id?: string,
     nome: string,
     cpf: string,
     telefone: string,
     tipo: string,
-    senha?: string,
+    password?: string,
+    email?: string | null,
 }
 
 export class Usuario {
@@ -14,19 +15,21 @@ export class Usuario {
     private _cpf: string = '';
     private _telefone: string = '';
     private _tipo: string = '';
-    private _senha: string = '';
+    private _password: string = '';
 
     constructor (
         private data?: UsuarioInterface
     ) {
         if (data !== undefined) {
-            this._user_id = data.user_id
+            if (data.user_id !== undefined) {
+                this._user_id = data.user_id
+            }
             this._nome = data.nome
             this._cpf = data.cpf
             this._telefone = data.telefone
             this._tipo = data.tipo
-            if (data.senha !== undefined) {
-                this._senha = data.senha
+            if (data.password !== undefined) {
+                this._password = data.password
             }
         }
     }
@@ -61,10 +64,10 @@ export class Usuario {
     public set tipo(value: string) {
         this._tipo = value
     }
-    public get senha(): string {
-        return this._senha;
+    public get password(): string {
+        return this._password;
     }
-    public set senha(value: string) {
-        this._senha = value;
+    public set password(value: string) {
+        this._password = value;
     }
 }

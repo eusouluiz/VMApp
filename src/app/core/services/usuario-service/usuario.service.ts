@@ -1,11 +1,21 @@
 import { Injectable } from '@angular/core';
 import { USUARIO_DATA } from '../../../shared/utilities/entidade/entidade.utility';
-import { Usuario } from './usuario.entity';
+import { Usuario, UsuarioInterface } from './usuario.entity';
+import { environment } from '../../../../environments/environment';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsuarioService {
+
+  constructor(
+    private http: HttpClient,
+  ){
+
+  }
+
   buscarTodosUsuarios(): Usuario[] {
     return USUARIO_DATA;
   }
@@ -16,29 +26,26 @@ export class UsuarioService {
     });
   }
 
-  incluirUsuario(usuario: Usuario) {
-    USUARIO_DATA.push(usuario);
+  incluirUsuario(usuario: UsuarioInterface): Observable<UsuarioInterface> {
+    return this.http
+      .post<UsuarioInterface>(`${environment.api.endpoint}/user`, usuario);
   }
 
-  alterarUsuario(usuario: Usuario) {
-    var indexR = USUARIO_DATA.findIndex((u) => {
-      return u.user_id === usuario.user_id;
-    });
-    if (indexR !== -1) {
-      USUARIO_DATA[indexR] = usuario;
-    } else {
-      throw new Error('usuario nao encontrado');
-    }
+  alterarUsuario(usuario: UsuarioInterface) {
+    return this.http
+      .put<UsuarioInterface>(`${environment.api.endpoint}/user/${usuario.user_id}`, usuario);
+    // var indexR = USUARIO_DATA.findIndex((u) => {
+    //   return u.user_id === usuario.user_id;
+    // });
+    // if (indexR !== -1) {
+    //   USUARIO_DATA[indexR] = usuario;
+    // } else {
+    //   throw new Error('usuario nao encontrado');
+    // }
   }
 
-  deletarUsuario(idUsuario: string) {
-    var indexR = USUARIO_DATA.findIndex((u) => {
-      return u.user_id === idUsuario;
-    });
-    if (indexR !== -1) {
-      USUARIO_DATA.splice(indexR, 1);
-    } else {
-      throw new Error('usuario nao encontrado');
-    }
-  }
+  deletarUsuario(idUsuario: string): Observable<UsuarioInterface[]>{
+    return this.http
+        .delete<UsuarioInterface[]>(`${environment.api.endpoint}/user/${idUsuario}`)
+}
 }
