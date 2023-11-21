@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AVISO_DATA, AVISO_RESPONSAVEL_DATA } from '../../../shared/utilities/entidade/entidade.utility';
 import { Aviso, AvisoResponsavel } from './aviso.entity';
 import { ResponsavelService } from '../../state/gerenciamento/responsavel/responsavel.service';
+import { Responsavel } from '../../state/gerenciamento/responsavel/responsavel.entity';
 
 @Injectable({
   providedIn: 'root',
@@ -77,7 +78,8 @@ export class AvisoService {
 
   incluirAvisoResponsavel(idAviso: string, idResponsavel: string): string {
     const aviso = this.buscarAviso(idAviso);
-    const responsavel = this.responsavelService.buscarResponsavel(idResponsavel);
+    this.responsavelService.buscarResponsavel(idResponsavel);
+    const responsavel = new Responsavel()
 
     if (aviso !== undefined && responsavel !== undefined) {
       var avisoResponsavel: AvisoResponsavel = new AvisoResponsavel({

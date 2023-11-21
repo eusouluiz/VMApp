@@ -24,10 +24,10 @@ export class ResponsavelService {
             .pipe(tap((responsaveis) => this.saveResponsaveisInStorage(responsaveis)));
     }
     
-    buscarResponsavel(idResponsavel: string): Responsavel | undefined{
-        return RESPONSAVEL_DATA.find((r) => {
-            return r.responsavel_id === idResponsavel
-        })
+    buscarResponsavel(idResponsavel: string): Observable<ResponsavelInterface>{
+        return this.http
+            .get<ResponsavelInterface>(`${environment.api.endpoint}/responsavel/${idResponsavel}`)
+            .pipe(tap((responsavel) => this.saveResponsavelInStorage(responsavel)));
     }
     
     incluirResponsavel(responsavel: Responsavel) {
@@ -57,6 +57,16 @@ export class ResponsavelService {
     }
     
     saveResponsaveisInStorage(responsaveis: ResponsavelInterface[]) {
+        this.gerenciamentoRepository.update({ responsaveis: responsaveis });
+    }
+
+    saveResponsavelInStorage(responsavel: ResponsavelInterface): void {
+        var responsaveis = this.gerenciamentoRepository.responsaveis()
+        const indexResponsavel = responsaveis.findIndex((r) => {
+            return r.responsavel_id === responsavel.responsavel_id
+        })
+        responsaveis[indexResponsavel] = responsavel
+
         this.gerenciamentoRepository.update({ responsaveis: responsaveis });
     }
 }

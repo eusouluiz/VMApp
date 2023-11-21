@@ -9,6 +9,7 @@ import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina
 import { Responsavel } from '../../../../core/state/gerenciamento/responsavel/responsavel.entity';
 import { Aluno } from '../../../../core/state/gerenciamento/aluno/aluno.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
+import { GerenciamentoRepository } from '../../../../core/state/gerenciamento/gerenciamento.repository';
 
 @Component({
   selector: 'app-gerenciamento-responsavel-detalhes',
@@ -27,7 +28,8 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
     public location: Location,
     private responsavelService: ResponsavelService,
     private alunoService: AlunoService,
-    private pageMenuService: PageMenuService
+    private pageMenuService: PageMenuService,
+    private gerenciamentoRepository: GerenciamentoRepository
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO;
     super(router, ROTA_BASE, location);
@@ -52,7 +54,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
       nome: ['', Validators.required],
       telefone: ['', Validators.required],
       cpf: ['', Validators.required],
-      senha: ['', Validators.required],
+      senha: [''],
     });
   }
 
@@ -68,7 +70,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
         nome: this.responsavel.usuario.nome,
         telefone: this.responsavel.usuario.telefone,
         cpf: this.responsavel.usuario.cpf,
-        senha: this.responsavel.usuario.senha,
+        senha: '',
       });
     }
     this.inicializarTabelaAlunos();
@@ -81,9 +83,10 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
 
   // ---- busca responsavel ----//
   private resgatarResponsavel(id: string): Responsavel {
-    const responsavel = this.responsavelService.buscarResponsavel(id);
+    this.responsavelService.buscarResponsavel(id).subscribe();
+    const responsavel = this.gerenciamentoRepository.responsavel(id)
     if (responsavel !== undefined) {
-      return responsavel;
+      return new Responsavel(responsavel);
     }
     return new Responsavel();
   }

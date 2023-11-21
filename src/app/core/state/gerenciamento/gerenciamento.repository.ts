@@ -45,6 +45,12 @@ export class GerenciamentoRepository {
     return store.getValue().turmas;
   }
 
+  responsavel(idResponsavel: string): ResponsavelInterface | undefined {
+    return store.getValue().responsaveis.find((responsavel) => {
+      return responsavel.responsavel_id === idResponsavel
+    });
+  }
+
   update(session: Partial<GerenciamentoState>) {
     store.update((state) => ({ ...state, ...session }));
   }

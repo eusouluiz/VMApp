@@ -2,6 +2,7 @@ import { ResponsavelService } from '../../state/gerenciamento/responsavel/respon
 import { Injectable } from '@angular/core';
 import { CANAL_DATA, CANAL_RESPONSAVEL_DATA } from '../../../shared/utilities/entidade/entidade.utility';
 import { Canal, CanalResponsavel } from './canal.entity';
+import { Responsavel } from '../../state/gerenciamento/responsavel/responsavel.entity';
 
 @Injectable({
   providedIn: 'root',
@@ -61,7 +62,8 @@ export class CanalService {
 
   incluirCanalResponsavel(idCanal: string, idResponsavel: string): string {
     const canal = this.buscarCanal(idCanal);
-    const responsavel = this.responsavelService.buscarResponsavel(idResponsavel);
+    this.responsavelService.buscarResponsavel(idResponsavel);
+    const responsavel = new Responsavel()
 
     if (canal !== undefined && responsavel !== undefined) {
       var canalResponsavel: CanalResponsavel = new CanalResponsavel({

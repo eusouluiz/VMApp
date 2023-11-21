@@ -7,6 +7,7 @@ import { Location } from '@angular/common';
 import { Responsavel } from '../../../../core/state/gerenciamento/responsavel/responsavel.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 import { GerenciamentoRepository } from '../../../../core/state/gerenciamento/gerenciamento.repository';
+import { ToastService } from '../../../../core/toasts/services/toast-service/toast.service';
 
 @Component({
   selector: 'app-gerenciamento-responsavel',
@@ -23,7 +24,8 @@ export class GerenciamentoResponsavelPage extends Pagina implements OnInit {
     private responsavelService: ResponsavelService,
     public location: Location,
     private pageMenuService: PageMenuService,
-    private gerenciamentoRepository: GerenciamentoRepository
+    private gerenciamentoRepository: GerenciamentoRepository,
+    private toastService: ToastService,
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO;
     super(router, ROTA_BASE, location);
@@ -48,13 +50,23 @@ export class GerenciamentoResponsavelPage extends Pagina implements OnInit {
   }
 
   buscarResponsaveis(ev?: any){
-    this.responsavelService.buscarTodosResponsaveis().subscribe();
-    this.inicializarConteudo()
+    this.responsavelService.buscarTodosResponsaveis().subscribe({
+      next: () => {
+        this.inicializarConteudo()
+    
+        //TODO so completar quando finalizar a chamada
+        if (ev !== undefined) {
+          ev.target.complete()
+        }
+      },
+      error: (err) => {
+        this.toastService.error('Falha ao buscar responsáveis, tente novamente mais tarde');
 
-    //TODO so completar quando finalizar a chamada
-    if (ev !== undefined) {
-      ev.target.complete()
-    }
+        if (ev !== undefined) {
+          ev.target.complete()
+        }
+      },
+    });
   }
 
   filtrarResponsavelNome(ev: any) {
@@ -67,13 +79,14 @@ export class GerenciamentoResponsavelPage extends Pagina implements OnInit {
     });
   }
 
-  navegarTelaResponsavel(id: number) {
+  navegarTelaResponsavel(id?: string) {
     var rota = ConstantesRotas.ROTA_GERENCIAMENTO_RESPONSAVEL;
-    if (id !== -1) {
+    if (id !== undefined) {
+      this.responsavelService.buscarResponsavel(id).subscribe()
       rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
     } else {
       rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
     }
-    this.navegarPara(rota);
+    this.navegarPara(rota)
   }
 }

@@ -6,6 +6,7 @@ export interface ResponsavelInterface {
     user: Usuario,
     created_at: Date,
     updated_at: Date,
+    alunos?: Aluno[],
     user_nome?: string,
 }
 
@@ -24,6 +25,9 @@ export class Responsavel {
             this._usuario = data.user
             this._created_at = data.created_at
             this._updated_at = data.updated_at
+            if (data.alunos !== undefined){
+                this._alunos = data.alunos
+            }
         }
     }
     
