@@ -45,15 +45,9 @@ export class ResponsavelService {
         }
     }
     
-    deletarResponsavel(idResponsavel: string) {
-        var indexR = RESPONSAVEL_DATA.findIndex((r) => {
-            return r.responsavel_id === idResponsavel
-        })
-        if (indexR !== -1){
-            RESPONSAVEL_DATA.splice(indexR, 1)
-        } else {
-            throw new Error('responsavel nao encontrado')
-        }
+    deletarResponsavel(idResponsavel: string): Observable<ResponsavelInterface[]>{
+        return this.http
+            .delete<ResponsavelInterface[]>(`${environment.api.endpoint}/responsavel/${idResponsavel}`)
     }
     
     saveResponsaveisInStorage(responsaveis: ResponsavelInterface[]) {

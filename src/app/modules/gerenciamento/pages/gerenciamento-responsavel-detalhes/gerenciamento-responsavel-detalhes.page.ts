@@ -96,7 +96,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
 
   //delecao
   protected deletar() {
-    this.responsavelService.deletarResponsavel(this.responsavel.responsavel_id);
+    this.responsavelService.deletarResponsavel(this.responsavel.responsavel_id).subscribe();
     this.retornarPagina();
   }
 
