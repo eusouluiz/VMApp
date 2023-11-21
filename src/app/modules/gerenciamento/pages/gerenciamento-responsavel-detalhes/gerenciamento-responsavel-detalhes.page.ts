@@ -12,6 +12,7 @@ import { Aluno } from '../../../../core/state/gerenciamento/aluno/aluno.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 import { GerenciamentoRepository } from '../../../../core/state/gerenciamento/gerenciamento.repository';
 import { UsuarioInterface } from '../../../../core/services/usuario-service/usuario.entity';
+import { ToastService } from '../../../../core/toasts/services/toast-service/toast.service';
 
 @Component({
   selector: 'app-gerenciamento-responsavel-detalhes',
@@ -32,7 +33,8 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
     private responsavelService: ResponsavelService,
     private alunoService: AlunoService,
     private pageMenuService: PageMenuService,
-    private gerenciamentoRepository: GerenciamentoRepository
+    private gerenciamentoRepository: GerenciamentoRepository,
+    private toastService: ToastService
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO;
     super(router, ROTA_BASE, location);
@@ -144,12 +146,6 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
   //salvar edicao
   salvar() {
     if (this.form?.valid) {
-      this.responsavel.usuario.nome = this.form?.value.nome;
-      this.responsavel.usuario.telefone = this.form?.value.telefone;
-      this.responsavel.usuario.cpf = this.form?.value.cpf;
-      this.responsavel.usuario.password = this.form?.value.senha;
-
-      this.atualizarAlunos();
 
       var usuario: UsuarioInterface = {
         nome: this.form.value.nome,
@@ -160,21 +156,53 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
 
       if (this.isModoCadastrar()) {
         usuario.password = this.form?.value.senha
-        this.usuarioService.incluirUsuario(usuario).subscribe();
+        this.usuarioService.incluirUsuario(usuario).subscribe({
+          next: () => {
+            this.atualizarResponsavel()
+            this.toastService.success('Sucesso ao Cadastrar ' + this.responsavel.usuario.nome);
+          },
+          error: (err) => {
+            this.toastService.error('Erro ao Cadastrar Responsável');
+  
+            if (err?.original?.status === 422) {
+              return;
+            }
+          },
+        });
       } else {
         if (this.form.value.senha !== ''){
           usuario.password = this.form?.value.senha
         }
         usuario.user_id = this.responsavel.usuario.user_id
         usuario.email = null
-        this.usuarioService.alterarUsuario(usuario).subscribe()
+        this.usuarioService.alterarUsuario(usuario).subscribe({
+          next: () => {
+            this.atualizarResponsavel()
+            this.toastService.success('Sucesso ao Editar ' + this.responsavel.usuario.nome);
+          },
+          error: (err) => {
+            this.toastService.error('Erro ao Editar Responsável');
+  
+            if (err?.original?.status === 422) {
+              return;
+            }
+          },
+        });
       }
 
-      this.modo = 'detalhes';
-      this.form?.disable();
+      this.retornarModoDetalhes()
     } else {
       this.form?.markAllAsTouched();
     }
+  }
+
+  atualizarResponsavel(){
+    this.responsavel.usuario.nome = this.form?.value.nome;
+    this.responsavel.usuario.telefone = this.form?.value.telefone;
+    this.responsavel.usuario.cpf = this.form?.value.cpf;
+    this.responsavel.usuario.password = this.form?.value.senha;
+
+    this.atualizarAlunos();
   }
   // ---- controle botoes ----//
 

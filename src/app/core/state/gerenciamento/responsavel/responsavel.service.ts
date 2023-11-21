@@ -30,21 +30,6 @@ export class ResponsavelService {
             .pipe(tap((responsavel) => this.saveResponsavelInStorage(responsavel)));
     }
     
-    incluirResponsavel(responsavel: Responsavel) {
-        RESPONSAVEL_DATA.push(responsavel)
-    }
-    
-    alterarResponsavel(responsavel: Responsavel) {
-        var indexR = RESPONSAVEL_DATA.findIndex((r) => {
-            return r.responsavel_id === responsavel.responsavel_id
-        })
-        if (indexR !== -1) {
-            RESPONSAVEL_DATA[indexR] = responsavel
-        } else {
-            throw new Error('responsavel nao encontrado')
-        }
-    }
-    
     deletarResponsavel(idResponsavel: string): Observable<ResponsavelInterface[]>{
         return this.http
             .delete<ResponsavelInterface[]>(`${environment.api.endpoint}/responsavel/${idResponsavel}`)
