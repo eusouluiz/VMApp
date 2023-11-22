@@ -17,7 +17,7 @@ export class RefresherComponent implements OnInit {
     this.onRecarregar.emit(ev)
     setTimeout(() => {
       ev.target.complete();
-    }, 1000);
+    }, 2000);
   }
 
 }

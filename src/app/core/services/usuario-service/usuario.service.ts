@@ -12,7 +12,7 @@ export class UsuarioService {
 
   constructor(
     private http: HttpClient,
-  ){
+  ) {
 
   }
 
@@ -31,13 +31,13 @@ export class UsuarioService {
       .post<UsuarioInterface>(`${environment.api.endpoint}/user`, usuario);
   }
 
-  alterarUsuario(usuario: UsuarioInterface) {
+  alterarUsuario(usuario: UsuarioInterface): Observable<UsuarioInterface> {
     return this.http
       .put<UsuarioInterface>(`${environment.api.endpoint}/user/${usuario.user_id}`, usuario);
   }
 
-  deletarUsuario(idUsuario: string): Observable<UsuarioInterface[]>{
+  deletarUsuario(idUsuario: string): Observable<UsuarioInterface[]> {
     return this.http
-        .delete<UsuarioInterface[]>(`${environment.api.endpoint}/user/${idUsuario}`)
-}
+      .delete<UsuarioInterface[]>(`${environment.api.endpoint}/user/${idUsuario}`)
+  }
 }

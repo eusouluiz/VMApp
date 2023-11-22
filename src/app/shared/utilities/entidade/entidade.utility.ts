@@ -92,40 +92,30 @@ export var ALUNO_DATA: Aluno[] = [
     nome: 'Stephanie Falavinha',
     cgm: '123456789012345',
     turma_id: TURMA_DATA[0].turma_id,
-    updated_at: new Date(),
-    created_at: new Date(),
   }),
   new Aluno({
     aluno_id: '1',
     nome: 'Eduardo Nascimento',
     cgm: '123456789012345',
     turma_id: TURMA_DATA[0].turma_id,
-    updated_at: new Date(),
-    created_at: new Date(),
   }),
   new Aluno({
     aluno_id: '2',
     nome: 'Diogo Pluma',
     cgm: '123456789012345',
     turma_id: TURMA_DATA[0].turma_id,
-    updated_at: new Date(),
-    created_at: new Date(),
   }),
   new Aluno({
     aluno_id: '3',
     nome: 'Felipe Prezado',
     cgm: '123456789012345',
     turma_id: TURMA_DATA[2].turma_id,
-    updated_at: new Date(),
-    created_at: new Date(),
   }),
   new Aluno({
     aluno_id: '4',
     nome: 'Mozart Murilo',
     cgm: '123456789012345',
     turma_id: TURMA_DATA[2].turma_id,
-    updated_at: new Date(),
-    created_at: new Date(),
   }),
 ];
 
@@ -133,20 +123,14 @@ export var RESPONSAVEL_DATA: Responsavel[] = [
   new Responsavel({
     responsavel_id: "9a9f8466-1bb8-46ea-8318-58b68ad8f328",
     user: USUARIO_DATA[1],
-    updated_at: new Date(),
-    created_at: new Date(),
   }),
   new Responsavel({
     responsavel_id: '1',
     user: USUARIO_DATA[2],
-    updated_at: new Date(),
-    created_at: new Date(),
   }),
   new Responsavel({
     responsavel_id: '2',
     user: USUARIO_DATA[3],
-    updated_at: new Date(),
-    created_at: new Date(),
   }),
 ];
 

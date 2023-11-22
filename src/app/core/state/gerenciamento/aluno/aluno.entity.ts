@@ -5,9 +5,8 @@ export interface AlunoInterface {
     aluno_id: string,
     cgm: string,
     nome: string,
-    turma_id: string | null,
-    created_at: Date,
-    updated_at: Date
+    turma?: Turma,
+    turma_id?: string | null,
 }
 
 export class Aluno {
@@ -16,8 +15,6 @@ export class Aluno {
     private _nome: string = '';
     private _turma: Turma = new Turma();
     private _responsaveis: Responsavel[] = [];
-    private _created_at: Date = new Date();
-    private _updated_at: Date = new Date();
 
     constructor (
         data?: AlunoInterface
@@ -26,10 +23,10 @@ export class Aluno {
             this._aluno_id = data.aluno_id
             this._cgm = data.cgm
             this._nome = data.nome
-            this._created_at = data.created_at
-            this._updated_at = data.updated_at
-    
-            if (data.turma_id !== null) {
+
+            if (data.turma !== undefined){
+                this._turma = data.turma
+            } else if (data.turma_id !== undefined && data.turma_id !== null) {
                 this._turma.turma_id = data.turma_id
             }
         }
@@ -64,17 +61,5 @@ export class Aluno {
     }
     public set responsaveis(value: Responsavel[]) {
         this._responsaveis = value;
-    }
-    public get created_at(): Date {
-        return this._created_at
-    }
-    public set created_at(value: Date) {
-        this._created_at = value
-    }
-    public get updated_at(): Date {
-        return this._updated_at
-    }
-    public set updated_at(value: Date) {
-        this._updated_at = value
     }
 }

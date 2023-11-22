@@ -87,18 +87,18 @@ export class ResponsavelService {
         }
     }
 
-    recuperarVinculoAluno(idResponsavel: string): AssociacaoAlunoResponsavel[] {
-        var listaAssociacao: AssociacaoAlunoResponsavel[] = []
-        this.http
-            .get<AssociacaoAlunoResponsavel[]>(`${environment.api.endpoint}/aluno-responsavel`)
-            .pipe(tap((associacao) => {
-                console.log(associacao)
-                listaAssociacao = associacao
-            })).subscribe()
-        return listaAssociacao.filter((associacao) =>{
-            return associacao.responsavel_id = idResponsavel
-        })
-    }
+    // recuperarVinculoAluno(idResponsavel: string): AssociacaoAlunoResponsavel[] {
+    //     var listaAssociacao: AssociacaoAlunoResponsavel[] = []
+    //     this.http
+    //         .get<AssociacaoAlunoResponsavel[]>(`${environment.api.endpoint}/aluno-responsavel`)
+    //         .pipe(tap((associacao) => {
+    //             console.log(associacao)
+    //             listaAssociacao = associacao
+    //         })).subscribe()
+    //     return listaAssociacao.filter((associacao) =>{
+    //         return associacao.responsavel_id = idResponsavel
+    //     })
+    // }
     
     saveResponsaveisInStorage(responsaveis: ResponsavelInterface[]) {
         this.gerenciamentoRepository.update({ responsaveis: responsaveis });
@@ -106,8 +106,8 @@ export class ResponsavelService {
 
     saveResponsavelInStorage(responsavel: ResponsavelInterface): void {
         var responsaveis = this.gerenciamentoRepository.responsaveis()
-        const indexResponsavel = responsaveis.findIndex((r) => {
-            return r.responsavel_id === responsavel.responsavel_id
+        const indexResponsavel = responsaveis.findIndex((responsavel) => {
+            return responsavel.responsavel_id === responsavel.responsavel_id
         })
         responsaveis[indexResponsavel] = responsavel
 
