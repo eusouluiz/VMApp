@@ -72,47 +72,6 @@ export class LoginPage {
           }
         },
       });
-
-    // try {
-    //   this.usuario = autenticar(cpfForm, senhaForm);
-    //   var responsavelLogado: Responsavel | undefined = undefined;
-    //   var funcionarioLogado: Funcionario | undefined = undefined;
-
-    //   if (this.usuario) {
-    //     console.log('logado com sucesso');
-    //     switch (this.usuario.tipoUsuario) {
-    //       case 'F': {
-    //         console.log('funcionario');
-    //         const funcionario = buscarFuncionario(this.usuario.idUsuario);
-    //         if (funcionario === undefined) {
-    //           throw new Error('Funcionario nao encontrado');
-    //         }
-    //         funcionarioLogado = funcionario;
-    //         break;
-    //       }
-    //       case 'R': {
-    //         console.log('responsavel');
-    //         const responsavel = buscarResponsavel(this.usuario.idUsuario);
-    //         if (responsavel === undefined) {
-    //           throw new Error('Responsavel nao encontrado');
-    //         }
-    //         responsavelLogado = responsavel;
-    //         break;
-    //       }
-    //       case 'A': {
-    //         console.log('ambos');
-    //         break;
-    //       }
-    //       default: {
-    //         throw new Error('Usuario nao definido o tipo');
-    //       }
-    //     }
-    //     this.sessionService.login(responsavelLogado, funcionarioLogado).subscribe();
-    //     this.navegaParaApp();
-    //   }
-    // } catch (e: any) {
-    //   console.log(e.message);
-    // }
   }
 
   focusin(ev: any) {
@@ -123,44 +82,3 @@ export class LoginPage {
     this.router.navigate(['/app']);
   }
 }
-
-// // autentica e retorna o usuario encontrado
-// function autenticar(cpfForm: String, senhaForm: String): Usuario {
-//   const usuario = buscarUsuarioPorCpf(cpfForm);
-//   if (usuario === undefined) {
-//     throw new Error('Usuario nao encontrado');
-//   }
-//   if (isSenhaCorreta(usuario, senhaForm)) {
-//     return usuario;
-//   } else {
-//     throw new Error('Senha incorreta');
-//   }
-// }
-
-// function buscarUsuarioPorCpf(cpfForm: String): Usuario | undefined {
-//   const listaUsuarios = USUARIO_DATA;
-
-//   return listaUsuarios.find((u) => {
-//     return u.cpf === cpfForm;
-//   });
-// }
-
-// function isSenhaCorreta(usuario: Usuario, senhaForm: String) {
-//   return usuario.senha === senhaForm;
-// }
-
-// function buscarResponsavel(idUsuario: Number): Responsavel | undefined {
-//   const listaResponsaveis = RESPONSAVEL_DATA;
-
-//   return listaResponsaveis.find((r) => {
-//     return r.usuario.idUsuario === idUsuario;
-//   });
-// }
-
-// function buscarFuncionario(idUsuario: Number): Funcionario | undefined {
-//   const listaFuncionarios = FUNCIONARIO_DATA;
-
-//   return listaFuncionarios.find((f) => {
-//     return f.usuario.idUsuario === idUsuario;
-//   });
-// }

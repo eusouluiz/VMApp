@@ -34,14 +34,6 @@ export class UsuarioService {
   alterarUsuario(usuario: UsuarioInterface) {
     return this.http
       .put<UsuarioInterface>(`${environment.api.endpoint}/user/${usuario.user_id}`, usuario);
-    // var indexR = USUARIO_DATA.findIndex((u) => {
-    //   return u.user_id === usuario.user_id;
-    // });
-    // if (indexR !== -1) {
-    //   USUARIO_DATA[indexR] = usuario;
-    // } else {
-    //   throw new Error('usuario nao encontrado');
-    // }
   }
 
   deletarUsuario(idUsuario: string): Observable<UsuarioInterface[]>{

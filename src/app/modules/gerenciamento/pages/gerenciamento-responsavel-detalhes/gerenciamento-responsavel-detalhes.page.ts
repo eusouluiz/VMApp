@@ -22,7 +22,7 @@ import { ToastService } from '../../../../core/toasts/services/toast-service/toa
 export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
   responsavel: Responsavel = new Responsavel();
 
-  listaTodosAlunos: Aluno[] | null = null;
+  listaTodosAlunos: Aluno[] = [];
 
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -41,7 +41,8 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
 
     this.definirModo();
     this.inicializarForms();
-    this.inicializarConteudo();
+    this.preencherListaTodosAlunos()
+    this.inicializarConteudo()
   }
 
   ngOnInit() {}
@@ -66,8 +67,12 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
     });
   }
 
+  recarregarPagina(){
+    this.buscarAlunos()
+    this.inicializarConteudo()
+  }
+
   protected inicializarConteudo(): void {
-    this.alunoService.buscarTodosAlunos();
 
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (this.isModoDetalhes() && id !== null) {
@@ -102,9 +107,29 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
 
   //delecao
   protected deletar() {
-    this.responsavelService.deletarResponsavel(this.responsavel.responsavel_id).subscribe();
-    // this.usuarioService.deletarUsuario(this.responsavel.usuario.user_id).subscribe();
-    this.retornarPagina();
+    this.responsavelService.deletarResponsavel(this.responsavel.responsavel_id).subscribe({
+      error: (err) => {
+        this.toastService.error('Erro ao Remover Responsável');
+
+        if (err?.original?.status === 422) {
+          return;
+        }
+      },
+    });
+    this.usuarioService.deletarUsuario(this.responsavel.usuario.user_id).subscribe({
+      next: () => {
+        this.atualizarResponsavel()
+        this.toastService.success('Sucesso ao Remover ' + this.responsavel.usuario.nome);
+        this.retornarPagina();
+      },
+      error: (err) => {
+        this.toastService.error('Erro ao Remover Responsável');
+
+        if (err?.original?.status === 422) {
+          return;
+        }
+      },
+    });
   }
 
   //edicao
@@ -136,7 +161,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
       nome: this.responsavel.usuario.nome,
       telefone: this.responsavel.usuario.telefone,
       cpf: this.responsavel.usuario.cpf,
-      senha: this.responsavel.usuario.password,
+      senha: '',
     });
     this.desabilitarForms();
 
@@ -144,26 +169,29 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
   }
 
   //salvar edicao
-  salvar() {
+  salvar() {    
     if (this.form?.valid) {
-
+      
       var usuario: UsuarioInterface = {
         nome: this.form.value.nome,
         cpf: this.form.value.cpf,
         telefone: this.form.value.telefone,
         tipo: 'R',
       }
-
+      
       if (this.isModoCadastrar()) {
         usuario.password = this.form?.value.senha
         this.usuarioService.incluirUsuario(usuario).subscribe({
           next: () => {
             this.atualizarResponsavel()
+            this.responsavelService.vincularAlunos(this.responsavel, this.listaAlunosTabela)
+            this.atualizarAlunos()
             this.toastService.success('Sucesso ao Cadastrar ' + this.responsavel.usuario.nome);
+            this.retornarModoDetalhes()
           },
           error: (err) => {
             this.toastService.error('Erro ao Cadastrar Responsável');
-  
+            
             if (err?.original?.status === 422) {
               return;
             }
@@ -178,11 +206,14 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
         this.usuarioService.alterarUsuario(usuario).subscribe({
           next: () => {
             this.atualizarResponsavel()
+            this.responsavelService.vincularAlunos(this.responsavel, this.listaAlunosTabela)
+            this.atualizarAlunos()
             this.toastService.success('Sucesso ao Editar ' + this.responsavel.usuario.nome);
+            this.retornarModoDetalhes()
           },
           error: (err) => {
             this.toastService.error('Erro ao Editar Responsável');
-  
+            
             if (err?.original?.status === 422) {
               return;
             }
@@ -190,7 +221,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
         });
       }
 
-      this.retornarModoDetalhes()
+
     } else {
       this.form?.markAllAsTouched();
     }
@@ -201,8 +232,6 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
     this.responsavel.usuario.telefone = this.form?.value.telefone;
     this.responsavel.usuario.cpf = this.form?.value.cpf;
     this.responsavel.usuario.password = this.form?.value.senha;
-
-    this.atualizarAlunos();
   }
   // ---- controle botoes ----//
 
@@ -221,14 +250,31 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
 
   listaAlunosTabela!: Aluno[];
 
+  buscarAlunos() {
+    this.alunoService.buscarTodosAlunos().subscribe({
+      next: () => {
+        this.preencherListaTodosAlunos()
+        this.inicializarBuscaAlunos()
+      }
+    });
+  }
+
+  preencherListaTodosAlunos(){
+    const alunos = this.gerenciamentoRepository.alunos()
+    this.listaTodosAlunos = []
+    alunos.forEach((aluno) => {
+      this.listaTodosAlunos.push(new Aluno(aluno))
+    })
+  }
+
   private inicializarTabelaAlunos() {
     this.listaAlunosTabela = this.responsavel.alunos.slice();
-    this.inicializarBuscaAlunos();
+    this.inicializarBuscaAlunos()
   }
 
   private inicializarBuscaAlunos() {
     this.listaAlunosBusca = [];
-    if (this.listaTodosAlunos !== null) {
+    if (this.listaTodosAlunos.length > 0) {
       this.listaTodosAlunos.forEach((a) => {
         const idAluno = a.aluno_id;
         var isResponsavelPossuiAluno = false;
@@ -247,16 +293,25 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
       });
     }
 
-    this.nomeAlunosBusca = this.resgatarNomeAlunosBusca(this.listaAlunosBusca);
+    this.resgatarNomeAlunosBusca(this.listaAlunosBusca);
     this.limparCampoBusca();
   }
 
-  private resgatarNomeAlunosBusca(lista: Aluno[]): string[] {
-    var nomes: string[] = [];
+  private resgatarNomeAlunosBusca(lista: Aluno[]) {
+    // esvazia lista
+    this.nomeAlunosBusca.splice(0, this.nomeAlunosBusca.length)
     lista.forEach((aluno) => {
-      nomes.push(aluno.nome);
+      this.nomeAlunosBusca.push(aluno.nome);
     });
-    return nomes;
+    this.nomeAlunosBusca.sort((a1, a2) => {
+      if (a1.toLowerCase() > a2.toLowerCase()) {
+        return 1;
+      } else if (a2.toLowerCase() > a1.toLowerCase()) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
   }
 
   adicionarAluno(valor: number) {
@@ -282,6 +337,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
   private removerAlunoDaListaBusca(index: number) {
     for (let i = 0; i < this.listaAlunosBusca.length; i++) {
       if (index === i) {
+        // remove item da lista
         this.listaAlunosBusca.splice(index, 1);
         this.nomeAlunosBusca.splice(index, 1);
         break;
