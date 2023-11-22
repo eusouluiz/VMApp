@@ -75,7 +75,9 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
 
   // ---- busca turma ----//
   private resgatarTurma(id: string): Turma {
-    const turma = this.turmaService.buscarTurma(id);
+    //TODO buscar turma
+    this.turmaService.buscarTurma(id);
+    const turma = new Turma() 
     if (turma !== undefined) {
       return turma;
     }

@@ -67,22 +67,16 @@ export var TURMA_DATA: Turma[] = [
     turma_id: '0',
     nome: 'Turma A Manha',
     descricao: '',
-    updated_at: new Date(),
-    created_at: new Date(),
   }),
   new Turma({
     turma_id: '1',
     nome: 'Turma B Manha',
     descricao: '',
-    updated_at: new Date(),
-    created_at: new Date(),
   }),
   new Turma({
     turma_id: '2',
     nome: 'Turma A Tarde',
     descricao: '',
-    updated_at: new Date(),
-    created_at: new Date(),
   }),
 ];
 

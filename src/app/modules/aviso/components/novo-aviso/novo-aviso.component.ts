@@ -54,7 +54,8 @@ export class NovoAvisoComponent implements OnInit {
     this.listaTodosCanais = this.canalService.buscarTodosCanais().slice()
     this.nomeCanaisBusca = this.resgatarNomeCanaisBusca(this.listaTodosCanais)
 
-    this.listaTodasTurmas = this.turmaService.buscarTodosTurmas().slice()
+    //TODO buscar turmas
+    this.turmaService.buscarTodosTurmas()
     this.listaTurmasBusca = this.listaTodasTurmas.slice()
     this.nomeTurmasBusca = this.resgatarNomeTurmasBusca(this.listaTodasTurmas)
 
