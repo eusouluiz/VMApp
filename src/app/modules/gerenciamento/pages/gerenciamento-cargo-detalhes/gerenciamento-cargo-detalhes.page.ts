@@ -58,7 +58,7 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   protected inicializarConteudo(): void {
-    this.listaTodosFuncionarios = this.funcionarioService.buscarTodosFuncionarios().slice();
+    this.funcionarioService.buscarTodosFuncionarios();
     this.listaTodasFuncionalidades = this.funcionalidadeService.buscarTodosFuncionalidades().slice();
 
     this.definirModo();

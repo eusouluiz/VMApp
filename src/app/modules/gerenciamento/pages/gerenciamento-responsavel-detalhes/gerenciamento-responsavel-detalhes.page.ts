@@ -303,15 +303,6 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
     lista.forEach((aluno) => {
       this.nomeAlunosBusca.push(aluno.nome);
     });
-    this.nomeAlunosBusca.sort((a1, a2) => {
-      if (a1.toLowerCase() > a2.toLowerCase()) {
-        return 1;
-      } else if (a2.toLowerCase() > a1.toLowerCase()) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
   }
 
   adicionarAluno(valor: number) {

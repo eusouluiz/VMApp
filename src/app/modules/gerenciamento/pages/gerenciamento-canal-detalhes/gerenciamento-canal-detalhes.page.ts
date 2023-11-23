@@ -53,7 +53,7 @@ export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   protected inicializarConteudo(): void {
-    this.listaTodosCargos = this.cargoService.buscarTodosCargos().slice();
+    this.cargoService.buscarTodosCargos()
 
     this.definirModo();
 

@@ -211,31 +211,23 @@ export var CARGO_DATA: Cargo[] = [
 export var FUNCIONARIO_DATA: Funcionario[] = [
   new Funcionario({
     funcionario_id: '0',
-    user_id: USUARIO_DATA[0].user_id,
+    user: USUARIO_DATA[0],
     cargo_id: CARGO_DATA[0].cargo_id,
-    updated_at: new Date(),
-    created_at: new Date(),
   }),
   new Funcionario({
     funcionario_id: '1',
-    user_id: USUARIO_DATA[3].user_id,
+    user: USUARIO_DATA[3],
     cargo_id: CARGO_DATA[1].cargo_id,
-    updated_at: new Date(),
-    created_at: new Date(),
   }),
   new Funcionario({
     funcionario_id: '2',
-    user_id: USUARIO_DATA[4].user_id,
+    user: USUARIO_DATA[4],
     cargo_id: CARGO_DATA[2].cargo_id,
-    updated_at: new Date(),
-    created_at: new Date(),
   }),
   new Funcionario({
     funcionario_id: '3',
-    user_id: USUARIO_DATA[5].user_id,
+    user: USUARIO_DATA[5],
     cargo_id: CARGO_DATA[2].cargo_id,
-    updated_at: new Date(),
-    created_at: new Date(),
   }),
 ];
 

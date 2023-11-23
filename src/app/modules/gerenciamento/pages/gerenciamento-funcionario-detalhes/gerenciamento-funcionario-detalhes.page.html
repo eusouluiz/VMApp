@@ -1,8 +1,9 @@
 <app-header
-  [titulo]="isModoCadastrar() ? 'Novo Funcionario' : funcionario.usuario.nome"
+  [titulo]="isModoCadastrar() ? 'Novo Funcionário' : funcionario.usuario.nome"
   [botaoRetorno]="true"></app-header>
 
 <ion-content class="ion-padding">
+  <app-refresher (onRecarregar)="recarregarPagina()"></app-refresher>
   <div class="u-display--flex u-flex-direction--column u-flex-justify--space-between u-height--100">
     <div>
       <form [formGroup]="form" (ngSubmit)="salvar()">
@@ -15,14 +16,14 @@
           </ion-col>
         </ion-row>
         <hr />
-        <!-- INICIO SOBRE ALUNO -->
+        <!-- INICIO SOBRE CARGO -->
         <ion-row>
           <ion-row class="ion-align-items-center" size="auto">
             <ion-col size="12" sizeLg="4" sizeMd="4">
               <h3 class="u-font-weight--bold ion-no-margin">Cargo:</h3>
             </ion-col>
           </ion-row>
-          <!-- INICIO TABELA DE ALUNOS -->
+          <!-- INICIO TABELA DE CARGOS -->
           <ion-row>
             <ion-col size="12">
               <ng-container *ngIf="listaCargosTabela.length > 0">
@@ -39,6 +40,9 @@
                           <ion-row>
                             <ion-text class="c-item-titulo ion-text-wrap">{{cargo.nome}}</ion-text>
                           </ion-row>
+                          <!-- <ion-row>
+                            <ion-text class="c-item-subtitulo ion-text-wrap">Turma: {{cargo.turma.nome}}</ion-text>
+                          </ion-row> -->
                         </ion-col>
                         <ion-col size="3" sizeLg="1" sizeMd="1" style="text-align: -webkit-right">
                           <ion-fab-button
@@ -56,7 +60,7 @@
               </ng-container>
             </ion-col>
           </ion-row>
-          <!-- INICIO INSERCAO ALUNOS -->
+          <!-- INICIO INSERCAO CARGOS -->
           <ion-row>
             <ion-col size="12">
               <form [formGroup]="formBuscaCargo">
@@ -72,10 +76,10 @@
               </form>
             </ion-col>
           </ion-row>
-          <!-- FIM INSERCAO ALUNOS -->
-          <!-- FIM TABELA DE ALUNOS -->
+          <!-- FIM INSERCAO CARGOS -->
+          <!-- FIM TABELA DE CARGOS -->
         </ion-row>
-        <!-- FIM SOBRE ALUNO -->
+        <!-- FIM SOBRE CARGO -->
         <ion-row class="ion-margin-vertical">
           <ion-row>
             <ion-col size="12">

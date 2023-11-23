@@ -33,7 +33,7 @@ export class GerenciamentoCargoPage extends Pagina implements OnInit {
   }
 
   protected inicializarConteudo(): void {
-    this.cargos = this.cargoService.buscarTodosCargos();
+    this.cargoService.buscarTodosCargos();
     this.listaCargos = this.cargos.slice();
   }
 

@@ -1,14 +1,27 @@
 import { Injectable } from '@angular/core';
 import { CARGO_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
-import { Cargo } from './cargo.entity';
+import { Cargo, CargoInterface } from './cargo.entity';
+import { GerenciamentoRepository } from '../gerenciamento.repository';
+import { HttpClient } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
+import { environment } from '../../../../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
 })
 export class CargoService {
+    
+    constructor(
+        private gerenciamentoRepository: GerenciamentoRepository,
+        private http: HttpClient,
+    ) {
+        
+    }
 
-    buscarTodosCargos(): Cargo[] {
-        return CARGO_DATA
+    buscarTodosCargos(): Observable<CargoInterface[]>{
+        return this.http
+            .get<CargoInterface[]>(`${environment.api.endpoint}/cargo`)
+            .pipe(tap((cargos) => this.saveCargosInStorage(cargos)));
     }
 
     buscarCargo(idCargo: string): Cargo | undefined {
@@ -41,6 +54,20 @@ export class CargoService {
         } else {
             throw new Error('cargo nao encontrado')
         }
+    }
+    
+    saveCargosInStorage(cargos: CargoInterface[]) {
+        this.gerenciamentoRepository.update({ cargos: cargos });
+    }
+
+    saveCargoInStorage(cargo: CargoInterface): void {
+        var cargos = this.gerenciamentoRepository.cargos()
+        const indexCargo = cargos.findIndex((cargo) => {
+            return cargo.cargo_id === cargo.cargo_id
+        })
+        cargos[indexCargo] = cargo
+
+        this.gerenciamentoRepository.update({ cargos: cargos });
     }
 
 }
