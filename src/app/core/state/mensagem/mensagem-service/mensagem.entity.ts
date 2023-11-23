@@ -1,3 +1,4 @@
+import { DataUtil } from './../../../../shared/utilities/data/data.utility';
 
 export interface MensagemInterface {
     mensagem_id?: string,
@@ -5,6 +6,7 @@ export interface MensagemInterface {
     arquivo: string,
     lida: boolean,
     data_envio: string,
+    data_envio_date?: Date,
     data_leitura?: string,
     user_id: string,
     canal_responsavel_id: string,
@@ -30,8 +32,12 @@ export class Mensagem {
             this._texto = data.texto
             this._arquivo = data.arquivo
             this._lida = data.lida
-            this._data_envio = new Date(data.data_envio)
-            if (data.data_leitura !== undefined) {
+            if (data.data_envio_date !== undefined) {
+                this._data_envio = data.data_envio_date
+            } else {
+                this._data_envio = new Date(data.data_envio)
+            }
+            if (data.data_leitura !== undefined && data.data_leitura !== null) {
                 this._data_leitura = new Date(data.data_leitura)
             }
             this._user_id = data.user_id

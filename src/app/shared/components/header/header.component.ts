@@ -33,7 +33,7 @@ export class HeaderComponent implements OnInit {
   }
 
   inscreverNotificacao(){
-    const mensagem = HeaderComponent.supabase.channel(ConstantesSupabase.CANAL_MENSAGEM)
+    const mensagem = HeaderComponent.supabase.channel(ConstantesSupabase.CANAL_NOTIFICACAO_MENSAGEM)
       .on(
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'mensagens' },

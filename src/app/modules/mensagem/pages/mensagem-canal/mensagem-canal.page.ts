@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
-import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
+import { ConstantesRotas, ConstantesSupabase } from '../../../../shared/utilities/constantes/constantes.utility';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
 import { MensagemService } from '../../../../core/state/mensagem/mensagem-service/mensagem.service';
@@ -41,12 +41,18 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     super(router, ROTA_BASE);
 
     this.inicializarConteudo();
+    this.inscreverMensagens();
   }
 
   ngOnInit() { }
 
   ionViewWillEnter() {
     this.pageMenuService.displayStatus.next(false);
+  }
+
+  // nao precisaria remover os canais, pois esses canais persistem por toda aplicacao
+  OnDestroy(){
+    supabase.removeAllChannels()
   }
 
   scrollToBottom() {
@@ -66,7 +72,8 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     let { data: mensagens, error } = await supabase
       .from('mensagens')
       .select("*")
-      .eq('canal_responsavel_id', idCanalResponsavel);
+      .eq('canal_responsavel_id', idCanalResponsavel)
+      .order('data_envio', {ascending:false});
 
     this.mensagemService.armazenarMensagens(mensagens, idCanalResponsavel)
 
@@ -93,25 +100,25 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     if (this.idUsuario === undefined) {
       throw new Error('Usuario nao definido');
     } else {
-      const data = new Date()
-      console.log(data.toISOString())
-      console.log(data.toUTCString())
-      console.log(data.toLocaleString().replace(',', ''))
-
-      console.log(mensagem);
-      this.mensagens.unshift(mensagem);
+      
+      const dataEnvio = new Date()
       const mensagemEnviada: MensagemInterface = {
         user_id: this.idUsuario,
         canal_responsavel_id: this.canalResponsavel.canal_responsavel_id,
         texto: mensagem.texto,
         arquivo: mensagem.arquivo,
-        data_envio: (new Date()).toLocaleString().replace(',', ''),
+        data_envio: dataEnvio.toLocaleString().replace(',', ''),
         lida: false
       }
-      console.log(mensagemEnviada)
-  
-      this.mensagemService.incluirMensagem(mensagemEnviada).subscribe();
-      this.scrollToBottom();
+      this.mensagemService.incluirMensagem(mensagemEnviada).subscribe({
+        next: () => {
+          mensagemEnviada.data_envio_date = dataEnvio
+          this.mensagens.unshift(new Mensagem(mensagemEnviada));
+      
+          this.scrollToBottom();
+        }
+      });
+
     }
   }
 
@@ -123,5 +130,25 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     } else {
       throw new Error('idCanal nao especificado na url');
     }
+  }
+  
+  // -------- integracao supabase -------- //
+
+  inscreverMensagens() { 
+    const mensagem = supabase.channel(ConstantesSupabase.CANAL_NOTIFICACAO_MENSAGEM)
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'mensagens' },
+        async (payload:any) => {
+          console.log('Mensagem Change received!', payload)
+
+          if (payload.new.canal_responsavel_id === this.canalResponsavel.canal_responsavel_id){
+            this.mensagens.unshift(new Mensagem(payload.new));
+        
+            this.scrollToBottom();
+          }
+        }
+      )
+      .subscribe()
   }
 }
