@@ -7,7 +7,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --configuration=$CURRENT_ENV",
+    "build": "ng build --configuration=production",
     "test": "echo \"Error: no tests specified.\"",
     "lint": "eslint --ext .ts --ext .js src/ e2e/ playwright.config.ts",
     "lint:fix": "eslint --ext .ts --ext .js src/ e2e/ playwright.config.ts --fix",
