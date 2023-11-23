@@ -337,10 +337,10 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
   }
 
   private atualizarAlunos() {
-    this.responsavel.alunos = this.listaAlunosTabela.sort((a1, a2) => {
-      if (a1.nome.toLowerCase() > a2.nome.toLowerCase()) {
+    this.responsavel.alunos = this.listaAlunosTabela.sort((aluno1, aluno2) => {
+      if (aluno1.nome.toLowerCase() > aluno2.nome.toLowerCase()) {
         return 1;
-      } else if (a2.nome.toLowerCase() > a1.nome.toLowerCase()) {
+      } else if (aluno2.nome.toLowerCase() > aluno1.nome.toLowerCase()) {
         return -1;
       } else {
         return 0;

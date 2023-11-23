@@ -7,6 +7,7 @@ import { finalize, tap } from 'rxjs';
 import { ToastService } from '../../../../core/toasts/services/toast-service/toast.service';
 import { IonInput } from '@ionic/angular';
 import { Usuario } from '../../../../core/state/gerenciamento/usuario/usuario.entity';
+import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
 
 @Component({
   selector: 'app-login',
@@ -27,6 +28,7 @@ export class LoginPage {
     private formBuilder: UntypedFormBuilder,
     private router: Router,
     private sessionService: SessionService,
+    private canalService: CanalService,
     private toastService: ToastService
   ) {
     this.form = this.formBuilder.group({
@@ -60,11 +62,24 @@ export class LoginPage {
       )
       .subscribe({
         next: () => {
-          this.form.reset();
-          this.navegaParaApp();
+
+          this.canalService.buscarTodosCanais().subscribe({
+            next: () => {
+              this.form.reset();
+              this.navegaParaApp();
+            },
+            error: (err) => {
+              this.toastService.error('Falha ao realizar o login');
+              this.loading = false;
+    
+              if (err?.original?.status === 422) {
+                return;
+              }
+            },
+          })
         },
         error: (err) => {
-          this.toastService.error(err?.message);
+          this.toastService.error('Falha ao realizar o login');
           this.loading = false;
 
           if (err?.original?.status === 422) {

@@ -1,24 +1,37 @@
 import { ResponsavelService } from '../responsavel/responsavel.service';
 import { Injectable } from '@angular/core';
 import { CANAL_DATA, CANAL_RESPONSAVEL_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
-import { Canal, CanalResponsavel } from './canal.entity';
+import { Canal, CanalInterface, CanalResponsavel } from './canal.entity';
 import { Responsavel } from '../responsavel/responsavel.entity';
+import { GerenciamentoRepository } from '../gerenciamento.repository';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CanalService {
-  constructor(private responsavelService: ResponsavelService) { }
 
-  buscarTodosCanais(): Canal[] {
-    return CANAL_DATA;
+  constructor(
+    private responsavelService: ResponsavelService,
+    private gerenciamentoRepository: GerenciamentoRepository,
+    private http: HttpClient,
+  ) {
+
   }
 
-  buscarCanal(idCanal: string): Canal | undefined {
-    return CANAL_DATA.find((c) => {
-      return c.canal_id === idCanal;
-    });
+  buscarTodosCanais(): Observable<CanalInterface[]> {
+    return this.http
+      .get<CanalInterface[]>(`${environment.api.endpoint}/canal`)
+      .pipe(tap((canais) => this.saveCanaisInStorage(canais)));
   }
+
+  buscarCanal(idCanal: string): Observable<CanalInterface>{
+    return this.http
+        .get<CanalInterface>(`${environment.api.endpoint}/canal/${idCanal}`)
+        .pipe(tap((canal) => this.saveCanalInStorage(canal)));
+}
 
   incluirCanal(canal: Canal) {
     CANAL_DATA.push(canal);
@@ -62,14 +75,14 @@ export class CanalService {
 
   incluirCanalResponsavel(idCanal: string, idResponsavel: string): string {
     const canal = this.buscarCanal(idCanal);
-    this.responsavelService.buscarResponsavel(idResponsavel);
+    this.responsavelService.buscarResponsavel(idResponsavel).subscribe();
     const responsavel = new Responsavel()
 
     if (canal !== undefined && responsavel !== undefined) {
       var canalResponsavel: CanalResponsavel = new CanalResponsavel({
         canal_responsavel_id: '',
-        canal_id: canal.canal_id,
-        responsavel_id: responsavel.responsavel_id,
+        canal_id: idCanal,
+        responsavel_id: idResponsavel,
         updated_at: new Date(),
         created_at: new Date(),
       });
@@ -80,4 +93,20 @@ export class CanalService {
     CANAL_RESPONSAVEL_DATA.push(canalResponsavel);
     return canalResponsavel.canal_responsavel_id;
   }
+
+  saveCanaisInStorage(canais: CanalInterface[]) {
+    this.gerenciamentoRepository.update({ canais: canais });
+  }
+
+  saveCanalInStorage(canal: CanalInterface): void {
+      var canais = this.gerenciamentoRepository.canais()
+      const indexCanal = canais.findIndex((canal) => {
+          return canal.canal_id === canal.canal_id
+      })
+      canais[indexCanal] = canal
+
+      this.gerenciamentoRepository.update({ canais: canais });
+  }
+
+
 }

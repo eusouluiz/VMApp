@@ -74,7 +74,8 @@ export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamentoDetalhes 
 
   // ---- busca canal ----//
   private resgatarCanal(id: string): Canal {
-    const canal = this.canalService.buscarCanal(id);
+    this.canalService.buscarCanal(id);
+    const canal = new Canal() 
     if (canal !== undefined) {
       return canal;
     }

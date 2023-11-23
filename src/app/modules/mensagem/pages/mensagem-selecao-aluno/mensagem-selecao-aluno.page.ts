@@ -8,6 +8,7 @@ import { MensagemService } from '../../../../core/services/mensagem-service/mens
 import { Canal } from '../../../../core/state/gerenciamento/canal/canal.entity';
 import { Aluno } from '../../../../core/state/gerenciamento/aluno/aluno.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
+import { GerenciamentoRepository } from '../../../../core/state/gerenciamento/gerenciamento.repository';
 
 interface ItemCanalResponsavel {
   nomeAluno: string;
@@ -33,7 +34,8 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
     private canalService: CanalService,
     private alunoService: AlunoService,
     private mensagemService: MensagemService,
-    private pageMenuService: PageMenuService
+    private pageMenuService: PageMenuService,
+    private gerenciamentoRepository: GerenciamentoRepository
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_MENSAGEM;
     super(router, ROTA_BASE);
@@ -45,6 +47,15 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
 
   ionViewWillEnter(): void {
     this.pageMenuService.displayStatus.next(false);
+  }
+
+  recarregarPagina(){
+    this.alunoService.buscarTodosAlunos().subscribe({
+      next: () => {
+        this.preencherListaTodosAlunos()
+        this.inicializarConteudo()
+      }
+    })
   }
 
   inicializarCanalResponsavel() {
@@ -105,7 +116,7 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
   }
 
   protected inicializarConteudo(): void {
-    this.alunoService.buscarTodosAlunos();
+    this.preencherListaTodosAlunos()
 
     const id = this.activatedRoute.snapshot.paramMap.get('idCanal');
     if (id !== null) {
@@ -113,14 +124,23 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
     } else {
       throw new Error('idCanal nao especificado na url');
     }
+
     this.inicializarCanalResponsavel();
   }
 
   private resgatarCanal(id: string): Canal {
-    const canal = this.canalService.buscarCanal(id);
+    const canal = this.gerenciamentoRepository.canal(id);
     if (canal !== undefined) {
-      return canal;
+      return new Canal(canal);
     }
     throw new Error('Canal nao encontrado');
+  }
+  
+  preencherListaTodosAlunos() {
+    const alunos = this.gerenciamentoRepository.alunos()
+    this.listaTodosAlunos = []
+    alunos.forEach((aluno) => {
+      this.listaTodosAlunos.push(new Aluno(aluno))
+    })
   }
 }

@@ -33,7 +33,7 @@ export class GerenciamentoCanalPage extends Pagina implements OnInit {
   }
 
   protected inicializarConteudo(): void {
-    this.canais = this.canalService.buscarTodosCanais();
+    this.canalService.buscarTodosCanais();
     this.listaCanais = this.canais.slice();
   }
 

@@ -186,8 +186,6 @@ export var CARGO_DATA: Cargo[] = [
       cargo_id: '9a9f8804-94e5-4f5e-a0e5-d44b67731b0f',
       nome: 'Administração',
       descricao: '',
-      updated_at: new Date(),
-      created_at: new Date(),
     },
     undefined,
     FUNCIONALIDADE_DATA
@@ -196,15 +194,11 @@ export var CARGO_DATA: Cargo[] = [
     cargo_id: '1',
     nome: 'Secretaria',
     descricao: '',
-    updated_at: new Date(),
-    created_at: new Date(),
   }),
   new Cargo({
     cargo_id: '2',
     nome: 'Funcionarios - Funcionario',
     descricao: '',
-    updated_at: new Date(),
-    created_at: new Date(),
   }),
 ];
 
