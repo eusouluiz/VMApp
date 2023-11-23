@@ -2,8 +2,13 @@ import { Injectable } from '@angular/core';
 import { USUARIO_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
 import { Usuario, UsuarioInterface } from './usuario.entity';
 import { environment } from '../../../../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+
+interface ResponseUser {
+  msg: string,
+  data: UsuarioInterface,
+}
 
 @Injectable({
   providedIn: 'root',
@@ -26,9 +31,22 @@ export class UsuarioService {
     });
   }
 
-  incluirUsuario(usuario: UsuarioInterface): Observable<UsuarioInterface> {
+  incluirUsuario(usuario: UsuarioInterface): Observable<ResponseUser> {
     return this.http
-      .post<UsuarioInterface>(`${environment.api.endpoint}/user`, usuario);
+      .post<ResponseUser>(`${environment.api.endpoint}/user`, usuario)
+      .pipe(tap((response) => {
+        if ((response.data.responsavel_id !== undefined && response.data.responsavel_id !== null) ||
+            (response.data.funcionario_id !== undefined && response.data.funcionario_id !== null)) {
+          if (usuario.tipo === 'F'){
+            usuario.funcionario_id = response.data.funcionario_id
+          } else if(usuario.tipo === 'R') {
+            usuario.responsavel_id = response.data.responsavel_id
+          } else {
+            usuario.funcionario_id = response.data.funcionario_id
+            usuario.responsavel_id = response.data.responsavel_id
+          }
+        }
+      }));
   }
 
   alterarUsuario(usuario: UsuarioInterface): Observable<UsuarioInterface> {

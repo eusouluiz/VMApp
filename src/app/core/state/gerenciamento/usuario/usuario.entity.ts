@@ -7,6 +7,8 @@ export interface UsuarioInterface {
     tipo: string,
     password?: string,
     email?: string | null,
+    responsavel_id?: string | null,
+    funcionario_id?: string | null,
 }
 
 export class Usuario {

@@ -183,6 +183,9 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
         usuario.password = this.form?.value.senha
         this.usuarioService.incluirUsuario(usuario).subscribe({
           next: () => {
+            if (usuario.responsavel_id !== undefined && usuario.responsavel_id !== null) {
+              this.responsavel.responsavel_id = usuario.responsavel_id
+            }
             this.atualizarResponsavel()
             this.responsavelService.vincularAlunos(this.responsavel, this.listaAlunosTabela)
             this.atualizarAlunos()
