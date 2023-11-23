@@ -7,7 +7,12 @@ import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuar
 import { MensagemService } from '../../../../core/state/mensagem/mensagem-service/mensagem.service';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 import { CanalResponsavel } from '../../../../core/state/gerenciamento/canal/canal.entity';
-import { Mensagem } from '../../../../core/state/mensagem/mensagem-service/mensagem.entity';
+import { Mensagem, MensagemInterface } from '../../../../core/state/mensagem/mensagem-service/mensagem.entity';
+import { MensagemRepository } from '../../../../core/state/mensagem/mensagem.repository';
+import { createClient } from '@supabase/supabase-js';
+import { environment } from '../../../../../environments/environment';
+
+const supabase = createClient(environment.supabaseUrl, environment.supabaseKey)
 
 @Component({
   selector: 'app-mensagem-canal',
@@ -29,7 +34,8 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     private router: Router,
     private canalService: CanalService,
     private mensagemService: MensagemService,
-    private pageMenuService: PageMenuService
+    private pageMenuService: PageMenuService,
+    private mensagemRepository: MensagemRepository,
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_MENSAGEM;
     super(router, ROTA_BASE);
@@ -56,8 +62,24 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     throw new Error('Canal nao encontrado');
   }
 
-  resgatarMensagens(idCanalResponsavel: string) {
-    this.mensagemService.buscarMensagensCanalResponsavel(idCanalResponsavel);
+  async resgatarMensagens(idCanalResponsavel: string) {
+    let { data: mensagens, error } = await supabase
+      .from('mensagens')
+      .select("*")
+      .eq('canal_responsavel_id', idCanalResponsavel);
+
+    this.mensagemService.armazenarMensagens(mensagens, idCanalResponsavel)
+
+    const canal = this.mensagemRepository.canais().find((canal) => {
+      return canal.canal_responsavel_id
+    })
+    if (canal !== undefined) {
+      const mensagemCanal = canal.mensagens
+      
+      mensagemCanal.forEach((mensagem) => {
+        this.mensagens.push(new Mensagem(mensagem))
+      })
+    }
   }
 
   nomeCanal(): string {
@@ -68,16 +90,29 @@ export class MensagemCanalPage extends Pagina implements OnInit {
   }
 
   enviarMensagem(mensagem: Mensagem) {
-    if (this.idUsuario !== undefined) {
-      mensagem.user_id = this.idUsuario;
-      mensagem.canal_responsavel_id = this.canalResponsavel.canal_responsavel_id;
-    } else {
+    if (this.idUsuario === undefined) {
       throw new Error('Usuario nao definido');
+    } else {
+      const data = new Date()
+      console.log(data.toISOString())
+      console.log(data.toUTCString())
+      console.log(data.toLocaleString().replace(',', ''))
+
+      console.log(mensagem);
+      this.mensagens.unshift(mensagem);
+      const mensagemEnviada: MensagemInterface = {
+        user_id: this.idUsuario,
+        canal_responsavel_id: this.canalResponsavel.canal_responsavel_id,
+        texto: mensagem.texto,
+        arquivo: mensagem.arquivo,
+        data_envio: (new Date()).toLocaleString().replace(',', ''),
+        lida: false
+      }
+      console.log(mensagemEnviada)
+  
+      this.mensagemService.incluirMensagem(mensagemEnviada).subscribe();
+      this.scrollToBottom();
     }
-    console.log(mensagem);
-    this.mensagens.unshift(mensagem);
-    this.mensagemService.incluirMensagem(mensagem);
-    this.scrollToBottom();
   }
 
   protected inicializarConteudo(): void {

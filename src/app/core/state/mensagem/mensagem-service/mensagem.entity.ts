@@ -1,11 +1,11 @@
 
 export interface MensagemInterface {
-    mensagem_id: string,
+    mensagem_id?: string,
     texto: string,
     arquivo: string,
     lida: boolean,
-    data_envio: Date,
-    data_leitura: Date,
+    data_envio: string,
+    data_leitura?: string,
     user_id: string,
     canal_responsavel_id: string,
 }
@@ -20,21 +20,25 @@ export class Mensagem {
     private _user_id: string = ''
     private _canal_responsavel_id: string = ''
 
-    constructor (
+    constructor(
         private data?: MensagemInterface,
     ) {
         if (data !== undefined) {
-            this._mensagem_id = data.mensagem_id
+            if (data.mensagem_id !== undefined) {
+                this._mensagem_id = data.mensagem_id;
+            } 
             this._texto = data.texto
             this._arquivo = data.arquivo
             this._lida = data.lida
-            this._data_envio = data.data_envio
-            this._data_leitura = data.data_leitura
+            this._data_envio = new Date(data.data_envio)
+            if (data.data_leitura !== undefined) {
+                this._data_leitura = new Date(data.data_leitura)
+            }
             this._user_id = data.user_id
             this._canal_responsavel_id = data.canal_responsavel_id
         }
     }
-    
+
     public get mensagem_id(): string {
         return this._mensagem_id;
     }

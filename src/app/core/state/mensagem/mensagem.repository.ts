@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 import { localStorageStrategy, persistState } from '@ngneat/elf-persist-state';
 import { MensagemInterface } from './mensagem-service/mensagem.entity';
 
-export interface CanaisMensagem {
+export interface CanalMensagem {
   canal_responsavel_id: string,
   mensagens: MensagemInterface[]
 }
 
 interface MensagemState {
-  canais: CanaisMensagem[]
+  canais: CanalMensagem[]
 }
 
 const initialState: MensagemState = {
@@ -28,11 +28,11 @@ export class MensagemRepository {
 
   canais$ = store.pipe(select((state) => state.canais));
 
-  canais(): CanaisMensagem[] {
+  canais(): CanalMensagem[] {
     return store.getValue().canais;
   }
 
-  canal(idCanalResponsavel: string): CanaisMensagem | undefined {
+  canal(idCanalResponsavel: string): CanalMensagem | undefined {
     return store.getValue().canais.find((canal) => {
       return canal.canal_responsavel_id === idCanalResponsavel
     });

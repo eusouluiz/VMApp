@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MENSAGEM_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
 import { Mensagem, MensagemInterface } from './mensagem.entity';
-import { CanaisMensagem, MensagemRepository } from '../mensagem.repository';
+import { CanalMensagem, MensagemRepository } from '../mensagem.repository';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
@@ -29,8 +29,9 @@ export class MensagemService {
     });
   }
 
-  incluirMensagem(mensagem: Mensagem) {
-    MENSAGEM_DATA.unshift(mensagem);
+  incluirMensagem(mensagem: MensagemInterface): Observable<MensagemInterface> {
+    return this.http
+      .post<MensagemInterface>(`${environment.api.endpoint}/mensagem`, mensagem);
   }
 
   alterarMensagem(mensagem: Mensagem) {
@@ -59,10 +60,6 @@ export class MensagemService {
     return this.http
       .get<MensagemInterface[]>(`${environment.api.endpoint}/mensagem`)
       .pipe(tap((mensagens) => this.saveCanalMensagemInStorage(mensagens, idCanalResponsavel)));
-    // var mensagens = MENSAGEM_DATA.slice();
-    // return mensagens.filter((m) => {
-    //   return m.canal_responsavel_id === idCanalResponsavel;
-    // });
   }
   
   buscarUltimaMensagensCanalResponsavel(idCanalResponsavel: string): Mensagem | undefined {
@@ -84,14 +81,30 @@ export class MensagemService {
       return undefined;
     }
   }
+  
+  armazenarMensagens(mensagens: MensagemInterface[] | null, idCanalResponsavel: string) {
+    if (mensagens !== null) {
+      const canais = this.mensagemRepository.canais()
+      
+      const indexCanal = canais.findIndex((canal) => {
+        return canal.canal_responsavel_id = idCanalResponsavel
+      })
+  
+      const canal: CanalMensagem = {
+        canal_responsavel_id: idCanalResponsavel,
+        mensagens: mensagens
+      }
+  
+      if (indexCanal !== -1){
+        canais[indexCanal] = canal
+      } else {
+        canais.push(canal)
+      }
+  
+      this.mensagemRepository.update({canais:canais})
+    }
+  }
 
-  saveCanalMensagemInStorage(canalResponsavel: MensagemInterface[], idCanalResponsavel: string): void {
-    const canais = this.mensagemRepository.canais()
-    const indexCanal = canais.findIndex((canal) => {
-      return canal.canal_responsavel_id = idCanalResponsavel
-    })
-
-    //TODO continuar a busca de mensagens
-
+  saveCanalMensagemInStorage(mensagens: MensagemInterface[], idCanalResponsavel: string): void {
   }
 }
