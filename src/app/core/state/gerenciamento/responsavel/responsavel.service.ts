@@ -15,10 +15,10 @@ interface AssociacaoAlunoResponsavel {
 }
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class ResponsavelService {
-    
+
     constructor(
         private gerenciamentoRepository: GerenciamentoRepository,
         private http: HttpClient,
@@ -26,24 +26,24 @@ export class ResponsavelService {
 
     }
 
-    buscarTodosResponsaveis(): Observable<ResponsavelInterface[]>{
+    buscarTodosResponsaveis(): Observable<ResponsavelInterface[]> {
         return this.http
             .get<ResponsavelInterface[]>(`${environment.api.endpoint}/responsavel`)
             .pipe(tap((responsaveis) => this.saveResponsaveisInStorage(responsaveis)));
     }
-    
-    buscarResponsavel(idResponsavel: string): Observable<ResponsavelInterface>{
+
+    buscarResponsavel(idResponsavel: string): Observable<ResponsavelInterface> {
         return this.http
             .get<ResponsavelInterface>(`${environment.api.endpoint}/responsavel/${idResponsavel}`)
             .pipe(tap((responsavel) => this.saveResponsavelInStorage(responsavel)));
     }
-    
-    deletarResponsavel(idResponsavel: string): Observable<ResponsavelInterface[]>{
+
+    deletarResponsavel(idResponsavel: string): Observable<ResponsavelInterface[]> {
         return this.http
             .delete<ResponsavelInterface[]>(`${environment.api.endpoint}/responsavel/${idResponsavel}`)
     }
 
-    vincularAlunos(responsavel: Responsavel, alunos: Aluno[]){
+    vincularAlunos(responsavel: Responsavel, alunos: Aluno[]) {
         var listaIdAlunos: string[] = []
         responsavel.alunos.forEach((aluno) => {
             listaIdAlunos.push(aluno.aluno_id)
@@ -63,48 +63,32 @@ export class ResponsavelService {
             this.vincularAluno(associacao).subscribe()
         })
 
-        //TODO completar ids deletados
-        // idsDeletados.forEach((id: string) => {
-        //     const associacao: AssociacaoAlunoResponsavel = {
-        //         responsavel_id: responsavel.responsavel_id,
-        //         aluno_id: id,
-        //     }
-        //     this.desvincularAluno(associacao).subscribe()
-        // })
+        idsDeletados.forEach((id: string) => {
+            const associacao: AssociacaoAlunoResponsavel = {
+                responsavel_id: responsavel.responsavel_id,
+                aluno_id: id,
+            }
+            this.desvincularAluno(associacao).subscribe()
+        })
     }
 
     vincularAluno(associacao: AssociacaoAlunoResponsavel): Observable<AssociacaoAlunoResponsavel> {
         return this.http
-          .post<AssociacaoAlunoResponsavel>(`${environment.api.endpoint}/aluno-responsavel`, associacao);
-    }
-    
-    desvincularAluno(associacao: AssociacaoAlunoResponsavel): Observable<AssociacaoAlunoResponsavel> {
-        if (associacao.id !== undefined) {
-            return this.http
-              .delete<AssociacaoAlunoResponsavel>(`${environment.api.endpoint}/aluno-responsavel/${associacao.id}`)
-        } else {
-            throw new Error('id vinculo indefinido')
-        }
+            .post<AssociacaoAlunoResponsavel>(`${environment.api.endpoint}/aluno-responsavel`, associacao);
     }
 
-    // recuperarVinculoAluno(idResponsavel: string): AssociacaoAlunoResponsavel[] {
-    //     var listaAssociacao: AssociacaoAlunoResponsavel[] = []
-    //     this.http
-    //         .get<AssociacaoAlunoResponsavel[]>(`${environment.api.endpoint}/aluno-responsavel`)
-    //         .pipe(tap((associacao) => {
-    //             console.log(associacao)
-    //             listaAssociacao = associacao
-    //         })).subscribe()
-    //     return listaAssociacao.filter((associacao) =>{
-    //         return associacao.responsavel_id = idResponsavel
-    //     })
-    // }
-    
+    desvincularAluno(associacao: AssociacaoAlunoResponsavel): Observable<AssociacaoAlunoResponsavel> {
+        return this.http
+            .delete<AssociacaoAlunoResponsavel>(`${environment.api.endpoint}/aluno-responsavel/${associacao.aluno_id}/${associacao.responsavel_id}`)
+    }
+
     saveResponsaveisInStorage(responsaveis: ResponsavelInterface[]) {
+        console.log('saveResponsaveisInStorage')
         this.gerenciamentoRepository.update({ responsaveis: responsaveis });
     }
 
     saveResponsavelInStorage(responsavel: ResponsavelInterface): void {
+        console.log('saveResponsavelInStorage')
         var responsaveis = this.gerenciamentoRepository.responsaveis()
         const indexResponsavel = responsaveis.findIndex((responsavel) => {
             return responsavel.responsavel_id === responsavel.responsavel_id

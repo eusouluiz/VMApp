@@ -32,7 +32,7 @@ export class GerenciamentoResponsavelPage extends Pagina implements OnInit {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO;
     super(router, ROTA_BASE, location);
 
-    this.buscarResponsaveis()
+    this.inicializarConteudo()
   }
 
   ngOnInit() {}
