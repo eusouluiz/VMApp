@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 import { CanalResponsavelInterface } from '../../gerenciamento/canal/canal.entity';
+import { DataUtil } from '../../../../shared/utilities/data/data.utility';
 
 @Injectable({
   providedIn: 'root',
@@ -34,15 +35,18 @@ export class MensagemService {
       .post<MensagemInterface>(`${environment.api.endpoint}/mensagem`, mensagem);
   }
 
-  alterarMensagem(mensagem: Mensagem) {
-    var indexA = MENSAGEM_DATA.findIndex((m) => {
-      return m.mensagem_id === mensagem.mensagem_id;
-    });
-    if (indexA !== -1) {
-      MENSAGEM_DATA[indexA] = mensagem;
-    } else {
-      throw new Error('mensagem nao encontrado');
+  alterarMensagem(mensagem: MensagemInterface): Observable<MensagemInterface> {
+    const msg: MensagemInterface = {
+      texto: mensagem.texto,
+      arquivo: mensagem.arquivo,
+      data_envio: DataUtil.converterDataServico(mensagem.data_envio),
+      lida: mensagem.lida,
+      user_id: mensagem.user_id,
+      canal_responsavel_id: mensagem.canal_responsavel_id,
     }
+    
+    return this.http
+      .put<MensagemInterface>(`${environment.api.endpoint}/mensagem/${mensagem.id}`, msg);
   }
 
   deletarMensagem(idMensagem: string) {

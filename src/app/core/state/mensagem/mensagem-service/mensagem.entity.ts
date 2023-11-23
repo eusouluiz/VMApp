@@ -1,6 +1,8 @@
 import { DataUtil } from './../../../../shared/utilities/data/data.utility';
 
 export interface MensagemInterface {
+    //id que vem do supabase
+    id?: string,
     mensagem_id?: string,
     texto: string,
     arquivo: string,

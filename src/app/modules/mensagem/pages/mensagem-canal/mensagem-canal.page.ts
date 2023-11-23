@@ -11,6 +11,7 @@ import { Mensagem, MensagemInterface } from '../../../../core/state/mensagem/men
 import { MensagemRepository } from '../../../../core/state/mensagem/mensagem.repository';
 import { createClient } from '@supabase/supabase-js';
 import { environment } from '../../../../../environments/environment';
+import { DataUtil } from '../../../../shared/utilities/data/data.utility';
 
 const supabase = createClient(environment.supabaseUrl, environment.supabaseKey)
 
@@ -51,7 +52,7 @@ export class MensagemCanalPage extends Pagina implements OnInit {
   }
 
   // nao precisaria remover os canais, pois esses canais persistem por toda aplicacao
-  OnDestroy(){
+  OnDestroy() {
     supabase.removeAllChannels()
   }
 
@@ -73,7 +74,7 @@ export class MensagemCanalPage extends Pagina implements OnInit {
       .from('mensagens')
       .select("*")
       .eq('canal_responsavel_id', idCanalResponsavel)
-      .order('data_envio', {ascending:false});
+      .order('data_envio', { ascending: false });
 
     this.mensagemService.armazenarMensagens(mensagens, idCanalResponsavel)
 
@@ -82,8 +83,13 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     })
     if (canal !== undefined) {
       const mensagemCanal = canal.mensagens
-      
+
       mensagemCanal.forEach((mensagem) => {
+        if (mensagem.user_id !== this.idUsuario && !mensagem.lida) {
+          mensagem.lida = true
+
+          this.mensagemService.alterarMensagem(mensagem).subscribe()
+        }
         this.mensagens.push(new Mensagem(mensagem))
       })
     }
@@ -100,7 +106,7 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     if (this.idUsuario === undefined) {
       throw new Error('Usuario nao definido');
     } else {
-      
+
       const dataEnvio = new Date()
       const mensagemEnviada: MensagemInterface = {
         user_id: this.idUsuario,
@@ -114,7 +120,7 @@ export class MensagemCanalPage extends Pagina implements OnInit {
         next: () => {
           mensagemEnviada.data_envio_date = dataEnvio
           this.mensagens.unshift(new Mensagem(mensagemEnviada));
-      
+
           this.scrollToBottom();
         }
       });
@@ -131,21 +137,40 @@ export class MensagemCanalPage extends Pagina implements OnInit {
       throw new Error('idCanal nao especificado na url');
     }
   }
-  
+
   // -------- integracao supabase -------- //
 
-  inscreverMensagens() { 
+  inscreverMensagens() {
     const mensagem = supabase.channel(ConstantesSupabase.CANAL_NOTIFICACAO_MENSAGEM)
       .on(
         'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'mensagens' },
-        async (payload:any) => {
+        { event: '*', schema: 'public', table: 'mensagens' },
+        async (payload: any) => {
           console.log('Mensagem Change received!', payload)
-
-          if (payload.new.canal_responsavel_id === this.canalResponsavel.canal_responsavel_id){
-            this.mensagens.unshift(new Mensagem(payload.new));
-        
-            this.scrollToBottom();
+          // CASO ONDE UMA MENSAGEM EH RECEBIDA
+          if (payload.eventType = 'INSERT') {
+            if (payload.new.canal_responsavel_id === this.canalResponsavel.canal_responsavel_id) {
+              if (payload.new.user_id !== this.idUsuario) {
+                const mensagem: MensagemInterface = payload.new
+                mensagem.lida = true
+                this.mensagemService.alterarMensagem(mensagem).subscribe()
+                this.mensagens.unshift(new Mensagem(payload.new));
+  
+                this.scrollToBottom();
+              }
+            }
+          // CASO ONDE UMA MENSAGEM EH LIDA
+          } else if (payload.eventType = 'UPDATE') {
+            if (payload.new.canal_responsavel_id === this.canalResponsavel.canal_responsavel_id) {
+              if (payload.new.user_id === this.idUsuario) {
+                const mensagem = this.mensagens.find((mensagem) => {
+                  return mensagem.mensagem_id === payload.old.id
+                })
+                if (mensagem !== undefined){
+                  mensagem.lida = true
+                }
+              }
+            }
           }
         }
       )
