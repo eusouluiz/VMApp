@@ -56,8 +56,6 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit {
   ngAfterViewInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
-    console.log('autocomplete')
-    console.log(this.listaItens)
   }
 
   // ---- controle formulario ---- //
@@ -87,7 +85,6 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit {
 
   inicializaItens() {
     this.itens = this.listaItens;
-    console.log(this.itens)
   }
 
   getItens(ev: any) {

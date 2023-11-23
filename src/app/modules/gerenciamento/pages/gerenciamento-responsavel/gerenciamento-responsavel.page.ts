@@ -55,10 +55,7 @@ export class GerenciamentoResponsavelPage extends Pagina implements OnInit {
     this.responsavelService.buscarTodosResponsaveis().subscribe({
       next: () => {
         this.inicializarConteudo()
-      },
-      error: (err) => {
-        this.toastService.error('Falha ao buscar responsáveis, tente novamente mais tarde');
-      },
+      }
     });
   }
 

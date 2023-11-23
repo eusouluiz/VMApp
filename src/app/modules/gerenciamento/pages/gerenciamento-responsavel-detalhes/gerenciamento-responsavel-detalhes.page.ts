@@ -77,6 +77,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (this.isModoDetalhes() && id !== null) {
       this.responsavel = this.resgatarResponsavel(id);
+      console.log(this.responsavel)
       this.form?.setValue({
         nome: this.responsavel.usuario.nome,
         telefone: this.responsavel.usuario.telefone,
@@ -108,19 +109,21 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
   //delecao
   protected deletar() {
     this.responsavelService.deletarResponsavel(this.responsavel.responsavel_id).subscribe({
-      error: (err) => {
-        this.toastService.error('Erro ao Remover Responsável');
-
-        if (err?.original?.status === 422) {
-          return;
-        }
-      },
-    });
-    this.usuarioService.deletarUsuario(this.responsavel.usuario.user_id).subscribe({
       next: () => {
-        this.atualizarResponsavel()
-        this.toastService.success('Sucesso ao Remover ' + this.responsavel.usuario.nome);
-        this.retornarPagina();
+        this.usuarioService.deletarUsuario(this.responsavel.usuario.user_id).subscribe({
+          next: () => {
+            this.atualizarResponsavel()
+            this.toastService.success('Sucesso ao Remover ' + this.responsavel.usuario.nome);
+            this.retornarPagina();
+          },
+          error: (err) => {
+            this.toastService.error('Erro ao Remover Responsável');
+    
+            if (err?.original?.status === 422) {
+              return;
+            }
+          },
+        });
       },
       error: (err) => {
         this.toastService.error('Erro ao Remover Responsável');
