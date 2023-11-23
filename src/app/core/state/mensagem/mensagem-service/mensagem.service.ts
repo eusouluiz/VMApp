@@ -1,11 +1,24 @@
 import { Injectable } from '@angular/core';
-import { MENSAGEM_DATA } from '../../../shared/utilities/entidade/entidade.utility';
-import { Mensagem } from './mensagem.entity';
+import { MENSAGEM_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
+import { Mensagem, MensagemInterface } from './mensagem.entity';
+import { CanaisMensagem, MensagemRepository } from '../mensagem.repository';
+import { HttpClient } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
+import { environment } from '../../../../../environments/environment';
+import { CanalResponsavelInterface } from '../../gerenciamento/canal/canal.entity';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MensagemService {
+
+  constructor(
+    private mensagemRepository: MensagemRepository,
+    private http: HttpClient,
+  ) {
+
+  }
+
   buscarTodosMensagems(): Mensagem[] {
     return MENSAGEM_DATA;
   }
@@ -42,13 +55,16 @@ export class MensagemService {
     }
   }
 
-  buscarMensagensCanalResponsavel(idCanalResponsavel: string): Mensagem[] {
-    var mensagens = MENSAGEM_DATA.slice();
-    return mensagens.filter((m) => {
-      return m.canal_responsavel_id === idCanalResponsavel;
-    });
+  buscarMensagensCanalResponsavel(idCanalResponsavel: string): Observable<MensagemInterface[]> {
+    return this.http
+      .get<MensagemInterface[]>(`${environment.api.endpoint}/mensagem`)
+      .pipe(tap((mensagens) => this.saveCanalMensagemInStorage(mensagens, idCanalResponsavel)));
+    // var mensagens = MENSAGEM_DATA.slice();
+    // return mensagens.filter((m) => {
+    //   return m.canal_responsavel_id === idCanalResponsavel;
+    // });
   }
-
+  
   buscarUltimaMensagensCanalResponsavel(idCanalResponsavel: string): Mensagem | undefined {
     var mensagens = MENSAGEM_DATA.slice();
     mensagens = mensagens.filter((m) => {
@@ -67,5 +83,15 @@ export class MensagemService {
     } else {
       return undefined;
     }
+  }
+
+  saveCanalMensagemInStorage(canalResponsavel: MensagemInterface[], idCanalResponsavel: string): void {
+    const canais = this.mensagemRepository.canais()
+    const indexCanal = canais.findIndex((canal) => {
+      return canal.canal_responsavel_id = idCanalResponsavel
+    })
+
+    //TODO continuar a busca de mensagens
+
   }
 }

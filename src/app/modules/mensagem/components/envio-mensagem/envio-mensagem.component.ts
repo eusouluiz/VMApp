@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { SharedModule } from '../../../../shared/shared.module';
-import { Mensagem } from '../../../../core/services/mensagem-service/mensagem.entity';
+import { Mensagem } from '../../../../core/state/mensagem/mensagem-service/mensagem.entity';
 
 @Component({
   selector: 'app-envio-mensagem',
@@ -16,13 +16,13 @@ export class EnvioMensagemComponent implements OnInit {
 
   @ViewChild('campoTexto') campoTexto!: HTMLIonTextareaElement;
 
-  constructor() {}
+  constructor() { }
 
   preventEnter(ev: any) {
     ev.preventDefault();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   enviarMensagem() {
     const val = this.campoTexto.value;

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
 import { AlunoService } from '../../../../core/state/gerenciamento/aluno/aluno.service';
-import { MensagemService } from '../../../../core/services/mensagem-service/mensagem.service';
+import { MensagemService } from '../../../../core/state/mensagem/mensagem-service/mensagem.service';
 import { Canal } from '../../../../core/state/gerenciamento/canal/canal.entity';
 import { Aluno } from '../../../../core/state/gerenciamento/aluno/aluno.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
@@ -49,7 +49,7 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
     this.pageMenuService.displayStatus.next(false);
   }
 
-  recarregarPagina(){
+  recarregarPagina() {
     this.alunoService.buscarTodosAlunos().subscribe({
       next: () => {
         this.preencherListaTodosAlunos()
@@ -135,7 +135,7 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
     }
     throw new Error('Canal nao encontrado');
   }
-  
+
   preencherListaTodosAlunos() {
     const alunos = this.gerenciamentoRepository.alunos()
     this.listaTodosAlunos = []

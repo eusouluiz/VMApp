@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { Router } from '@angular/router';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
-import { MensagemService } from '../../../../core/services/mensagem-service/mensagem.service';
+import { MensagemService } from '../../../../core/state/mensagem/mensagem-service/mensagem.service';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 import { Canal, CanalInterface } from '../../../../core/state/gerenciamento/canal/canal.entity';
 import { SessionRepository } from '../../../../core/state/session/session.repository';
@@ -68,8 +68,8 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
 
     this.pageMenuService.displayStatus.next(true);
   }
-  
-  recarregarPagina(){
+
+  recarregarPagina() {
     this.canalService.buscarTodosCanais().subscribe({
       next: () => {
         this.resgatarCanais()
@@ -136,15 +136,15 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
       return '';
     }
   }
-  
-  resgatarCanais(){
+
+  resgatarCanais() {
     const canais = this.gerenciamentoRepository.canais()
     canais.forEach((canal) => {
       this.canais.push(new Canal(canal))
     })
     //TODO remover quando tiver cargos
     this.canais[0].cargos = []
-    this.canais[0].cargos.push(new Cargo({cargo_id: '9a9f8804-94e5-4f5e-a0e5-d44b67731b0f', nome:'', descricao:''}))
+    this.canais[0].cargos.push(new Cargo({ cargo_id: '9a9f8804-94e5-4f5e-a0e5-d44b67731b0f', nome: '', descricao: '' }))
   }
 
   private verificarListaCargo(canal: Canal, idCargo?: string | null): boolean {

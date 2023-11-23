@@ -9,7 +9,7 @@ import { Cargo } from '../../../core/state/gerenciamento/cargo/cargo.entity';
 import { Funcionalidade } from '../../../core/state/gerenciamento/funcionalidade/funcionalidade.entity';
 import { Funcionario } from '../../../core/state/gerenciamento/funcionario/funcionario.entity';
 import { Lembrete } from '../../../core/services/lembrete-service/lembrete.entity';
-import { Mensagem } from '../../../core/services/mensagem-service/mensagem.entity';
+import { Mensagem } from '../../../core/state/mensagem/mensagem-service/mensagem.entity';
 import { Responsavel } from '../../../core/state/gerenciamento/responsavel/responsavel.entity';
 import { Turma } from '../../../core/state/gerenciamento/turma/turma.entity';
 import { Usuario } from '../../../core/state/gerenciamento/usuario/usuario.entity';
@@ -247,9 +247,9 @@ export var CANAL_DATA: Canal[] = [
 
 export var CANAL_RESPONSAVEL_DATA: CanalResponsavel[] = [
   new CanalResponsavel({
-    canal_responsavel_id: '0',
-    canal_id: CANAL_DATA[0].canal_id,
-    responsavel_id: RESPONSAVEL_DATA[0].responsavel_id,
+    canal_responsavel_id: '9aad8767-42e1-4b4b-89db-f9bff6e01a7c',
+    canal_id: '50868b06-8680-11ee-b9d1-0242ac120002',
+    responsavel_id: '9aac75fd-aa76-4482-9e44-e90e0170d912',
     updated_at: new Date(),
     created_at: new Date(),
   }),

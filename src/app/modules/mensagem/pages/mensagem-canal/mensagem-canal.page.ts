@@ -4,10 +4,10 @@ import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.s
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
-import { MensagemService } from '../../../../core/services/mensagem-service/mensagem.service';
+import { MensagemService } from '../../../../core/state/mensagem/mensagem-service/mensagem.service';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 import { CanalResponsavel } from '../../../../core/state/gerenciamento/canal/canal.entity';
-import { Mensagem } from '../../../../core/services/mensagem-service/mensagem.entity';
+import { Mensagem } from '../../../../core/state/mensagem/mensagem-service/mensagem.entity';
 
 @Component({
   selector: 'app-mensagem-canal',
@@ -56,8 +56,8 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     throw new Error('Canal nao encontrado');
   }
 
-  resgatarMensagens(idCanalResponsavel: string): Mensagem[] {
-    return this.mensagemService.buscarMensagensCanalResponsavel(idCanalResponsavel);
+  resgatarMensagens(idCanalResponsavel: string) {
+    this.mensagemService.buscarMensagensCanalResponsavel(idCanalResponsavel);
   }
 
   nomeCanal(): string {
@@ -84,7 +84,7 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     const id = this.activatedRoute.snapshot.paramMap.get('idCanalResponsavel');
     if (id !== null) {
       this.canalResponsavel = this.resgatarCanalResponsavel(id);
-      this.mensagens = this.resgatarMensagens(id);
+      this.resgatarMensagens(id);
     } else {
       throw new Error('idCanal nao especificado na url');
     }
