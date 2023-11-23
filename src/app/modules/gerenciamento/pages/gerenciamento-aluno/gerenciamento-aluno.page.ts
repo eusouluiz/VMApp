@@ -8,6 +8,8 @@ import { Location } from '@angular/common';
 import { Aluno } from '../../../../core/state/gerenciamento/aluno/aluno.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 import { ALUNO_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
+import { ResponsavelService } from '../../../../core/state/gerenciamento/responsavel/responsavel.service';
+import { ToastService } from '../../../../core/toasts/services/toast-service/toast.service';
 
 @Component({
   selector: 'app-gerenciamento-aluno',
@@ -21,7 +23,9 @@ export class GerenciamentoAlunoPage extends Pagina implements OnInit {
 
   constructor(
     private router: Router,
+    private toastService: ToastService,
     private alunoService: AlunoService,
+    private responsavelService: ResponsavelService,
     public location: Location,
     private pageMenuService: PageMenuService,
     private gerenciamentoRepository: GerenciamentoRepository,
@@ -29,7 +33,6 @@ export class GerenciamentoAlunoPage extends Pagina implements OnInit {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO;
     super(router, ROTA_BASE, location);
     
-    alunoService.buscarTodosAlunos().subscribe();
     this.inicializarConteudo()
   }
 
@@ -39,20 +42,22 @@ export class GerenciamentoAlunoPage extends Pagina implements OnInit {
     this.pageMenuService.displayStatus.next(false);
   }
 
+  buscarAlunos(){
+    this.alunoService.buscarTodosAlunos().subscribe({
+      next: () => {
+        this.inicializarConteudo()
+      }
+    });
+  }
+
+  recarregarPagina() {}
+
   protected inicializarConteudo(): void {
     const alunos = this.gerenciamentoRepository.alunos()
     this.listaAlunos = []
     alunos.forEach((aluno) => {
       this.listaAlunos.push(new Aluno(aluno))
     })
-  }
-
-  buscarAlunos(ev: any){
-    this.alunoService.buscarTodosAlunos().subscribe();
-    this.inicializarConteudo()
-
-    //TODO so completar quando finalizar a chamada
-    ev.target.complete()
   }
 
   filtarAlunoNome(ev: any) {
@@ -65,13 +70,36 @@ export class GerenciamentoAlunoPage extends Pagina implements OnInit {
     });
   }
 
-  navegarTelaAluno(id: number) {
+  navegarTelaAluno(aluno?: Aluno) {
     var rota = ConstantesRotas.ROTA_GERENCIAMENTO_ALUNO;
-    if (id !== -1) {
-      rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
+    if (aluno !== undefined) {
+      this.alunoService.buscarAluno(aluno.aluno_id).subscribe({
+        next: () => {
+          this.alunoService.buscarTodosAlunos().subscribe({
+            next: () => {
+              rota = rota + ConstantesRotas.BARRA + aluno.aluno_id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
+              this.navegarPara(rota)
+            },
+            error: (err) => {
+              this.toastService.error('Erro ao carregar informações ' + aluno.nome);
+              
+              if (err?.original?.status === 422) {
+                return;
+              }
+            },
+          })
+        },
+        error: (err) => {
+          this.toastService.error('Erro ao carregar informações ' + aluno.nome);
+          
+          if (err?.original?.status === 422) {
+            return;
+          }
+        },
+      });
     } else {
       rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
+      this.navegarPara(rota)
     }
-    this.navegarPara(rota);
   }
 }

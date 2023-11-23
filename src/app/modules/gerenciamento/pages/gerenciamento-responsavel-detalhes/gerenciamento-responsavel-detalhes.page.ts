@@ -247,7 +247,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
 
   inicializarFormBuscaAluno() {
     this.formBuscaAluno = this.formBuilder.group({
-      busca: '',
+      buscaAluno: '',
     });
   }
 
@@ -367,8 +367,8 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
   }
 
   deletarAluno(id: string) {
-    const indexAluno = this.listaAlunosTabela.findIndex((a) => {
-      return a.aluno_id === id;
+    const indexAluno = this.listaAlunosTabela.findIndex((aluno) => {
+      return aluno.aluno_id === id;
     });
     if (indexAluno !== -1) {
       const aluno = this.listaAlunosTabela[indexAluno];

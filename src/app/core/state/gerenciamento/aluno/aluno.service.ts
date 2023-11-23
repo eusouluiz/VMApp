@@ -32,48 +32,25 @@ export class AlunoService {
             .pipe(tap((alunos) => this.saveAlunosInStorage(alunos)));
     }
 
-    buscarAluno(idAluno: string): Aluno | undefined /* Observable<AlunoInterface> */ {
-        return ALUNO_DATA.find((a) => {
-            return a.aluno_id === idAluno
-        })
-        // return this.http
-        //     .get<AlunoInterface>(`${environment.api.endpoint}/aluno/${idAluno}`)
-        //     .pipe(tap((aluno) => this.saveAlunoInStorage(aluno)));
+    buscarAluno(idAluno: string): Observable<AlunoInterface> {
+        return this.http
+            .get<AlunoInterface>(`${environment.api.endpoint}/aluno/${idAluno}`)
+            .pipe(tap((aluno) => this.saveAlunoInStorage(aluno)));
     }
 
-    incluirAluno(aluno: Aluno /* aluno: AlunoInterface */)/* :Observable<AlunoInterface> */ {
-        ALUNO_DATA.push(aluno)
-
-        // return this.http
-        //     .post<AlunoInterface>(`${environment.api.endpoint}/aluno`, aluno);
+    incluirAluno(aluno: AlunoInterface):Observable<AlunoInterface> {
+        return this.http
+            .post<AlunoInterface>(`${environment.api.endpoint}/aluno`, aluno);
     }
 
-    alterarAluno(aluno: Aluno /* aluno: AlunoInterface */)/* :Observable<AlunoInterface> */ {
-        var indexA = ALUNO_DATA.findIndex((a) => {
-            return a.aluno_id === aluno.aluno_id
-        })
-        if (indexA !== -1) {
-            ALUNO_DATA[indexA] = aluno
-        } else {
-            throw new Error('aluno nao encontrado')
-        }
-
-        // return this.http
-        //     .put<AlunoInterface>(`${environment.api.endpoint}/aluno/${aluno.aluno_id}`, aluno);
+    alterarAluno(aluno: AlunoInterface):Observable<AlunoInterface> {
+        return this.http
+            .put<AlunoInterface>(`${environment.api.endpoint}/aluno/${aluno.aluno_id}`, aluno);
     }
 
-    deletarAluno(idAluno: string)/* :Observable<AlunoInterface> */ {
-        var indexA = ALUNO_DATA.findIndex((a) => {
-            return a.aluno_id === idAluno
-        })
-        if (indexA !== -1) {
-            ALUNO_DATA.splice(indexA, 1)
-        } else {
-            throw new Error('aluno nao encontrado')
-        }
-
-        // return this.http
-        //     .delete<AlunoInterface[]>(`${environment.api.endpoint}/aluno/${idAluno}`)
+    deletarAluno(idAluno: string): Observable<AlunoInterface> {
+        return this.http
+            .delete<AlunoInterface>(`${environment.api.endpoint}/aluno/${idAluno}`)
     }
 
     vincularResponsaveis(aluno: Aluno, responsaveis: Responsavel[]) {
@@ -96,14 +73,13 @@ export class AlunoService {
             this.vincularResponsavel(associacao).subscribe()
         })
 
-        //TODO completar ids deletados
-        // idsDeletados.forEach((id: string) => {
-        //     const associacao: AssociacaoAlunoResponsavel = {
-        //         aluno_id: aluno.aluno_id,
-        //         responsavel_id: id,
-        //     }
-        //     this.desvincularResponsavel(associacao).subscribe()
-        // })
+        idsDeletados.forEach((id: string) => {
+            const associacao: AssociacaoAlunoResponsavel = {
+                aluno_id: aluno.aluno_id,
+                responsavel_id: id,
+            }
+            this.desvincularResponsavel(associacao).subscribe()
+        })
     }
 
     vincularResponsavel(associacao: AssociacaoAlunoResponsavel): Observable<AssociacaoAlunoResponsavel> {
@@ -112,12 +88,8 @@ export class AlunoService {
     }
 
     desvincularResponsavel(associacao: AssociacaoAlunoResponsavel): Observable<AssociacaoAlunoResponsavel> {
-        if (associacao.id !== undefined) {
-            return this.http
-                .delete<AssociacaoAlunoResponsavel>(`${environment.api.endpoint}/aluno-responsavel/${associacao.id}`)
-        } else {
-            throw new Error('id vinculo indefinido')
-        }
+        return this.http
+            .delete<AssociacaoAlunoResponsavel>(`${environment.api.endpoint}/aluno-responsavel/${associacao.aluno_id}/${associacao.responsavel_id}`)
     }
 
     private saveAlunosInStorage(alunos: AlunoInterface[]) {

@@ -1,26 +1,24 @@
 <app-header titulo="Aluno" [botaoRetorno]="true"></app-header>
 
 <ion-content class="ion-padding">
-  <ion-refresher slot="fixed" (ionRefresh)="buscarAlunos($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
+  <app-refresher (onRecarregar)="recarregarPagina()"></app-refresher>
   <ion-searchbar class="ion-no-padding" 
     placeholder="Aluno" [debounce]="500" (ionInput)="filtarAlunoNome($event)"></ion-searchbar>
   <div *ngFor="let aluno of listaAlunos">
     <ion-item class="c-item"
-      lines="none" detail="true" button="true" (click)="navegarTelaAluno(aluno.aluno_id)">
+      lines="none" detail="true" button="true" (click)="navegarTelaAluno(aluno)">
       <ion-label>
         <ion-row>
           <ion-text class="c-item-titulo">{{aluno.nome}}</ion-text>
         </ion-row>
         <ion-row>
-          <ion-text class="c-item-subtitulo">Turma: {{aluno.turma.nome === '' ? 'Não definida' : aluno.turma.nome}}</ion-text>
+          <ion-text class="c-item-subtitulo">Turma: {{aluno.turma === null ? 'Não definida' : aluno.turma.nome}}</ion-text>
         </ion-row>
       </ion-label>
     </ion-item>
   </div>
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button (click)="navegarTelaAluno(-1)">
+    <ion-fab-button (click)="navegarTelaAluno()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

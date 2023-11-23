@@ -2,7 +2,7 @@ import { Responsavel } from "../responsavel/responsavel.entity";
 import { Turma } from "../turma/turma.entity"
 
 export interface AlunoInterface {
-    aluno_id: string,
+    aluno_id?: string,
     cgm: string,
     nome: string,
     turma?: Turma,
@@ -20,7 +20,9 @@ export class Aluno {
         data?: AlunoInterface
     ) {
         if (data !== undefined) {
-            this._aluno_id = data.aluno_id
+            if (data.aluno_id !== undefined) {
+                this._aluno_id = data.aluno_id
+            }
             this._cgm = data.cgm
             this._nome = data.nome
 

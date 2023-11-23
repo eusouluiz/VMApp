@@ -108,19 +108,22 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
   //delecao
   protected deletar() {
     this.funcionarioService.deletarFuncionario(this.funcionario.funcionario_id).subscribe({
-      error: (err) => {
-        this.toastService.error('Erro ao Remover Funcionário');
-
-        if (err?.original?.status === 422) {
-          return;
-        }
-      },
-    });
-    this.usuarioService.deletarUsuario(this.funcionario.usuario.user_id).subscribe({
       next: () => {
-        this.atualizarFuncionario()
-        this.toastService.success('Sucesso ao Remover ' + this.funcionario.usuario.nome);
-        this.retornarPagina();
+        this.usuarioService.deletarUsuario(this.funcionario.usuario.user_id).subscribe({
+          next: () => {
+            this.atualizarFuncionario()
+            this.toastService.success('Sucesso ao Remover ' + this.funcionario.usuario.nome);
+            this.retornarPagina();
+          },
+          error: (err) => {
+            this.toastService.error('Erro ao Remover Funcionário');
+
+            if (err?.original?.status === 422) {
+              return;
+            }
+          },
+        });
+
       },
       error: (err) => {
         this.toastService.error('Erro ao Remover Funcionário');
@@ -298,8 +301,8 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
   private inicializarBuscaCargos() {
     this.listaCargosBusca = [];
     if (this.listaTodosCargos !== null) {
-      this.listaTodosCargos.forEach((c) => {
-        const idCargo = c.cargo_id;
+      this.listaTodosCargos.forEach((cargo) => {
+        const idCargo = cargo.cargo_id;
         var isFuncionarioPossuiCargo = false;
 
         for (let i = 0; i < this.listaCargosTabela.length; i++) {
@@ -311,7 +314,7 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
         }
 
         if (!isFuncionarioPossuiCargo) {
-          this.listaCargosBusca.push(c);
+          this.listaCargosBusca.push(cargo);
         }
       });
     }

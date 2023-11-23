@@ -144,7 +144,7 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     const mensagem = supabase.channel(ConstantesSupabase.CANAL_NOTIFICACAO_MENSAGEM)
       .on(
         'postgres_changes',
-        { event: '*', schema: 'public', table: 'mensagens' },
+        { event: '*', schema: 'public', table: 'mensagens', filter: `canal_responsavel_id=${this.canalResponsavel.canal_responsavel_id}` },
         async (payload: any) => {
           console.log('Mensagem Change received!', payload)
           // CASO ONDE UMA MENSAGEM EH RECEBIDA

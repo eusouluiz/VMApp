@@ -4,6 +4,8 @@ import { environment } from '../../../../environments/environment';
 import { ToastService } from '../../../core/toasts/services/toast-service/toast.service';
 import { ConstantesSupabase } from '../../utilities/constantes/constantes.utility';
 
+const supabase = createClient(environment.supabaseUrl, environment.supabaseKey)
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -14,14 +16,9 @@ export class HeaderComponent implements OnInit {
 
   @Input() botaoRetorno: boolean = false;
 
-  private static supabase: any;
-
   constructor(
     private toastService: ToastService
   ) {
-    if(HeaderComponent.supabase === undefined){
-      HeaderComponent.supabase = createClient(environment.supabaseUrl, environment.supabaseKey)
-    }
     this.inscreverNotificacao()
   }
 
@@ -29,11 +26,11 @@ export class HeaderComponent implements OnInit {
 
   // nao precisaria remover os canais, pois esses canais persistem por toda aplicacao
   OnDestroy(){
-    HeaderComponent.supabase.removeAllChannels()
+    supabase.removeAllChannels()
   }
 
   inscreverNotificacao(){
-    const mensagem = HeaderComponent.supabase.channel(ConstantesSupabase.CANAL_NOTIFICACAO_MENSAGEM)
+    const mensagem = supabase.channel(ConstantesSupabase.CANAL_NOTIFICACAO_MENSAGEM)
       .on(
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'mensagens' },
@@ -46,7 +43,7 @@ export class HeaderComponent implements OnInit {
         }
       )
       .subscribe()
-    const aviso = HeaderComponent.supabase.channel(ConstantesSupabase.CANAL_NOTIFICACAO_AVISO)
+    const aviso = supabase.channel(ConstantesSupabase.CANAL_NOTIFICACAO_AVISO)
       .on(
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'avisos' },
@@ -60,7 +57,7 @@ export class HeaderComponent implements OnInit {
 
   async getUsuarioNome(id: string): Promise<string>{
 
-    let { data: users, error } = await HeaderComponent.supabase
+    let { data: users, error } = await supabase
       .from('users')
       .select("nome")
       // Filters
