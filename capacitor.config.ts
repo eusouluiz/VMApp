@@ -1,10 +1,9 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { CapacitorConfig } from '@capacitor/cli';
 import { KeyboardResize } from '@capacitor/keyboard';
 
 const config: CapacitorConfig = {
-  appId: 'vmapp.up.edu.br',
-  appName: 'vampp',
+  appId: 'br.edu.up.vmapp',
+  appName: 'VMApp',
   webDir: 'www',
   server: {
     androidScheme: 'https',

@@ -1,7 +1,7 @@
 {
-  "name": "pwa-boilerplate",
-  "version": "0.0.3",
-  "author": "Carbonaut",
+  "name": "VMApp",
+  "version": "0.0.1",
+  "author": "Gabriel F. Gomes, Giacomo V. Oliveira, Luiz G. Nascimento",
   "homepage": "",
   "description": "Boilerplate for Carbonaut projects.",
   "scripts": {
@@ -37,6 +37,10 @@
     "@angular/platform-browser": "^15.2.9",
     "@angular/platform-browser-dynamic": "^15.2.9",
     "@angular/router": "^15.2.9",
+    "@capacitor/android": "^5.5.1",
+    "@capacitor/cli": "^5.5.1",
+    "@capacitor/core": "^5.5.1",
+    "@capacitor/keyboard": "^5.0.6",
     "@ionic/angular": "^7.0.6",
     "@ionic/core": "^7.0.6",
     "@ngneat/elf": "^2.1.0",
