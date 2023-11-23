@@ -3,13 +3,13 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina-gerenciamento-detalhes/pagina-gerenciamento-detalhes.utility';
-import { CargoService } from '../../../../core/services/cargo-service/cargo.service';
-import { FuncionarioService } from '../../../../core/services/funcionario-service/funcionario.service';
+import { CargoService } from '../../../../core/state/gerenciamento/cargo/cargo.service';
+import { FuncionarioService } from '../../../../core/state/gerenciamento/funcionario/funcionario.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
-import { FuncionalidadeService } from '../../../../core/services/funcionalidade-service/funcionalidade.service';
-import { Cargo } from '../../../../core/services/cargo-service/cargo.entity';
-import { Funcionario } from '../../../../core/services/funcionario-service/funcionario.entity';
-import { Funcionalidade } from '../../../../core/services/funcionalidade-service/funcionalidade.entity';
+import { FuncionalidadeService } from '../../../../core/state/gerenciamento/funcionalidade/funcionalidade.service';
+import { Cargo } from '../../../../core/state/gerenciamento/cargo/cargo.entity';
+import { Funcionario } from '../../../../core/state/gerenciamento/funcionario/funcionario.entity';
+import { Funcionalidade } from '../../../../core/state/gerenciamento/funcionalidade/funcionalidade.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 
 @Component({
@@ -39,7 +39,7 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
     this.inicializarConteudo();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ionViewWillEnter() {
     this.pageMenuService.displayStatus.next(false);

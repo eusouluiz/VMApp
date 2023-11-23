@@ -1,5 +1,5 @@
-import { Funcionalidade } from '../funcionalidade-service/funcionalidade.entity';
-import { Funcionario } from '../funcionario-service/funcionario.entity';
+import { Funcionalidade } from '../funcionalidade/funcionalidade.entity';
+import { Funcionario } from '../funcionario/funcionario.entity';
 
 export interface CargoInterface {
     cargo_id: string,
@@ -18,7 +18,7 @@ export class Cargo {
     private _updated_at: Date = new Date();
     private _created_at: Date = new Date();
 
-    constructor (
+    constructor(
         private data?: CargoInterface,
         private listaFuncionarios?: Funcionario[],
         private listaFuncionalidades?: Funcionalidade[],
@@ -38,7 +38,7 @@ export class Cargo {
             }
         }
     }
-    
+
     public get cargo_id(): string {
         return this._cargo_id;
     }

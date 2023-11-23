@@ -1,7 +1,7 @@
-import { Canal } from "../canal-service/canal.entity";
-import { Funcionario } from "../funcionario-service/funcionario.entity";
+import { Canal } from "../../state/gerenciamento/canal/canal.entity";
+import { Funcionario } from "../../state/gerenciamento/funcionario/funcionario.entity";
 import { Responsavel } from "../../state/gerenciamento/responsavel/responsavel.entity";
-import { Turma } from "../turma-service/turma.entity";
+import { Turma } from "../../state/gerenciamento/turma/turma.entity";
 
 export interface AvisoInterface {
     aviso_id: string,
@@ -31,7 +31,7 @@ export class Aviso {
     private _updated_at: Date = new Date();
     private _created_at: Date = new Date();
 
-    constructor (
+    constructor(
         private data?: AvisoInterface,
     ) {
         if (data !== undefined) {
@@ -48,7 +48,7 @@ export class Aviso {
             this._created_at = data.created_at
         }
     }
-    
+
     public get aviso_id(): string {
         return this._aviso_id;
     }
@@ -131,7 +131,7 @@ export interface AvisoResponsavelInterface {
 }
 
 export class AvisoResponsavel {
-    
+
     private _aviso_responsavel_id: string = '';
     private _aviso: Aviso = new Aviso();
     private _responsavel: Responsavel = new Responsavel();
@@ -147,7 +147,7 @@ export class AvisoResponsavel {
             this._ind_visualizacao = data.ind_visualizacao
         }
     }
-    
+
     public get aviso_responsavel_id(): string {
         return this._aviso_responsavel_id;
     }

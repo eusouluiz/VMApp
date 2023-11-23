@@ -3,15 +3,15 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ConstantesPrioridadesAvisos, ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { FieldSelectOption } from '../../../../shared/components/field-select/field-select.interface';
-import { CanalService } from '../../../../core/services/canal-service/canal.service';
-import { TurmaService } from '../../../../core/services/turma-service/turma.service';
+import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
+import { TurmaService } from '../../../../core/state/gerenciamento/turma/turma.service';
 import { AvisoService } from '../../../../core/services/aviso-service/aviso.service';
 import { LembreteService } from '../../../../core/services/lembrete-service/lembrete.service';
 import { CommonModule } from '@angular/common';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { Aviso } from '../../../../core/services/aviso-service/aviso.entity';
-import { Canal } from '../../../../core/services/canal-service/canal.entity';
-import { Turma } from '../../../../core/services/turma-service/turma.entity';
+import { Canal } from '../../../../core/state/gerenciamento/canal/canal.entity';
+import { Turma } from '../../../../core/state/gerenciamento/turma/turma.entity';
 import { Lembrete } from '../../../../core/services/lembrete-service/lembrete.entity';
 
 @Component({
@@ -131,7 +131,7 @@ export class NovoAvisoComponent implements OnInit {
       value: ConstantesPrioridadesAvisos.ALTA,
     },
   ];
-  
+
   nomePrioridadesBusca: string[] = []
 
   private resgatarNomePrioridadesBusca(): string[] {

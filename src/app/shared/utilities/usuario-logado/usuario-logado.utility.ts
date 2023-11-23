@@ -1,4 +1,4 @@
-import { FuncionalidadeService } from './../../../core/services/funcionalidade-service/funcionalidade.service';
+import { FuncionalidadeService } from '../../../core/state/gerenciamento/funcionalidade/funcionalidade.service';
 import { Injectable } from '@angular/core';
 import { SessionRepository } from './../../../core/state/session/session.repository';
 
@@ -7,7 +7,7 @@ export class UsuarioLogado {
   constructor(
     private sessionRepository: SessionRepository,
     private funcionalidadeService: FuncionalidadeService
-  ) {}
+  ) { }
 
   isResponsavel(): boolean {
     return this.sessionRepository.userInfo()?.tipo === 'R';

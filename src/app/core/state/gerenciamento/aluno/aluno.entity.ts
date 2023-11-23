@@ -1,5 +1,5 @@
 import { Responsavel } from "../responsavel/responsavel.entity";
-import { Turma } from "../../../services/turma-service/turma.entity"
+import { Turma } from "../turma/turma.entity"
 
 export interface AlunoInterface {
     aluno_id: string,
@@ -16,7 +16,7 @@ export class Aluno {
     private _turma: Turma = new Turma();
     private _responsaveis: Responsavel[] = [];
 
-    constructor (
+    constructor(
         data?: AlunoInterface
     ) {
         if (data !== undefined) {
@@ -24,14 +24,14 @@ export class Aluno {
             this._cgm = data.cgm
             this._nome = data.nome
 
-            if (data.turma !== undefined){
+            if (data.turma !== undefined) {
                 this._turma = data.turma
             } else if (data.turma_id !== undefined && data.turma_id !== null) {
                 this._turma.turma_id = data.turma_id
             }
         }
     }
-    
+
     public get aluno_id(): string {
         return this._aluno_id
     }

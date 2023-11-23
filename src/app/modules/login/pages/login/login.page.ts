@@ -6,7 +6,7 @@ import { LoginApiBody } from '../../../../core/state/session/session.interface';
 import { finalize, tap } from 'rxjs';
 import { ToastService } from '../../../../core/toasts/services/toast-service/toast.service';
 import { IonInput } from '@ionic/angular';
-import { Usuario } from '../../../../core/services/usuario-service/usuario.entity';
+import { Usuario } from '../../../../core/state/gerenciamento/usuario/usuario.entity';
 
 @Component({
   selector: 'app-login',

@@ -1,10 +1,10 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
-import { FuncionarioService } from '../../../../core/services/funcionario-service/funcionario.service';
+import { FuncionarioService } from '../../../../core/state/gerenciamento/funcionario/funcionario.service';
 import { Location } from '@angular/common';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
-import { Funcionario } from '../../../../core/services/funcionario-service/funcionario.entity';
+import { Funcionario } from '../../../../core/state/gerenciamento/funcionario/funcionario.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 
 @Component({
@@ -26,7 +26,7 @@ export class GerenciamentoFuncionarioPage extends Pagina implements OnInit {
     super(router, ROTA_BASE, location);
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ionViewWillEnter() {
     this.inicializarConteudo()

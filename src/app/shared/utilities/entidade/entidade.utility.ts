@@ -4,15 +4,15 @@
 
 import { Aluno } from '../../../core/state/gerenciamento/aluno/aluno.entity';
 import { Aviso, AvisoResponsavel } from '../../../core/services/aviso-service/aviso.entity';
-import { Canal, CanalResponsavel } from '../../../core/services/canal-service/canal.entity';
-import { Cargo } from '../../../core/services/cargo-service/cargo.entity';
-import { Funcionalidade } from '../../../core/services/funcionalidade-service/funcionalidade.entity';
-import { Funcionario } from '../../../core/services/funcionario-service/funcionario.entity';
+import { Canal, CanalResponsavel } from '../../../core/state/gerenciamento/canal/canal.entity';
+import { Cargo } from '../../../core/state/gerenciamento/cargo/cargo.entity';
+import { Funcionalidade } from '../../../core/state/gerenciamento/funcionalidade/funcionalidade.entity';
+import { Funcionario } from '../../../core/state/gerenciamento/funcionario/funcionario.entity';
 import { Lembrete } from '../../../core/services/lembrete-service/lembrete.entity';
 import { Mensagem } from '../../../core/services/mensagem-service/mensagem.entity';
 import { Responsavel } from '../../../core/state/gerenciamento/responsavel/responsavel.entity';
-import { Turma } from '../../../core/services/turma-service/turma.entity';
-import { Usuario } from '../../../core/services/usuario-service/usuario.entity';
+import { Turma } from '../../../core/state/gerenciamento/turma/turma.entity';
+import { Usuario } from '../../../core/state/gerenciamento/usuario/usuario.entity';
 
 export var USUARIO_DATA: Usuario[] = [
   new Usuario({
@@ -31,12 +31,12 @@ export var USUARIO_DATA: Usuario[] = [
     tipo: 'R',
     password: 'julho013'
   }),
-  new Usuario({ 
-    user_id: '2', 
-    nome: 'Giacomo Vaz', 
-    cpf: '08918011970', 
-    telefone: '041988222527', 
-    tipo: 'R' 
+  new Usuario({
+    user_id: '2',
+    nome: 'Giacomo Vaz',
+    cpf: '08918011970',
+    telefone: '041988222527',
+    tipo: 'R'
   }),
   new Usuario({
     user_id: 'ed232b7e-3c33-44b1-9e81-8514f6620079',

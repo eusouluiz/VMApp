@@ -1,5 +1,5 @@
 import { Aluno } from "../aluno/aluno.entity";
-import { Usuario } from "../../../services/usuario-service/usuario.entity"
+import { Usuario } from "../usuario/usuario.entity"
 
 export interface ResponsavelInterface {
     responsavel_id: string,
@@ -13,18 +13,18 @@ export class Responsavel {
     private _usuario: Usuario = new Usuario();
     private _alunos: Aluno[] = [];
 
-    constructor (
+    constructor(
         private data?: ResponsavelInterface
     ) {
         if (data !== undefined) {
             this._responsavel_id = data.responsavel_id
             this._usuario = data.user
-            if (data.alunos !== undefined){
+            if (data.alunos !== undefined) {
                 this._alunos = data.alunos
             }
         }
     }
-    
+
     public get responsavel_id(): string {
         return this._responsavel_id
     }

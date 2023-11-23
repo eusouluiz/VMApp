@@ -1,4 +1,4 @@
-import { Aluno } from '../../state/gerenciamento/aluno/aluno.entity';
+import { Aluno } from '../aluno/aluno.entity';
 
 export interface TurmaInterface {
     turma_id: string,
@@ -13,7 +13,7 @@ export class Turma {
     private _descricao: string = '';
     private _alunos: Aluno[] = [];
 
-    constructor (
+    constructor(
         private data?: TurmaInterface,
     ) {
         if (data !== undefined) {
@@ -26,7 +26,7 @@ export class Turma {
             }
         }
     }
-    
+
     public get turma_id(): string {
         return this._turma_id;
     }

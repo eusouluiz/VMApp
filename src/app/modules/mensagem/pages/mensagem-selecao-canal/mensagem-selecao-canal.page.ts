@@ -5,10 +5,10 @@ import { Router } from '@angular/router';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { MensagemService } from '../../../../core/services/mensagem-service/mensagem.service';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
-import { Canal, CanalInterface } from '../../../../core/services/canal-service/canal.entity';
+import { Canal, CanalInterface } from '../../../../core/state/gerenciamento/canal/canal.entity';
 import { SessionRepository } from '../../../../core/state/session/session.repository';
 import { CanalApiService } from '../../state/canal.api.service';
-import { CanalService } from '../../../../core/services/canal-service/canal.service';
+import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
 import { CanalRepository } from '../../state/canal.repository';
 import { Subscription } from 'rxjs';
 
@@ -48,7 +48,7 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
     this.inicializarConteudo();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   OnDestroy() {
     this.userInfoSubscription?.unsubscribe();
@@ -81,7 +81,7 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
         var idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(idCanal, idResponsavel);
         if (idCanalResponsavel === undefined) {
           idCanalResponsavel = this.canalService.incluirCanalResponsavel(idCanal, idResponsavel)
-        } 
+        }
         rota = idCanalResponsavel.toString() + ConstantesRotas.ROTA_MENSAGEM_CANAL;
       } else {
         throw new Error('id responsavel nao definido');

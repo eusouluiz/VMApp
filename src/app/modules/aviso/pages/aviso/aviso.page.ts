@@ -10,7 +10,7 @@ import {
 import { AvisoModalComponent } from '../../components/aviso-modal/aviso-modal.component';
 import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
 import { NovoAvisoComponent } from '../../components/novo-aviso/novo-aviso.component';
-import { CanalService } from '../../../../core/services/canal-service/canal.service';
+import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
 import { Aviso } from '../../../../core/services/aviso-service/aviso.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 import { AVISO_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
@@ -42,7 +42,7 @@ export class AvisoPage extends Pagina implements OnInit {
     this.inicializarConteudo();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ionViewWillEnter() {
     this.pageMenuService.displayStatus.next(true);

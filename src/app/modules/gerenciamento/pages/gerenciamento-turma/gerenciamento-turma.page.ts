@@ -7,8 +7,8 @@ import { PageMenuService } from '../../../../core/services/page-menu/page-menu.s
 import { GerenciamentoRepository } from '../../../../core/state/gerenciamento/gerenciamento.repository';
 import { ToastService } from '../../../../core/toasts/services/toast-service/toast.service';
 import { AlunoService } from '../../../../core/state/gerenciamento/aluno/aluno.service';
-import { Turma } from '../../../../core/services/turma-service/turma.entity';
-import { TurmaService } from '../../../../core/services/turma-service/turma.service';
+import { Turma } from '../../../../core/state/gerenciamento/turma/turma.entity';
+import { TurmaService } from '../../../../core/state/gerenciamento/turma/turma.service';
 
 @Component({
   selector: 'app-gerenciamento-turma',
@@ -35,7 +35,7 @@ export class GerenciamentoTurmaPage extends Pagina implements OnInit {
     this.buscarTurmas()
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ionViewWillEnter() {
     this.pageMenuService.displayStatus.next(false);
@@ -51,7 +51,7 @@ export class GerenciamentoTurmaPage extends Pagina implements OnInit {
     this.listaTurmas = this.turmas.slice()
   }
 
-  buscarTurmas(){
+  buscarTurmas() {
     this.turmaService.buscarTodosTurmas().subscribe({
       next: () => {
         this.inicializarConteudo()
@@ -62,7 +62,7 @@ export class GerenciamentoTurmaPage extends Pagina implements OnInit {
     });
   }
 
-  recarregarPagina(){
+  recarregarPagina() {
     this.buscarTurmas()
   }
 
@@ -88,7 +88,7 @@ export class GerenciamentoTurmaPage extends Pagina implements OnInit {
             },
             error: (err) => {
               this.toastService.error('Erro ao carregar informações ' + turma.nome);
-              
+
               if (err?.original?.status === 422) {
                 return;
               }
@@ -97,7 +97,7 @@ export class GerenciamentoTurmaPage extends Pagina implements OnInit {
         },
         error: (err) => {
           this.toastService.error('Erro ao carregar informações ' + turma.nome);
-          
+
           if (err?.original?.status === 422) {
             return;
           }

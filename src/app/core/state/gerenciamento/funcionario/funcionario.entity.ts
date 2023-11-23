@@ -1,5 +1,5 @@
-import { Cargo } from "../cargo-service/cargo.entity"
-import { Usuario } from "../usuario-service/usuario.entity"
+import { Cargo } from "../cargo/cargo.entity"
+import { Usuario } from "../usuario/usuario.entity"
 
 export interface FuncionarioInterface {
     funcionario_id: string,
@@ -17,7 +17,7 @@ export class Funcionario {
     private _created_at: Date = new Date();
     private _updated_at: Date = new Date();
 
-    constructor (
+    constructor(
         private data?: FuncionarioInterface
     ) {
         if (data !== undefined) {
@@ -25,13 +25,13 @@ export class Funcionario {
             this._usuario.user_id = data.user_id
             this._created_at = data.created_at
             this._updated_at = data.updated_at
-            
+
             if (data.cargo_id !== null) {
                 this._cargo.cargo_id = data.cargo_id
             }
         }
     }
-    
+
     public get funcionario_id(): string {
         return this._funcionario_id
     }

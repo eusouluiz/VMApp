@@ -1,14 +1,14 @@
-import { ResponsavelService } from '../../state/gerenciamento/responsavel/responsavel.service';
+import { ResponsavelService } from '../responsavel/responsavel.service';
 import { Injectable } from '@angular/core';
-import { CANAL_DATA, CANAL_RESPONSAVEL_DATA } from '../../../shared/utilities/entidade/entidade.utility';
+import { CANAL_DATA, CANAL_RESPONSAVEL_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
 import { Canal, CanalResponsavel } from './canal.entity';
-import { Responsavel } from '../../state/gerenciamento/responsavel/responsavel.entity';
+import { Responsavel } from '../responsavel/responsavel.entity';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CanalService {
-  constructor(private responsavelService: ResponsavelService) {}
+  constructor(private responsavelService: ResponsavelService) { }
 
   buscarTodosCanais(): Canal[] {
     return CANAL_DATA;

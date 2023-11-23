@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
-import { FUNCIONARIO_DATA } from '../../../shared/utilities/entidade/entidade.utility';
+import { FUNCIONARIO_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
 import { Funcionario } from './funcionario.entity';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class FuncionarioService {
 
-    buscarTodosFuncionarios(): Funcionario[]{
+    buscarTodosFuncionarios(): Funcionario[] {
         return FUNCIONARIO_DATA
     }
 
-    buscarFuncionario(idFuncionario: string): Funcionario | undefined{
+    buscarFuncionario(idFuncionario: string): Funcionario | undefined {
         return FUNCIONARIO_DATA.find((f) => {
             return f.funcionario_id === idFuncionario
         })
-    } 
+    }
 
     incluirFuncionario(funcionario: Funcionario) {
         FUNCIONARIO_DATA.push(funcionario)
@@ -36,7 +36,7 @@ export class FuncionarioService {
         var indexF = FUNCIONARIO_DATA.findIndex((f) => {
             return f.funcionario_id === idFuncionario
         })
-        if (indexF !== -1){
+        if (indexF !== -1) {
             FUNCIONARIO_DATA.splice(indexF, 1)
         } else {
             throw new Error('funcionario nao encontrado')

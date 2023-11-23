@@ -1,10 +1,10 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CargoService } from '../../../../core/services/cargo-service/cargo.service';
+import { CargoService } from '../../../../core/state/gerenciamento/cargo/cargo.service';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { Location } from '@angular/common';
-import { Cargo } from '../../../../core/services/cargo-service/cargo.entity';
+import { Cargo } from '../../../../core/state/gerenciamento/cargo/cargo.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 
 @Component({
@@ -26,7 +26,7 @@ export class GerenciamentoCargoPage extends Pagina implements OnInit {
     super(router, ROTA_BASE, location);
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ionViewWillEnter() {
     this.pageMenuService.displayStatus.next(false);

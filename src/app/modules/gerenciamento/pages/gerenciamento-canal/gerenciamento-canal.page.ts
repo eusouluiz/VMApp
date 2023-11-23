@@ -1,10 +1,10 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CanalService } from '../../../../core/services/canal-service/canal.service';
+import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { Location } from '@angular/common';
-import { Canal } from '../../../../core/services/canal-service/canal.entity';
+import { Canal } from '../../../../core/state/gerenciamento/canal/canal.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 
 @Component({
@@ -26,7 +26,7 @@ export class GerenciamentoCanalPage extends Pagina implements OnInit {
     super(router, ROTA_BASE, location);
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ionViewWillEnter() {
     this.pageMenuService.displayStatus.next(false);

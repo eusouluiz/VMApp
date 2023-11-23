@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import { TURMA_DATA } from '../../../shared/utilities/entidade/entidade.utility';
+import { TURMA_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
 import { Turma, TurmaInterface } from './turma.entity';
-import { GerenciamentoRepository } from '../../state/gerenciamento/gerenciamento.repository';
+import { GerenciamentoRepository } from '../gerenciamento.repository';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class TurmaService {
-    
+
     constructor(
         private gerenciamentoRepository: GerenciamentoRepository,
         private http: HttpClient,
@@ -18,14 +18,14 @@ export class TurmaService {
 
     }
 
-    buscarTodosTurmas(): Observable<TurmaInterface[]>{
+    buscarTodosTurmas(): Observable<TurmaInterface[]> {
         // return TURMA_DATA
         return this.http
             .get<TurmaInterface[]>(`${environment.api.endpoint}/turma`)
             .pipe(tap((turmas) => this.saveTurmasInStorage(turmas)));
     }
 
-    buscarTurma(idTurma: string): Observable<TurmaInterface>{
+    buscarTurma(idTurma: string): Observable<TurmaInterface> {
         // return TURMA_DATA.find((t) => {
         //     return t.turma_id === idTurma
         // })
@@ -57,7 +57,7 @@ export class TurmaService {
         var indexT = TURMA_DATA.findIndex((t) => {
             return t.turma_id === idTurma
         })
-        if (indexT !== -1){
+        if (indexT !== -1) {
             TURMA_DATA.splice(indexT, 1)
         } else {
             throw new Error('turma nao encontrado')
@@ -65,7 +65,7 @@ export class TurmaService {
         // return this.http
         //     .delete<TurmaInterface[]>(`${environment.api.endpoint}/turma/${idTurma}`)
     }
-    
+
     saveTurmasInStorage(turmas: TurmaInterface[]) {
         this.gerenciamentoRepository.update({ turmas: turmas });
     }

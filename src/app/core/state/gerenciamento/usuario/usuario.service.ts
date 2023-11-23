@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { USUARIO_DATA } from '../../../shared/utilities/entidade/entidade.utility';
+import { USUARIO_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
 import { Usuario, UsuarioInterface } from './usuario.entity';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 

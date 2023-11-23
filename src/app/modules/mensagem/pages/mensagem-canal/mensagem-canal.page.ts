@@ -1,12 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CanalService } from '../../../../core/services/canal-service/canal.service';
+import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
 import { MensagemService } from '../../../../core/services/mensagem-service/mensagem.service';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
-import { CanalResponsavel } from '../../../../core/services/canal-service/canal.entity';
+import { CanalResponsavel } from '../../../../core/state/gerenciamento/canal/canal.entity';
 import { Mensagem } from '../../../../core/services/mensagem-service/mensagem.entity';
 
 @Component({
@@ -37,7 +37,7 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     this.inicializarConteudo();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ionViewWillEnter() {
     this.pageMenuService.displayStatus.next(false);

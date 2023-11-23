@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { FuncionarioService } from '../../../../core/services/funcionario-service/funcionario.service';
-import { CargoService } from '../../../../core/services/cargo-service/cargo.service';
+import { FuncionarioService } from '../../../../core/state/gerenciamento/funcionario/funcionario.service';
+import { CargoService } from '../../../../core/state/gerenciamento/cargo/cargo.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina-gerenciamento-detalhes/pagina-gerenciamento-detalhes.utility';
-import { Funcionario } from '../../../../core/services/funcionario-service/funcionario.entity';
-import { Cargo } from '../../../../core/services/cargo-service/cargo.entity';
+import { Funcionario } from '../../../../core/state/gerenciamento/funcionario/funcionario.entity';
+import { Cargo } from '../../../../core/state/gerenciamento/cargo/cargo.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 
 @Component({
@@ -36,7 +36,7 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
     this.inicializarConteudo();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ionViewWillEnter() {
     this.pageMenuService.displayStatus.next(false);

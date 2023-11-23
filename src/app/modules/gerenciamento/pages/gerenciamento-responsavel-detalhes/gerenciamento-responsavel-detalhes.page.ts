@@ -1,4 +1,4 @@
-import { UsuarioService } from './../../../../core/services/usuario-service/usuario.service';
+import { UsuarioService } from '../../../../core/state/gerenciamento/usuario/usuario.service';
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { Responsavel } from '../../../../core/state/gerenciamento/responsavel/re
 import { Aluno } from '../../../../core/state/gerenciamento/aluno/aluno.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 import { GerenciamentoRepository } from '../../../../core/state/gerenciamento/gerenciamento.repository';
-import { UsuarioInterface } from '../../../../core/services/usuario-service/usuario.entity';
+import { UsuarioInterface } from '../../../../core/state/gerenciamento/usuario/usuario.entity';
 import { ToastService } from '../../../../core/toasts/services/toast-service/toast.service';
 
 @Component({
@@ -45,7 +45,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
     this.inicializarConteudo()
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ionViewWillEnter() {
     this.pageMenuService.displayStatus.next(false);
@@ -67,7 +67,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
     });
   }
 
-  recarregarPagina(){
+  recarregarPagina() {
     this.buscarAlunos()
     this.inicializarConteudo()
   }
@@ -169,16 +169,16 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
   }
 
   //salvar edicao
-  salvar() {    
+  salvar() {
     if (this.form?.valid) {
-      
+
       var usuario: UsuarioInterface = {
         nome: this.form.value.nome,
         cpf: this.form.value.cpf,
         telefone: this.form.value.telefone,
         tipo: 'R',
       }
-      
+
       if (this.isModoCadastrar()) {
         usuario.password = this.form?.value.senha
         this.usuarioService.incluirUsuario(usuario).subscribe({
@@ -191,14 +191,14 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
           },
           error: (err) => {
             this.toastService.error('Erro ao Cadastrar Responsável');
-            
+
             if (err?.original?.status === 422) {
               return;
             }
           },
         });
       } else {
-        if (this.form.value.senha !== ''){
+        if (this.form.value.senha !== '') {
           usuario.password = this.form?.value.senha
         }
         usuario.user_id = this.responsavel.usuario.user_id
@@ -213,7 +213,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
           },
           error: (err) => {
             this.toastService.error('Erro ao Editar Responsável');
-            
+
             if (err?.original?.status === 422) {
               return;
             }
@@ -227,7 +227,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
     }
   }
 
-  atualizarResponsavel(){
+  atualizarResponsavel() {
     this.responsavel.usuario.nome = this.form?.value.nome;
     this.responsavel.usuario.telefone = this.form?.value.telefone;
     this.responsavel.usuario.cpf = this.form?.value.cpf;
@@ -259,7 +259,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
     });
   }
 
-  preencherListaTodosAlunos(){
+  preencherListaTodosAlunos() {
     const alunos = this.gerenciamentoRepository.alunos()
     this.listaTodosAlunos = []
     alunos.forEach((aluno) => {

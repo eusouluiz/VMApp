@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { localStorageStrategy, persistState } from '@ngneat/elf-persist-state';
 import { ResponsavelInterface } from './responsavel/responsavel.entity';
 import { AlunoInterface } from './aluno/aluno.entity';
-import { TurmaInterface } from '../../services/turma-service/turma.entity';
+import { TurmaInterface } from './turma/turma.entity';
 
 interface GerenciamentoState {
   responsaveis: ResponsavelInterface[],

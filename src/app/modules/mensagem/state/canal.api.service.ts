@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CanalRepository } from './canal.repository';
-import { CanalInterface } from '../../../core/services/canal-service/canal.entity';
+import { CanalInterface } from '../../../core/state/gerenciamento/canal/canal.entity';
 import { CANAL_DATA } from '../../../shared/utilities/entidade/entidade.utility';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class CanalApiService {
-  constructor(private http: HttpClient, private canalRepository: CanalRepository) {}
+  constructor(private http: HttpClient, private canalRepository: CanalRepository) { }
 
   getCanais(): Observable<CanalInterface[]> {
     // const params = {};

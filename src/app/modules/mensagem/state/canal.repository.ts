@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { createStore, select, withProps } from '@ngneat/elf';
 import { localStorageStrategy, persistState } from '@ngneat/elf-persist-state';
-import { CanalInterface } from '../../../core/services/canal-service/canal.entity';
+import { CanalInterface } from '../../../core/state/gerenciamento/canal/canal.entity';
 
 interface CanalState {
   canais: CanalInterface[] | undefined;

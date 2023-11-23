@@ -6,10 +6,10 @@ import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina
 import { AlunoService } from '../../../../core/state/gerenciamento/aluno/aluno.service';
 import { ResponsavelService } from '../../../../core/state/gerenciamento/responsavel/responsavel.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
-import { TurmaService } from '../../../../core/services/turma-service/turma.service';
+import { TurmaService } from '../../../../core/state/gerenciamento/turma/turma.service';
 import { Aluno } from '../../../../core/state/gerenciamento/aluno/aluno.entity';
 import { Responsavel } from '../../../../core/state/gerenciamento/responsavel/responsavel.entity';
-import { Turma } from '../../../../core/services/turma-service/turma.entity';
+import { Turma } from '../../../../core/state/gerenciamento/turma/turma.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 
 @Component({
@@ -41,7 +41,7 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
     this.inicializarConteudo();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ionViewWillEnter() {
     this.pageMenuService.displayStatus.next(false);

@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
-import { CanalService } from '../../../../core/services/canal-service/canal.service';
+import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
 import { AlunoService } from '../../../../core/state/gerenciamento/aluno/aluno.service';
 import { MensagemService } from '../../../../core/services/mensagem-service/mensagem.service';
-import { Canal } from '../../../../core/services/canal-service/canal.entity';
+import { Canal } from '../../../../core/state/gerenciamento/canal/canal.entity';
 import { Aluno } from '../../../../core/state/gerenciamento/aluno/aluno.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 
@@ -41,7 +41,7 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
     this.inicializarConteudo();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ionViewWillEnter(): void {
     this.pageMenuService.displayStatus.next(false);
