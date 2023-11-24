@@ -1,14 +1,21 @@
+import { UsuarioService } from '../../../../core/state/gerenciamento/usuario/usuario.service';
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina-gerenciamento-detalhes/pagina-gerenciamento-detalhes.utility';
 import { TurmaService } from '../../../../core/state/gerenciamento/turma/turma.service';
 import { AlunoService } from '../../../../core/state/gerenciamento/aluno/aluno.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
-import { Turma } from '../../../../core/state/gerenciamento/turma/turma.entity';
+import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina-gerenciamento-detalhes/pagina-gerenciamento-detalhes.utility';
+import { Turma, TurmaInterface } from '../../../../core/state/gerenciamento/turma/turma.entity';
 import { Aluno } from '../../../../core/state/gerenciamento/aluno/aluno.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
+import { GerenciamentoRepository } from '../../../../core/state/gerenciamento/gerenciamento.repository';
+import { UsuarioInterface } from '../../../../core/state/gerenciamento/usuario/usuario.entity';
+import { ToastService } from '../../../../core/toasts/services/toast-service/toast.service';
+import { Funcionalidade } from '../../../../core/state/gerenciamento/funcionalidade/funcionalidade.entity';
+import { FuncionalidadeService } from '../../../../core/state/gerenciamento/funcionalidade/funcionalidade.service';
+import { FUNCIONALIDADE_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
 
 @Component({
   selector: 'app-gerenciamento-turma-detalhes',
@@ -18,22 +25,29 @@ import { PageMenuService } from '../../../../core/services/page-menu/page-menu.s
 export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
   turma: Turma = new Turma();
 
-  listaTodosAlunos: Aluno[] | null = null;
+  listaTodosAlunos: Aluno[] = [];
+  listaTodosFuncionalidades: Funcionalidade[] = [];
 
   constructor(
     private formBuilder: UntypedFormBuilder,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     public location: Location,
+    private usuarioService: UsuarioService,
     private turmaService: TurmaService,
     private alunoService: AlunoService,
-    private pageMenuService: PageMenuService
+    private funcionalidadeService: FuncionalidadeService,
+    private pageMenuService: PageMenuService,
+    private gerenciamentoRepository: GerenciamentoRepository,
+    private toastService: ToastService
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO;
     super(router, ROTA_BASE, location);
 
+    this.definirModo();
     this.inicializarForms();
-    this.inicializarConteudo();
+    this.preencherListaTodosAlunos()
+    this.inicializarConteudo()
   }
 
   ngOnInit() { }
@@ -53,15 +67,17 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
     });
   }
 
-  protected inicializarConteudo(): void {
-    this.alunoService.buscarTodosAlunos();
+  recarregarPagina() {
+    this.buscarAlunos()
+    this.inicializarConteudo()
+  }
 
-    this.definirModo();
+  protected inicializarConteudo(): void {
 
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (this.isModoDetalhes() && id !== null) {
       this.turma = this.resgatarTurma(id);
-
+      console.log(this.turma)
       this.form?.setValue({
         nome: this.turma.nome,
       });
@@ -69,17 +85,17 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
     this.inicializarTabelaAlunos();
 
     if (this.isModoDetalhes()) {
-      this.form?.disable();
+      this.desabilitarForms()
     }
   }
 
   // ---- busca turma ----//
   private resgatarTurma(id: string): Turma {
-    //TODO buscar turma
-    this.turmaService.buscarTurma(id);
-    const turma = new Turma()
+    this.turmaService.buscarTurma(id).subscribe();
+    const turma = this.gerenciamentoRepository.turma(id)
+    console.log(turma)
     if (turma !== undefined) {
-      return turma;
+      return new Turma(turma);
     }
     return new Turma();
   }
@@ -89,14 +105,47 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
 
   //delecao
   protected deletar() {
-    this.turmaService.deletarTurma(this.turma.turma_id);
-    this.retornarPagina();
+    this.turmaService.deletarTurma(this.turma.turma_id).subscribe({
+      next: () => {
+        this.usuarioService.deletarUsuario(this.turma.turma_id).subscribe({
+          next: () => {
+            this.atualizarTurma()
+            this.toastService.success('Sucesso ao Remover ' + this.turma.nome);
+            this.retornarPagina();
+          },
+          error: (err) => {
+            this.toastService.error('Erro ao Remover Turma');
+    
+            if (err?.original?.status === 422) {
+              return;
+            }
+          },
+        });
+      },
+      error: (err) => {
+        this.toastService.error('Erro ao Remover Turma');
+
+        if (err?.original?.status === 422) {
+          return;
+        }
+      },
+    });
   }
 
   //edicao
 
   protected inicializarComponentesEdicao() {
     this.inicializarTabelaAlunos();
+  }
+
+  protected habilitarForms(): void {
+    this.form?.enable();
+    this.formBuscaAluno?.enable();
+  }
+
+  protected desabilitarForms(): void {
+    this.form?.disable();
+    this.formBuscaAluno?.disable();
   }
 
   //cancelar edicao
@@ -111,7 +160,7 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
     this.form?.setValue({
       nome: this.turma.nome,
     });
-    this.form?.disable();
+    this.desabilitarForms();
 
     this.inicializarTabelaAlunos();
   }
@@ -119,21 +168,59 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
   //salvar edicao
   salvar() {
     if (this.form?.valid) {
-      this.turma.nome = this.form?.value.nome;
 
-      this.atualizarAlunos();
-
-      if (this.isModoCadastrar()) {
-        this.turmaService.incluirTurma(this.turma);
-      } else {
-        this.turmaService.alterarTurma(this.turma);
+      var turma: TurmaInterface = {
+        nome: this.form.value.nome,
+        descricao: 'descricao'
       }
 
-      this.modo = 'detalhes';
-      this.form?.disable();
+      if (this.isModoCadastrar()) {
+        this.turmaService.incluirTurma(turma).subscribe({
+          next: () => {
+            if (turma.turma_id !== undefined && turma.turma_id !== null) {
+              this.turma.turma_id = turma.turma_id
+            }
+            this.atualizarTurma()
+            this.turmaService.vincularAlunos(this.turma, this.listaAlunosTabela)
+            this.atualizarAlunos()
+            this.toastService.success('Sucesso ao cadastrar ' + this.turma.nome);
+            this.retornarModoDetalhes()
+          },
+          error: (err) => {
+            this.toastService.error('Erro ao cadastrar Turma');
+
+            if (err?.original?.status === 422) {
+              return;
+            }
+          },
+        });
+      } else {
+        this.turmaService.alterarTurma(turma, this.turma.turma_id).subscribe({
+          next: () => {
+            this.atualizarTurma()
+            this.turmaService.vincularAlunos(this.turma, this.listaAlunosTabela)
+            this.atualizarAlunos()
+            this.toastService.success('Sucesso ao editar ' + this.turma.nome);
+            this.retornarModoDetalhes()
+          },
+          error: (err) => {
+            this.toastService.error('Erro ao editar Turma');
+
+            if (err?.original?.status === 422) {
+              return;
+            }
+          },
+        });
+      }
+
+
     } else {
       this.form?.markAllAsTouched();
     }
+  }
+
+  atualizarTurma() {
+    this.turma.nome = this.form?.value.nome;
   }
   // ---- controle botoes ----//
 
@@ -152,44 +239,59 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
 
   listaAlunosTabela!: Aluno[];
 
+  buscarAlunos() {
+    this.alunoService.buscarTodosAlunos().subscribe({
+      next: () => {
+        this.preencherListaTodosAlunos()
+        this.inicializarBuscaAlunos()
+      }
+    });
+  }
+
+  preencherListaTodosAlunos() {
+    const alunos = this.gerenciamentoRepository.alunos()
+    this.listaTodosAlunos = []
+    alunos.forEach((aluno) => {
+      this.listaTodosAlunos.push(new Aluno(aluno))
+    })
+  }
+
   private inicializarTabelaAlunos() {
     this.listaAlunosTabela = this.turma.alunos.slice();
-    if (!this.isModoDetalhes()) {
-      this.inicializarBuscaAlunos();
-    }
+    this.inicializarBuscaAlunos()
   }
 
   private inicializarBuscaAlunos() {
     this.listaAlunosBusca = [];
-    if (this.listaTodosAlunos !== null) {
-      this.listaTodosAlunos.forEach((f) => {
-        const idAluno = f.aluno_id;
-        var isAlunoPossuiAluno = false;
+    if (this.listaTodosAlunos.length > 0) {
+      this.listaTodosAlunos.forEach((a) => {
+        const idAluno = a.aluno_id;
+        var isTurmaPossuiAluno = false;
 
         for (let i = 0; i < this.listaAlunosTabela.length; i++) {
-          const alunoAluno = this.listaAlunosTabela[i];
-          if (alunoAluno.aluno_id === idAluno) {
-            isAlunoPossuiAluno = true;
+          const turmaAluno = this.listaAlunosTabela[i];
+          if (turmaAluno.aluno_id === idAluno) {
+            isTurmaPossuiAluno = true;
             break;
           }
         }
 
-        if (!isAlunoPossuiAluno) {
-          this.listaAlunosBusca.push(f);
+        if (!isTurmaPossuiAluno) {
+          this.listaAlunosBusca.push(a);
         }
       });
     }
 
-    this.nomeAlunosBusca = this.resgatarNomeAlunosBusca(this.listaAlunosBusca);
+    this.resgatarNomeAlunosBusca(this.listaAlunosBusca);
     this.limparCampoBuscaAluno();
   }
 
-  private resgatarNomeAlunosBusca(lista: Aluno[]): string[] {
-    var nomes: string[] = [];
+  private resgatarNomeAlunosBusca(lista: Aluno[]) {
+    // esvazia lista
+    this.nomeAlunosBusca.splice(0, this.nomeAlunosBusca.length)
     lista.forEach((aluno) => {
-      nomes.push(aluno.nome);
+      this.nomeAlunosBusca.push(aluno.nome);
     });
-    return nomes;
   }
 
   adicionarAluno(valor: number) {
@@ -215,6 +317,7 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
   private removerAlunoDaListaBusca(index: number) {
     for (let i = 0; i < this.listaAlunosBusca.length; i++) {
       if (index === i) {
+        // remove item da lista
         this.listaAlunosBusca.splice(index, 1);
         this.nomeAlunosBusca.splice(index, 1);
         break;
@@ -223,10 +326,10 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   private atualizarAlunos() {
-    this.turma.alunos = this.listaAlunosTabela.sort((f1, f2) => {
-      if (f1.nome.toLowerCase() > f2.nome.toLowerCase()) {
+    this.turma.alunos = this.listaAlunosTabela.sort((aluno1, aluno2) => {
+      if (aluno1.nome.toLowerCase() > aluno2.nome.toLowerCase()) {
         return 1;
-      } else if (f2.nome.toLowerCase() > f1.nome.toLowerCase()) {
+      } else if (aluno2.nome.toLowerCase() > aluno1.nome.toLowerCase()) {
         return -1;
       } else {
         return 0;
@@ -235,18 +338,20 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   navegarTelaAluno(id: number) {
-    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_ALUNO;
-    if (id !== -1) {
-      rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
-    } else {
-      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
+    if (this.isModoDetalhes()) {
+      var rota = ConstantesRotas.ROTA_GERENCIAMENTO_ALUNO;
+      if (id !== -1) {
+        rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
+      } else {
+        rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
+      }
+      this.navegarPara(rota);
     }
-    this.navegarPara(rota);
   }
 
   deletarAluno(id: string) {
-    const indexAluno = this.listaAlunosTabela.findIndex((r) => {
-      return r.aluno_id === id;
+    const indexAluno = this.listaAlunosTabela.findIndex((aluno) => {
+      return aluno.aluno_id === id;
     });
     if (indexAluno !== -1) {
       const aluno = this.listaAlunosTabela[indexAluno];
@@ -258,4 +363,5 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   // ---- controle alunos ----//
+
 }

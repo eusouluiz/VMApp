@@ -1,14 +1,14 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { TurmaService } from '../../../../core/state/gerenciamento/turma/turma.service';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { Location } from '@angular/common';
+import { Turma } from '../../../../core/state/gerenciamento/turma/turma.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 import { GerenciamentoRepository } from '../../../../core/state/gerenciamento/gerenciamento.repository';
 import { ToastService } from '../../../../core/toasts/services/toast-service/toast.service';
-import { AlunoService } from '../../../../core/state/gerenciamento/aluno/aluno.service';
-import { Turma } from '../../../../core/state/gerenciamento/turma/turma.entity';
-import { TurmaService } from '../../../../core/state/gerenciamento/turma/turma.service';
+import { FuncionarioService } from '../../../../core/state/gerenciamento/funcionario/funcionario.service';
 
 @Component({
   selector: 'app-gerenciamento-turma',
@@ -23,7 +23,7 @@ export class GerenciamentoTurmaPage extends Pagina implements OnInit {
   constructor(
     private router: Router,
     private turmaService: TurmaService,
-    private alunoService: AlunoService,
+    private funcionarioService: FuncionarioService,
     public location: Location,
     private pageMenuService: PageMenuService,
     private gerenciamentoRepository: GerenciamentoRepository,
@@ -32,10 +32,10 @@ export class GerenciamentoTurmaPage extends Pagina implements OnInit {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO;
     super(router, ROTA_BASE, location);
 
-    this.buscarTurmas()
+    this.inicializarConteudo()
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   ionViewWillEnter() {
     this.pageMenuService.displayStatus.next(false);
@@ -51,18 +51,15 @@ export class GerenciamentoTurmaPage extends Pagina implements OnInit {
     this.listaTurmas = this.turmas.slice()
   }
 
-  buscarTurmas() {
+  buscarTurmas(){
     this.turmaService.buscarTodosTurmas().subscribe({
       next: () => {
         this.inicializarConteudo()
-      },
-      error: (err) => {
-        this.toastService.error('Falha ao buscar turmas, tente novamente mais tarde');
-      },
+      }
     });
   }
 
-  recarregarPagina() {
+  recarregarPagina(){
     this.buscarTurmas()
   }
 
@@ -77,18 +74,18 @@ export class GerenciamentoTurmaPage extends Pagina implements OnInit {
   }
 
   navegarTelaTurma(turma?: Turma) {
-    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_RESPONSAVEL;
+    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_TURMA;
     if (turma !== undefined) {
       this.turmaService.buscarTurma(turma.turma_id).subscribe({
         next: () => {
-          this.alunoService.buscarTodosAlunos().subscribe({
+          this.funcionarioService.buscarTodosFuncionarios().subscribe({
             next: () => {
               rota = rota + ConstantesRotas.BARRA + turma.turma_id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
               this.navegarPara(rota)
             },
             error: (err) => {
               this.toastService.error('Erro ao carregar informações ' + turma.nome);
-
+              
               if (err?.original?.status === 422) {
                 return;
               }
@@ -97,7 +94,7 @@ export class GerenciamentoTurmaPage extends Pagina implements OnInit {
         },
         error: (err) => {
           this.toastService.error('Erro ao carregar informações ' + turma.nome);
-
+          
           if (err?.original?.status === 422) {
             return;
           }

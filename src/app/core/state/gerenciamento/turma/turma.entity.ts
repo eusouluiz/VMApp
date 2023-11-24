@@ -1,9 +1,9 @@
 import { Aluno } from '../aluno/aluno.entity';
 
 export interface TurmaInterface {
-    turma_id: string,
+    turma_id?: string,
     nome: string,
-    descricao: string,
+    descricao?: string,
     alunos?: Aluno[],
 }
 
@@ -17,9 +17,13 @@ export class Turma {
         private data?: TurmaInterface,
     ) {
         if (data !== undefined) {
-            this._turma_id = data.turma_id
+            if (data.turma_id !== undefined) {
+                this._turma_id = data.turma_id
+            }
             this._nome = data.nome
-            this._descricao = data.descricao
+            if (data.descricao !== undefined) {
+                this._descricao = data.descricao
+            }
 
             if (data.alunos !== undefined) {
                 this._alunos = data.alunos
