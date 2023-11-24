@@ -153,6 +153,7 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
     });
     this.desabilitarForms();
 
+    this.inicializarTabelaResponsaveis();
     this.inicializarTabelaTurmas();
   }
 

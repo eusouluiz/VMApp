@@ -1,10 +1,12 @@
 import { Funcionalidade } from '../funcionalidade/funcionalidade.entity';
-import { Funcionario } from '../funcionario/funcionario.entity';
+import { Funcionario, FuncionarioInterface } from '../funcionario/funcionario.entity';
 
 export interface CargoInterface {
-    cargo_id: string,
+    cargo_id?: string,
     nome: string,
-    descricao: string,
+    descricao?: string,
+    funcionalidades?: Funcionalidade[]
+    funcionarios?: FuncionarioInterface[]
 }
 
 export class Cargo {
@@ -16,19 +18,23 @@ export class Cargo {
 
     constructor(
         private data?: CargoInterface,
-        private listaFuncionarios?: Funcionario[],
-        private listaFuncionalidades?: Funcionalidade[],
     ) {
         if (data !== undefined) {
-            this._cargo_id = data.cargo_id
-            this._nome = data.nome
-            this._descricao = data.descricao
-
-            if (listaFuncionarios !== undefined) {
-                this._funcionarios = listaFuncionarios
+            if (data.cargo_id !== undefined) {
+                this._cargo_id = data.cargo_id
             }
-            if (listaFuncionalidades !== undefined) {
-                this._funcionalidades = listaFuncionalidades
+            this._nome = data.nome
+            if (data.descricao !== undefined) {
+                this._descricao = data.descricao
+            }
+
+            if (data.funcionarios !== undefined) {
+                data.funcionarios.forEach((funcionario) => {
+                    this._funcionarios.push(new Funcionario(funcionario))
+                })
+            }
+            if (data.funcionalidades !== undefined) {
+                this._funcionalidades = data.funcionalidades
             }
         }
     }

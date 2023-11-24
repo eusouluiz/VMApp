@@ -13,6 +13,7 @@ import { Mensagem } from '../../../core/state/mensagem/mensagem-service/mensagem
 import { Responsavel } from '../../../core/state/gerenciamento/responsavel/responsavel.entity';
 import { Turma } from '../../../core/state/gerenciamento/turma/turma.entity';
 import { Usuario } from '../../../core/state/gerenciamento/usuario/usuario.entity';
+import { ConstantesFuncionalidades } from '../constantes/constantes.utility';
 
 export var USUARIO_DATA: Usuario[] = [
   new Usuario({
@@ -130,49 +131,49 @@ export var RESPONSAVEL_DATA: Responsavel[] = [
 
 export var FUNCIONALIDADE_DATA: Funcionalidade[] = [
   new Funcionalidade({
-    funcionalidade_id: '0',
+    funcionalidade_id: ConstantesFuncionalidades.GERENCIAMENTO_RESPONSAVEL,
     nome: 'Gerenciamento Responsaveis',
     descricao: 'Gerencia todos os responsaveis',
     updated_at: new Date(),
     created_at: new Date(),
   }),
   new Funcionalidade({
-    funcionalidade_id: '1',
+    funcionalidade_id: ConstantesFuncionalidades.GERENCIAMENTO_ALUNO,
     nome: 'Gerenciamento Aluno',
     descricao: 'Gerencia todos os alunos',
     updated_at: new Date(),
     created_at: new Date(),
   }),
   new Funcionalidade({
-    funcionalidade_id: '2',
+    funcionalidade_id: ConstantesFuncionalidades.GERENCIAMENTO_TURMA,
     nome: 'Gerenciamento Turma',
     descricao: 'Gerencia todas as turmas',
     updated_at: new Date(),
     created_at: new Date(),
   }),
   new Funcionalidade({
-    funcionalidade_id: '3',
+    funcionalidade_id: ConstantesFuncionalidades.GERENCIAMENTO_FUNCIONARIO,
     nome: 'Gerenciamento Funcionarios',
     descricao: 'Gerencia todos os funcionarios',
     updated_at: new Date(),
     created_at: new Date(),
   }),
   new Funcionalidade({
-    funcionalidade_id: '4',
+    funcionalidade_id: ConstantesFuncionalidades.GERENCIAMENTO_CARGO,
     nome: 'Gerenciamento Cargo',
     descricao: 'Gerencia todos os cargos',
     updated_at: new Date(),
     created_at: new Date(),
   }),
   new Funcionalidade({
-    funcionalidade_id: '5',
+    funcionalidade_id: ConstantesFuncionalidades.GERENCIAMENTO_CANAL,
     nome: 'Gerenciamento Canal',
     descricao: 'Gerencia todos os canais',
     updated_at: new Date(),
     created_at: new Date(),
   }),
   new Funcionalidade({
-    funcionalidade_id: '6',
+    funcionalidade_id: ConstantesFuncionalidades.GERENCIAMENTO_AVISO,
     nome: 'Gerenciamento Aviso',
     descricao: 'Gerencia todos os avisos',
     updated_at: new Date(),
@@ -187,8 +188,6 @@ export var CARGO_DATA: Cargo[] = [
       nome: 'Administração',
       descricao: '',
     },
-    undefined,
-    FUNCIONALIDADE_DATA
   ),
   new Cargo({
     cargo_id: '1',
