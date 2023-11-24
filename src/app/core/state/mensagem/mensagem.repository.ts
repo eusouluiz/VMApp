@@ -2,17 +2,22 @@ import { createStore, select, withProps } from '@ngneat/elf';
 import { Injectable } from '@angular/core';
 import { localStorageStrategy, persistState } from '@ngneat/elf-persist-state';
 import { MensagemInterface } from './mensagem-service/mensagem.entity';
+import { CanalInterface } from '../gerenciamento/canal/canal.entity';
 
 export interface CanalMensagem {
   canal_responsavel_id: string,
-  mensagens: MensagemInterface[]
+  responsavel_id?: string,
+  canal_id?: string,
+  mensagens?: MensagemInterface[]
 }
 
 interface MensagemState {
+  listaCanais: CanalInterface[]
   canais: CanalMensagem[]
 }
 
 const initialState: MensagemState = {
+  listaCanais: [],
   canais: [],
 };
 
@@ -26,7 +31,14 @@ export const persist = persistState(store, {
 @Injectable({ providedIn: 'root' })
 export class MensagemRepository {
 
+  listaCanais$ = store.pipe(select((state) => state.listaCanais));
+
   canais$ = store.pipe(select((state) => state.canais));
+
+  listaCanais(): CanalInterface[] {
+    return store.getValue().listaCanais;
+  }
+
 
   canais(): CanalMensagem[] {
     return store.getValue().canais;

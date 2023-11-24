@@ -1,6 +1,7 @@
 import { FuncionalidadeService } from '../../../core/state/gerenciamento/funcionalidade/funcionalidade.service';
 import { Injectable } from '@angular/core';
 import { SessionRepository } from './../../../core/state/session/session.repository';
+import { Responsavel } from '../../../core/state/gerenciamento/responsavel/responsavel.entity';
 
 @Injectable({ providedIn: 'root' })
 export class UsuarioLogado {
@@ -44,6 +45,14 @@ export class UsuarioLogado {
 
   getNome(): string | undefined {
     return this.sessionRepository.userInfo()?.nome;
+  }
+
+  getResponsavel(): Responsavel | undefined {
+    if (this.sessionRepository.userInfo()?.responsavel !== null) {
+      return this.sessionRepository.userInfo()?.responsavel;
+    } else {
+      return undefined;
+    }
   }
 
   getIdResponsavel(): string | undefined {

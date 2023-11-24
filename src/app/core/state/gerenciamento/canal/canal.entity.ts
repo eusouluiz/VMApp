@@ -1,3 +1,4 @@
+import { CanalMensagem } from '../../mensagem/mensagem.repository';
 import { Cargo } from '../cargo/cargo.entity';
 import { Responsavel } from '../responsavel/responsavel.entity';
 
@@ -65,11 +66,9 @@ export class Canal {
 }
 
 export interface CanalResponsavelInterface {
-  canal_responsavel_id: string;
+  id?: string;
   canal_id: string;
   responsavel_id: string;
-  updated_at: Date;
-  created_at: Date;
 }
 
 export class CanalResponsavel {
@@ -79,17 +78,13 @@ export class CanalResponsavel {
 
   private _responsavel: Responsavel = new Responsavel();
 
-  private _updated_at: Date = new Date();
-
-  private _created_at: Date = new Date();
-
   constructor(private data?: CanalResponsavelInterface) {
     if (data !== undefined) {
-      this._canal_responsavel_id = data.canal_responsavel_id;
+      if (data.id !== undefined) {
+        this._canal_responsavel_id = data.id;
+      }
       this._canal.canal_id = data.canal_id;
       this._responsavel.responsavel_id = data.responsavel_id;
-      this._updated_at = data.updated_at;
-      this._created_at = data.created_at;
     }
   }
 
@@ -117,19 +112,18 @@ export class CanalResponsavel {
     this._responsavel = value;
   }
 
-  public get updated_at(): Date {
-    return this._updated_at;
-  }
-
-  public set updated_at(value: Date) {
-    this._updated_at = value;
-  }
-
-  public get created_at(): Date {
-    return this._created_at;
-  }
-
-  public set created_at(value: Date) {
-    this._created_at = value;
+  static converterCanalMensagem(canalMensagem: CanalMensagem): CanalResponsavel{
+    console.log(canalMensagem)
+    if (canalMensagem.canal_id !== undefined && canalMensagem.responsavel_id !== undefined) {
+      var canal: CanalResponsavelInterface = {
+        canal_id: canalMensagem.canal_id,
+        responsavel_id: canalMensagem.responsavel_id
+      }
+      if (canalMensagem.canal_id !== undefined) {
+        canal.id = canalMensagem.canal_responsavel_id
+      }
+      return new CanalResponsavel(canal)
+    }
+    throw new Error('canalMensagem invalido')
   }
 }

@@ -8,6 +8,7 @@ import { ToastService } from '../../../../core/toasts/services/toast-service/toa
 import { IonInput } from '@ionic/angular';
 import { Usuario } from '../../../../core/state/gerenciamento/usuario/usuario.entity';
 import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
+import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +30,8 @@ export class LoginPage {
     private router: Router,
     private sessionService: SessionService,
     private canalService: CanalService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private usuarioLogado: UsuarioLogado
   ) {
     this.form = this.formBuilder.group({
       cpf: ['', [Validators.required]],
@@ -53,20 +55,41 @@ export class LoginPage {
     };
 
     this.sessionService
-      .login(body)
-      .pipe(
-        tap(() => this.sessionService.getUserInfo().subscribe()),
-        finalize(() => {
-          // this.loading = false;
-        })
-      )
-      .subscribe({
+      .login(body).subscribe({
         next: () => {
-
-          this.canalService.buscarTodosCanais().subscribe({
-            next: () => {
-              this.form.reset();
-              this.navegaParaApp();
+          this.sessionService.getUserInfo().subscribe({
+            next: (usuario) => {
+              this.canalService.buscarTodosCanaisMensagem().subscribe({
+                next: (canal) => {
+                  if (usuario.responsavel === undefined) {
+                    this.form.reset();
+                    this.navegaParaApp();
+                  } else {
+                    this.canalService.buscarCanalResponsavelTodos({idResponsavel: usuario.responsavel.responsavel_id}).subscribe({
+                      next: () => {
+                        this.form.reset();
+                        this.navegaParaApp();
+                      },
+                      error: (err) => {
+                        this.toastService.error('Falha ao realizar o login');
+                        this.loading = false;
+              
+                        if (err?.original?.status === 422) {
+                          return;
+                        }
+                      },
+                    })
+                  }
+                },
+                error: (err) => {
+                  this.toastService.error('Falha ao realizar o login');
+                  this.loading = false;
+        
+                  if (err?.original?.status === 422) {
+                    return;
+                  }
+                },
+              })
             },
             error: (err) => {
               this.toastService.error('Falha ao realizar o login');

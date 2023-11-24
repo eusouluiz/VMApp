@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { MensagemService } from '../../../../core/state/mensagem/mensagem-service/mensagem.service';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
-import { Canal, CanalInterface } from '../../../../core/state/gerenciamento/canal/canal.entity';
+import { Canal, CanalInterface, CanalResponsavel, CanalResponsavelInterface } from '../../../../core/state/gerenciamento/canal/canal.entity';
 import { SessionRepository } from '../../../../core/state/session/session.repository';
 import { CanalApiService } from '../../state/canal.api.service';
 import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
@@ -14,6 +14,7 @@ import { CanalRepository } from '../../state/canal.repository';
 import { Subscription } from 'rxjs';
 import { Cargo } from '../../../../core/state/gerenciamento/cargo/cargo.entity';
 import { AlunoService } from '../../../../core/state/gerenciamento/aluno/aluno.service';
+import { MensagemRepository } from '../../../../core/state/mensagem/mensagem.repository';
 
 @Component({
   selector: 'app-mensagem-selecao-canal',
@@ -43,12 +44,13 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
     private mensagemService: MensagemService,
     private pageMenuService: PageMenuService,
     private sessionRepository: SessionRepository,
-    private gerenciamentoRepository: GerenciamentoRepository
+    private gerenciamentoRepository: GerenciamentoRepository,
+    private mensagemRepository: MensagemRepository,
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_MENSAGEM;
     super(router, ROTA_BASE);
 
-    this.resgatarCanais()
+    this.preencherCanais()
   }
 
   ngOnInit() { }
@@ -70,10 +72,17 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
   }
 
   recarregarPagina() {
-    this.canalService.buscarTodosCanais().subscribe({
+    this.canalService.buscarTodosCanaisMensagem().subscribe({
       next: () => {
-        this.resgatarCanais()
-      }
+        if (!this.isResponsavel) {
+        } else {
+          this.canalService.buscarCanalResponsavelTodos({idResponsavel: this.usuarioLogado.getIdResponsavel()}).subscribe({
+            next: () => {
+              this.preencherCanais()
+            },
+          })
+        }
+      },
     })
   }
 
@@ -89,46 +98,58 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
     if (this.isResponsavel) {
       const idResponsavel = this.usuarioLogado.getIdResponsavel();
       if (idResponsavel !== undefined) {
-        var idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(idCanal, idResponsavel);
-        if (idCanalResponsavel === undefined) {
-          idCanalResponsavel = this.canalService.incluirCanalResponsavel(idCanal, idResponsavel)
+        const canalMensagem = this.mensagemRepository.canais().find((canal) => {
+          return canal.canal_id === idCanal && canal.responsavel_id === idResponsavel
+        })
+        
+        if (canalMensagem === undefined) {
+          var novoCanalResponsavel: CanalResponsavelInterface = {
+            canal_id: idCanal, 
+            responsavel_id: idResponsavel
+          }
+          this.canalService.incluirCanalResponsavel(novoCanalResponsavel).subscribe({
+            next: () => {
+              if (novoCanalResponsavel.id !== undefined) {
+                rota = novoCanalResponsavel.id + ConstantesRotas.ROTA_MENSAGEM_CANAL
+                this.navegarPara(rota);
+              }
+            }
+          })
+        } else {
+          rota = canalMensagem.canal_responsavel_id + ConstantesRotas.ROTA_MENSAGEM_CANAL;
+          this.navegarPara(rota);
         }
-        rota = idCanalResponsavel + ConstantesRotas.ROTA_MENSAGEM_CANAL;
-        this.navegarPara(rota);
       } else {
         throw new Error('id responsavel nao definido');
       }
     } else {
-      this.canalService.buscarCanal(idCanal).subscribe({
+      this.alunoService.buscarTodosAlunos().subscribe({
         next: () => {
-          this.alunoService.buscarTodosAlunos().subscribe({
-            next: () => {
-              rota = idCanal + ConstantesRotas.ROTA_MENSAGEM_SELECAO_ALUNO;
-              this.navegarPara(rota);
-            }
-          })
+          rota = idCanal + ConstantesRotas.ROTA_MENSAGEM_SELECAO_ALUNO;
+          this.navegarPara(rota);
         }
       })
     }
   }
 
-  resgatarUltimaMensagem(idCanal: string): string {
+  resgatarUltimaMensagem(idCanal: string): string  {
     if (this.isResponsavel) {
       const idResponsavel = this.usuarioLogado.getIdResponsavel();
 
       if (idResponsavel !== undefined) {
-        const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(idCanal, idResponsavel);
+        // const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(idCanal, idResponsavel);
 
-        if (idCanalResponsavel !== undefined) {
-          const mensagem = this.mensagemService.buscarUltimaMensagensCanalResponsavel(idCanalResponsavel);
-          if (mensagem !== undefined) {
-            return 'Mensagem:' + mensagem.texto;
-          } else {
-            return '';
-          }
-        } else {
-          return '';
-        }
+        // if (idCanalResponsavel !== undefined) {
+        //   const mensagem = this.mensagemService.buscarUltimaMensagensCanalResponsavel(idCanalResponsavel);
+        //   if (mensagem !== undefined) {
+        //     return 'Mensagem:' + mensagem.texto;
+        //   } else {
+        //     return '';
+        //   }
+        // } else {
+        //   return '';
+        // }
+        return ''
       } else {
         throw new Error('id Responsavel nao definido');
       }
@@ -137,14 +158,12 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
     }
   }
 
-  resgatarCanais() {
-    const canais = this.gerenciamentoRepository.canais()
+  preencherCanais() {
+    const canais = this.mensagemRepository.listaCanais()
+    this.canais = []
     canais.forEach((canal) => {
       this.canais.push(new Canal(canal))
     })
-    //TODO remover quando tiver cargos
-    this.canais[0].cargos = []
-    this.canais[0].cargos.push(new Cargo({ cargo_id: '9a9f8804-94e5-4f5e-a0e5-d44b67731b0f', nome: '', descricao: '' }))
   }
 
   private verificarListaCargo(canal: Canal, idCargo?: string | null): boolean {

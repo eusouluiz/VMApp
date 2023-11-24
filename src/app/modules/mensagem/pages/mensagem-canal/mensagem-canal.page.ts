@@ -61,12 +61,15 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     container.scrollTop = 0;
   }
 
-  resgatarCanalResponsavel(id: string): CanalResponsavel {
-    const canalResponsavel = this.canalService.buscarCanalResponsavel(id);
-    if (canalResponsavel !== undefined) {
-      return canalResponsavel;
+  resgatarCanalResponsavel(id: string) {
+    const canalMensagem = this.mensagemRepository.canais().find((canal) => {
+      return canal.canal_responsavel_id = id
+    })
+    if (canalMensagem !== undefined) {
+      this.canalResponsavel = CanalResponsavel.converterCanalMensagem(canalMensagem)
+    } else {
+      throw new Error('Canal nao encontrado');
     }
-    throw new Error('Canal nao encontrado');
   }
 
   async resgatarMensagens(idCanalResponsavel: string) {
@@ -81,7 +84,7 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     const canal = this.mensagemRepository.canais().find((canal) => {
       return canal.canal_responsavel_id
     })
-    if (canal !== undefined) {
+    if (canal !== undefined && canal.mensagens !== undefined) {
       const mensagemCanal = canal.mensagens
 
       mensagemCanal.forEach((mensagem) => {
@@ -131,7 +134,7 @@ export class MensagemCanalPage extends Pagina implements OnInit {
   protected inicializarConteudo(): void {
     const id = this.activatedRoute.snapshot.paramMap.get('idCanalResponsavel');
     if (id !== null) {
-      this.canalResponsavel = this.resgatarCanalResponsavel(id);
+      this.resgatarCanalResponsavel(id);
       this.resgatarMensagens(id);
     } else {
       throw new Error('idCanal nao especificado na url');
@@ -144,7 +147,7 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     const mensagem = supabase.channel(ConstantesSupabase.CANAL_NOTIFICACAO_MENSAGEM)
       .on(
         'postgres_changes',
-        { event: '*', schema: 'public', table: 'mensagens', filter: `canal_responsavel_id=${this.canalResponsavel.canal_responsavel_id}` },
+        { event: '*', schema: 'public', table: 'mensagens', filter: `canal_responsavel_id=eq.${this.canalResponsavel.canal_responsavel_id}` },
         async (payload: any) => {
           console.log('Mensagem Change received!', payload)
           // CASO ONDE UMA MENSAGEM EH RECEBIDA
@@ -154,7 +157,7 @@ export class MensagemCanalPage extends Pagina implements OnInit {
                 const mensagem: MensagemInterface = payload.new
                 mensagem.lida = true
                 this.mensagemService.alterarMensagem(mensagem).subscribe()
-                this.mensagens.unshift(new Mensagem(payload.new));
+                this.mensagens.unshift(new Mensagem(mensagem));
   
                 this.scrollToBottom();
               }

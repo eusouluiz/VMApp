@@ -91,18 +91,11 @@ export class MensagemService {
       const canais = this.mensagemRepository.canais()
       
       const indexCanal = canais.findIndex((canal) => {
-        return canal.canal_responsavel_id = idCanalResponsavel
+        return canal.canal_responsavel_id === idCanalResponsavel
       })
-  
-      const canal: CanalMensagem = {
-        canal_responsavel_id: idCanalResponsavel,
-        mensagens: mensagens
-      }
-  
-      if (indexCanal !== -1){
-        canais[indexCanal] = canal
-      } else {
-        canais.push(canal)
+
+      if (indexCanal !== -1) {
+        canais[indexCanal].mensagens = mensagens
       }
   
       this.mensagemRepository.update({canais:canais})
