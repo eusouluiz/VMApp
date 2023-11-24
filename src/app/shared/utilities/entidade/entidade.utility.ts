@@ -3,7 +3,7 @@
 // ====================================
 
 import { Aluno } from '../../../core/state/gerenciamento/aluno/aluno.entity';
-import { Aviso, AvisoResponsavel } from '../../../core/services/aviso-service/aviso.entity';
+import { Aviso, AvisoResponsavel } from '../../../core/state/aviso/aviso-service/aviso.entity';
 import { Canal, CanalResponsavel } from '../../../core/state/gerenciamento/canal/canal.entity';
 import { Cargo } from '../../../core/state/gerenciamento/cargo/cargo.entity';
 import { Funcionalidade } from '../../../core/state/gerenciamento/funcionalidade/funcionalidade.entity';
@@ -225,7 +225,7 @@ export var FUNCIONARIO_DATA: Funcionario[] = [
 ];
 
 export var CANAL_DATA: Canal[] = [
-  new Canal({ canal_id: '0', nome: 'Administração', descricao: '',}),
+  new Canal({ canal_id: '0', nome: 'Administração', descricao: '', }),
   new Canal({
     canal_id: '1',
     nome: 'Secretária',
@@ -306,8 +306,6 @@ export var AVISO_DATA: Aviso[] = [
     data_encerramento: new Date(),
     funcionario_id: FUNCIONARIO_DATA[0].funcionario_id,
     canal_id: CANAL_DATA[0].canal_id,
-    updated_at: new Date(),
-    created_at: new Date(),
   }),
   new Aviso({
     aviso_id: '1',
@@ -319,8 +317,6 @@ export var AVISO_DATA: Aviso[] = [
     data_encerramento: new Date(),
     funcionario_id: FUNCIONARIO_DATA[0].funcionario_id,
     canal_id: CANAL_DATA[0].canal_id,
-    updated_at: new Date(),
-    created_at: new Date(),
   }),
 ];
 

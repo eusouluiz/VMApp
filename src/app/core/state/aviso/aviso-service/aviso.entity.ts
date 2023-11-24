@@ -1,20 +1,18 @@
-import { Canal } from "../../state/gerenciamento/canal/canal.entity";
-import { Funcionario } from "../../state/gerenciamento/funcionario/funcionario.entity";
-import { Responsavel } from "../../state/gerenciamento/responsavel/responsavel.entity";
-import { Turma } from "../../state/gerenciamento/turma/turma.entity";
+import { Canal } from "../../gerenciamento/canal/canal.entity";
+import { Funcionario } from "../../gerenciamento/funcionario/funcionario.entity";
+import { Responsavel } from "../../gerenciamento/responsavel/responsavel.entity";
+import { Turma } from "../../gerenciamento/turma/turma.entity";
 
 export interface AvisoInterface {
-    aviso_id: string,
+    aviso_id?: string,
     titulo: string,
     texto: string,
     arquivo: string,
     prioridade: string,
     data_publicacao: Date,
-    data_encerramento: Date,
+    data_encerramento?: Date,
     funcionario_id: string,
     canal_id: string,
-    updated_at: Date,
-    created_at: Date
 }
 
 export class Aviso {
@@ -28,24 +26,24 @@ export class Aviso {
     private _funcionario: Funcionario = new Funcionario();
     private _canal: Canal = new Canal();
     private _turmas: Turma[] = [];
-    private _updated_at: Date = new Date();
-    private _created_at: Date = new Date();
 
     constructor(
         private data?: AvisoInterface,
     ) {
         if (data !== undefined) {
-            this._aviso_id = data.aviso_id
+            if (data.aviso_id !== undefined) {
+                this._aviso_id = data.aviso_id
+            }
             this._titulo = data.titulo
             this._texto = data.texto
             this._arquivo = data.arquivo
             this._prioridade = data.prioridade
             this._data_publicacao = data.data_publicacao
-            this._data_encerramento = data.data_encerramento
+            if (data.data_encerramento !== undefined) {
+                this._data_encerramento = data.data_encerramento
+            }
             this._funcionario.funcionario_id = data.funcionario_id
             this._canal.canal_id = data.canal_id
-            this._updated_at = data.updated_at
-            this._created_at = data.created_at
         }
     }
 
@@ -108,18 +106,6 @@ export class Aviso {
     }
     public set turmas(value: Turma[]) {
         this._turmas = value;
-    }
-    public get updated_at(): Date {
-        return this._updated_at;
-    }
-    public set updated_at(value: Date) {
-        this._updated_at = value;
-    }
-    public get created_at(): Date {
-        return this._created_at;
-    }
-    public set created_at(value: Date) {
-        this._created_at = value;
     }
 }
 

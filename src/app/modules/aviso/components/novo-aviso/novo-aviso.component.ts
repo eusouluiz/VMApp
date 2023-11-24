@@ -5,11 +5,11 @@ import { ConstantesPrioridadesAvisos, ConstantesRotas } from '../../../../shared
 import { FieldSelectOption } from '../../../../shared/components/field-select/field-select.interface';
 import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
 import { TurmaService } from '../../../../core/state/gerenciamento/turma/turma.service';
-import { AvisoService } from '../../../../core/services/aviso-service/aviso.service';
+import { AvisoService } from '../../../../core/state/aviso/aviso-service/aviso.service';
 import { LembreteService } from '../../../../core/services/lembrete-service/lembrete.service';
 import { CommonModule } from '@angular/common';
 import { IonicModule, ModalController } from '@ionic/angular';
-import { Aviso } from '../../../../core/services/aviso-service/aviso.entity';
+import { Aviso } from '../../../../core/state/aviso/aviso-service/aviso.entity';
 import { Canal } from '../../../../core/state/gerenciamento/canal/canal.entity';
 import { Turma } from '../../../../core/state/gerenciamento/turma/turma.entity';
 import { Lembrete } from '../../../../core/services/lembrete-service/lembrete.entity';

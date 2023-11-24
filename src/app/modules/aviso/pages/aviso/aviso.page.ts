@@ -1,5 +1,5 @@
 import { ModalController } from '@ionic/angular';
-import { AvisoService } from './../../../../core/services/aviso-service/aviso.service';
+import { AvisoService } from '../../../../core/state/aviso/aviso-service/aviso.service';
 import { Component, OnInit } from '@angular/core';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { Router } from '@angular/router';
@@ -11,9 +11,10 @@ import { AvisoModalComponent } from '../../components/aviso-modal/aviso-modal.co
 import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
 import { NovoAvisoComponent } from '../../components/novo-aviso/novo-aviso.component';
 import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
-import { Aviso } from '../../../../core/services/aviso-service/aviso.entity';
+import { Aviso } from '../../../../core/state/aviso/aviso-service/aviso.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 import { AVISO_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
+import { AvisoRepository } from '../../../../core/state/aviso/aviso.repository';
 
 @Component({
   selector: 'app-aviso',
@@ -34,7 +35,8 @@ export class AvisoPage extends Pagina implements OnInit {
     private modalController: ModalController,
     private usuarioLogado: UsuarioLogado,
     private canalService: CanalService,
-    private pageMenuService: PageMenuService
+    private pageMenuService: PageMenuService,
+    private avisoRepository: AvisoRepository,
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP;
     super(router, ROTA_BASE);
@@ -54,8 +56,12 @@ export class AvisoPage extends Pagina implements OnInit {
     console.log(this.avisos);
   }
 
-  resgatarAvisos(): Aviso[] {
-    return this.avisoService.buscarTodosAvisos();
+  resgatarAvisos() {
+    const avisos = this.avisoRepository.avisos()
+    this.avisos = []
+    avisos.forEach((aviso) => {
+      this.avisos.push(new Aviso(aviso))
+    })
   }
 
   async abrirModalAviso(aviso: Aviso) {
@@ -81,7 +87,7 @@ export class AvisoPage extends Pagina implements OnInit {
       aviso.titulo = data.titulo;
       aviso.texto = data.texto;
 
-      this.avisoService.alterarAviso(aviso);
+      // this.avisoService.alterarAviso(aviso, aviso.aviso_id);
     } else if (role === 'deletarAviso') {
       this.avisoService.deletarAviso(aviso.aviso_id);
     } else if (role === 'duvidaAviso') {
@@ -130,6 +136,6 @@ export class AvisoPage extends Pagina implements OnInit {
   }
 
   protected inicializarConteudo(): void {
-    this.avisos = this.resgatarAvisos();
+    this.resgatarAvisos();
   }
 }

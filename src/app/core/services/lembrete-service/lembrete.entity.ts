@@ -1,4 +1,4 @@
-import { Aviso } from "../aviso-service/aviso.entity";
+import { Aviso } from "../../state/aviso/aviso-service/aviso.entity";
 
 export interface LembreteInterface {
     lembrete_id: string,
@@ -15,7 +15,7 @@ export class Lembrete {
     private _data_lembrete: Date = new Date();
     private _aviso: Aviso = new Aviso();
 
-    constructor (
+    constructor(
         private data?: LembreteInterface,
     ) {
         if (data !== undefined) {
@@ -26,7 +26,7 @@ export class Lembrete {
             this._aviso.aviso_id = data.aviso_id
         }
     }
-    
+
     public get id(): string {
         return this._lembrete_id;
     }
