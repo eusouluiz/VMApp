@@ -2,11 +2,10 @@ import { Cargo } from '../cargo/cargo.entity';
 import { Responsavel } from '../responsavel/responsavel.entity';
 
 export interface CanalInterface {
-  canal_id: string;
+  canal_id?: string;
   nome: string;
   descricao: string;
-  updated_at: Date;
-  created_at: Date;
+  cargos?: Cargo[]
 }
 
 export class Canal {
@@ -18,20 +17,16 @@ export class Canal {
 
   private _cargos: Cargo[] = [];
 
-  private _updated_at: Date = new Date();
-
-  private _created_at: Date = new Date();
-
-  constructor(private data?: CanalInterface, private listaCargos?: Cargo[]) {
+  constructor(private data?: CanalInterface) {
     if (data !== undefined) {
-      this._canal_id = data.canal_id;
+      if (data.canal_id !== undefined) {
+        this._canal_id = data.canal_id;
+      }
       this._nome = data.nome;
       this._descricao = data.descricao;
-      this._updated_at = data.updated_at;
-      this._created_at = data.created_at;
 
-      if (listaCargos !== undefined) {
-        this._cargos = listaCargos;
+      if (data.cargos !== undefined) {
+        this._cargos = data.cargos;
       }
     }
   }
@@ -66,22 +61,6 @@ export class Canal {
 
   public set cargos(value: Cargo[]) {
     this._cargos = value;
-  }
-
-  public get updated_at(): Date {
-    return this._updated_at;
-  }
-
-  public set updated_at(value: Date) {
-    this._updated_at = value;
-  }
-
-  public get created_at(): Date {
-    return this._created_at;
-  }
-
-  public set created_at(value: Date) {
-    this._created_at = value;
   }
 }
 

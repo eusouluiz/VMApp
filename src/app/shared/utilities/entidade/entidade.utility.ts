@@ -225,22 +225,16 @@ export var FUNCIONARIO_DATA: Funcionario[] = [
 ];
 
 export var CANAL_DATA: Canal[] = [
-  new Canal({ canal_id: '0', nome: 'Administração', descricao: '', updated_at: new Date(), created_at: new Date() }, [
-    CARGO_DATA[0],
-  ]),
+  new Canal({ canal_id: '0', nome: 'Administração', descricao: '',}),
   new Canal({
     canal_id: '1',
     nome: 'Secretária',
     descricao: '',
-    updated_at: new Date(),
-    created_at: new Date(),
   }),
   new Canal({
     canal_id: '2',
     nome: 'Pedagogia',
     descricao: '',
-    updated_at: new Date(),
-    created_at: new Date(),
   }),
 ];
 

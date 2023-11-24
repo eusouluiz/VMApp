@@ -128,8 +128,6 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit {
   }
 
   async selecionarItem(item: any) {
-    console.log('selecionar item');
-
     const idBusca = item === -1 ? -1 : this.listaItens.indexOf(item);
     this.value = item === -1 ? undefined : item;
 

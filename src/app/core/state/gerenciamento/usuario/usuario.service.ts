@@ -21,16 +21,6 @@ export class UsuarioService {
 
   }
 
-  buscarTodosUsuarios(): Usuario[] {
-    return USUARIO_DATA;
-  }
-
-  buscarUsuario(idUsuario: string): Usuario | undefined {
-    return USUARIO_DATA.find((u) => {
-      return u.user_id === idUsuario;
-    });
-  }
-
   incluirUsuario(usuario: UsuarioInterface): Observable<ResponseUser> {
     return this.http
       .post<ResponseUser>(`${environment.api.endpoint}/user`, usuario)
