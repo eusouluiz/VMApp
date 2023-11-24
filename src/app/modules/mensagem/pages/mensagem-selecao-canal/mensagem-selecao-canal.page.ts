@@ -76,7 +76,7 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
       next: () => {
         if (!this.isResponsavel) {
         } else {
-          this.canalService.buscarCanalResponsavelTodos({idResponsavel: this.usuarioLogado.getIdResponsavel()}).subscribe({
+          this.canalService.buscarCanalResponsavelTodos({ idResponsavel: this.usuarioLogado.getIdResponsavel() }).subscribe({
             next: () => {
               this.preencherCanais()
             },
@@ -101,10 +101,10 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
         const canalMensagem = this.mensagemRepository.canais().find((canal) => {
           return canal.canal_id === idCanal && canal.responsavel_id === idResponsavel
         })
-        
+
         if (canalMensagem === undefined) {
           var novoCanalResponsavel: CanalResponsavelInterface = {
-            canal_id: idCanal, 
+            canal_id: idCanal,
             responsavel_id: idResponsavel
           }
           this.canalService.incluirCanalResponsavel(novoCanalResponsavel).subscribe({
@@ -132,24 +132,25 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
     }
   }
 
-  resgatarUltimaMensagem(idCanal: string): string  {
+  resgatarUltimaMensagem(idCanal: string): string {
     if (this.isResponsavel) {
       const idResponsavel = this.usuarioLogado.getIdResponsavel();
 
       if (idResponsavel !== undefined) {
-        // const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(idCanal, idResponsavel);
-
-        // if (idCanalResponsavel !== undefined) {
-        //   const mensagem = this.mensagemService.buscarUltimaMensagensCanalResponsavel(idCanalResponsavel);
-        //   if (mensagem !== undefined) {
-        //     return 'Mensagem:' + mensagem.texto;
-        //   } else {
-        //     return '';
-        //   }
-        // } else {
-        //   return '';
-        // }
-        return ''
+        const canalMensagem = this.mensagemRepository.canais().find((canal) => {
+          return canal.canal_id === idCanal && canal.responsavel_id === idResponsavel
+        })
+        if (canalMensagem !== undefined) {
+          if (canalMensagem.mensagens !== undefined && canalMensagem.mensagens.length > 0) {
+            // ultima mensagem enviada eh a primeira da lista
+            const mensagem = canalMensagem.mensagens[0]
+            return 'Mensagem:' + mensagem.texto;
+          } else {
+            return '';
+          }
+        } else {
+          return '';
+        }
       } else {
         throw new Error('id Responsavel nao definido');
       }

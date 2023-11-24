@@ -9,6 +9,9 @@ import { Observable, tap } from 'rxjs';
 import { Cargo } from '../cargo/cargo.entity';
 import { ListaUtil } from '../../../../shared/utilities/lista/lista.utility';
 import { CanalMensagem, MensagemRepository } from '../../mensagem/mensagem.repository';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(environment.supabaseUrl, environment.supabaseKey)
 
 interface AssociacaoCargoCanal {
     id?: string,
@@ -24,7 +27,7 @@ interface ResponseCanal {
 interface ResponseCanalResponsavel {
     msg: string,
     data: CanalResponsavelInterface,
-  }
+}
 
 @Injectable({
     providedIn: 'root',
@@ -143,12 +146,12 @@ export class CanalService {
         return idCanalResponsavel;
     }
 
-    buscarCanalResponsavelTodos(filtro?: {idResponsavel?: string, idCanal?: string}): Observable<CanalResponsavelInterface[]> {
+    buscarCanalResponsavelTodos(filtro?: { idResponsavel?: string, idCanal?: string }): Observable<CanalResponsavelInterface[]> {
         return this.http
             .get<CanalResponsavelInterface[]>(`${environment.api.endpoint}/canal-responsavel`)
             .pipe(tap((canaisResponsavel) => this.saveCanaisResponsavelInStorage(canaisResponsavel.filter((canal) => {
-                if (filtro !== undefined){
-                    if (filtro.idResponsavel !== undefined){
+                if (filtro !== undefined) {
+                    if (filtro.idResponsavel !== undefined) {
                         return canal.responsavel_id === filtro.idResponsavel
                     } else if (filtro.idCanal !== undefined) {
                         return canal.canal_id === filtro.idCanal
@@ -159,29 +162,50 @@ export class CanalService {
 
     incluirCanalResponsavel(canalResponsavel: CanalResponsavelInterface): Observable<ResponseCanalResponsavel> {
         return this.http
-        .post<ResponseCanalResponsavel>(`${environment.api.endpoint}/canal-responsavel`, canalResponsavel)
-        .pipe(tap((response) => {
-            if (response.data.id !== undefined) {
-                canalResponsavel.id = response.data.id
-            }
-        }));
+            .post<ResponseCanalResponsavel>(`${environment.api.endpoint}/canal-responsavel`, canalResponsavel)
+            .pipe(tap((response) => {
+                if (response.data.id !== undefined) {
+                    canalResponsavel.id = response.data.id
+                }
+            }));
     }
 
-    saveCanaisResponsavelInStorage(canaisResponsavel: CanalResponsavelInterface[] | undefined): void {
+    async saveCanaisResponsavelInStorage(canaisResponsavel: CanalResponsavelInterface[] | undefined) {
         if (canaisResponsavel !== undefined) {
-            var canalMensagem: CanalMensagem[] = []
-    
-            canaisResponsavel.forEach((canal) => {
-                if (canal.id !== undefined) {
-                    canalMensagem.push({
-                        canal_responsavel_id: canal.id,
-                        canal_id: canal.canal_id,
-                        responsavel_id: canal.responsavel_id
-                    })
-                }
-            })
+            var canalMensagem: CanalMensagem[] = await this.adequarCanaisMensagem(canaisResponsavel)
 
-            this.mensagemRepository.update({canais: canalMensagem})
+            this.mensagemRepository.update({ canais: canalMensagem })
         }
+    }
+
+    async adequarCanaisMensagem(canaisResponsavel: CanalResponsavelInterface[]): Promise<CanalMensagem[]> {
+        var canalMensagem: CanalMensagem[] = []
+
+        for (let i = 0; i < canaisResponsavel.length; i++) {
+            const canal = canaisResponsavel[i];
+            if (canal.id !== undefined) {
+                let { data: mensagens, error } = await supabase
+                    .from('mensagens')
+                    .select("*")
+                    // Filters
+                    .eq('canal_responsavel_id', canal.id)
+                    .order('data_envio', { ascending: false })
+                    .limit(1)
+
+                var c: CanalMensagem = {
+                    canal_responsavel_id: canal.id,
+                    canal_id: canal.canal_id,
+                    responsavel_id: canal.responsavel_id
+                }
+
+                if (mensagens !== null) {
+                    c.mensagens = mensagens
+                }
+
+                canalMensagem.push(c)
+            }
+        }
+
+        return canalMensagem
     }
 }
