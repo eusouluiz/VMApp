@@ -49,9 +49,9 @@ export class UsuarioService {
       }));
   }
 
-  alterarUsuario(usuario: UsuarioInterface): Observable<UsuarioInterface> {
+  alterarUsuario(usuario: UsuarioInterface, usuarioId: string): Observable<UsuarioInterface> {
     return this.http
-      .put<UsuarioInterface>(`${environment.api.endpoint}/user/${usuario.user_id}`, usuario);
+      .put<UsuarioInterface>(`${environment.api.endpoint}/user/${usuarioId}`, usuario);
   }
 
   deletarUsuario(idUsuario: string): Observable<UsuarioInterface[]> {

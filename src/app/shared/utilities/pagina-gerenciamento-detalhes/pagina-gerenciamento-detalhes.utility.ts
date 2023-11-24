@@ -48,7 +48,7 @@ export class PaginaGerenciamentoDetalhes extends Pagina {
 
     retornarModoDetalhes(){
         this.modo = 'detalhes';
-        this.form?.disable();
+        this.desabilitarForms()
     }
 
     // ---- define modo pagina ----//
@@ -71,5 +71,9 @@ export class PaginaGerenciamentoDetalhes extends Pagina {
 
     protected habilitarForms(){
         this.form?.enable()
+    }
+
+    protected desabilitarForms(){
+        this.form?.disable()
     }
 }

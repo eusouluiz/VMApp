@@ -42,6 +42,7 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
 
     this.definirModo();
     this.inicializarForms();
+    this.preencherListaTodosResponsaveis()
     this.preencherListaTodosTurmas()
     this.inicializarConteudo()
   }
@@ -66,6 +67,7 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   recarregarPagina() {
+    this.buscarResponsaveis()
     this.buscarTurmas()
     this.inicializarConteudo()
   }
@@ -88,6 +90,8 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
       this.formBuscaResponsavel.disable();
       this.formBuscaTurma.disable();
     }
+
+    console.log(this.listaTurmasTabela)
   }
 
   // ---- busca aluno ----//
@@ -125,11 +129,13 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
   protected habilitarForms(): void {
     this.form?.enable();
     this.formBuscaTurma?.enable();
+    this.formBuscaResponsavel?.enable();
   }
 
   protected desabilitarForms(): void {
     this.form?.disable();
     this.formBuscaTurma?.disable();
+    this.formBuscaResponsavel?.disable();
   }
 
   //cancelar edicao
@@ -158,14 +164,24 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
         nome: this.form.value.nome,
         cgm: this.form.value.cgm,
       }
+      aluno.turma_id = this.listaTurmasTabela.length > 0 ? this.listaTurmasTabela[0].turma_id : null
 
       if (this.isModoCadastrar()) {
         this.alunoService.incluirAluno(aluno).subscribe({
           next: () => {
+            if (aluno.aluno_id !== undefined && aluno.aluno_id !== null) {
+              this.aluno.aluno_id = aluno.aluno_id
+            }
             this.atualizarAluno()
+            this.atualizarTurmas()
+            this.alunoService.vincularResponsaveis(this.aluno, this.listaResponsaveisTabela)
+            this.atualizarResponsaveis()
+
+            this.toastService.success('Sucesso ao cadastrar ' + this.aluno.nome);
+            this.retornarModoDetalhes()
           },
           error: (err) => {
-            this.toastService.error('Erro ao cadastrar Funcionário');
+            this.toastService.error('Erro ao cadastrar Aluno');
 
             if (err?.original?.status === 422) {
               return;
@@ -173,13 +189,18 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
           },
         });
       } else {
-        aluno.aluno_id = this.aluno.aluno_id
-        this.alunoService.alterarAluno(aluno).subscribe({
+        this.alunoService.alterarAluno(aluno, this.aluno.aluno_id).subscribe({
           next: () => {
             this.atualizarAluno()
+            this.atualizarTurmas()
+            this.alunoService.vincularResponsaveis(this.aluno, this.listaResponsaveisTabela)
+            this.atualizarResponsaveis()
+
+            this.toastService.success('Sucesso ao editar ' + this.aluno.nome);
+            this.retornarModoDetalhes()
           },
           error: (err) => {
-            this.toastService.error('Erro ao editar Funcionário');
+            this.toastService.error('Erro ao editar Aluno');
 
             if (err?.original?.status === 422) {
               return;
@@ -200,7 +221,7 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
   // ---- controle botoes ----//
 
-  // ---- controle alunos ----//
+  // ---- controle responsaveis ----//
 
   formBuscaResponsavel!: UntypedFormGroup;
 
@@ -233,6 +254,7 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   private inicializarTabelaResponsaveis() {
+    console.log(this.aluno)
     this.listaResponsaveisTabela = this.aluno.responsaveis.slice();
     this.inicializarBuscaResponsaveis()
   }
@@ -338,7 +360,7 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
     }
   }
 
-  // ---- controle alunos ----//
+  // ---- controle responsaveis ----//
 
   // ---- controle turmas ----//
 
@@ -374,7 +396,7 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
 
   private inicializarTabelaTurmas() {
     this.listaTurmasTabela = [];
-    if (this.aluno.turma !== null) {
+    if (this.aluno.turma !== null && this.aluno.turma.nome !== '') {
       this.listaTurmasTabela.push(this.aluno.turma);
     }
     this.inicializarBuscaTurmas();
@@ -452,13 +474,15 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   navegarTelaTurma(id: number) {
-    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_CARGO;
-    if (id !== -1) {
-      rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
-    } else {
-      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
+    if (this.isModoDetalhes()) {
+      var rota = ConstantesRotas.ROTA_GERENCIAMENTO_CARGO;
+      if (id !== -1) {
+        rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
+      } else {
+        rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
+      }
+      this.navegarPara(rota);
     }
-    this.navegarPara(rota);
   }
 
   deletarTurma() {

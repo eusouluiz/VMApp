@@ -214,9 +214,8 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
         if (this.form.value.senha !== '') {
           usuario.password = this.form?.value.senha
         }
-        usuario.user_id = this.funcionario.usuario.user_id
         usuario.email = null
-        this.usuarioService.alterarUsuario(usuario).subscribe({
+        this.usuarioService.alterarUsuario(usuario, this.funcionario.usuario.user_id).subscribe({
           next: () => {
             this.atualizarFuncionario()
             this.funcionarioService.vincularCargo(this.funcionario, this.listaCargosTabela).subscribe({

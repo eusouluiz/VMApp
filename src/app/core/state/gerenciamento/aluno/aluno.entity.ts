@@ -1,4 +1,4 @@
-import { Responsavel } from "../responsavel/responsavel.entity";
+import { Responsavel, ResponsavelInterface } from "../responsavel/responsavel.entity";
 import { Turma } from "../turma/turma.entity"
 
 export interface AlunoInterface {
@@ -7,6 +7,7 @@ export interface AlunoInterface {
     nome: string,
     turma?: Turma,
     turma_id?: string | null,
+    responsaveis?: ResponsavelInterface[],
 }
 
 export class Aluno {
@@ -30,6 +31,12 @@ export class Aluno {
                 this._turma = data.turma
             } else if (data.turma_id !== undefined && data.turma_id !== null) {
                 this._turma.turma_id = data.turma_id
+            }
+
+            if (data.responsaveis !== undefined) {
+                data.responsaveis.forEach((responsavel) => {
+                    this._responsaveis.push(new Responsavel(responsavel))
+                })
             }
         }
     }

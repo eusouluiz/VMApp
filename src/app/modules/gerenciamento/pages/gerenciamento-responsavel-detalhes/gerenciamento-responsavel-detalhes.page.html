@@ -47,7 +47,7 @@
                         <ion-col size="3" sizeLg="1" sizeMd="1" style="text-align: -webkit-right">
                           <ion-fab-button
                             *ngIf="!isModoDetalhes()"
-                            class="e-fab"
+                            class="c-fab"
                             size="medium"
                             (click)="deletarAluno(aluno.aluno_id)">
                             <ion-icon name="trash"></ion-icon>
@@ -66,7 +66,7 @@
               <form [formGroup]="formBuscaAluno">
                 <app-autocomplete
                   placeholder="Insira o nome do aluno"
-                  formControlName="busca"
+                  formControlName="buscaAluno"
                   idBusca="busca-aluno"
                   [listaItens]="nomeAlunosBusca"
                   (onBusca)="adicionarAluno($event)"

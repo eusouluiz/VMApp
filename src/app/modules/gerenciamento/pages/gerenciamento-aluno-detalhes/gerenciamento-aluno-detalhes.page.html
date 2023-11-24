@@ -1,6 +1,9 @@
-<app-header titulo="gerenciamento-aluno-detalhes" [botaoRetorno]="true"></app-header>
+<app-header
+  [titulo]="isModoCadastrar() ? 'Novo Aluno' : aluno.nome"
+  [botaoRetorno]="true"></app-header>
 
 <ion-content class="ion-padding">
+  <app-refresher (onRecarregar)="recarregarPagina()"></app-refresher>
   <div class="u-display--flex u-flex-direction--column u-flex-justify--space-between u-height--100">
     <div>
       <form [formGroup]="form" (ngSubmit)="salvar()">
@@ -44,7 +47,7 @@
                         <ion-col size="3" sizeLg="1" sizeMd="1" style="text-align: -webkit-right">
                           <ion-fab-button
                             *ngIf="!isModoDetalhes()"
-                            class="e-fab"
+                            class="c-fab"
                             size="medium"
                             (click)="deletarResponsavel(responsavel.responsavel_id)">
                             <ion-icon name="trash"></ion-icon>
@@ -108,7 +111,7 @@
                         <ion-col size="3" sizeLg="1" sizeMd="1" style="text-align: -webkit-right">
                           <ion-fab-button
                             *ngIf="!isModoDetalhes()"
-                            class="e-fab"
+                            class="c-fab"
                             size="medium"
                             (click)="deletarTurma()">
                             <ion-icon name="trash"></ion-icon>

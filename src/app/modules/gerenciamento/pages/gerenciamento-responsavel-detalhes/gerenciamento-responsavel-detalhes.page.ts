@@ -192,11 +192,11 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
             this.atualizarResponsavel()
             this.responsavelService.vincularAlunos(this.responsavel, this.listaAlunosTabela)
             this.atualizarAlunos()
-            this.toastService.success('Sucesso ao Cadastrar ' + this.responsavel.usuario.nome);
+            this.toastService.success('Sucesso ao cadastrar ' + this.responsavel.usuario.nome);
             this.retornarModoDetalhes()
           },
           error: (err) => {
-            this.toastService.error('Erro ao Cadastrar Responsável');
+            this.toastService.error('Erro ao cadastrar Responsável');
 
             if (err?.original?.status === 422) {
               return;
@@ -207,18 +207,17 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
         if (this.form.value.senha !== '') {
           usuario.password = this.form?.value.senha
         }
-        usuario.user_id = this.responsavel.usuario.user_id
         usuario.email = null
-        this.usuarioService.alterarUsuario(usuario).subscribe({
+        this.usuarioService.alterarUsuario(usuario, this.responsavel.usuario.user_id).subscribe({
           next: () => {
             this.atualizarResponsavel()
             this.responsavelService.vincularAlunos(this.responsavel, this.listaAlunosTabela)
             this.atualizarAlunos()
-            this.toastService.success('Sucesso ao Editar ' + this.responsavel.usuario.nome);
+            this.toastService.success('Sucesso ao editar ' + this.responsavel.usuario.nome);
             this.retornarModoDetalhes()
           },
           error: (err) => {
-            this.toastService.error('Erro ao Editar Responsável');
+            this.toastService.error('Erro ao editar Responsável');
 
             if (err?.original?.status === 422) {
               return;
@@ -327,7 +326,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
 
   limparCampoBusca() {
     this.formBuscaAluno.setValue({
-      busca: '',
+      buscaAluno: '',
     });
   }
 

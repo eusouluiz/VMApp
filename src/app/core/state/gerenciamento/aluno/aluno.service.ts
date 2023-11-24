@@ -8,6 +8,11 @@ import { environment } from '../../../../../environments/environment';
 import { Responsavel } from '../responsavel/responsavel.entity';
 import { ListaUtil } from '../../../../shared/utilities/lista/lista.utility';
 
+interface ResponseAluno {
+    msg: string,
+    data: AlunoInterface,
+  }
+
 interface AssociacaoAlunoResponsavel {
     id?: string,
     aluno_id: string,
@@ -38,14 +43,19 @@ export class AlunoService {
             .pipe(tap((aluno) => this.saveAlunoInStorage(aluno)));
     }
 
-    incluirAluno(aluno: AlunoInterface):Observable<AlunoInterface> {
+    incluirAluno(aluno: AlunoInterface):Observable<ResponseAluno> {
         return this.http
-            .post<AlunoInterface>(`${environment.api.endpoint}/aluno`, aluno);
+            .post<ResponseAluno>(`${environment.api.endpoint}/aluno`, aluno)
+            .pipe(tap((response) => {
+              if ((response.data.aluno_id !== undefined && response.data.aluno_id !== null)) {
+                aluno.aluno_id = response.data.aluno_id
+              }
+            }));
     }
 
-    alterarAluno(aluno: AlunoInterface):Observable<AlunoInterface> {
+    alterarAluno(aluno: AlunoInterface, alunoId: string):Observable<AlunoInterface> {
         return this.http
-            .put<AlunoInterface>(`${environment.api.endpoint}/aluno/${aluno.aluno_id}`, aluno);
+            .put<AlunoInterface>(`${environment.api.endpoint}/aluno/${alunoId}`, aluno);
     }
 
     deletarAluno(idAluno: string): Observable<AlunoInterface> {
