@@ -169,9 +169,11 @@ export class MensagemCanalPage extends Pagina implements OnInit {
                 const mensagem = this.mensagens.find((mensagem) => {
                   return mensagem.mensagem_id === payload.old.id
                 })
+                console.log(mensagem)
                 if (mensagem !== undefined){
                   mensagem.lida = true
                 }
+                console.log(mensagem)
               }
             }
           }
