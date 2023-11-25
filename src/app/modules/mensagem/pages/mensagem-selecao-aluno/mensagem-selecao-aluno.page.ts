@@ -11,6 +11,7 @@ import { Aluno } from '../../../../core/state/gerenciamento/aluno/aluno.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 import { GerenciamentoRepository } from '../../../../core/state/gerenciamento/gerenciamento.repository';
 import { Responsavel } from '../../../../core/state/gerenciamento/responsavel/responsavel.entity';
+import { ResponsavelService } from '../../../../core/state/gerenciamento/responsavel/responsavel.service';
 
 interface ItemCanalResponsavel {
   nomeAluno: string;
@@ -27,7 +28,6 @@ interface ItemCanalResponsavel {
 export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
   canal!: Canal;
 
-  listaTodosAlunos!: Aluno[];
   listaTodosResponsaveis!: Responsavel[];
 
   listaCanalResponsavel: ItemCanalResponsavel[] = [];
@@ -36,7 +36,7 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private canalService: CanalService,
-    private alunoService: AlunoService,
+    private responsavelService: ResponsavelService,
     private mensagemService: MensagemService,
     private pageMenuService: PageMenuService,
     private gerenciamentoRepository: GerenciamentoRepository,
@@ -55,9 +55,9 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
   }
 
   recarregarPagina() {
-    this.alunoService.buscarTodosAlunos().subscribe({
+    this.responsavelService.buscarTodosResponsaveis().subscribe({
       next: () => {
-        this.preencherListaTodosAlunos()
+        this.preencherListaTodosResponsaveis()
         this.inicializarConteudo()
       }
     })
@@ -147,7 +147,6 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
   }
 
   protected inicializarConteudo(): void {
-    this.preencherListaTodosAlunos()
     this.preencherListaTodosResponsaveis()
 
     const id = this.activatedRoute.snapshot.paramMap.get('idCanal');
@@ -168,14 +167,6 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
       return new Canal(canal);
     }
     throw new Error('Canal nao encontrado');
-  }
-
-  preencherListaTodosAlunos() {
-    const alunos = this.gerenciamentoRepository.alunos()
-    this.listaTodosAlunos = []
-    alunos.forEach((aluno) => {
-      this.listaTodosAlunos.push(new Aluno(aluno))
-    })
   }
 
   preencherListaTodosResponsaveis() {
