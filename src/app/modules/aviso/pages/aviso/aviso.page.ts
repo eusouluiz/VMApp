@@ -70,6 +70,9 @@ export class AvisoPage extends Pagina implements OnInit {
     avisos.forEach((aviso) => {
       this.avisos.push(new Aviso(aviso))
     })
+    if (!this.isResponsavel){
+      this.avisoService.buscarTodosAvisosResponsavel().subscribe()
+    }
   }
 
   async abrirModalAviso(aviso: Aviso) {

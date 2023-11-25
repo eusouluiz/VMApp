@@ -120,10 +120,11 @@ export class Aviso {
 }
 
 export interface AvisoResponsavelInterface {
-    aviso_responsavel_id: string,
+    aviso_responsavel_id?: string,
     aviso_id: string,
     responsavel_id: string,
     ind_visualizacao: boolean,
+    responsavel_nome?: string
 }
 
 export class AvisoResponsavel {
@@ -137,9 +138,14 @@ export class AvisoResponsavel {
         data?: AvisoResponsavelInterface,
     ) {
         if (data !== undefined) {
-            this._aviso_responsavel_id = data.aviso_responsavel_id
+            if (data.aviso_responsavel_id !== undefined) {
+                this._aviso_responsavel_id = data.aviso_responsavel_id
+            }
             this._aviso.aviso_id = data.aviso_id
             this._responsavel.responsavel_id = data.responsavel_id
+            if (data.responsavel_nome !== undefined) {
+                this._responsavel.usuario.nome = data.responsavel_nome
+            }
             this._ind_visualizacao = data.ind_visualizacao
         }
     }

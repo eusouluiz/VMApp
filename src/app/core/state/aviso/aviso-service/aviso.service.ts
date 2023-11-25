@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AVISO_RESPONSAVEL_DATA, RESPONSAVEL_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
-import { Aviso, AvisoInterface, AvisoResponsavel } from './aviso.entity';
+import { Aviso, AvisoInterface, AvisoResponsavel, AvisoResponsavelInterface } from './aviso.entity';
 import { AvisoRepository } from '../aviso.repository';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
@@ -127,54 +127,16 @@ export class AvisoService {
 
       this.avisoRepository.update({ avisos: avisos });
   }
-
-  buscarIdAvisoResponsavel(idAviso: string, idResponsavel: string): string | undefined {
-    var idAvisoResponsavel = AVISO_RESPONSAVEL_DATA.find((cr) => {
-      return cr.aviso.aviso_id === idAviso && cr.responsavel.responsavel_id === idResponsavel;
-    })?.aviso_responsavel_id;
-
-    return idAvisoResponsavel;
+  
+  buscarTodosAvisosResponsavel(): Observable<AvisoResponsavelInterface[]> {
+    return this.http
+      .get<AvisoResponsavelInterface[]>(`${environment.api.endpoint}/aviso-responsavel`)
+      .pipe(tap((response) => this.saveVinculosAvisoResponsavel(response)));
   }
 
-  buscarAvisoResponsavel(busca: { idAvisoResponsavel?: string, idAviso?: string, idResponsavel?: string, }): AvisoResponsavel[] | undefined {
-    if (busca.idAvisoResponsavel !== undefined) {
-      return AVISO_RESPONSAVEL_DATA.filter((cr) => {
-        return cr.aviso_responsavel_id === busca.idAvisoResponsavel;
-      });
-    } else if (busca.idAviso !== undefined && busca.idResponsavel !== undefined) {
-      return AVISO_RESPONSAVEL_DATA.filter((cr) => {
-        return cr.aviso.aviso_id === busca.idAviso && cr.responsavel.responsavel_id === busca.idResponsavel;
-      });
-    } else if (busca.idAviso !== undefined) {
-      return AVISO_RESPONSAVEL_DATA.filter((cr) => {
-        return cr.aviso.aviso_id === busca.idAviso;
-      });
-    } else if (busca.idResponsavel !== undefined) {
-      return AVISO_RESPONSAVEL_DATA.filter((cr) => {
-        return cr.responsavel.responsavel_id === busca.idResponsavel;
-      });
-    }
-    return undefined
-  }
-
-  incluirAvisoResponsavel(idAviso: string, idResponsavel: string): string {
-    const aviso = this.buscarAviso(idAviso);
-    this.responsavelService.buscarResponsavel(idResponsavel);
-    const responsavel = new Responsavel()
-
-    if (aviso !== undefined && responsavel !== undefined) {
-      var avisoResponsavel: AvisoResponsavel = new AvisoResponsavel({
-        aviso_responsavel_id: '',
-        aviso_id: '',
-        responsavel_id: responsavel.responsavel_id,
-        ind_visualizacao: false
-      });
-    } else {
-      throw new Error('nao encontrado aviso ou responsavel');
-    }
-
-    AVISO_RESPONSAVEL_DATA.push(avisoResponsavel);
-    return avisoResponsavel.aviso_responsavel_id;
+  incluirAvisoResponsavel(avisoResponsavel: AvisoResponsavelInterface): Observable<AvisoResponsavelInterface[]> {
+    return this.http
+      .post<AvisoResponsavelInterface[]>(`${environment.api.endpoint}/aviso-responsavel`, avisoResponsavel);
   }
 
   alterarAvisoResponsavel(avisoResponsavel: AvisoResponsavel) {
@@ -186,6 +148,10 @@ export class AvisoService {
     } else {
       throw new Error('aviso nao encontrado')
     }
+  }
+
+  saveVinculosAvisoResponsavel(vinculosAvisoResponsavel: AvisoResponsavelInterface[]): void {
+    this.avisoRepository.update({ vinculosAvisoResponsavel: vinculosAvisoResponsavel });
   }
 
 }

@@ -10,17 +10,6 @@
       </ion-item>
     </ng-container>
   </div>
-  <hr />
-  <div *ngIf="avisoResponsavelNaoVisualizado?.length > 0">
-    <h2 class="t-text--lg">Não lido por:</h2>
-    <ng-container *ngFor="let avisoResponsavel of avisoResponsavelNaoVisualizado">
-      <ion-item class="c-item" lines="none">
-        <ion-text class="c-item-titulo t-text--md">
-          {{ avisoResponsavel.responsavel.usuario.nome }}
-        </ion-text>
-      </ion-item>
-    </ng-container>
-  </div>
 </div>
 
 <ng-template #empty_state>

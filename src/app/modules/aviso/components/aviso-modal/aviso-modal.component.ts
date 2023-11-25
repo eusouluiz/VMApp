@@ -7,11 +7,12 @@ import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup,
 import { AvisoModalTituloComponent } from '../aviso-modal-titulo/aviso-modal-titulo.component';
 import { AvisoModalTextoComponent } from '../aviso-modal-texto/aviso-modal-texto.component';
 import { Router } from '@angular/router';
-import { Aviso, AvisoResponsavel } from '../../../../core/state/aviso/aviso-service/aviso.entity';
+import { Aviso, AvisoResponsavel, AvisoResponsavelInterface } from '../../../../core/state/aviso/aviso-service/aviso.entity';
 import { Responsavel } from '../../../../core/state/gerenciamento/responsavel/responsavel.entity';
 import { AvisoIndicadorVisualizacaoComponent } from '../aviso-indicador-visualizacao/aviso-indicador-visualizacao.component';
 import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
 import { AVISO_RESPONSAVEL_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
+import { AvisoRepository } from '../../../../core/state/aviso/aviso.repository';
 
 @Component({
   selector: 'app-aviso-modal',
@@ -46,6 +47,7 @@ export class AvisoModalComponent implements OnInit {
     private modalController: ModalController,
     private avisoService: AvisoService,
     private usuarioLogado: UsuarioLogado,
+    private avisoRepository: AvisoRepository,
   ) {
     this.form = formBuilder.group({
       titulo: ['', Validators.required],
@@ -57,7 +59,7 @@ export class AvisoModalComponent implements OnInit {
 
   ionViewWillEnter() {
     this.inicializarConteudo()
-    this.indicarVisualizacaoAviso()
+    this.preencherVisualizacaoAviso()
   }
 
   inicializarConteudo() {
@@ -132,32 +134,37 @@ export class AvisoModalComponent implements OnInit {
   listaAvisoResponsavel: AvisoResponsavel[] = []
 
   alterarModoVisualizacao() {
-    this.isModoVisualizacao = !this.isModoVisualizacao
-    if (this.isModoVisualizacao) {
-      this.buscarAvisoResponsavel()
+    if (!this.isResponsavel) {
+      this.isModoVisualizacao = !this.isModoVisualizacao
+      if (this.isModoVisualizacao) {
+        this.buscarAvisoResponsavel()
+      }
     }
   }
 
   buscarAvisoResponsavel() {
-    const lista = this.avisoService.buscarAvisoResponsavel({ idAviso: this.aviso.aviso_id })?.slice()
-    if (lista !== undefined) {
-      this.listaAvisoResponsavel = lista
-    }
-
-    console.log(this.listaAvisoResponsavel)
+    const listaVinculo = this.avisoRepository.vinculosAvisoResponsavel().filter((vinculo) => {
+      return this.aviso.aviso_id === vinculo.aviso_id
+    })
+    this.listaAvisoResponsavel.splice(0, this.listaAvisoResponsavel.length)
+    listaVinculo.forEach((vinculo) => {
+      this.listaAvisoResponsavel.push(new AvisoResponsavel(vinculo))
+    })
   }
 
-  indicarVisualizacaoAviso() {
-    var avisoResponsavel = this.avisoService.buscarAvisoResponsavel({
-      idAviso: this.aviso.aviso_id,
-      idResponsavel: this.usuarioLogado.getIdResponsavel()
-    })?.slice()
+  preencherVisualizacaoAviso() {
+    if (this.isResponsavel) {
+      const idResponsavel = this.usuarioLogado.getIdResponsavel()
+      if (idResponsavel !== undefined) {
+        var vinculo: AvisoResponsavelInterface = {
+          aviso_id: this.aviso.aviso_id,
+          responsavel_id: idResponsavel,
+          ind_visualizacao: true
+        }
 
-    if (avisoResponsavel !== undefined && avisoResponsavel.length > 0) {
-      if (!avisoResponsavel[0].ind_visualizacao) {
-        avisoResponsavel[0].ind_visualizacao = true
-        this.avisoService.alterarAvisoResponsavel(avisoResponsavel[0])
+        this.avisoService.incluirAvisoResponsavel(vinculo).subscribe()
       }
+
     }
   }
 }
