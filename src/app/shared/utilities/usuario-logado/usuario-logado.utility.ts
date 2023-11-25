@@ -63,6 +63,19 @@ export class UsuarioLogado {
     }
   }
 
+  getListaIdTurmas(): string[] {
+    var listaTurmas: string[] = []
+    const responsavel = this.sessionRepository.userInfo()?.responsavel
+    if (responsavel !== undefined && responsavel !== null) {
+      responsavel.alunos.forEach((aluno) => {
+        if (aluno.turma_id !== null) {
+          listaTurmas.push(aluno.turma_id)
+        }
+      })
+    } 
+    return listaTurmas
+  }
+
   getIdFuncionario(): string | undefined {
     if (this.sessionRepository.userInfo()?.funcionario !== null) {
       return this.sessionRepository.userInfo()?.funcionario.funcionario_id;

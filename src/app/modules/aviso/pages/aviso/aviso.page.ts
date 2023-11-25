@@ -24,6 +24,7 @@ import { DataUtil } from '../../../../shared/utilities/data/data.utility';
 })
 export class AvisoPage extends Pagina implements OnInit {
   avisos: Aviso[] = [];
+  listaTurmasResponsavel: string[] = this.usuarioLogado.getListaIdTurmas()
 
   //continuar restricao de avisos
   idResponsavel?: string = this.usuarioLogado.getIdResponsavel();
@@ -62,7 +63,7 @@ export class AvisoPage extends Pagina implements OnInit {
 
   resgatarAvisos() {
     const avisos = this.avisoRepository.avisos()
-    this.avisos = []
+    this.avisos.splice(0, this.avisos.length)
     avisos.forEach((aviso) => {
       this.avisos.push(new Aviso(aviso))
     })
@@ -178,5 +179,18 @@ export class AvisoPage extends Pagina implements OnInit {
 
   protected inicializarConteudo(): void {
     this.resgatarAvisos();
+  }
+
+  isVisivel(aviso: Aviso): boolean{
+    if (this.isResponsavel) {
+      for (let i = 0; i < aviso.turmas.length; i++) {
+        const turma = aviso.turmas[i];
+        if (this.listaTurmasResponsavel.includes(turma.turma_id)){
+          return true
+        }
+      }
+      return false
+    }
+    return true
   }
 }

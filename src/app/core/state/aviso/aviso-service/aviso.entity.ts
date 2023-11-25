@@ -13,6 +13,7 @@ export interface AvisoInterface {
     data_encerramento?: string,
     funcionario_id: string,
     canal_id: string,
+    turmas?: Turma[] 
 }
 
 export class Aviso {
@@ -44,6 +45,10 @@ export class Aviso {
             }
             this._funcionario.funcionario_id = data.funcionario_id
             this._canal.canal_id = data.canal_id
+
+            if(data.turmas !== undefined){
+                this._turmas = data.turmas
+            }
         }
     }
 

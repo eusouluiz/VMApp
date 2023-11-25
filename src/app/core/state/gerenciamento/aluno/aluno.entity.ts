@@ -16,6 +16,7 @@ export class Aluno {
     private _nome: string = '';
     private _turma: Turma = new Turma();
     private _responsaveis: Responsavel[] = [];
+    public turma_id: string = ''
 
     constructor(
         data?: AlunoInterface
