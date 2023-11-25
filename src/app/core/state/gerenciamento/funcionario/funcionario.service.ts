@@ -57,10 +57,15 @@ export class FuncionarioService {
 
     saveFuncionarioInStorage(funcionario: FuncionarioInterface): void {
         var funcionarios = this.gerenciamentoRepository.funcionarios()
-        const indexFuncionario = funcionarios.findIndex((funcionario) => {
-            return funcionario.funcionario_id === funcionario.funcionario_id
+        const indexFuncionario = funcionarios.findIndex((funcionarioStorage) => {
+            return funcionarioStorage.funcionario_id === funcionario.funcionario_id
         })
-        funcionarios[indexFuncionario] = funcionario
+
+        if (indexFuncionario !== -1) {
+            funcionarios[indexFuncionario] = funcionario
+        } else {
+            funcionarios.push(funcionario)
+        }
 
         this.gerenciamentoRepository.update({ funcionarios: funcionarios });
     }

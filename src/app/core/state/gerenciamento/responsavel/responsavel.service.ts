@@ -88,12 +88,16 @@ export class ResponsavelService {
     }
 
     saveResponsavelInStorage(responsavel: ResponsavelInterface): void {
-        console.log('saveResponsavelInStorage')
         var responsaveis = this.gerenciamentoRepository.responsaveis()
-        const indexResponsavel = responsaveis.findIndex((responsavel) => {
-            return responsavel.responsavel_id === responsavel.responsavel_id
+        const indexResponsavel = responsaveis.findIndex((responsavelStorage) => {
+            return responsavelStorage.responsavel_id === responsavel.responsavel_id
         })
-        responsaveis[indexResponsavel] = responsavel
+
+        if (indexResponsavel !== -1) {
+            responsaveis[indexResponsavel] = responsavel
+        } else {
+            responsaveis.push(responsavel)
+        }
 
         this.gerenciamentoRepository.update({ responsaveis: responsaveis });
     }

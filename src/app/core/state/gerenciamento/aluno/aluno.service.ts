@@ -109,10 +109,15 @@ export class AlunoService {
 
     saveAlunoInStorage(aluno: AlunoInterface): void {
         var alunos = this.gerenciamentoRepository.alunos()
-        const indexAluno = alunos.findIndex((aluno) => {
-            return aluno.aluno_id === aluno.aluno_id
+        const indexAluno = alunos.findIndex((alunoStorage) => {
+            return alunoStorage.aluno_id === aluno.aluno_id
         })
-        alunos[indexAluno] = aluno
+
+        if (indexAluno !== -1) {
+            alunos[indexAluno] = aluno
+        } else {
+            alunos.push(aluno)
+        }
 
         this.gerenciamentoRepository.update({ alunos: alunos });
     }

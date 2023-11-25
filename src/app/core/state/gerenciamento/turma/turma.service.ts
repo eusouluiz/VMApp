@@ -119,12 +119,16 @@ export class TurmaService {
     }
 
     saveTurmaInStorage(turma: TurmaInterface): void {
-        console.log('saveTurmaInStorage')
         var turmas = this.gerenciamentoRepository.turmas()
-        const indexTurma = turmas.findIndex((turma) => {
-            return turma.turma_id === turma.turma_id
+        const indexTurma = turmas.findIndex((turmaStorage) => {
+            return turmaStorage.turma_id === turma.turma_id
         })
-        turmas[indexTurma] = turma
+
+        if (indexTurma !== -1) {
+            turmas[indexTurma] = turma
+        } else {
+            turmas.push(turma)
+        }
 
         this.gerenciamentoRepository.update({ turmas: turmas });
     }

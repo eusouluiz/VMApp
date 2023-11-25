@@ -108,12 +108,16 @@ export class CargoService {
     }
 
     saveCargoInStorage(cargo: CargoInterface): void {
-        console.log('saveCargoInStorage')
         var cargos = this.gerenciamentoRepository.cargos()
-        const indexCargo = cargos.findIndex((cargo) => {
-            return cargo.cargo_id === cargo.cargo_id
+        const indexCargo = cargos.findIndex((cargoStorage) => {
+            return cargoStorage.cargo_id === cargo.cargo_id
         })
-        cargos[indexCargo] = cargo
+
+        if (indexCargo !== -1) {
+            cargos[indexCargo] = cargo
+        } else {
+            cargos.push(cargo)
+        }
 
         this.gerenciamentoRepository.update({ cargos: cargos });
     }
