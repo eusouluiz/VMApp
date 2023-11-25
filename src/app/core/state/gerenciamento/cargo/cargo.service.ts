@@ -121,4 +121,17 @@ export class CargoService {
 
         this.gerenciamentoRepository.update({ cargos: cargos });
     }
+
+    removerCargoInStorage(idCargo: string) {
+        var cargos = this.gerenciamentoRepository.cargos()
+        const indexCargo = cargos.findIndex((cargoStorage) => {
+            return cargoStorage.cargo_id === idCargo
+        })
+
+        if (indexCargo !== -1) {
+            cargos.splice(indexCargo, 1)
+        } 
+
+        this.gerenciamentoRepository.update({ cargos: cargos });
+    }
 }

@@ -35,11 +35,12 @@ export class GerenciamentoAlunoPage extends Pagina implements OnInit {
     
     this.inicializarConteudo()
   }
-
+  
   ngOnInit() {}
-
+  
   ionViewWillEnter() {
     this.pageMenuService.displayStatus.next(false);
+    this.inicializarConteudo()
   }
 
   buscarAlunos(){

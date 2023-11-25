@@ -111,7 +111,7 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
       next: () => {
         this.usuarioService.deletarUsuario(this.funcionario.usuario.user_id).subscribe({
           next: () => {
-            this.atualizarFuncionario()
+            this.funcionarioService.removerFuncionarioInStorage(this.funcionario.funcionario_id)
             this.toastService.success('Sucesso ao Remover ' + this.funcionario.usuario.nome);
             this.retornarPagina();
           },
@@ -187,6 +187,7 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
         this.usuarioService.incluirUsuario(usuario).subscribe({
           next: () => {
             this.atualizarFuncionario()
+            this.funcionarioService.saveFuncionarioInStorage(this.funcionario.converterFuncionarioInterface())
             this.funcionarioService.vincularCargo(this.funcionario, this.listaCargosTabela).subscribe({
               next: () => {
                 this.atualizarCargos()
@@ -195,7 +196,7 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
               },
               error: (err) => {
                 this.toastService.error('Erro ao vincular Cargo');
-    
+                
                 if (err?.original?.status === 422) {
                   return;
                 }
@@ -204,7 +205,7 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
           },
           error: (err) => {
             this.toastService.error('Erro ao cadastrar Funcionário');
-
+            
             if (err?.original?.status === 422) {
               return;
             }
@@ -218,6 +219,7 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
         this.usuarioService.alterarUsuario(usuario, this.funcionario.usuario.user_id).subscribe({
           next: () => {
             this.atualizarFuncionario()
+            this.funcionarioService.saveFuncionarioInStorage(this.funcionario.converterFuncionarioInterface())
             this.funcionarioService.vincularCargo(this.funcionario, this.listaCargosTabela).subscribe({
               next: () => {
                 this.atualizarCargos()

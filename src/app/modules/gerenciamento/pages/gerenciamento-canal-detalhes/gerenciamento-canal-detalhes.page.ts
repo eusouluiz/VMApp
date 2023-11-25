@@ -100,7 +100,7 @@ export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamentoDetalhes 
   protected deletar() {
     this.canalService.deletarCanal(this.canal.canal_id).subscribe({
       next: () => {
-        this.atualizarCanal()
+        this.canalService.removerCanalInStorage(this.canal.canal_id)
         this.toastService.success('Sucesso ao Remover ' + this.canal.nome);
         this.retornarPagina();
       },
@@ -163,6 +163,7 @@ export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamentoDetalhes 
               this.canal.canal_id = canal.canal_id
             }
             this.atualizarCanal()
+            this.canalService.saveCanalInStorage(this.canal.converterCanalInterface())
             this.canalService.vincularCargos(this.canal, this.listaCargosTabela)
             this.atualizarCargos()
             this.toastService.success('Sucesso ao cadastrar ' + this.canal.nome);
@@ -170,7 +171,7 @@ export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamentoDetalhes 
           },
           error: (err) => {
             this.toastService.error('Erro ao cadastrar Canal');
-
+            
             if (err?.original?.status === 422) {
               return;
             }
@@ -180,6 +181,7 @@ export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamentoDetalhes 
         this.canalService.alterarCanal(canal, this.canal.canal_id).subscribe({
           next: () => {
             this.atualizarCanal()
+            this.canalService.saveCanalInStorage(this.canal.converterCanalInterface())
             this.canalService.vincularCargos(this.canal, this.listaCargosTabela)
             this.atualizarCargos()
             this.toastService.success('Sucesso ao editar ' + this.canal.nome);

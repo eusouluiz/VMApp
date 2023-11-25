@@ -34,16 +34,16 @@ export class GerenciamentoTurmaPage extends Pagina implements OnInit {
 
     this.inicializarConteudo()
   }
-
+  
   ngOnInit() {}
-
+  
   ionViewWillEnter() {
     this.pageMenuService.displayStatus.next(false);
+    this.inicializarConteudo()
   }
 
   protected inicializarConteudo(): void {
     const turmas = this.gerenciamentoRepository.turmas()
-    console.log(turmas)
     this.turmas = []
     turmas.forEach((turma) => {
       this.turmas.push(new Turma(turma))

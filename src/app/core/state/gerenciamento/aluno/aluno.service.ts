@@ -121,4 +121,17 @@ export class AlunoService {
 
         this.gerenciamentoRepository.update({ alunos: alunos });
     }
+
+    removerAlunoInStorage(idAluno: string) {
+        var alunos = this.gerenciamentoRepository.alunos()
+        const indexAluno = alunos.findIndex((alunoStorage) => {
+            return alunoStorage.aluno_id === idAluno
+        })
+
+        if (indexAluno !== -1) {
+            alunos.splice(indexAluno, 1)
+        } 
+
+        this.gerenciamentoRepository.update({ alunos: alunos });
+    }
 }

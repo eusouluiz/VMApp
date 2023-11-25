@@ -138,6 +138,19 @@ export class CanalService {
         this.gerenciamentoRepository.update({ canais: canais });
     }
 
+    removerCanalInStorage(idCanal: string) {
+        var canais = this.gerenciamentoRepository.canais()
+        const indexCanal = canais.findIndex((canalStorage) => {
+            return canalStorage.canal_id === idCanal
+        })
+
+        if (indexCanal !== -1) {
+            canais.splice(indexCanal, 1)
+        } 
+
+        this.gerenciamentoRepository.update({ canais: canais });
+    }
+
     saveCanaisInStorageMensagem(canais: CanalInterface[]) {
         this.mensagemRepository.update({ listaCanais: canais });
     }

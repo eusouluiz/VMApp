@@ -34,16 +34,16 @@ export class GerenciamentoCanalPage extends Pagina implements OnInit {
 
     this.inicializarConteudo()
   }
-
+  
   ngOnInit() {}
-
+  
   ionViewWillEnter() {
     this.pageMenuService.displayStatus.next(false);
+    this.inicializarConteudo()
   }
 
   protected inicializarConteudo(): void {
     const canais = this.gerenciamentoRepository.canais()
-    console.log(canais)
     this.canais = []
     canais.forEach((canal) => {
       this.canais.push(new Canal(canal))

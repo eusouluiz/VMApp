@@ -132,4 +132,17 @@ export class TurmaService {
 
         this.gerenciamentoRepository.update({ turmas: turmas });
     }
+
+    removerTurmaInStorage(idTurma: string) {
+        var turmas = this.gerenciamentoRepository.turmas()
+        const indexTurma = turmas.findIndex((turmaStorage) => {
+            return turmaStorage.turma_id === idTurma
+        })
+
+        if (indexTurma !== -1) {
+            turmas.splice(indexTurma, 1)
+        } 
+
+        this.gerenciamentoRepository.update({ turmas: turmas });
+    }
 }

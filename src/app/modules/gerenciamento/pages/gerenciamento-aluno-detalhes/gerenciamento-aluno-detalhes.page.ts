@@ -110,6 +110,11 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
   //delecao
   protected deletar() {
     this.alunoService.deletarAluno(this.aluno.aluno_id).subscribe({
+      next: () => {
+        this.alunoService.removerAlunoInStorage(this.aluno.aluno_id)
+        this.toastService.success('Sucesso ao Remover ' + this.aluno.nome);
+        this.retornarPagina();
+      },
       error: (err) => {
         this.toastService.error('Erro ao Remover Funcionário');
 
@@ -175,15 +180,16 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
             }
             this.atualizarAluno()
             this.atualizarTurmas()
+            this.alunoService.saveAlunoInStorage(this.aluno.converterAlunoInterface())
             this.alunoService.vincularResponsaveis(this.aluno, this.listaResponsaveisTabela)
             this.atualizarResponsaveis()
-
+            
             this.toastService.success('Sucesso ao cadastrar ' + this.aluno.nome);
             this.retornarModoDetalhes()
           },
           error: (err) => {
             this.toastService.error('Erro ao cadastrar Aluno');
-
+            
             if (err?.original?.status === 422) {
               return;
             }
@@ -194,6 +200,7 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
           next: () => {
             this.atualizarAluno()
             this.atualizarTurmas()
+            this.alunoService.saveAlunoInStorage(this.aluno.converterAlunoInterface())
             this.alunoService.vincularResponsaveis(this.aluno, this.listaResponsaveisTabela)
             this.atualizarResponsaveis()
 

@@ -107,20 +107,9 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
   protected deletar() {
     this.turmaService.deletarTurma(this.turma.turma_id).subscribe({
       next: () => {
-        this.usuarioService.deletarUsuario(this.turma.turma_id).subscribe({
-          next: () => {
-            this.atualizarTurma()
-            this.toastService.success('Sucesso ao Remover ' + this.turma.nome);
-            this.retornarPagina();
-          },
-          error: (err) => {
-            this.toastService.error('Erro ao Remover Turma');
-    
-            if (err?.original?.status === 422) {
-              return;
-            }
-          },
-        });
+        this.turmaService.removerTurmaInStorage(this.turma.turma_id)
+        this.toastService.success('Sucesso ao Remover ' + this.turma.nome);
+        this.retornarPagina();
       },
       error: (err) => {
         this.toastService.error('Erro ao Remover Turma');
@@ -181,6 +170,7 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
               this.turma.turma_id = turma.turma_id
             }
             this.atualizarTurma()
+            this.turmaService.saveTurmaInStorage(this.turma.converterTurmaInterface())
             this.turmaService.vincularAlunos(this.turma, this.listaAlunosTabela)
             this.atualizarAlunos()
             this.toastService.success('Sucesso ao cadastrar ' + this.turma.nome);
@@ -188,7 +178,7 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
           },
           error: (err) => {
             this.toastService.error('Erro ao cadastrar Turma');
-
+            
             if (err?.original?.status === 422) {
               return;
             }
@@ -198,6 +188,7 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
         this.turmaService.alterarTurma(turma, this.turma.turma_id).subscribe({
           next: () => {
             this.atualizarTurma()
+            this.turmaService.saveTurmaInStorage(this.turma.converterTurmaInterface())
             this.turmaService.vincularAlunos(this.turma, this.listaAlunosTabela)
             this.atualizarAlunos()
             this.toastService.success('Sucesso ao editar ' + this.turma.nome);

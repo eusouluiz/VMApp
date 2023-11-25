@@ -32,18 +32,18 @@ export class GerenciamentoFuncionarioPage extends Pagina implements OnInit {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO;
     super(router, ROTA_BASE, location);
 
-    this.buscarFuncionarios()
+    this.inicializarConteudo()
   }
 
   ngOnInit() {}
 
   ionViewWillEnter() {
     this.pageMenuService.displayStatus.next(false);
+    this.inicializarConteudo()
   }
 
   protected inicializarConteudo(): void {
     const funcionarios = this.gerenciamentoRepository.funcionarios()
-    console.log(funcionarios)
     this.funcionarios = []
     funcionarios.forEach((funcionario) => {
       this.funcionarios.push(new Funcionario(funcionario))

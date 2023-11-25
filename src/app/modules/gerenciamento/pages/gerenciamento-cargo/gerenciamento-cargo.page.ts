@@ -34,16 +34,16 @@ export class GerenciamentoCargoPage extends Pagina implements OnInit {
 
     this.inicializarConteudo()
   }
-
+  
   ngOnInit() {}
-
+  
   ionViewWillEnter() {
     this.pageMenuService.displayStatus.next(false);
+    this.inicializarConteudo()
   }
 
   protected inicializarConteudo(): void {
     const cargos = this.gerenciamentoRepository.cargos()
-    console.log(cargos)
     this.cargos = []
     cargos.forEach((cargo) => {
       this.cargos.push(new Cargo(cargo))

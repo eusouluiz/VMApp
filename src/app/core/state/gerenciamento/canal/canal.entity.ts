@@ -32,6 +32,14 @@ export class Canal {
     }
   }
 
+  converterCanalInterface(): CanalInterface {
+    return {
+      canal_id: this._canal_id,
+      nome: this._nome,
+      descricao: this._descricao,
+    }
+  }
+
   public get canal_id(): string {
     return this._canal_id;
   }
@@ -86,12 +94,12 @@ export class CanalResponsavel {
         this._canal_responsavel_id = data.canal_responsavel_id;
       }
 
-      if (data.canal !== undefined){
+      if (data.canal !== undefined) {
         this._canal = data.canal
       } else if (data.canal_id !== undefined) {
         this._canal.canal_id = data.canal_id;
       }
-      if (data.responsavel !== undefined){
+      if (data.responsavel !== undefined) {
         this._responsavel = new Responsavel(data.responsavel)
       } else if (data.responsavel_id !== undefined) {
         this._responsavel.responsavel_id = data.responsavel_id;
@@ -124,9 +132,9 @@ export class CanalResponsavel {
     this._responsavel = value;
   }
 
-  static converterCanalMensagem(canalMensagem: CanalMensagem): CanalResponsavel{
+  static converterCanalMensagem(canalMensagem: CanalMensagem): CanalResponsavel {
     if ((canalMensagem.canal_id !== undefined && canalMensagem.responsavel_id !== undefined) ||
-        ((canalMensagem.canal !== undefined && canalMensagem.responsavel !== undefined))) {
+      ((canalMensagem.canal !== undefined && canalMensagem.responsavel !== undefined))) {
       var canal: CanalResponsavelInterface = {
         canal_id: canalMensagem.canal_id,
         responsavel_id: canalMensagem.responsavel_id,

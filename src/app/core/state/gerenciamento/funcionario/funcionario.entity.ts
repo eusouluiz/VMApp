@@ -20,11 +20,19 @@ export class Funcionario {
             this._funcionario_id = data.funcionario_id
             this._usuario = data.user
 
-            if (data.cargo !== undefined){
+            if (data.cargo !== undefined) {
                 this._cargo = data.cargo
             } else if (data.cargo_id !== undefined && data.cargo_id !== null) {
                 this._cargo.cargo_id = data.cargo_id
             }
+        }
+    }
+
+    converterFuncionarioInterface(): FuncionarioInterface {
+        return {
+            funcionario_id: this._funcionario_id,
+            user: this._usuario,
+            cargo: this._cargo,
         }
     }
 

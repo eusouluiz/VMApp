@@ -101,4 +101,17 @@ export class ResponsavelService {
 
         this.gerenciamentoRepository.update({ responsaveis: responsaveis });
     }
+
+    removerResponsavelInStorage(idResposnavel: string) {
+        var responsaveis = this.gerenciamentoRepository.responsaveis()
+        const indexResponsavel = responsaveis.findIndex((responsavelStorage) => {
+            return responsavelStorage.responsavel_id === idResposnavel
+        })
+
+        if (indexResponsavel !== -1) {
+            responsaveis.splice(indexResponsavel, 1)
+        } 
+
+        this.gerenciamentoRepository.update({ responsaveis: responsaveis });
+    }
 }

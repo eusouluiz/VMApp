@@ -39,6 +39,13 @@ export class Cargo {
         }
     }
 
+    converterCargoInterface(): CargoInterface {
+        return {
+            cargo_id: this._cargo_id,
+            nome: this.nome
+        }
+    }
+
     public get cargo_id(): string {
         return this._cargo_id;
     }

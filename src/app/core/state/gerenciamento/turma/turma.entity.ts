@@ -31,6 +31,14 @@ export class Turma {
         }
     }
 
+    converterTurmaInterface(): TurmaInterface {
+        return {
+            turma_id: this._turma_id,
+            nome: this._nome,
+            descricao: this._descricao,
+        }
+    }
+
     public get turma_id(): string {
         return this._turma_id;
     }

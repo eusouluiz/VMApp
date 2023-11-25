@@ -110,20 +110,9 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
   protected deletar() {
     this.cargoService.deletarCargo(this.cargo.cargo_id).subscribe({
       next: () => {
-        this.usuarioService.deletarUsuario(this.cargo.cargo_id).subscribe({
-          next: () => {
-            this.atualizarCargo()
-            this.toastService.success('Sucesso ao Remover ' + this.cargo.nome);
-            this.retornarPagina();
-          },
-          error: (err) => {
-            this.toastService.error('Erro ao Remover Cargo');
-    
-            if (err?.original?.status === 422) {
-              return;
-            }
-          },
-        });
+        this.cargoService.removerCargoInStorage(this.cargo.cargo_id)
+        this.toastService.success('Sucesso ao Remover ' + this.cargo.nome);
+        this.retornarPagina();
       },
       error: (err) => {
         this.toastService.error('Erro ao Remover Cargo');
@@ -174,11 +163,11 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
   //salvar edicao
   salvar() {
     if (this.form?.valid) {
-
+      
       var cargo: CargoInterface = {
         nome: this.form.value.nome,
       }
-
+      
       if (this.isModoCadastrar()) {
         this.cargoService.incluirCargo(cargo).subscribe({
           next: () => {
@@ -188,12 +177,13 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
             this.atualizarCargo()
             this.cargoService.vincularFuncionarios(this.cargo, this.listaFuncionariosTabela)
             this.atualizarFuncionarios()
+            this.cargoService.saveCargoInStorage(this.cargo.converterCargoInterface())
             this.toastService.success('Sucesso ao cadastrar ' + this.cargo.nome);
             this.retornarModoDetalhes()
           },
           error: (err) => {
             this.toastService.error('Erro ao cadastrar Cargo');
-
+            
             if (err?.original?.status === 422) {
               return;
             }
@@ -205,6 +195,7 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
             this.atualizarCargo()
             this.cargoService.vincularFuncionarios(this.cargo, this.listaFuncionariosTabela)
             this.atualizarFuncionarios()
+            this.cargoService.saveCargoInStorage(this.cargo.converterCargoInterface())
             this.toastService.success('Sucesso ao editar ' + this.cargo.nome);
             this.retornarModoDetalhes()
           },

@@ -112,7 +112,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
       next: () => {
         this.usuarioService.deletarUsuario(this.responsavel.usuario.user_id).subscribe({
           next: () => {
-            this.atualizarResponsavel()
+            this.responsavelService.removerResponsavelInStorage(this.responsavel.responsavel_id)
             this.toastService.success('Sucesso ao Remover ' + this.responsavel.usuario.nome);
             this.retornarPagina();
           },
@@ -190,6 +190,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
               this.responsavel.responsavel_id = usuario.responsavel_id
             }
             this.atualizarResponsavel()
+            this.responsavelService.saveResponsavelInStorage(this.responsavel.converterResponsavelInterface())
             this.responsavelService.vincularAlunos(this.responsavel, this.listaAlunosTabela)
             this.atualizarAlunos()
             this.toastService.success('Sucesso ao cadastrar ' + this.responsavel.usuario.nome);
@@ -197,7 +198,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
           },
           error: (err) => {
             this.toastService.error('Erro ao cadastrar Responsável');
-
+            
             if (err?.original?.status === 422) {
               return;
             }
@@ -211,6 +212,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
         this.usuarioService.alterarUsuario(usuario, this.responsavel.usuario.user_id).subscribe({
           next: () => {
             this.atualizarResponsavel()
+            this.responsavelService.saveResponsavelInStorage(this.responsavel.converterResponsavelInterface())
             this.responsavelService.vincularAlunos(this.responsavel, this.listaAlunosTabela)
             this.atualizarAlunos()
             this.toastService.success('Sucesso ao editar ' + this.responsavel.usuario.nome);

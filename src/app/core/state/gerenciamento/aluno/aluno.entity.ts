@@ -40,6 +40,15 @@ export class Aluno {
             }
         }
     }
+    
+    converterAlunoInterface(): AlunoInterface {
+        return {
+            aluno_id: this._aluno_id,
+            cgm: this._cgm,
+            nome: this._nome,
+            turma: this._turma,
+        }
+      }
 
     public get aluno_id(): string {
         return this._aluno_id

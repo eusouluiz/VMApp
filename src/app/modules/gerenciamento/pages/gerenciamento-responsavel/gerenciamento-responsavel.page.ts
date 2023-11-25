@@ -39,11 +39,11 @@ export class GerenciamentoResponsavelPage extends Pagina implements OnInit {
 
   ionViewWillEnter() {
     this.pageMenuService.displayStatus.next(false);
+    this.inicializarConteudo()
   }
 
   protected inicializarConteudo(): void {
     const responsaveis = this.gerenciamentoRepository.responsaveis()
-    console.log(responsaveis)
     this.responsaveis = []
     responsaveis.forEach((responsavel) => {
       this.responsaveis.push(new Responsavel(responsavel))

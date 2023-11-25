@@ -69,4 +69,17 @@ export class FuncionarioService {
 
         this.gerenciamentoRepository.update({ funcionarios: funcionarios });
     }
+
+    removerFuncionarioInStorage(idFuncionario: string) {
+        var funcionarios = this.gerenciamentoRepository.funcionarios()
+        const indexFuncionario = funcionarios.findIndex((funcionarioStorage) => {
+            return funcionarioStorage.funcionario_id === idFuncionario
+        })
+
+        if (indexFuncionario !== -1) {
+            funcionarios.splice(indexFuncionario, 1)
+        } 
+
+        this.gerenciamentoRepository.update({ funcionarios: funcionarios });
+    }
 }

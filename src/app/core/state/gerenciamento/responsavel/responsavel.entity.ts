@@ -25,6 +25,13 @@ export class Responsavel {
         }
     }
 
+    converterResponsavelInterface(): ResponsavelInterface{
+        return {
+            responsavel_id: this._responsavel_id,
+            user: this._usuario
+        }
+    }
+
     public get responsavel_id(): string {
         return this._responsavel_id
     }
