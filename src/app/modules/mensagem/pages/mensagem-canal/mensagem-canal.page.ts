@@ -51,7 +51,6 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     this.pageMenuService.displayStatus.next(false);
   }
 
-  // nao precisaria remover os canais, pois esses canais persistem por toda aplicacao
   OnDestroy() {
     supabase.removeAllChannels()
   }
@@ -63,7 +62,7 @@ export class MensagemCanalPage extends Pagina implements OnInit {
 
   resgatarCanalResponsavel(id: string) {
     const canalMensagem = this.mensagemRepository.canais().find((canal) => {
-      return canal.canal_responsavel_id = id
+      return canal.canal_responsavel_id === id
     })
     if (canalMensagem !== undefined) {
       this.canalResponsavel = CanalResponsavel.converterCanalMensagem(canalMensagem)
@@ -82,7 +81,7 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     this.mensagemService.armazenarMensagens(mensagens, idCanalResponsavel)
 
     const canal = this.mensagemRepository.canais().find((canal) => {
-      return canal.canal_responsavel_id
+      return canal.canal_responsavel_id === idCanalResponsavel
     })
     if (canal !== undefined && canal.mensagens !== undefined) {
       const mensagemCanal = canal.mensagens
@@ -133,6 +132,7 @@ export class MensagemCanalPage extends Pagina implements OnInit {
 
   protected inicializarConteudo(): void {
     const id = this.activatedRoute.snapshot.paramMap.get('idCanalResponsavel');
+    console.log(id)
     if (id !== null) {
       this.resgatarCanalResponsavel(id);
       this.resgatarMensagens(id);

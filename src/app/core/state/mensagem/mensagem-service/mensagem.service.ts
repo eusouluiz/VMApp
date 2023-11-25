@@ -42,10 +42,14 @@ export class MensagemService {
   armazenarMensagens(mensagens: MensagemInterface[] | null, idCanalResponsavel: string) {
     if (mensagens !== null) {
       const canais = this.mensagemRepository.canais()
+
+      console.log(canais)
+      console.log(idCanalResponsavel)
       
       const indexCanal = canais.findIndex((canal) => {
         return canal.canal_responsavel_id === idCanalResponsavel
       })
+      console.log(indexCanal)
 
       if (indexCanal !== -1) {
         canais[indexCanal].mensagens = mensagens
