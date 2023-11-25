@@ -15,6 +15,7 @@ import { Aviso, AvisoInterface } from '../../../../core/state/aviso/aviso-servic
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 import { AVISO_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
 import { AvisoRepository } from '../../../../core/state/aviso/aviso.repository';
+import { DataUtil } from '../../../../shared/utilities/data/data.utility';
 
 @Component({
   selector: 'app-aviso',
@@ -149,7 +150,29 @@ export class AvisoPage extends Pagina implements OnInit {
     if (role === 'salvarAviso') {
       console.log(data);
 
-      this.avisoService.incluirAviso(data);
+      const idFuncionario = this.usuarioLogado.getIdFuncionario()
+
+      if (idFuncionario !== undefined) {
+        var novoAviso: AvisoInterface = {
+          titulo: data.titulo,
+          texto: data.texto,
+          arquivo: data.arquivo,
+          data_publicacao: DataUtil.converterDataServico(data.data_publicacao),
+          prioridade: data.prioridade,
+          funcionario_id: idFuncionario,
+          canal_id: data.canal.canal_id,
+        }
+      } else {
+        throw new Error('Funcionario nao encontrado')
+      }
+
+      this.avisoService.incluirAviso(novoAviso).subscribe({
+        next: () => {
+          this.avisoService.vincularTurmas(new Aviso(novoAviso), data.turmas)
+          this.avisoService.saveAvisoInStorage(novoAviso)
+          this.inicializarConteudo()
+        }
+      });
     }
   }
 

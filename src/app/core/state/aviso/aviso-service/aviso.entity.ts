@@ -9,8 +9,8 @@ export interface AvisoInterface {
     texto: string,
     arquivo: string,
     prioridade: string,
-    data_publicacao: Date,
-    data_encerramento?: Date,
+    data_publicacao: string,
+    data_encerramento?: string,
     funcionario_id: string,
     canal_id: string,
 }
@@ -38,9 +38,9 @@ export class Aviso {
             this._texto = data.texto
             this._arquivo = data.arquivo
             this._prioridade = data.prioridade
-            this._data_publicacao = data.data_publicacao
+            this._data_publicacao = new Date(data.data_publicacao)
             if (data.data_encerramento !== undefined) {
-                this._data_encerramento = data.data_encerramento
+                this._data_encerramento = new Date(data.data_encerramento)
             }
             this._funcionario.funcionario_id = data.funcionario_id
             this._canal.canal_id = data.canal_id

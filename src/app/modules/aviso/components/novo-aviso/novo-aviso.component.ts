@@ -13,6 +13,7 @@ import { Aviso } from '../../../../core/state/aviso/aviso-service/aviso.entity';
 import { Canal } from '../../../../core/state/gerenciamento/canal/canal.entity';
 import { Turma } from '../../../../core/state/gerenciamento/turma/turma.entity';
 import { Lembrete } from '../../../../core/services/lembrete-service/lembrete.entity';
+import { GerenciamentoRepository } from '../../../../core/state/gerenciamento/gerenciamento.repository';
 
 @Component({
   selector: 'app-novo-aviso',
@@ -42,6 +43,7 @@ export class NovoAvisoComponent implements OnInit {
     private lembreteService: LembreteService,
     private canalService: CanalService,
     private turmaService: TurmaService,
+    private gerenciamentoRepository: GerenciamentoRepository,
   ) {
     this.inicializarForms()
     this.inicializarConteudo()
@@ -51,14 +53,33 @@ export class NovoAvisoComponent implements OnInit {
   }
 
   protected inicializarConteudo(): void {
-    this.canalService.buscarTodosCanais()
-    this.nomeCanaisBusca = this.resgatarNomeCanaisBusca(this.listaTodosCanais)
+    this.canalService.buscarTodosCanais().subscribe({
+      next: () => {
+        const canais = this.gerenciamentoRepository.canais()
 
-    //TODO buscar turmas
-    this.turmaService.buscarTodosTurmas()
-    this.listaTurmasBusca = this.listaTodasTurmas.slice()
-    this.nomeTurmasBusca = this.resgatarNomeTurmasBusca(this.listaTodasTurmas)
+        this.listaTodosCanais = []
+        if (canais !== undefined) {
+          canais.forEach((canal) => {
+            this.listaTodosCanais.push(new Canal(canal))
+          })
+        }
+        this.resgatarNomeCanaisBusca(this.listaTodosCanais)
+      }
+    })
+    this.turmaService.buscarTodosTurmas().subscribe({
+      next: () => {
+        const turmas = this.gerenciamentoRepository.turmas()
 
+        this.listaTodasTurmas = []
+        if (turmas !== undefined) {
+          turmas.forEach((turma) => {
+            this.listaTodasTurmas.push(new Turma(turma))
+          })
+        }
+        this.resgatarNomeTurmasBusca(this.listaTodasTurmas)
+        this.listaTurmasBusca = this.listaTodasTurmas.slice()
+      }
+    })
     this.nomePrioridadesBusca = this.resgatarNomePrioridadesBusca()
   }
 
@@ -96,7 +117,7 @@ export class NovoAvisoComponent implements OnInit {
         lembrete.texto = this.aviso.texto.substring(0, 50)
         lembrete.data_lembrete = this.form.value.dataLembrete
 
-        this.lembreteService.incluirLembrete(lembrete)
+        // this.lembreteService.incluirLembrete(lembrete)
       }
 
       return this.modalController.dismiss(this.aviso, 'salvarAviso')
@@ -135,7 +156,6 @@ export class NovoAvisoComponent implements OnInit {
   nomePrioridadesBusca: string[] = []
 
   private resgatarNomePrioridadesBusca(): string[] {
-    console.log('entrou')
     var nomes: string[] = []
     this.opcoesPrioridade.forEach(prioridade => {
       nomes.push(prioridade.label)
@@ -163,12 +183,11 @@ export class NovoAvisoComponent implements OnInit {
 
   nomeCanaisBusca: string[] = []
 
-  private resgatarNomeCanaisBusca(lista: Canal[]): string[] {
-    var nomes: string[] = []
+  private resgatarNomeCanaisBusca(lista: Canal[]) {
+    this.nomeCanaisBusca.splice(0, this.nomeCanaisBusca.length)
     lista.forEach(canal => {
-      nomes.push(canal.nome)
+      this.nomeCanaisBusca.push(canal.nome)
     });
-    return nomes
   }
 
   selecionarCanal(valor: number) {
@@ -192,17 +211,18 @@ export class NovoAvisoComponent implements OnInit {
 
   listaTurmasTabela: Turma[] = []
 
-  private resgatarNomeTurmasBusca(lista: Turma[]): string[] {
-    var nomes: string[] = []
+  private resgatarNomeTurmasBusca(lista: Turma[]) {
+    this.nomeTurmasBusca.splice(0, this.nomeTurmasBusca.length)
     lista.forEach(turma => {
-      nomes.push(turma.nome)
+      this.nomeTurmasBusca.push(turma.nome)
     });
-    return nomes
   }
 
   adicionarTurma(valor: number) {
+    console.log(valor)
     if (valor !== -1) {
       const turma = this.listaTurmasBusca[valor]
+      console.log(turma)
 
       this.listaTurmasTabela.push(turma)
 

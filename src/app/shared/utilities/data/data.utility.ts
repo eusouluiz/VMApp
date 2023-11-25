@@ -4,7 +4,7 @@ export class DataUtil {
         return data.replace(' ', ', ')
     }
 
-    static converterDataServico(data_envio: string): string {
-        return (new Date(data_envio)).toLocaleString().replace(',', '')
+    static converterDataServico(data: string): string {
+        return (new Date(data)).toLocaleString().replace(',', '')
     }
 }
