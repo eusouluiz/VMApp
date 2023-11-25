@@ -142,7 +142,7 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
 
       if (idResponsavel !== undefined) {
         const canalMensagem = this.mensagemRepository.canais().find((canal) => {
-          return canal.canal_id === idCanal && canal.responsavel_id === idResponsavel
+          return canal.canal?.canal_id === idCanal && canal.responsavel?.responsavel_id === idResponsavel
         })
         if (canalMensagem !== undefined) {
           if (canalMensagem.mensagens !== undefined && canalMensagem.mensagens.length > 0) {
