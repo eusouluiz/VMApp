@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { SharedModule } from '../../../../shared/shared.module';
 import { Mensagem } from '../../../../core/state/mensagem/mensagem-service/mensagem.entity';
+import { DataUtil } from '../../../../shared/utilities/data/data.utility';
 
 @Component({
   selector: 'app-mensagem',
@@ -16,10 +17,6 @@ export class MensagemComponent implements OnInit {
 
   @Input('idUsuario') idUsuario!: string;
 
-  hora!: string;
-
-  minuto!: string;
-
   ngOnInit() { }
 
   ngAfterViewInit(): void {
@@ -28,10 +25,25 @@ export class MensagemComponent implements OnInit {
   }
 
   resgatarHorario() {
-    this.hora = this.formatarNumero(this.mensagem.data_envio.getHours());
-    this.minuto = this.formatarNumero(this.mensagem.data_envio.getMinutes());
+    const dia = this.formatarNumero(this.mensagem.data_envio.getDate())
+    const mes = this.formatarNumero(this.mensagem.data_envio.getMonth())
+    const hora = this.formatarNumero(this.mensagem.data_envio.getHours());
+    const minuto = this.formatarNumero(this.mensagem.data_envio.getMinutes());
 
-    return this.hora + ':' + this.minuto;
+    const dataHoje = new Date()
+    const diferencaDias = DataUtil.diferencaDias(dataHoje, this.mensagem.data_envio)
+
+    var diaMes = ''
+    if (diferencaDias > 1) {
+      diaMes = `${dia}/${mes}`;
+    } else {
+      if (diferencaDias === 0){
+        diaMes = 'Hoje'
+      } else {
+        diaMes = 'Ontem'
+      }
+    }
+    return `${diaMes} - ${hora}:${minuto}`
   }
 
   private formatarNumero(num: number): string {
