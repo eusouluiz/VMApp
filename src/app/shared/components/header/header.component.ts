@@ -1,5 +1,5 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { RealtimeChannel, Subscription, SupabaseClient, createClient } from '@supabase/supabase-js';
+import { Component, Input, OnInit } from '@angular/core';
+import { createClient } from '@supabase/supabase-js';
 import { environment } from '../../../../environments/environment';
 import { ToastService } from '../../../core/toasts/services/toast-service/toast.service';
 import { ConstantesSupabase } from '../../utilities/constantes/constantes.utility';
@@ -20,14 +20,16 @@ export class HeaderComponent implements OnInit {
     private toastService: ToastService
   ) {
     this.inscreverNotificacao()
+
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   // nao precisaria remover os canais, pois esses canais persistem por toda aplicacao
   OnDestroy(){
     supabase.removeAllChannels()
   }
+
 
   inscreverNotificacao(){
     const mensagem = supabase.channel(ConstantesSupabase.CANAL_NOTIFICACAO_MENSAGEM)
@@ -58,17 +60,17 @@ export class HeaderComponent implements OnInit {
   async getUsuarioNome(id: string): Promise<string>{
 
     let { data: users, error } = await supabase
+
       .from('users')
-      .select("nome")
+      .select('nome')
       // Filters
       .eq('id', id)
-      .single()
+      .single();
 
     if (users !== null) {
-      console.log(users.nome)
-      return users.nome
+      console.log(users.nome);
+      return users.nome;
     }
-    return ''
-
+    return '';
   }
 }
