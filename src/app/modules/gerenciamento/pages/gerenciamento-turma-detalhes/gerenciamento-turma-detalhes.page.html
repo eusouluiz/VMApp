@@ -30,7 +30,7 @@
                     lines="none"
                     [detail]="isModoDetalhes()"
                     [button]="isModoDetalhes()"
-                    (click)="navegarTelaAluno(aluno.aluno_id)">
+                    (click)="navegarTelaAluno(aluno)">
                     <ion-label>
                       <ion-row class="ion-align-items-center">
                         <ion-col class="ion-align-items-center" size="9" sizeLg="11" sizeMd="11">
@@ -65,8 +65,7 @@
                   [listaItens]="nomeAlunosBusca"
                   (onBusca)="adicionarAluno($event)"
                   textoSemResultado="Cadastrar novo aluno"
-                  icone="add"
-                  (onCliqueIcone)="navegarTelaAluno(-1)"></app-autocomplete>
+                  icone="add"></app-autocomplete>
               </form>
             </ion-col>
           </ion-row>

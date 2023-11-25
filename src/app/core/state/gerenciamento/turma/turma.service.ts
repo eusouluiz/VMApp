@@ -60,8 +60,6 @@ export class TurmaService {
     }
 
     vincularAlunos(turma: Turma, alunos: Aluno[]) {
-        console.log(turma.alunos)
-        console.log(alunos)
         var listaIdAlunos: string[] = []
         turma.alunos.forEach((aluno) => {
             listaIdAlunos.push(aluno.aluno_id)

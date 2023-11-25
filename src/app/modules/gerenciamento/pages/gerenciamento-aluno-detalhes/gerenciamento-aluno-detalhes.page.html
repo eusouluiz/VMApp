@@ -33,7 +33,7 @@
                     lines="none"
                     [detail]="isModoDetalhes()"
                     [button]="isModoDetalhes()"
-                    (click)="navegarTelaResponsavel(responsavel.responsavel_id)">
+                    (click)="navegarTelaResponsavel(responsavel)">
                     <ion-label>
                       <ion-row class="ion-align-items-center">
                         <ion-col class="ion-align-items-center" size="9" sizeLg="11" sizeMd="11">
@@ -71,8 +71,7 @@
                   [listaItens]="nomeResponsaveisBusca"
                   (onBusca)="adicionarResponsavel($event)"
                   textoSemResultado="Cadastrar novo responsavel"
-                  icone="add"
-                  (onCliqueIcone)="navegarTelaResponsavel(-1)"></app-autocomplete>
+                  icone="add"></app-autocomplete>
               </form>
             </ion-col>
           </ion-row>
@@ -97,7 +96,7 @@
                     lines="none"
                     [detail]="isModoDetalhes()"
                     [button]="isModoDetalhes()"
-                    (click)="navegarTelaTurma(turma.turma_id)">
+                    (click)="navegarTelaTurma(turma)">
                     <ion-label>
                       <ion-row class="ion-align-items-center">
                         <ion-col class="ion-align-items-center" size="9" sizeLg="11" sizeMd="11">
@@ -135,8 +134,7 @@
                   [listaItens]="nomeTurmasBusca"
                   (onBusca)="adicionarTurma($event)"
                   textoSemResultado="Cadastrar novo turma"
-                  icone="add"
-                  (onCliqueIcone)="navegarTelaTurma(-1)"></app-autocomplete>
+                  icone="add"></app-autocomplete>
               </form>
             </ion-col>
           </ion-row>

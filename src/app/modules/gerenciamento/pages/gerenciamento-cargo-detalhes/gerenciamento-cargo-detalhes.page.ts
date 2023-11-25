@@ -23,6 +23,7 @@ import { FUNCIONALIDADE_DATA } from '../../../../shared/utilities/entidade/entid
   styleUrls: ['./gerenciamento-cargo-detalhes.page.scss'],
 })
 export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
+  idCargo = this.activatedRoute.snapshot.paramMap.get('id');
   cargo: Cargo = new Cargo();
 
   listaTodosFuncionarios: Funcionario[] = [];
@@ -48,6 +49,7 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
     this.inicializarForms();
     this.preencherListaTodosFuncionarios()
     this.preencherListaTodosFuncionalidades()
+    this.preencherCargo()
     this.inicializarConteudo()
   }
 
@@ -71,15 +73,12 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
 
   recarregarPagina() {
     this.buscarFuncionarios()
-    this.inicializarConteudo()
+    this.buscarCargo()
   }
 
   protected inicializarConteudo(): void {
 
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
-    if (this.isModoDetalhes() && id !== null) {
-      this.cargo = this.resgatarCargo(id);
-      console.log(this.cargo)
+    if (this.isModoDetalhes() && this.idCargo !== null) {
       this.form?.setValue({
         nome: this.cargo.nome,
       });
@@ -93,14 +92,26 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   // ---- busca cargo ----//
-  private resgatarCargo(id: string): Cargo {
-    this.cargoService.buscarCargo(id).subscribe();
-    const cargo = this.gerenciamentoRepository.cargo(id)
-    console.log(cargo)
-    if (cargo !== undefined) {
-      return new Cargo(cargo);
+  buscarCargo(){
+    if (this.idCargo !== null) {
+      this.cargoService.buscarCargo(this.idCargo).subscribe({
+        next: () => {
+          this.preencherCargo()
+          this.inicializarConteudo()
+        }
+      });
     }
-    return new Cargo();
+  }
+
+  private preencherCargo() {
+    if (this.idCargo !== null) {
+      const cargo = this.gerenciamentoRepository.cargo(this.idCargo)
+      if (cargo !== undefined) {
+        this.cargo = new Cargo(cargo);
+      } else {
+        this.cargo = new Cargo();
+      }
+    }
   }
   // ---- busca cargo ----//
 
@@ -166,6 +177,7 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
       
       var cargo: CargoInterface = {
         nome: this.form.value.nome,
+        descricao: 'descricao'
       }
       
       if (this.isModoCadastrar()) {
@@ -292,7 +304,7 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
 
   adicionarFuncionario(valor: number) {
     if (valor === -1) {
-      this.navegarTelaFuncionario(valor);
+      this.navegarTelaFuncionario();
       return;
     }
 
@@ -333,14 +345,26 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
     });
   }
 
-  navegarTelaFuncionario(id: number) {
+  navegarTelaFuncionario(funcionario?: Funcionario) {
+    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_FUNCIONARIO;
     if (this.isModoDetalhes()) {
-      var rota = ConstantesRotas.ROTA_GERENCIAMENTO_ALUNO;
-      if (id !== -1) {
-        rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
-      } else {
-        rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
+      if (funcionario !== undefined) {
+        this.funcionarioService.buscarFuncionario(funcionario.funcionario_id).subscribe({
+          next: () => {
+            rota = rota + ConstantesRotas.BARRA + funcionario.funcionario_id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
+            this.navegarPara(rota);
+          },
+          error: (err) => {
+            this.toastService.error('Erro ao carregar informações ' + funcionario.usuario.nome);
+            
+            if (err?.original?.status === 422) {
+              return;
+            }
+          },
+        })
       }
+    } else if (funcionario === undefined) {
+      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
       this.navegarPara(rota);
     }
   }

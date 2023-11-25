@@ -19,6 +19,7 @@ import { ToastService } from '../../../../core/toasts/services/toast-service/toa
   styleUrls: ['./gerenciamento-canal-detalhes.page.scss'],
 })
 export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
+  idCanal = this.activatedRoute.snapshot.paramMap.get('id');
   canal: Canal = new Canal();
 
   listaTodosCargos: Cargo[] = [];
@@ -40,6 +41,7 @@ export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamentoDetalhes 
     this.definirModo();
     this.inicializarForms();
     this.preencherListaTodosCargos()
+    this.preencherCanal()
     this.inicializarConteudo()
   }
 
@@ -62,15 +64,12 @@ export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamentoDetalhes 
 
   recarregarPagina() {
     this.buscarCargos()
-    this.inicializarConteudo()
+    this.buscarCanal()
   }
 
   protected inicializarConteudo(): void {
 
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
-    if (this.isModoDetalhes() && id !== null) {
-      this.canal = this.resgatarCanal(id);
-      console.log(this.canal)
+    if (this.isModoDetalhes() && this.idCanal !== null) {
       this.form?.setValue({
         nome: this.canal.nome,
       });
@@ -84,13 +83,26 @@ export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   // ---- busca canal ----//
-  private resgatarCanal(id: string): Canal {
-    this.canalService.buscarCanal(id).subscribe();
-    const canal = this.gerenciamentoRepository.canal(id)
-    if (canal !== undefined) {
-      return new Canal(canal);
+  buscarCanal(){
+    if (this.idCanal !== null) {
+      this.canalService.buscarCanal(this.idCanal).subscribe({
+        next: () => {
+          this.preencherCanal()
+          this.inicializarConteudo()
+        }
+      });
     }
-    return new Canal();
+  }
+
+  private preencherCanal() {
+    if (this.idCanal !== null) {
+      const canal = this.gerenciamentoRepository.canal(this.idCanal)
+      if (canal !== undefined) {
+        this.canal = new Canal(canal);
+      } else {
+        this.canal = new Canal();
+      }
+    }
   }
   // ---- busca canal ----//
 
@@ -280,7 +292,7 @@ export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamentoDetalhes 
 
   adicionarCargo(valor: number) {
     if (valor === -1) {
-      this.navegarTelaCargo(valor);
+      this.navegarTelaCargo();
       return;
     }
 
@@ -321,14 +333,26 @@ export class GerenciamentoCanalDetalhesPage extends PaginaGerenciamentoDetalhes 
     });
   }
 
-  navegarTelaCargo(id: number) {
+  navegarTelaCargo(cargo?: Cargo) {
+    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_CARGO;
     if (this.isModoDetalhes()) {
-      var rota = ConstantesRotas.ROTA_GERENCIAMENTO_ALUNO;
-      if (id !== -1) {
-        rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
-      } else {
-        rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
+      if (cargo !== undefined) {
+        this.cargoService.buscarCargo(cargo.cargo_id).subscribe({
+          next: () => {
+            rota = rota + ConstantesRotas.BARRA + cargo.cargo_id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
+            this.navegarPara(rota);
+          },
+          error: (err) => {
+            this.toastService.error('Erro ao carregar informações ' + cargo.nome);
+            
+            if (err?.original?.status === 422) {
+              return;
+            }
+          },
+        })
       }
+    } else if (cargo === undefined) {
+      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
       this.navegarPara(rota);
     }
   }

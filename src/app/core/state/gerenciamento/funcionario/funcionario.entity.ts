@@ -2,8 +2,9 @@ import { Cargo } from "../cargo/cargo.entity"
 import { Usuario } from "../usuario/usuario.entity"
 
 export interface FuncionarioInterface {
-    funcionario_id: string,
-    user: Usuario,
+    funcionario_id?: string,
+    user_id?: string, 
+    user?: Usuario,
     cargo?: Cargo,
     cargo_id?: string | null,
 }
@@ -17,8 +18,12 @@ export class Funcionario {
         private data?: FuncionarioInterface
     ) {
         if (data !== undefined) {
-            this._funcionario_id = data.funcionario_id
-            this._usuario = data.user
+            if (data.funcionario_id !== undefined) {
+                this._funcionario_id = data.funcionario_id
+            }
+            if (data.user !== undefined) {
+                this._usuario = data.user
+            }
 
             if (data.cargo !== undefined) {
                 this._cargo = data.cargo

@@ -5,11 +5,12 @@
   <div class="u-padding-bottom--3xl">
     <div class="u-padding-bottom--md">
       <ng-container *ngFor="let aviso of avisos">
-        <app-aviso-item [aviso]="aviso" (onSelecionado)="abrirModalAviso($event)"></app-aviso-item>
+        <ng-container *ngIf="isVisivel(aviso)">
+          <app-aviso-item [aviso]="aviso" (onSelecionado)="abrirModalAviso($event)"></app-aviso-item>
+        </ng-container>
       </ng-container>
     </div>
     <ion-row class="ion-justify-content-center" *ngIf="hasAcessoGerenciamentoAviso()">
-      <!-- <ion-button shape="round" (click)="abrirModalNovoAviso()">Novo Aviso</ion-button> -->
       <app-button padding="sm" size="md" (click)="abrirModalNovoAviso()">Novo Aviso</app-button>
     </ion-row>
   </div>

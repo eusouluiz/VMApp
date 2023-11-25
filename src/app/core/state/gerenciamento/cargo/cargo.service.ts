@@ -5,8 +5,9 @@ import { GerenciamentoRepository } from '../gerenciamento.repository';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { Observable, tap } from 'rxjs';
-import { Funcionario } from '../funcionario/funcionario.entity';
+import { Funcionario, FuncionarioInterface } from '../funcionario/funcionario.entity';
 import { ListaUtil } from '../../../../shared/utilities/lista/lista.utility';
+import { FuncionarioService } from '../funcionario/funcionario.service';
 
 interface ResponseCargo {
     msg: string,
@@ -25,6 +26,7 @@ interface AssociacaoFuncionarioCargo {
 export class CargoService {
 
     constructor(
+        private funcionarioService: FuncionarioService,
         private gerenciamentoRepository: GerenciamentoRepository,
         private http: HttpClient,
     ) {
@@ -45,7 +47,7 @@ export class CargoService {
 
     incluirCargo(cargo: CargoInterface): Observable<ResponseCargo> {
         return this.http
-            .post<ResponseCargo>(`${environment.api.endpoint}/user`, cargo)
+            .post<ResponseCargo>(`${environment.api.endpoint}/cargo`, cargo)
             .pipe(tap((response) => {
                 if ((response.data.cargo_id !== undefined && response.data.cargo_id !== null)) {
                     cargo.cargo_id = response.data.cargo_id
@@ -55,7 +57,7 @@ export class CargoService {
 
     alterarCargo(cargo: CargoInterface, cargoId: string): Observable<CargoInterface> {
         return this.http
-            .put<CargoInterface>(`${environment.api.endpoint}/user/${cargoId}`, cargo);
+            .put<CargoInterface>(`${environment.api.endpoint}/cargo/${cargoId}`, cargo);
     }
 
     deletarCargo(idCargo: string): Observable<CargoInterface[]> {
@@ -75,21 +77,39 @@ export class CargoService {
 
         const [idsNovos, idsDeletados, idsExistentes] = ListaUtil.retornarDiferencaListas(listaIdFuncionariosNovos, listaIdFuncionarios)
 
-        // idsNovos.forEach((id: string) => {
-        //     const associacao: AssociacaoFuncionarioCargo = {
-        //         cargo_id: cargo.cargo_id,
-        //         funcionario_id: id,
-        //     }
-        //     this.vincularFuncionario(associacao).subscribe()
-        // })
+        
+        // vincular
+        idsNovos.forEach((id: string) => {
+            const funcionarioNovo = funcionarios.find((funcionario) => {
+                console.log(funcionario.funcionario_id)
+                return funcionario.funcionario_id === id
+            })
 
-        // idsDeletados.forEach((id: string) => {
-        //     const associacao: AssociacaoFuncionarioCargo = {
-        //         cargo_id: cargo.cargo_id,
-        //         funcionario_id: id,
-        //     }
-        //     this.desvincularFuncionario(associacao).subscribe()
-        // })
+            if (funcionarioNovo !== undefined) {
+                const funcionarioInterface: FuncionarioInterface = {
+                    user_id: funcionarioNovo.usuario.user_id,
+                    cargo_id: cargo.cargo_id
+                }
+
+                this.funcionarioService.alterarFuncionario(funcionarioInterface, funcionarioNovo.funcionario_id).subscribe()
+            }
+        })
+
+        // desvincular
+        idsDeletados.forEach((id: string) => {
+            const funcionarioDeletado = cargo.funcionarios.find((funcionario) => {
+                return funcionario.funcionario_id === id
+            })
+
+            if (funcionarioDeletado !== undefined) {
+                const funcionarioInterface: FuncionarioInterface = {
+                    user_id: funcionarioDeletado.usuario.user_id,
+                    cargo_id: null
+                }
+
+                this.funcionarioService.alterarFuncionario(funcionarioInterface, funcionarioDeletado.funcionario_id).subscribe()
+            }
+        })
     }
 
     vincularFuncionario(associacao: AssociacaoFuncionarioCargo): Observable<AssociacaoFuncionarioCargo> {

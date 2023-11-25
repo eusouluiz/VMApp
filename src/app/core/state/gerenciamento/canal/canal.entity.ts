@@ -141,7 +141,7 @@ export class CanalResponsavel {
         canal: canalMensagem.canal,
         responsavel: canalMensagem.responsavel,
       }
-      if (canalMensagem.canal_id !== undefined) {
+      if (canalMensagem.canal_responsavel_id !== undefined) {
         canal.canal_responsavel_id = canalMensagem.canal_responsavel_id
       }
       return new CanalResponsavel(canal)

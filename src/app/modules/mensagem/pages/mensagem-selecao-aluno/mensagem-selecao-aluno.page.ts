@@ -63,13 +63,13 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
   inicializarCanalResponsavel() {
     // esvaziar para encher
     this.listaCanalResponsavel = [];
-    this.listaTodosAlunos.forEach((a) => {
-      if (a.responsaveis.length > 0) {
-        a.responsaveis.forEach((r) => {
+    this.listaTodosAlunos.forEach((aluno) => {
+      if (aluno.responsaveis.length > 0) {
+        aluno.responsaveis.forEach((responsavel) => {
           this.listaCanalResponsavel.push({
-            nomeAluno: a.nome,
-            nomeResponsavel: r.usuario.nome,
-            idResponsavel: r.responsavel_id,
+            nomeAluno: aluno.nome,
+            nomeResponsavel: responsavel.usuario.nome,
+            idResponsavel: responsavel.responsavel_id,
           });
         });
       }
@@ -77,16 +77,17 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
   }
 
   resgatarUltimaMensagem(idResponsavel: string): string {
-    const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(this.canal.canal_id, idResponsavel);
-
-    if (idCanalResponsavel !== undefined) {
-      // const mensagem = this.mensagemService.buscarUltimaMensagensCanalResponsavel(idCanalResponsavel);
-      // if (mensagem !== undefined) {
-      //   return 'Mensagem: ' + mensagem.texto;
-      // } else {
-      //   return '';
-      // }
-      return ''
+    const canalMensagem = this.mensagemRepository.canais().find((canal) => {
+      return canal.canal?.canal_id === this.canal.canal_id && canal.responsavel?.responsavel_id === idResponsavel
+    })
+    if (canalMensagem !== undefined) {
+      if (canalMensagem.mensagens !== undefined && canalMensagem.mensagens.length > 0) {
+        // ultima mensagem enviada eh a primeira da lista
+        const mensagem = canalMensagem.mensagens[0]
+        return 'Mensagem:' + mensagem.texto;
+      } else {
+        return '';
+      }
     } else {
       return '';
     }
@@ -111,7 +112,7 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
           }
         }
       })
-    } else { 
+    } else {
       rota = canalMensagem.canal_responsavel_id + ConstantesRotas.ROTA_MENSAGEM_CANAL
       this.navegarPara(rota);
     }

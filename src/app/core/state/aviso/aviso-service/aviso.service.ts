@@ -52,10 +52,11 @@ export class AvisoService {
 
   incluirAviso(aviso: AvisoInterface): Observable<ResponseAviso> {
     return this.http
-      .post<ResponseAviso>(`${environment.api.endpoint}/user`, aviso)
+      .post<ResponseAviso>(`${environment.api.endpoint}/aviso`, aviso)
       .pipe(tap((response) => {
         if ((response.data.aviso_id !== undefined && response.data.aviso_id !== null)) {
           aviso.aviso_id = response.data.aviso_id
+          aviso.data_publicacao = response.data.data_publicacao
         }
       }));
   }
@@ -71,42 +72,28 @@ export class AvisoService {
   }
 
   vincularTurmas(aviso: Aviso, turmas: Turma[]) {
-    var listaIdTurmas: string[] = []
-    aviso.turmas.forEach((turma) => {
-      listaIdTurmas.push(turma.turma_id)
-    })
     var listaIdTurmasNovos: string[] = []
     turmas.forEach((turma) => {
       listaIdTurmasNovos.push(turma.turma_id)
     })
 
-    const [idsNovos, idsDeletados, idsExistentes] = ListaUtil.retornarDiferencaListas(listaIdTurmasNovos, listaIdTurmas)
-
-    // idsNovos.forEach((id: string) => {
-    //     const associacao: AssociacaoTurmaAviso = {
-    //         aviso_id: aviso.aviso_id,
-    //         turma_id: id,
-    //     }
-    //     this.vincularTurma(associacao).subscribe()
-    // })
-
-    // idsDeletados.forEach((id: string) => {
-    //     const associacao: AssociacaoTurmaAviso = {
-    //         aviso_id: aviso.aviso_id,
-    //         turma_id: id,
-    //     }
-    //     this.desvincularTurma(associacao).subscribe()
-    // })
+    listaIdTurmasNovos.forEach((id: string) => {
+        const associacao: AssociacaoTurmaAviso = {
+            aviso_id: aviso.aviso_id,
+            turma_id: id,
+        }
+        this.vincularTurma(associacao).subscribe()
+    })
   }
 
   vincularTurma(associacao: AssociacaoTurmaAviso): Observable<AssociacaoTurmaAviso> {
     return this.http
-      .post<AssociacaoTurmaAviso>(`${environment.api.endpoint}/turma-aviso`, associacao);
+      .post<AssociacaoTurmaAviso>(`${environment.api.endpoint}/aviso-turma`, associacao);
   }
 
   desvincularTurma(associacao: AssociacaoTurmaAviso): Observable<AssociacaoTurmaAviso> {
     return this.http
-      .delete<AssociacaoTurmaAviso>(`${environment.api.endpoint}/turma-aviso/${associacao.turma_id}/${associacao.aviso_id}`)
+      .delete<AssociacaoTurmaAviso>(`${environment.api.endpoint}/aviso-turma/${associacao.aviso_id}/${associacao.turma_id}`)
   }
 
   saveAvisosInStorage(avisos: AvisoInterface[]) {

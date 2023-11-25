@@ -22,7 +22,8 @@ export class MensagemService {
 
   incluirMensagem(mensagem: MensagemInterface): Observable<MensagemInterface> {
     return this.http
-      .post<MensagemInterface>(`${environment.api.endpoint}/mensagem`, mensagem);
+      .post<MensagemInterface>(`${environment.api.endpoint}/mensagem`, mensagem)
+      .pipe(tap(() => {this.armazenarMensagem(mensagem)}));
   }
 
   alterarMensagem(mensagem: MensagemInterface): Observable<MensagemInterface> {
@@ -42,10 +43,14 @@ export class MensagemService {
   armazenarMensagens(mensagens: MensagemInterface[] | null, idCanalResponsavel: string) {
     if (mensagens !== null) {
       const canais = this.mensagemRepository.canais()
+
+      console.log(canais)
+      console.log(idCanalResponsavel)
       
       const indexCanal = canais.findIndex((canal) => {
         return canal.canal_responsavel_id === idCanalResponsavel
       })
+      console.log(indexCanal)
 
       if (indexCanal !== -1) {
         canais[indexCanal].mensagens = mensagens
@@ -53,6 +58,24 @@ export class MensagemService {
   
       this.mensagemRepository.update({canais:canais})
     }
+  }
+
+  armazenarMensagem(mensagem: MensagemInterface) {
+    const canais = this.mensagemRepository.canais()
+
+    console.log(canais)
+    console.log(mensagem.canal_responsavel_id)
+    
+    const indexCanal = canais.findIndex((canal) => {
+      return canal.canal_responsavel_id === mensagem.canal_responsavel_id
+    })
+    console.log(indexCanal)
+
+    if (indexCanal !== -1) {
+      canais[indexCanal].mensagens?.push(mensagem)
+    }
+
+    this.mensagemRepository.update({canais:canais})
   }
 
 }

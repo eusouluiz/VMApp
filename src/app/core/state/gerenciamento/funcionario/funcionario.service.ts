@@ -30,6 +30,11 @@ export class FuncionarioService {
             .get<FuncionarioInterface>(`${environment.api.endpoint}/funcionario/${idFuncionario}`)
             .pipe(tap((funcionario) => this.saveFuncionarioInStorage(funcionario)));
     }
+
+    alterarFuncionario(funcionario: FuncionarioInterface, funcionarioId: string):Observable<FuncionarioInterface> {
+        return this.http
+            .put<FuncionarioInterface>(`${environment.api.endpoint}/funcionario/${funcionarioId}`, funcionario);
+    }
     
     deletarFuncionario(idFuncionario: string): Observable<FuncionarioInterface[]>{
         return this.http

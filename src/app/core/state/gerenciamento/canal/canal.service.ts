@@ -189,7 +189,6 @@ export class CanalService {
     }
 
     async saveCanaisResponsavelInStorage(canaisResponsavel: CanalResponsavelInterface[] | undefined) {
-        console.log(canaisResponsavel)
         if (canaisResponsavel !== undefined) {
             var canalMensagem: CanalMensagem[] = await this.adequarCanaisMensagem(canaisResponsavel)
 
