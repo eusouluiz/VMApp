@@ -54,7 +54,6 @@ export class AlunoService {
     }
 
     alterarAluno(aluno: AlunoInterface, alunoId: string):Observable<AlunoInterface> {
-        console.log('alterarAluno')
         return this.http
             .put<AlunoInterface>(`${environment.api.endpoint}/aluno/${alunoId}`, aluno);
     }

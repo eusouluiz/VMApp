@@ -20,6 +20,7 @@ import { ToastService } from '../../../../core/toasts/services/toast-service/toa
   styleUrls: ['./gerenciamento-responsavel-detalhes.page.scss'],
 })
 export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
+  idResponsavel: string | null = this.activatedRoute.snapshot.paramMap.get('id');
   responsavel: Responsavel = new Responsavel();
 
   listaTodosAlunos: Aluno[] = [];
@@ -42,6 +43,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
     this.definirModo();
     this.inicializarForms();
     this.preencherListaTodosAlunos()
+    this.preencherResponsavel()
     this.inicializarConteudo()
   }
 
@@ -69,15 +71,12 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
 
   recarregarPagina() {
     this.buscarAlunos()
-    this.inicializarConteudo()
+    this.buscarResponsavel()
   }
-
+  
   protected inicializarConteudo(): void {
-
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
-    if (this.isModoDetalhes() && id !== null) {
-      this.responsavel = this.resgatarResponsavel(id);
-      console.log(this.responsavel)
+    
+    if (this.isModoDetalhes() && this.idResponsavel !== null) {
       this.form?.setValue({
         nome: this.responsavel.usuario.nome,
         telefone: this.responsavel.usuario.telefone,
@@ -86,21 +85,34 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
       });
     }
     this.inicializarTabelaAlunos();
-
+    
     if (this.isModoDetalhes()) {
       this.form?.disable();
       this.formBuscaAluno.disable();
     }
   }
-
+  
   // ---- busca responsavel ----//
-  private resgatarResponsavel(id: string): Responsavel {
-    this.responsavelService.buscarResponsavel(id).subscribe();
-    const responsavel = this.gerenciamentoRepository.responsavel(id)
-    if (responsavel !== undefined) {
-      return new Responsavel(responsavel);
+  buscarResponsavel(){
+    if (this.idResponsavel !== null) {
+      this.responsavelService.buscarResponsavel(this.idResponsavel).subscribe({
+        next: () => {
+          this.preencherResponsavel()
+          this.inicializarConteudo()
+        }
+      });
     }
-    return new Responsavel();
+  }
+
+  private preencherResponsavel() {
+    if (this.idResponsavel !== null) {
+      const responsavel = this.gerenciamentoRepository.responsavel(this.idResponsavel)
+      if (responsavel !== undefined) {
+        this.responsavel = new Responsavel(responsavel);
+      } else {
+        this.responsavel = new Responsavel();
+      }
+    }
   }
   // ---- busca responsavel ----//
 
@@ -356,8 +368,8 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
   }
 
   navegarTelaAluno(aluno?: Aluno) {
+    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_ALUNO;
     if (this.isModoDetalhes()) {
-      var rota = ConstantesRotas.ROTA_GERENCIAMENTO_ALUNO;
       if (aluno !== undefined) {
         this.alunoService.buscarAluno(aluno.aluno_id).subscribe({
           next: () => {
@@ -372,10 +384,10 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
             }
           },
         })
-      } else {
-        rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
-        this.navegarPara(rota);
       }
+    } else if (aluno === undefined) {
+      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
+      this.navegarPara(rota);
     }
   }
 

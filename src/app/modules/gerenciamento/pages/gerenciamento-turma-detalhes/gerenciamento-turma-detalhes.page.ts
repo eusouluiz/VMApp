@@ -23,6 +23,7 @@ import { FUNCIONALIDADE_DATA } from '../../../../shared/utilities/entidade/entid
   styleUrls: ['./gerenciamento-turma-detalhes.page.scss'],
 })
 export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
+  idTurma = this.activatedRoute.snapshot.paramMap.get('id');
   turma: Turma = new Turma();
 
   listaTodosAlunos: Aluno[] = [];
@@ -74,9 +75,7 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
 
   protected inicializarConteudo(): void {
 
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
-    if (this.isModoDetalhes() && id !== null) {
-      this.turma = this.resgatarTurma(id);
+    if (this.isModoDetalhes() && this.idTurma !== null) {
       console.log(this.turma)
       this.form?.setValue({
         nome: this.turma.nome,
@@ -90,14 +89,26 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   // ---- busca turma ----//
-  private resgatarTurma(id: string): Turma {
-    this.turmaService.buscarTurma(id).subscribe();
-    const turma = this.gerenciamentoRepository.turma(id)
-    console.log(turma)
-    if (turma !== undefined) {
-      return new Turma(turma);
+  buscarTurma(){
+    if (this.idTurma !== null) {
+      this.turmaService.buscarTurma(this.idTurma).subscribe({
+        next: () => {
+          this.preencherTurma()
+          this.inicializarConteudo()
+        }
+      });
     }
-    return new Turma();
+  }
+
+  private preencherTurma() {
+    if (this.idTurma !== null) {
+      const turma = this.gerenciamentoRepository.turma(this.idTurma)
+      if (turma !== undefined) {
+        this.turma = new Turma(turma);
+      } else {
+        this.turma = new Turma();
+      }
+    }
   }
   // ---- busca turma ----//
 
@@ -329,8 +340,8 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   navegarTelaAluno(aluno?: Aluno) {
+    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_ALUNO;
     if (this.isModoDetalhes()) {
-      var rota = ConstantesRotas.ROTA_GERENCIAMENTO_ALUNO;
       if (aluno !== undefined) {
         this.alunoService.buscarAluno(aluno.aluno_id).subscribe({
           next: () => {
@@ -345,10 +356,10 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
             }
           },
         })
-      } else {
-        rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
-        this.navegarPara(rota);
       }
+    } else if (aluno === undefined) {
+      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
+      this.navegarPara(rota);
     }
   }
 

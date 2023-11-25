@@ -20,6 +20,7 @@ import { ToastService } from '../../../../core/toasts/services/toast-service/toa
   styleUrls: ['./gerenciamento-funcionario-detalhes.page.scss'],
 })
 export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
+  idFuncionario = this.activatedRoute.snapshot.paramMap.get('id');
   funcionario: Funcionario = new Funcionario();
 
   listaTodosCargos: Cargo[] = [];
@@ -42,6 +43,7 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
     this.definirModo();
     this.inicializarForms();
     this.preencherListaTodosCargos()
+    this.preencherFuncionario()
     this.inicializarConteudo()
   }
 
@@ -69,14 +71,12 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
 
   recarregarPagina() {
     this.buscarCargos()
-    this.inicializarConteudo()
+    this.buscarFuncionario()
   }
 
   protected inicializarConteudo(): void {
 
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
-    if (this.isModoDetalhes() && id !== null) {
-      this.funcionario = this.resgatarFuncionario(id);
+    if (this.isModoDetalhes() && this.idFuncionario !== null) {
       this.form?.setValue({
         nome: this.funcionario.usuario.nome,
         telefone: this.funcionario.usuario.telefone,
@@ -93,13 +93,26 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
   }
 
   // ---- busca funcionario ----//
-  private resgatarFuncionario(id: string): Funcionario {
-    this.funcionarioService.buscarFuncionario(id).subscribe();
-    const funcionario = this.gerenciamentoRepository.funcionario(id)
-    if (funcionario !== undefined) {
-      return new Funcionario(funcionario);
+  buscarFuncionario(){
+    if (this.idFuncionario !== null) {
+      this.funcionarioService.buscarFuncionario(this.idFuncionario).subscribe({
+        next: () => {
+          this.preencherFuncionario()
+          this.inicializarConteudo()
+        }
+      });
     }
-    return new Funcionario();
+  }
+
+  private preencherFuncionario() {
+    if (this.idFuncionario !== null) {
+      const funcionario = this.gerenciamentoRepository.funcionario(this.idFuncionario)
+      if (funcionario !== undefined) {
+        this.funcionario = new Funcionario(funcionario);
+      } else {
+        this.funcionario = new Funcionario();
+      }
+    }
   }
   // ---- busca funcionario ----//
 
@@ -371,8 +384,8 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
   }
 
   navegarTelaCargo(cargo?: Cargo) {
+    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_CARGO;
     if (this.isModoDetalhes()) {
-      var rota = ConstantesRotas.ROTA_GERENCIAMENTO_CARGO;
       if (cargo !== undefined) {
         this.cargoService.buscarCargo(cargo.cargo_id).subscribe({
           next: () => {
@@ -387,10 +400,10 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
             }
           },
         })
-      } else {
-        rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
-        this.navegarPara(rota);
       }
+    } else if (cargo === undefined) {
+      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
+      this.navegarPara(rota);
     }
   }
 
