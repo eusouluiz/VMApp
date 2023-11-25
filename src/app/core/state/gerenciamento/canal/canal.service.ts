@@ -181,6 +181,7 @@ export class CanalService {
         return this.http
             .post<ResponseCanalResponsavel>(`${environment.api.endpoint}/canal-responsavel`, canalResponsavel)
             .pipe(tap((response) => {
+                console.log(response)
                 if (response.data.canal_responsavel_id !== undefined) {
                     canalResponsavel.canal_responsavel_id = response.data.canal_responsavel_id
                 }
@@ -197,26 +198,28 @@ export class CanalService {
     }
 
     saveCanalResponsavelInStorage(canal: CanalResponsavelInterface): void {
-        // var canais: CanalMensagem[] = this.mensagemRepository.canais()
-        // const indexCanal = canais.findIndex((canalStorage) => {
-        //     return canalStorage.canal_responsavel_id === idCanalResponsavel
-        // })
-
-        // var c: CanalMensagem = {
-        //     canal_responsavel_id: idCanalResponsavel,
-        //     canal_id: canal.canal_id,
-        //     canal: canal.canal,
-        //     responsavel_id: canal.responsavel_id,
-        //     responsavel: canal.responsavel
-        // }
-
-        // if (indexCanal !== -1) {
-        //     canais[indexCanal] = c
-        // } else {
-        //     canais.push(c)
-        // }
-
-        // this.mensagemRepository.update({ canais: canais });
+        if (canal.canal_responsavel_id !== undefined) {
+            var canais: CanalMensagem[] = this.mensagemRepository.canais()
+            const indexCanal = canais.findIndex((canalStorage) => {
+                return canalStorage.canal_responsavel_id === canal.canal_responsavel_id
+            })
+    
+            var c: CanalMensagem = {
+                canal_responsavel_id: canal.canal_responsavel_id,
+                canal_id: canal.canal_id,
+                canal: canal.canal,
+                responsavel_id: canal.responsavel_id,
+                responsavel: canal.responsavel
+            }
+    
+            if (indexCanal !== -1) {
+                canais[indexCanal] = c
+            } else {
+                canais.push(c)
+            }
+    
+            this.mensagemRepository.update({ canais: canais });
+        }
     }
 
     async adequarCanaisMensagem(canaisResponsavel: CanalResponsavelInterface[]): Promise<CanalMensagem[]> {
