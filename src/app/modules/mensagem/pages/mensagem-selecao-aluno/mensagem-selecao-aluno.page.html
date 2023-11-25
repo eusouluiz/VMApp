@@ -13,7 +13,7 @@
           <ion-text>{{canal.nomeResponsavel}}</ion-text>
         </ion-row>
         <ion-row class="c-item-subtitulo" size="12">
-          <ion-text><b>Aluno:</b> {{canal.nomeAluno}}</ion-text>
+          <ion-text><b>{{canal.isMaisUmAluno ? 'Alunos:' : 'Aluno:'}}</b> {{canal.nomeAluno}}</ion-text>
         </ion-row>
         <ion-row class="c-item-subtitulo" size="12">
           <ion-text color="medium" >{{resgatarUltimaMensagem(canal.idResponsavel)}}</ion-text>

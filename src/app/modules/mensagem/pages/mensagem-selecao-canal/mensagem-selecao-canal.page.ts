@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 import { Cargo } from '../../../../core/state/gerenciamento/cargo/cargo.entity';
 import { AlunoService } from '../../../../core/state/gerenciamento/aluno/aluno.service';
 import { MensagemRepository } from '../../../../core/state/mensagem/mensagem.repository';
+import { ResponsavelService } from '../../../../core/state/gerenciamento/responsavel/responsavel.service';
 
 @Component({
   selector: 'app-mensagem-selecao-canal',
@@ -39,7 +40,7 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
   constructor(
     private router: Router,
     private canalService: CanalService,
-    private alunoService: AlunoService,
+    private responsavelService: ResponsavelService,
     public usuarioLogado: UsuarioLogado,
     private mensagemService: MensagemService,
     private pageMenuService: PageMenuService,
@@ -123,7 +124,7 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
         throw new Error('id responsavel nao definido');
       }
     } else {
-      this.alunoService.buscarTodosAlunos().subscribe({
+      this.responsavelService.buscarTodosResponsaveis().subscribe({
         next: () => {
           this.canalService.buscarCanalResponsavelTodos({idCanal: idCanal}).subscribe({
             next: () => {

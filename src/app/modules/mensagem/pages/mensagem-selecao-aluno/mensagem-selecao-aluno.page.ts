@@ -10,11 +10,13 @@ import { Canal, CanalResponsavelInterface } from '../../../../core/state/gerenci
 import { Aluno } from '../../../../core/state/gerenciamento/aluno/aluno.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 import { GerenciamentoRepository } from '../../../../core/state/gerenciamento/gerenciamento.repository';
+import { Responsavel } from '../../../../core/state/gerenciamento/responsavel/responsavel.entity';
 
 interface ItemCanalResponsavel {
   nomeAluno: string;
   nomeResponsavel: string;
   idResponsavel: string;
+  isMaisUmAluno: boolean
 }
 
 @Component({
@@ -26,6 +28,7 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
   canal!: Canal;
 
   listaTodosAlunos!: Aluno[];
+  listaTodosResponsaveis!: Responsavel[];
 
   listaCanalResponsavel: ItemCanalResponsavel[] = [];
 
@@ -63,14 +66,26 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
   inicializarCanalResponsavel() {
     // esvaziar para encher
     this.listaCanalResponsavel = [];
-    this.listaTodosAlunos.forEach((aluno) => {
-      if (aluno.responsaveis.length > 0) {
-        aluno.responsaveis.forEach((responsavel) => {
-          this.listaCanalResponsavel.push({
-            nomeAluno: aluno.nome,
-            nomeResponsavel: responsavel.usuario.nome,
-            idResponsavel: responsavel.responsavel_id,
-          });
+    this.listaTodosResponsaveis.forEach((responsavel) => {
+      if (responsavel.alunos !== undefined && responsavel.alunos.length > 0) {
+        var apresentacaoAlunos: string = responsavel.alunos[0].nome
+
+        if (responsavel.alunos.length > 1) {
+          apresentacaoAlunos = responsavel.alunos[0].nome.split(' ')[0]
+          for (let i = 1; i < responsavel.alunos.length; i++) {
+            const aluno = responsavel.alunos[i];
+            apresentacaoAlunos = apresentacaoAlunos + ' / ' + responsavel.alunos[i].nome.split(' ')[0]
+          }
+        }
+
+        console.log(responsavel.alunos)
+        console.log(apresentacaoAlunos)
+        
+        this.listaCanalResponsavel.push({
+          nomeAluno: apresentacaoAlunos,
+          nomeResponsavel: responsavel.usuario.nome,
+          idResponsavel: responsavel.responsavel_id,
+          isMaisUmAluno: responsavel.alunos.length > 1
         });
       }
     });
@@ -133,6 +148,7 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
 
   protected inicializarConteudo(): void {
     this.preencherListaTodosAlunos()
+    this.preencherListaTodosResponsaveis()
 
     const id = this.activatedRoute.snapshot.paramMap.get('idCanal');
     if (id !== null) {
@@ -159,6 +175,16 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
     this.listaTodosAlunos = []
     alunos.forEach((aluno) => {
       this.listaTodosAlunos.push(new Aluno(aluno))
+    })
+  }
+
+  preencherListaTodosResponsaveis() {
+    const responsaveis = this.gerenciamentoRepository.responsaveis().filter((responsavel) => {
+      return responsavel.alunos !== undefined && responsavel.alunos.length > 0
+    })
+    this.listaTodosResponsaveis = []
+    responsaveis.forEach((responsavel) => {
+      this.listaTodosResponsaveis.push(new Responsavel(responsavel))
     })
   }
 }
