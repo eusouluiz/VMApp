@@ -1,6 +1,7 @@
 <app-header titulo="{{canal.nome}}" botaoRetorno="true"></app-header>
 
 <ion-content class="ion-padding">
+  <app-refresher (onRecarregar)="recarregarPagina()"></app-refresher>
   <ion-row>
     <ion-searchbar class="ion-no-padding" placeholder="Procurar" [debounce]="500" (ionInput)="filtrarCanalResponsavel($event)"></ion-searchbar>
   </ion-row>

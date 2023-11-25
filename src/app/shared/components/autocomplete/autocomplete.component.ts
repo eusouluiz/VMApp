@@ -53,6 +53,11 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit {
     this.inicializaItens();
   }
 
+  ngAfterViewInit(): void {
+    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+    //Add 'implements AfterViewInit' to the class.
+  }
+
   // ---- controle formulario ---- //
 
   updateChanges() {
@@ -108,9 +113,9 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit {
   }
 
   async esconderItens() {
-    //sleep de 125 milisegundo pra caso blur tenha sido de selecao de item
+    //sleep de 250 milisegundo pra caso blur tenha sido de selecao de item
     //pra dar tempo de executar funcao selecionarItem antes de esconder popover
-    await new Promise((f) => setTimeout(f, 125));
+    await new Promise((f) => setTimeout(f, 500));
 
     this.isItensVisiveis = false;
     await this.popover.dismiss();
@@ -123,8 +128,6 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit {
   }
 
   async selecionarItem(item: any) {
-    console.log('selecionar item');
-
     const idBusca = item === -1 ? -1 : this.listaItens.indexOf(item);
     this.value = item === -1 ? undefined : item;
 

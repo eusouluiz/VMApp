@@ -1,13 +1,15 @@
+import { MensagemRepository } from './../../../../core/state/mensagem/mensagem.repository';
 import { Component, OnInit } from '@angular/core';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
-import { CanalService } from '../../../../core/services/canal-service/canal.service';
-import { AlunoService } from '../../../../core/services/aluno-service/aluno.service';
-import { MensagemService } from '../../../../core/services/mensagem-service/mensagem.service';
-import { Canal } from '../../../../core/services/canal-service/canal.entity';
-import { Aluno } from '../../../../core/services/aluno-service/aluno.entity';
+import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
+import { AlunoService } from '../../../../core/state/gerenciamento/aluno/aluno.service';
+import { MensagemService } from '../../../../core/state/mensagem/mensagem-service/mensagem.service';
+import { Canal, CanalResponsavelInterface } from '../../../../core/state/gerenciamento/canal/canal.entity';
+import { Aluno } from '../../../../core/state/gerenciamento/aluno/aluno.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
+import { GerenciamentoRepository } from '../../../../core/state/gerenciamento/gerenciamento.repository';
 
 interface ItemCanalResponsavel {
   nomeAluno: string;
@@ -33,7 +35,9 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
     private canalService: CanalService,
     private alunoService: AlunoService,
     private mensagemService: MensagemService,
-    private pageMenuService: PageMenuService
+    private pageMenuService: PageMenuService,
+    private gerenciamentoRepository: GerenciamentoRepository,
+    private mensagemRepository: MensagemRepository,
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_MENSAGEM;
     super(router, ROTA_BASE);
@@ -41,10 +45,19 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
     this.inicializarConteudo();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ionViewWillEnter(): void {
     this.pageMenuService.displayStatus.next(false);
+  }
+
+  recarregarPagina() {
+    this.alunoService.buscarTodosAlunos().subscribe({
+      next: () => {
+        this.preencherListaTodosAlunos()
+        this.inicializarConteudo()
+      }
+    })
   }
 
   inicializarCanalResponsavel() {
@@ -67,12 +80,13 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
     const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(this.canal.canal_id, idResponsavel);
 
     if (idCanalResponsavel !== undefined) {
-      const mensagem = this.mensagemService.buscarUltimaMensagensCanalResponsavel(idCanalResponsavel);
-      if (mensagem !== undefined) {
-        return 'Mensagem: ' + mensagem.texto;
-      } else {
-        return '';
-      }
+      // const mensagem = this.mensagemService.buscarUltimaMensagensCanalResponsavel(idCanalResponsavel);
+      // if (mensagem !== undefined) {
+      //   return 'Mensagem: ' + mensagem.texto;
+      // } else {
+      //   return '';
+      // }
+      return ''
     } else {
       return '';
     }
@@ -81,14 +95,26 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
   navegarParaCanalResponsavel(idResponsavel: string) {
     var rota;
 
-    const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(this.canal.canal_id, idResponsavel);
-    if (idCanalResponsavel !== undefined) {
-      rota = idCanalResponsavel.toString() + ConstantesRotas.ROTA_MENSAGEM_CANAL;
-    } else {
-      throw new Error('Canal Responsavel nao encontrado');
+    const canalMensagem = this.mensagemRepository.canais().find((canal) => {
+      return canal.canal?.canal_id === this.canal.canal_id && canal.responsavel?.responsavel_id === idResponsavel
+    });
+    if (canalMensagem === undefined) {
+      var novoCanalResponsavel: CanalResponsavelInterface = {
+        canal_id: this.canal.canal_id,
+        responsavel_id: idResponsavel
+      }
+      this.canalService.incluirCanalResponsavel(novoCanalResponsavel).subscribe({
+        next: () => {
+          if (novoCanalResponsavel.canal_responsavel_id !== undefined) {
+            rota = novoCanalResponsavel.canal_responsavel_id + ConstantesRotas.ROTA_MENSAGEM_CANAL
+            this.navegarPara(rota);
+          }
+        }
+      })
+    } else { 
+      rota = canalMensagem.canal_responsavel_id + ConstantesRotas.ROTA_MENSAGEM_CANAL
+      this.navegarPara(rota);
     }
-
-    this.navegarPara(rota);
   }
 
   filtrarCanalResponsavel(ev: any) {
@@ -105,7 +131,7 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
   }
 
   protected inicializarConteudo(): void {
-    this.listaTodosAlunos = this.alunoService.buscarTodosAlunos();
+    this.preencherListaTodosAlunos()
 
     const id = this.activatedRoute.snapshot.paramMap.get('idCanal');
     if (id !== null) {
@@ -113,14 +139,25 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
     } else {
       throw new Error('idCanal nao especificado na url');
     }
+
     this.inicializarCanalResponsavel();
   }
 
   private resgatarCanal(id: string): Canal {
-    const canal = this.canalService.buscarCanal(id);
+    const canal = this.mensagemRepository.listaCanais().find((canal) => {
+      return canal.canal_id = id
+    });
     if (canal !== undefined) {
-      return canal;
+      return new Canal(canal);
     }
     throw new Error('Canal nao encontrado');
+  }
+
+  preencherListaTodosAlunos() {
+    const alunos = this.gerenciamentoRepository.alunos()
+    this.listaTodosAlunos = []
+    alunos.forEach((aluno) => {
+      this.listaTodosAlunos.push(new Aluno(aluno))
+    })
   }
 }

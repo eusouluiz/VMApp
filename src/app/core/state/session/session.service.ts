@@ -15,15 +15,6 @@ export class SessionService {
     private http: HttpClient
   ) {}
 
-  // login(responsavel: Responsavel | undefined, funcionario: Funcionario | undefined) {
-  //   console.log('login')
-  //   return this.sessionApiService.postLogin(responsavel, funcionario).pipe(
-  //     tap((session) => {
-  //       this.sessionRepository.update({ session: session });
-  //     })
-  //   );
-  // }
-
   login(body: LoginApiBody): Observable<LoginApiResponse> {
     return this.http
       .post<LoginApiResponse>(`${environment.api.endpoint}/auth/login`, body)

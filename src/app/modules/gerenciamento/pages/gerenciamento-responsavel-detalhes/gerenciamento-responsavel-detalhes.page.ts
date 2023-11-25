@@ -1,14 +1,18 @@
+import { UsuarioService } from '../../../../core/state/gerenciamento/usuario/usuario.service';
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { ResponsavelService } from '../../../../core/services/responsavel-service/responsavel.service';
-import { AlunoService } from '../../../../core/services/aluno-service/aluno.service';
+import { ResponsavelService } from '../../../../core/state/gerenciamento/responsavel/responsavel.service';
+import { AlunoService } from '../../../../core/state/gerenciamento/aluno/aluno.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina-gerenciamento-detalhes/pagina-gerenciamento-detalhes.utility';
-import { Responsavel } from '../../../../core/services/responsavel-service/responsavel.entity';
-import { Aluno } from '../../../../core/services/aluno-service/aluno.entity';
+import { Responsavel } from '../../../../core/state/gerenciamento/responsavel/responsavel.entity';
+import { Aluno } from '../../../../core/state/gerenciamento/aluno/aluno.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
+import { GerenciamentoRepository } from '../../../../core/state/gerenciamento/gerenciamento.repository';
+import { UsuarioInterface } from '../../../../core/state/gerenciamento/usuario/usuario.entity';
+import { ToastService } from '../../../../core/toasts/services/toast-service/toast.service';
 
 @Component({
   selector: 'app-gerenciamento-responsavel-detalhes',
@@ -18,25 +22,30 @@ import { PageMenuService } from '../../../../core/services/page-menu/page-menu.s
 export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
   responsavel: Responsavel = new Responsavel();
 
-  listaTodosAlunos: Aluno[] | null = null;
+  listaTodosAlunos: Aluno[] = [];
 
   constructor(
     private formBuilder: UntypedFormBuilder,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     public location: Location,
+    private usuarioService: UsuarioService,
     private responsavelService: ResponsavelService,
     private alunoService: AlunoService,
-    private pageMenuService: PageMenuService
+    private pageMenuService: PageMenuService,
+    private gerenciamentoRepository: GerenciamentoRepository,
+    private toastService: ToastService
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO;
     super(router, ROTA_BASE, location);
 
+    this.definirModo();
     this.inicializarForms();
-    this.inicializarConteudo();
+    this.preencherListaTodosAlunos()
+    this.inicializarConteudo()
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ionViewWillEnter() {
     this.pageMenuService.displayStatus.next(false);
@@ -48,27 +57,32 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
   }
 
   inicializarFormResponsavel() {
+    const senhaForm = this.isModoCadastrar() ? ['', Validators.required] : ['']
+
     this.form = this.formBuilder.group({
       nome: ['', Validators.required],
       telefone: ['', Validators.required],
       cpf: ['', Validators.required],
-      senha: ['', Validators.required],
+      senha: senhaForm,
     });
   }
 
-  protected inicializarConteudo(): void {
-    this.listaTodosAlunos = this.alunoService.buscarTodosAlunos().slice();
+  recarregarPagina() {
+    this.buscarAlunos()
+    this.inicializarConteudo()
+  }
 
-    this.definirModo();
+  protected inicializarConteudo(): void {
 
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (this.isModoDetalhes() && id !== null) {
       this.responsavel = this.resgatarResponsavel(id);
+      console.log(this.responsavel)
       this.form?.setValue({
         nome: this.responsavel.usuario.nome,
         telefone: this.responsavel.usuario.telefone,
         cpf: this.responsavel.usuario.cpf,
-        senha: this.responsavel.usuario.senha,
+        senha: '',
       });
     }
     this.inicializarTabelaAlunos();
@@ -81,9 +95,10 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
 
   // ---- busca responsavel ----//
   private resgatarResponsavel(id: string): Responsavel {
-    const responsavel = this.responsavelService.buscarResponsavel(id);
+    this.responsavelService.buscarResponsavel(id).subscribe();
+    const responsavel = this.gerenciamentoRepository.responsavel(id)
     if (responsavel !== undefined) {
-      return responsavel;
+      return new Responsavel(responsavel);
     }
     return new Responsavel();
   }
@@ -93,8 +108,31 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
 
   //delecao
   protected deletar() {
-    this.responsavelService.deletarResponsavel(this.responsavel.responsavel_id);
-    this.retornarPagina();
+    this.responsavelService.deletarResponsavel(this.responsavel.responsavel_id).subscribe({
+      next: () => {
+        this.usuarioService.deletarUsuario(this.responsavel.usuario.user_id).subscribe({
+          next: () => {
+            this.responsavelService.removerResponsavelInStorage(this.responsavel.responsavel_id)
+            this.toastService.success('Sucesso ao Remover ' + this.responsavel.usuario.nome);
+            this.retornarPagina();
+          },
+          error: (err) => {
+            this.toastService.error('Erro ao Remover Responsável');
+    
+            if (err?.original?.status === 422) {
+              return;
+            }
+          },
+        });
+      },
+      error: (err) => {
+        this.toastService.error('Erro ao Remover Responsável');
+
+        if (err?.original?.status === 422) {
+          return;
+        }
+      },
+    });
   }
 
   //edicao
@@ -126,7 +164,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
       nome: this.responsavel.usuario.nome,
       telefone: this.responsavel.usuario.telefone,
       cpf: this.responsavel.usuario.cpf,
-      senha: this.responsavel.usuario.senha,
+      senha: '',
     });
     this.desabilitarForms();
 
@@ -136,24 +174,71 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
   //salvar edicao
   salvar() {
     if (this.form?.valid) {
-      this.responsavel.usuario.nome = this.form?.value.nome;
-      this.responsavel.usuario.telefone = this.form?.value.telefone;
-      this.responsavel.usuario.cpf = this.form?.value.cpf;
-      this.responsavel.usuario.senha = this.form?.value.senha;
 
-      this.atualizarAlunos();
-
-      if (this.isModoCadastrar()) {
-        this.responsavelService.incluirResponsavel(this.responsavel);
-      } else {
-        this.responsavelService.alterarResponsavel(this.responsavel);
+      var usuario: UsuarioInterface = {
+        nome: this.form.value.nome,
+        cpf: this.form.value.cpf,
+        telefone: this.form.value.telefone,
+        tipo: 'R',
       }
 
-      this.modo = 'detalhes';
-      this.form?.disable();
+      if (this.isModoCadastrar()) {
+        usuario.password = this.form?.value.senha
+        this.usuarioService.incluirUsuario(usuario).subscribe({
+          next: () => {
+            if (usuario.responsavel_id !== undefined && usuario.responsavel_id !== null) {
+              this.responsavel.responsavel_id = usuario.responsavel_id
+            }
+            this.atualizarResponsavel()
+            this.responsavelService.saveResponsavelInStorage(this.responsavel.converterResponsavelInterface())
+            this.responsavelService.vincularAlunos(this.responsavel, this.listaAlunosTabela)
+            this.atualizarAlunos()
+            this.toastService.success('Sucesso ao cadastrar ' + this.responsavel.usuario.nome);
+            this.retornarModoDetalhes()
+          },
+          error: (err) => {
+            this.toastService.error('Erro ao cadastrar Responsável');
+            
+            if (err?.original?.status === 422) {
+              return;
+            }
+          },
+        });
+      } else {
+        if (this.form.value.senha !== '') {
+          usuario.password = this.form?.value.senha
+        }
+        usuario.email = null
+        this.usuarioService.alterarUsuario(usuario, this.responsavel.usuario.user_id).subscribe({
+          next: () => {
+            this.atualizarResponsavel()
+            this.responsavelService.saveResponsavelInStorage(this.responsavel.converterResponsavelInterface())
+            this.responsavelService.vincularAlunos(this.responsavel, this.listaAlunosTabela)
+            this.atualizarAlunos()
+            this.toastService.success('Sucesso ao editar ' + this.responsavel.usuario.nome);
+            this.retornarModoDetalhes()
+          },
+          error: (err) => {
+            this.toastService.error('Erro ao editar Responsável');
+
+            if (err?.original?.status === 422) {
+              return;
+            }
+          },
+        });
+      }
+
+
     } else {
       this.form?.markAllAsTouched();
     }
+  }
+
+  atualizarResponsavel() {
+    this.responsavel.usuario.nome = this.form?.value.nome;
+    this.responsavel.usuario.telefone = this.form?.value.telefone;
+    this.responsavel.usuario.cpf = this.form?.value.cpf;
+    this.responsavel.usuario.password = this.form?.value.senha;
   }
   // ---- controle botoes ----//
 
@@ -163,7 +248,7 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
 
   inicializarFormBuscaAluno() {
     this.formBuscaAluno = this.formBuilder.group({
-      busca: '',
+      buscaAluno: '',
     });
   }
 
@@ -172,14 +257,31 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
 
   listaAlunosTabela!: Aluno[];
 
+  buscarAlunos() {
+    this.alunoService.buscarTodosAlunos().subscribe({
+      next: () => {
+        this.preencherListaTodosAlunos()
+        this.inicializarBuscaAlunos()
+      }
+    });
+  }
+
+  preencherListaTodosAlunos() {
+    const alunos = this.gerenciamentoRepository.alunos()
+    this.listaTodosAlunos = []
+    alunos.forEach((aluno) => {
+      this.listaTodosAlunos.push(new Aluno(aluno))
+    })
+  }
+
   private inicializarTabelaAlunos() {
     this.listaAlunosTabela = this.responsavel.alunos.slice();
-    this.inicializarBuscaAlunos();
+    this.inicializarBuscaAlunos()
   }
 
   private inicializarBuscaAlunos() {
     this.listaAlunosBusca = [];
-    if (this.listaTodosAlunos !== null) {
+    if (this.listaTodosAlunos.length > 0) {
       this.listaTodosAlunos.forEach((a) => {
         const idAluno = a.aluno_id;
         var isResponsavelPossuiAluno = false;
@@ -198,16 +300,16 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
       });
     }
 
-    this.nomeAlunosBusca = this.resgatarNomeAlunosBusca(this.listaAlunosBusca);
+    this.resgatarNomeAlunosBusca(this.listaAlunosBusca);
     this.limparCampoBusca();
   }
 
-  private resgatarNomeAlunosBusca(lista: Aluno[]): string[] {
-    var nomes: string[] = [];
+  private resgatarNomeAlunosBusca(lista: Aluno[]) {
+    // esvazia lista
+    this.nomeAlunosBusca.splice(0, this.nomeAlunosBusca.length)
     lista.forEach((aluno) => {
-      nomes.push(aluno.nome);
+      this.nomeAlunosBusca.push(aluno.nome);
     });
-    return nomes;
   }
 
   adicionarAluno(valor: number) {
@@ -226,13 +328,14 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
 
   limparCampoBusca() {
     this.formBuscaAluno.setValue({
-      busca: '',
+      buscaAluno: '',
     });
   }
 
   private removerAlunoDaListaBusca(index: number) {
     for (let i = 0; i < this.listaAlunosBusca.length; i++) {
       if (index === i) {
+        // remove item da lista
         this.listaAlunosBusca.splice(index, 1);
         this.nomeAlunosBusca.splice(index, 1);
         break;
@@ -241,10 +344,10 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
   }
 
   private atualizarAlunos() {
-    this.responsavel.alunos = this.listaAlunosTabela.sort((a1, a2) => {
-      if (a1.nome.toLowerCase() > a2.nome.toLowerCase()) {
+    this.responsavel.alunos = this.listaAlunosTabela.sort((aluno1, aluno2) => {
+      if (aluno1.nome.toLowerCase() > aluno2.nome.toLowerCase()) {
         return 1;
-      } else if (a2.nome.toLowerCase() > a1.nome.toLowerCase()) {
+      } else if (aluno2.nome.toLowerCase() > aluno1.nome.toLowerCase()) {
         return -1;
       } else {
         return 0;
@@ -265,8 +368,8 @@ export class GerenciamentoResponsavelDetalhesPage extends PaginaGerenciamentoDet
   }
 
   deletarAluno(id: string) {
-    const indexAluno = this.listaAlunosTabela.findIndex((a) => {
-      return a.aluno_id === id;
+    const indexAluno = this.listaAlunosTabela.findIndex((aluno) => {
+      return aluno.aluno_id === id;
     });
     if (indexAluno !== -1) {
       const aluno = this.listaAlunosTabela[indexAluno];

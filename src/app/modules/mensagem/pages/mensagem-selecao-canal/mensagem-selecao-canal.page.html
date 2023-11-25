@@ -1,6 +1,7 @@
 <app-header titulo="Olá, {{ primeiroNome }}."></app-header>
 
 <ion-content class="ion-padding">
+  <app-refresher (onRecarregar)="recarregarPagina()"></app-refresher>
   <div class="u-padding-bottom--3xl">
     <h5 class="u-font-weight--bold">Canais de Comunicação</h5>
     <ng-container *ngFor="let canal of canais">

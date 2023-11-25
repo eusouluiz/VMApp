@@ -6,7 +6,10 @@ import { LoginApiBody } from '../../../../core/state/session/session.interface';
 import { finalize, tap } from 'rxjs';
 import { ToastService } from '../../../../core/toasts/services/toast-service/toast.service';
 import { IonInput } from '@ionic/angular';
-import { Usuario } from '../../../../core/services/usuario-service/usuario.entity';
+import { Usuario } from '../../../../core/state/gerenciamento/usuario/usuario.entity';
+import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
+import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
+import { AvisoService } from '../../../../core/state/aviso/aviso-service/aviso.service';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +30,9 @@ export class LoginPage {
     private formBuilder: UntypedFormBuilder,
     private router: Router,
     private sessionService: SessionService,
-    private toastService: ToastService
+    private canalService: CanalService,
+    private avisoService: AvisoService,
+    private toastService: ToastService,
   ) {
     this.form = this.formBuilder.group({
       cpf: ['', [Validators.required]],
@@ -40,9 +45,6 @@ export class LoginPage {
   }
 
   submit() {
-    // const cpfForm = this.form.value.cpf;
-    // const senhaForm = this.form.value.senha;
-
     this.loading = true;
 
     const body: LoginApiBody = {
@@ -51,20 +53,55 @@ export class LoginPage {
     };
 
     this.sessionService
-      .login(body)
-      .pipe(
-        tap(() => this.sessionService.getUserInfo().subscribe()),
-        finalize(() => {
-          // this.loading = false;
-        })
-      )
-      .subscribe({
+      .login(body).subscribe({
         next: () => {
-          this.form.reset();
-          this.navegaParaApp();
+          this.sessionService.getUserInfo().subscribe({
+            next: (usuario) => {
+              this.canalService.buscarTodosCanaisMensagem().subscribe({
+                next: (canal) => {
+                  this.avisoService.buscarTodosAvisos().subscribe()
+                  if (usuario.responsavel === null) {
+                    this.form.reset();
+                    this.navegaParaApp();
+                  } else {
+                    this.canalService.buscarCanalResponsavelTodos({idResponsavel: usuario.responsavel.responsavel_id}).subscribe({
+                      next: () => {
+                        this.form.reset();
+                        this.navegaParaApp();
+                      },
+                      error: (err) => {
+                        this.toastService.error('Falha ao realizar o login');
+                        this.loading = false;
+              
+                        if (err?.original?.status === 422) {
+                          return;
+                        }
+                      },
+                    })
+                  }
+                },
+                error: (err) => {
+                  this.toastService.error('Falha ao realizar o login');
+                  this.loading = false;
+        
+                  if (err?.original?.status === 422) {
+                    return;
+                  }
+                },
+              })
+            },
+            error: (err) => {
+              this.toastService.error('Falha ao realizar o login');
+              this.loading = false;
+    
+              if (err?.original?.status === 422) {
+                return;
+              }
+            },
+          })
         },
         error: (err) => {
-          this.toastService.error(err?.message);
+          this.toastService.error('Falha ao realizar o login');
           this.loading = false;
 
           if (err?.original?.status === 422) {
@@ -72,47 +109,6 @@ export class LoginPage {
           }
         },
       });
-
-    // try {
-    //   this.usuario = autenticar(cpfForm, senhaForm);
-    //   var responsavelLogado: Responsavel | undefined = undefined;
-    //   var funcionarioLogado: Funcionario | undefined = undefined;
-
-    //   if (this.usuario) {
-    //     console.log('logado com sucesso');
-    //     switch (this.usuario.tipoUsuario) {
-    //       case 'F': {
-    //         console.log('funcionario');
-    //         const funcionario = buscarFuncionario(this.usuario.idUsuario);
-    //         if (funcionario === undefined) {
-    //           throw new Error('Funcionario nao encontrado');
-    //         }
-    //         funcionarioLogado = funcionario;
-    //         break;
-    //       }
-    //       case 'R': {
-    //         console.log('responsavel');
-    //         const responsavel = buscarResponsavel(this.usuario.idUsuario);
-    //         if (responsavel === undefined) {
-    //           throw new Error('Responsavel nao encontrado');
-    //         }
-    //         responsavelLogado = responsavel;
-    //         break;
-    //       }
-    //       case 'A': {
-    //         console.log('ambos');
-    //         break;
-    //       }
-    //       default: {
-    //         throw new Error('Usuario nao definido o tipo');
-    //       }
-    //     }
-    //     this.sessionService.login(responsavelLogado, funcionarioLogado).subscribe();
-    //     this.navegaParaApp();
-    //   }
-    // } catch (e: any) {
-    //   console.log(e.message);
-    // }
   }
 
   focusin(ev: any) {
@@ -123,44 +119,3 @@ export class LoginPage {
     this.router.navigate(['/app']);
   }
 }
-
-// // autentica e retorna o usuario encontrado
-// function autenticar(cpfForm: String, senhaForm: String): Usuario {
-//   const usuario = buscarUsuarioPorCpf(cpfForm);
-//   if (usuario === undefined) {
-//     throw new Error('Usuario nao encontrado');
-//   }
-//   if (isSenhaCorreta(usuario, senhaForm)) {
-//     return usuario;
-//   } else {
-//     throw new Error('Senha incorreta');
-//   }
-// }
-
-// function buscarUsuarioPorCpf(cpfForm: String): Usuario | undefined {
-//   const listaUsuarios = USUARIO_DATA;
-
-//   return listaUsuarios.find((u) => {
-//     return u.cpf === cpfForm;
-//   });
-// }
-
-// function isSenhaCorreta(usuario: Usuario, senhaForm: String) {
-//   return usuario.senha === senhaForm;
-// }
-
-// function buscarResponsavel(idUsuario: Number): Responsavel | undefined {
-//   const listaResponsaveis = RESPONSAVEL_DATA;
-
-//   return listaResponsaveis.find((r) => {
-//     return r.usuario.idUsuario === idUsuario;
-//   });
-// }
-
-// function buscarFuncionario(idUsuario: Number): Funcionario | undefined {
-//   const listaFuncionarios = FUNCIONARIO_DATA;
-
-//   return listaFuncionarios.find((f) => {
-//     return f.usuario.idUsuario === idUsuario;
-//   });
-// }

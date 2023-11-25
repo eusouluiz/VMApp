@@ -37,6 +37,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { BotoesControleComponent } from './components/botoes-controle/botoes-controle.component';
 import { PageMenuComponent } from './components/page-menu/page-menu.component';
+import { RefresherComponent } from './components/refresher/refresher.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { PageMenuComponent } from './components/page-menu/page-menu.component';
     AutocompleteComponent,
     BotoesControleComponent,
     PageMenuComponent,
+    RefresherComponent,
   ],
   imports: [
     CommonModule,
@@ -95,6 +97,7 @@ import { PageMenuComponent } from './components/page-menu/page-menu.component';
     AutocompleteComponent,
     BotoesControleComponent,
     PageMenuComponent,
+    RefresherComponent,
   ],
 })
 export class SharedModule {}

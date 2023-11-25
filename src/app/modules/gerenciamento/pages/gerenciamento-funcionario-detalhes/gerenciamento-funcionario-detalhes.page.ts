@@ -1,14 +1,18 @@
+import { UsuarioService } from '../../../../core/state/gerenciamento/usuario/usuario.service';
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { FuncionarioService } from '../../../../core/services/funcionario-service/funcionario.service';
-import { CargoService } from '../../../../core/services/cargo-service/cargo.service';
+import { FuncionarioService } from '../../../../core/state/gerenciamento/funcionario/funcionario.service';
+import { CargoService } from '../../../../core/state/gerenciamento/cargo/cargo.service';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { PaginaGerenciamentoDetalhes } from '../../../../shared/utilities/pagina-gerenciamento-detalhes/pagina-gerenciamento-detalhes.utility';
-import { Funcionario } from '../../../../core/services/funcionario-service/funcionario.entity';
-import { Cargo } from '../../../../core/services/cargo-service/cargo.entity';
+import { Funcionario } from '../../../../core/state/gerenciamento/funcionario/funcionario.entity';
+import { Cargo } from '../../../../core/state/gerenciamento/cargo/cargo.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
+import { GerenciamentoRepository } from '../../../../core/state/gerenciamento/gerenciamento.repository';
+import { UsuarioInterface } from '../../../../core/state/gerenciamento/usuario/usuario.entity';
+import { ToastService } from '../../../../core/toasts/services/toast-service/toast.service';
 
 @Component({
   selector: 'app-gerenciamento-funcionario-detalhes',
@@ -18,25 +22,30 @@ import { PageMenuService } from '../../../../core/services/page-menu/page-menu.s
 export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDetalhes implements OnInit {
   funcionario: Funcionario = new Funcionario();
 
-  listaTodosCargos: Cargo[] | null = null;
+  listaTodosCargos: Cargo[] = [];
 
   constructor(
     private formBuilder: UntypedFormBuilder,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     public location: Location,
+    private usuarioService: UsuarioService,
     private funcionarioService: FuncionarioService,
     private cargoService: CargoService,
-    private pageMenuService: PageMenuService
+    private pageMenuService: PageMenuService,
+    private gerenciamentoRepository: GerenciamentoRepository,
+    private toastService: ToastService
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_GERENCIAMENTO;
     super(router, ROTA_BASE, location);
 
+    this.definirModo();
     this.inicializarForms();
-    this.inicializarConteudo();
+    this.preencherListaTodosCargos()
+    this.inicializarConteudo()
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ionViewWillEnter() {
     this.pageMenuService.displayStatus.next(false);
@@ -48,18 +57,22 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
   }
 
   inicializarFormFuncionario() {
+    const senhaForm = this.isModoCadastrar() ? ['', Validators.required] : ['']
+
     this.form = this.formBuilder.group({
       nome: ['', Validators.required],
       telefone: ['', Validators.required],
       cpf: ['', Validators.required],
-      senha: ['', Validators.required],
+      senha: senhaForm,
     });
   }
 
-  protected inicializarConteudo(): void {
-    this.listaTodosCargos = this.cargoService.buscarTodosCargos().slice();
+  recarregarPagina() {
+    this.buscarCargos()
+    this.inicializarConteudo()
+  }
 
-    this.definirModo();
+  protected inicializarConteudo(): void {
 
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (this.isModoDetalhes() && id !== null) {
@@ -68,7 +81,7 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
         nome: this.funcionario.usuario.nome,
         telefone: this.funcionario.usuario.telefone,
         cpf: this.funcionario.usuario.cpf,
-        senha: this.funcionario.usuario.senha,
+        senha: '',
       });
     }
     this.inicializarTabelaCargos();
@@ -81,9 +94,10 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
 
   // ---- busca funcionario ----//
   private resgatarFuncionario(id: string): Funcionario {
-    const funcionario = this.funcionarioService.buscarFuncionario(id);
+    this.funcionarioService.buscarFuncionario(id).subscribe();
+    const funcionario = this.gerenciamentoRepository.funcionario(id)
     if (funcionario !== undefined) {
-      return funcionario;
+      return new Funcionario(funcionario);
     }
     return new Funcionario();
   }
@@ -93,8 +107,32 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
 
   //delecao
   protected deletar() {
-    this.funcionarioService.deletarFuncionario(this.funcionario.funcionario_id);
-    this.retornarPagina();
+    this.funcionarioService.deletarFuncionario(this.funcionario.funcionario_id).subscribe({
+      next: () => {
+        this.usuarioService.deletarUsuario(this.funcionario.usuario.user_id).subscribe({
+          next: () => {
+            this.funcionarioService.removerFuncionarioInStorage(this.funcionario.funcionario_id)
+            this.toastService.success('Sucesso ao Remover ' + this.funcionario.usuario.nome);
+            this.retornarPagina();
+          },
+          error: (err) => {
+            this.toastService.error('Erro ao Remover Funcionário');
+
+            if (err?.original?.status === 422) {
+              return;
+            }
+          },
+        });
+
+      },
+      error: (err) => {
+        this.toastService.error('Erro ao Remover Funcionário');
+
+        if (err?.original?.status === 422) {
+          return;
+        }
+      },
+    });
   }
 
   //edicao
@@ -126,7 +164,7 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
       nome: this.funcionario.usuario.nome,
       telefone: this.funcionario.usuario.telefone,
       cpf: this.funcionario.usuario.cpf,
-      senha: this.funcionario.usuario.senha,
+      senha: '',
     });
     this.desabilitarForms();
 
@@ -136,24 +174,88 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
   //salvar edicao
   salvar() {
     if (this.form?.valid) {
-      this.funcionario.usuario.nome = this.form?.value.nome;
-      this.funcionario.usuario.telefone = this.form?.value.telefone;
-      this.funcionario.usuario.cpf = this.form?.value.cpf;
-      this.funcionario.usuario.senha = this.form?.value.senha;
 
-      this.atualizarCargos();
-
-      if (this.isModoCadastrar()) {
-        this.funcionarioService.incluirFuncionario(this.funcionario);
-      } else {
-        this.funcionarioService.alterarFuncionario(this.funcionario);
+      var usuario: UsuarioInterface = {
+        nome: this.form.value.nome,
+        cpf: this.form.value.cpf,
+        telefone: this.form.value.telefone,
+        tipo: 'F',
       }
 
-      this.modo = 'detalhes';
-      this.form?.disable();
+      if (this.isModoCadastrar()) {
+        usuario.password = this.form?.value.senha
+        this.usuarioService.incluirUsuario(usuario).subscribe({
+          next: () => {
+            this.atualizarFuncionario()
+            this.funcionarioService.saveFuncionarioInStorage(this.funcionario.converterFuncionarioInterface())
+            this.funcionarioService.vincularCargo(this.funcionario, this.listaCargosTabela).subscribe({
+              next: () => {
+                this.atualizarCargos()
+                this.toastService.success('Sucesso ao cadastrar ' + this.funcionario.usuario.nome);
+                this.retornarModoDetalhes()
+              },
+              error: (err) => {
+                this.toastService.error('Erro ao vincular Cargo');
+                
+                if (err?.original?.status === 422) {
+                  return;
+                }
+              },
+            })
+          },
+          error: (err) => {
+            this.toastService.error('Erro ao cadastrar Funcionário');
+            
+            if (err?.original?.status === 422) {
+              return;
+            }
+          },
+        });
+      } else {
+        if (this.form.value.senha !== '') {
+          usuario.password = this.form?.value.senha
+        }
+        usuario.email = null
+        this.usuarioService.alterarUsuario(usuario, this.funcionario.usuario.user_id).subscribe({
+          next: () => {
+            this.atualizarFuncionario()
+            this.funcionarioService.saveFuncionarioInStorage(this.funcionario.converterFuncionarioInterface())
+            this.funcionarioService.vincularCargo(this.funcionario, this.listaCargosTabela).subscribe({
+              next: () => {
+                this.atualizarCargos()
+                this.toastService.success('Sucesso ao editar ' + this.funcionario.usuario.nome);
+                this.retornarModoDetalhes()
+              },
+              error: (err) => {
+                this.toastService.error('Erro ao vincular Cargo');
+    
+                if (err?.original?.status === 422) {
+                  return;
+                }
+              },
+            })
+          },
+          error: (err) => {
+            this.toastService.error('Erro ao editar Funcionário');
+
+            if (err?.original?.status === 422) {
+              return;
+            }
+          },
+        });
+      }
+
+
     } else {
       this.form?.markAllAsTouched();
     }
+  }
+
+  atualizarFuncionario() {
+    this.funcionario.usuario.nome = this.form?.value.nome;
+    this.funcionario.usuario.telefone = this.form?.value.telefone;
+    this.funcionario.usuario.cpf = this.form?.value.cpf;
+    this.funcionario.usuario.password = this.form?.value.senha;
   }
   // ---- controle botoes ----//
 
@@ -172,9 +274,26 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
 
   listaCargosTabela: Cargo[] = [];
 
+  buscarCargos() {
+    this.cargoService.buscarTodosCargos().subscribe({
+      next: () => {
+        this.preencherListaTodosCargos()
+        this.inicializarBuscaCargos()
+      }
+    });
+  }
+
+  preencherListaTodosCargos() {
+    const cargos = this.gerenciamentoRepository.cargos()
+    this.listaTodosCargos = []
+    cargos.forEach((cargo) => {
+      this.listaTodosCargos.push(new Cargo(cargo))
+    })
+  }
+
   private inicializarTabelaCargos() {
     this.listaCargosTabela = [];
-    if (this.funcionario.cargo.nome !== '') {
+    if (this.funcionario.cargo !== null) {
       this.listaCargosTabela.push(this.funcionario.cargo);
     }
     this.inicializarBuscaCargos();
@@ -183,8 +302,8 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
   private inicializarBuscaCargos() {
     this.listaCargosBusca = [];
     if (this.listaTodosCargos !== null) {
-      this.listaTodosCargos.forEach((c) => {
-        const idCargo = c.cargo_id;
+      this.listaTodosCargos.forEach((cargo) => {
+        const idCargo = cargo.cargo_id;
         var isFuncionarioPossuiCargo = false;
 
         for (let i = 0; i < this.listaCargosTabela.length; i++) {
@@ -196,21 +315,21 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
         }
 
         if (!isFuncionarioPossuiCargo) {
-          this.listaCargosBusca.push(c);
+          this.listaCargosBusca.push(cargo);
         }
       });
     }
 
-    this.nomeCargosBusca = this.resgatarNomeCargosBusca(this.listaCargosBusca);
+    this.resgatarNomeCargosBusca(this.listaCargosBusca);
     this.limparCampoBusca();
   }
 
-  private resgatarNomeCargosBusca(lista: Cargo[]): string[] {
-    var nomes: string[] = [];
+  private resgatarNomeCargosBusca(lista: Cargo[]) {
+    // esvazia lista
+    this.nomeCargosBusca.splice(0, this.nomeCargosBusca.length)
     lista.forEach((cargo) => {
-      nomes.push(cargo.nome);
+      this.nomeCargosBusca.push(cargo.nome);
     });
-    return nomes;
   }
 
   adicionarCargo(valor: number) {
@@ -270,4 +389,5 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
   }
 
   // ---- controle cargos ----//
+
 }

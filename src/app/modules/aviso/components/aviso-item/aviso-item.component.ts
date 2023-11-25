@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { SharedModule } from '../../../../shared/shared.module';
-import { Aviso } from '../../../../core/services/aviso-service/aviso.entity';
+import { Aviso } from '../../../../core/state/aviso/aviso-service/aviso.entity';
 
 @Component({
   selector: 'app-aviso-item',
@@ -16,7 +16,7 @@ export class AvisoItemComponent implements OnInit {
 
   @Output() onSelecionado = new EventEmitter<Aviso>();
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   selecionar() {
     this.onSelecionado.emit(this.aviso);

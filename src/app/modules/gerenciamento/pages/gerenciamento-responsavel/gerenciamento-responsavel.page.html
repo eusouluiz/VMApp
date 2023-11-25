@@ -1,11 +1,12 @@
 <app-header titulo="Responsável" [botaoRetorno]="true"></app-header>
 
 <ion-content class="ion-padding">
+  <app-refresher (onRecarregar)="recarregarPagina()"></app-refresher>
   <ion-searchbar class="ion-no-padding"
     placeholder="Responsável" [debounce]="500" (ionInput)="filtrarResponsavelNome($event)"></ion-searchbar>
   <div *ngFor="let responsavel of listaResponsaveis">
     <ion-item class="c-item"
-      lines="none" detail="true" button="true" (click)="navegarTelaResponsavel(responsavel.responsavel_id)">
+      lines="none" detail="true" button="true" (click)="navegarTelaResponsavel(responsavel)">
       <ion-label>
         <ion-row>
           <ion-text class="c-item-titulo">{{responsavel.usuario.nome}}</ion-text>
@@ -17,7 +18,7 @@
     </ion-item>
   </div>
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button (click)="navegarTelaResponsavel(-1)">
+    <ion-fab-button (click)="navegarTelaResponsavel()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
