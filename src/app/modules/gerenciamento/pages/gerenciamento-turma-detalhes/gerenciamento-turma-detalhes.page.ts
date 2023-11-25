@@ -287,7 +287,7 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
 
   adicionarAluno(valor: number) {
     if (valor === -1) {
-      this.navegarTelaAluno(valor);
+      this.navegarTelaAluno();
       return;
     }
 
@@ -328,15 +328,27 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
     });
   }
 
-  navegarTelaAluno(id: number) {
+  navegarTelaAluno(aluno?: Aluno) {
     if (this.isModoDetalhes()) {
       var rota = ConstantesRotas.ROTA_GERENCIAMENTO_ALUNO;
-      if (id !== -1) {
-        rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
+      if (aluno !== undefined) {
+        this.alunoService.buscarAluno(aluno.aluno_id).subscribe({
+          next: () => {
+            rota = rota + ConstantesRotas.BARRA + aluno.aluno_id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
+            this.navegarPara(rota);
+          },
+          error: (err) => {
+            this.toastService.error('Erro ao carregar informações ' + aluno.nome);
+            
+            if (err?.original?.status === 422) {
+              return;
+            }
+          },
+        })
       } else {
         rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
+        this.navegarPara(rota);
       }
-      this.navegarPara(rota);
     }
   }
 

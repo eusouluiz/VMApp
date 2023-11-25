@@ -33,7 +33,7 @@
                     lines="none"
                     [detail]="isModoDetalhes()"
                     [button]="isModoDetalhes()"
-                    (click)="navegarTelaCargo(cargo.cargo_id)">
+                    (click)="navegarTelaCargo(cargo)">
                     <ion-label>
                       <ion-row class="ion-align-items-center">
                         <ion-col class="ion-align-items-center" size="9" sizeLg="11" sizeMd="11">
@@ -72,7 +72,7 @@
                   (onBusca)="adicionarCargo($event)"
                   textoSemResultado="Cadastrar novo cargo"
                   icone="add"
-                  (onCliqueIcone)="navegarTelaCargo(-1)"></app-autocomplete>
+                  (onCliqueIcone)="navegarTelaCargo()"></app-autocomplete>
               </form>
             </ion-col>
           </ion-row>

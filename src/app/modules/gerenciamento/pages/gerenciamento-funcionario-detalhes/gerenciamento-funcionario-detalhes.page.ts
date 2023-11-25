@@ -334,7 +334,7 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
 
   adicionarCargo(valor: number) {
     if (valor === -1) {
-      this.navegarTelaCargo(valor);
+      this.navegarTelaCargo();
       return;
     }
 
@@ -370,14 +370,28 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
     this.funcionario.cargo = this.listaCargosTabela[0];
   }
 
-  navegarTelaCargo(id: number) {
-    var rota = ConstantesRotas.ROTA_GERENCIAMENTO_CARGO;
-    if (id !== -1) {
-      rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
-    } else {
-      rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
+  navegarTelaCargo(cargo?: Cargo) {
+    if (this.isModoDetalhes()) {
+      var rota = ConstantesRotas.ROTA_GERENCIAMENTO_CARGO;
+      if (cargo !== undefined) {
+        this.cargoService.buscarCargo(cargo.cargo_id).subscribe({
+          next: () => {
+            rota = rota + ConstantesRotas.BARRA + cargo.cargo_id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
+            this.navegarPara(rota);
+          },
+          error: (err) => {
+            this.toastService.error('Erro ao carregar informações ' + cargo.nome);
+            
+            if (err?.original?.status === 422) {
+              return;
+            }
+          },
+        })
+      } else {
+        rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
+        this.navegarPara(rota);
+      }
     }
-    this.navegarPara(rota);
   }
 
   deletarCargo() {

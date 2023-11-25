@@ -302,7 +302,7 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
 
   adicionarResponsavel(valor: number) {
     if (valor === -1) {
-      this.navegarTelaResponsavel(valor);
+      this.navegarTelaResponsavel();
       return;
     }
 
@@ -343,18 +343,30 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
     });
   }
 
-  navegarTelaResponsavel(id: number) {
+  navegarTelaResponsavel(responsavel?: Responsavel) {
     if (this.isModoDetalhes()) {
       var rota = ConstantesRotas.ROTA_GERENCIAMENTO_RESPONSAVEL;
-      if (id !== -1) {
-        rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
+      if (responsavel !== undefined) {
+        this.responsavelService.buscarResponsavel(responsavel.responsavel_id).subscribe({
+          next: () => {
+            rota = rota + ConstantesRotas.BARRA + responsavel.responsavel_id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
+            this.navegarPara(rota);
+          },
+          error: (err) => {
+            this.toastService.error('Erro ao carregar informações ' + responsavel.usuario.nome);
+            
+            if (err?.original?.status === 422) {
+              return;
+            }
+          },
+        })
       } else {
         rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
+        this.navegarPara(rota);
       }
-      this.navegarPara(rota);
     }
   }
-
+  
   deletarResponsavel(id: string) {
     const indexResponsavel = this.listaResponsaveisTabela.findIndex((responsavel) => {
       return responsavel.responsavel_id === id;
@@ -445,7 +457,7 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
 
   adicionarTurma(valor: number) {
     if (valor === -1) {
-      this.navegarTelaTurma(valor);
+      this.navegarTelaTurma();
       return;
     }
 
@@ -481,15 +493,27 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
     this.aluno.turma = this.listaTurmasTabela[0];
   }
 
-  navegarTelaTurma(id: number) {
+  navegarTelaTurma(turma?: Turma) {
     if (this.isModoDetalhes()) {
-      var rota = ConstantesRotas.ROTA_GERENCIAMENTO_CARGO;
-      if (id !== -1) {
-        rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
+      var rota = ConstantesRotas.ROTA_GERENCIAMENTO_TURMA;
+      if (turma !== undefined) {
+        this.turmaService.buscarTurma(turma.turma_id).subscribe({
+          next: () => {
+            rota = rota + ConstantesRotas.BARRA + turma.turma_id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
+            this.navegarPara(rota);
+          },
+          error: (err) => {
+            this.toastService.error('Erro ao carregar informações ' + turma.nome);
+            
+            if (err?.original?.status === 422) {
+              return;
+            }
+          },
+        })
       } else {
         rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
+        this.navegarPara(rota);
       }
-      this.navegarPara(rota);
     }
   }
 

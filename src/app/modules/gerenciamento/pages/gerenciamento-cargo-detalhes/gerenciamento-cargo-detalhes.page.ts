@@ -292,7 +292,7 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
 
   adicionarFuncionario(valor: number) {
     if (valor === -1) {
-      this.navegarTelaFuncionario(valor);
+      this.navegarTelaFuncionario();
       return;
     }
 
@@ -333,15 +333,27 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
     });
   }
 
-  navegarTelaFuncionario(id: number) {
+  navegarTelaFuncionario(funcionario?: Funcionario) {
     if (this.isModoDetalhes()) {
-      var rota = ConstantesRotas.ROTA_GERENCIAMENTO_ALUNO;
-      if (id !== -1) {
-        rota = rota + ConstantesRotas.BARRA + id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
+      var rota = ConstantesRotas.ROTA_GERENCIAMENTO_FUNCIONARIO;
+      if (funcionario !== undefined) {
+        this.funcionarioService.buscarFuncionario(funcionario.funcionario_id).subscribe({
+          next: () => {
+            rota = rota + ConstantesRotas.BARRA + funcionario.funcionario_id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
+            this.navegarPara(rota);
+          },
+          error: (err) => {
+            this.toastService.error('Erro ao carregar informações ' + funcionario.usuario.nome);
+            
+            if (err?.original?.status === 422) {
+              return;
+            }
+          },
+        })
       } else {
         rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
+        this.navegarPara(rota);
       }
-      this.navegarPara(rota);
     }
   }
 
