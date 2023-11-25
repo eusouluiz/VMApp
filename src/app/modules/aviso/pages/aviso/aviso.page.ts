@@ -89,20 +89,24 @@ export class AvisoPage extends Pagina implements OnInit {
     const { data, role } = await modal.onWillDismiss();
 
     if (role === 'salvarAviso') {
-      // aviso.titulo = data.titulo;
-      // aviso.texto = data.texto;
+      aviso.titulo = data.titulo;
+      aviso.texto = data.texto;
 
-      // var avisoInterface: AvisoInterface = {
-      //   titulo: aviso.titulo,
-      //   texto: aviso.texto,
-      //   arquivo: aviso.arquivo,
-      //   data_publicacao: aviso.data_publicacao,
-      //   prioridade: aviso.prioridade,
-      //   funcionario_id: aviso.funcionario.funcionario_id,
-      //   canal_id: aviso.canal.canal_id,
-      // }
+      console.log(aviso)
 
-      // this.avisoService.alterarAviso(avisoInterface, aviso.aviso_id);
+      var avisoInterface: AvisoInterface = {
+        titulo: aviso.titulo,
+        texto: aviso.texto,
+        arquivo: aviso.arquivo,
+        data_publicacao: DataUtil.converterDataServico(aviso.data_publicacao.toString()),
+        prioridade: aviso.prioridade,
+        funcionario_id: aviso.funcionario.funcionario_id,
+        canal_id: aviso.canal.canal_id,
+      }
+
+      console.log(avisoInterface)
+
+      this.avisoService.alterarAviso(avisoInterface, aviso.aviso_id).subscribe();
     } else if (role === 'deletarAviso') {
       this.avisoService.deletarAviso(aviso.aviso_id).subscribe({
         next: () => {

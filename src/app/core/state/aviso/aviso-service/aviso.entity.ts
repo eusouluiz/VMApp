@@ -11,6 +11,7 @@ export interface AvisoInterface {
     prioridade: string,
     data_publicacao: string,
     data_encerramento?: string,
+    funcionario?: Funcionario,
     funcionario_id: string,
     canal_id: string,
     turmas?: Turma[] 
@@ -43,7 +44,11 @@ export class Aviso {
             if (data.data_encerramento !== undefined) {
                 this._data_encerramento = new Date(data.data_encerramento)
             }
-            this._funcionario.funcionario_id = data.funcionario_id
+            if (data.funcionario !== undefined) {
+                this._funcionario = data.funcionario
+            } else {
+                this._funcionario.funcionario_id = data.funcionario_id
+            }
             this._canal.canal_id = data.canal_id
 
             if(data.turmas !== undefined){
