@@ -8,6 +8,11 @@ import { environment } from '../../../../../environments/environment';
 import { CanalResponsavelInterface } from '../../gerenciamento/canal/canal.entity';
 import { DataUtil } from '../../../../shared/utilities/data/data.utility';
 
+interface ResponseMensagem {
+  msg: string,
+  data: MensagemInterface
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -20,10 +25,13 @@ export class MensagemService {
 
   }
 
-  incluirMensagem(mensagem: MensagemInterface): Observable<MensagemInterface> {
+  incluirMensagem(mensagem: MensagemInterface): Observable<ResponseMensagem> {
     return this.http
-      .post<MensagemInterface>(`${environment.api.endpoint}/mensagem`, mensagem)
-      .pipe(tap(() => {this.armazenarMensagem(mensagem)}));
+      .post<ResponseMensagem>(`${environment.api.endpoint}/mensagem`, mensagem)
+      .pipe(tap((response) => {
+        mensagem.mensagem_id = response.data.mensagem_id
+        this.armazenarMensagem(mensagem)
+      }));
   }
 
   alterarMensagem(mensagem: MensagemInterface): Observable<MensagemInterface> {
@@ -72,8 +80,10 @@ export class MensagemService {
     console.log(indexCanal)
 
     if (indexCanal !== -1) {
-      canais[indexCanal].mensagens?.push(mensagem)
+      canais[indexCanal].mensagens?.unshift(mensagem)
     }
+
+    console.log(canais)
 
     this.mensagemRepository.update({canais:canais})
   }

@@ -76,7 +76,9 @@ export class ConstantesSupabase {
 
   static readonly CANAL_NOTIFICACAO_AVISO = 'notificacao-aviso'
 
-  static readonly CANAL_MENSAGEM = 'mensagens'
+  static readonly CANAL_MENSAGEM_INSERT = 'mensagens-insert'
+
+  static readonly CANAL_MENSAGEM_UPDATE = 'mensagens-update'
 }
 
 export class ConstantesEndpoints {

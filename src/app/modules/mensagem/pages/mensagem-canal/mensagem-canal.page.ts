@@ -144,38 +144,42 @@ export class MensagemCanalPage extends Pagina implements OnInit {
   // -------- integracao supabase -------- //
 
   inscreverMensagens() {
-    const mensagem = supabase.channel(ConstantesSupabase.CANAL_NOTIFICACAO_MENSAGEM)
+    // CASO ONDE UMA MENSAGEM EH RECEBIDA
+    const mensagemInsert = supabase.channel(ConstantesSupabase.CANAL_MENSAGEM_INSERT)
       .on(
         'postgres_changes',
-        { event: '*', schema: 'public', table: 'mensagens', filter: `canal_responsavel_id=eq.${this.canalResponsavel.canal_responsavel_id}` },
+        { event: 'INSERT', schema: 'public', table: 'mensagens', filter: `canal_responsavel_id=eq.${this.canalResponsavel.canal_responsavel_id}` },
         async (payload: any) => {
           console.log('Mensagem Change received!', payload)
           // CASO ONDE UMA MENSAGEM EH RECEBIDA
-          if (payload.eventType = 'INSERT') {
-            if (payload.new.canal_responsavel_id === this.canalResponsavel.canal_responsavel_id) {
-              if (payload.new.user_id !== this.idUsuario) {
-                const mensagem: MensagemInterface = payload.new
-                mensagem.lida = true
-                this.mensagemService.alterarMensagem(mensagem).subscribe()
-                this.mensagens.unshift(new Mensagem(mensagem));
-  
-                this.scrollToBottom();
-              }
+          if (payload.new.user_id !== this.idUsuario) {
+            const mensagem: MensagemInterface = payload.new
+            mensagem.lida = true
+            this.mensagemService.alterarMensagem(mensagem).subscribe()
+            this.mensagens.unshift(new Mensagem(mensagem));
+
+            this.scrollToBottom();
+          }
+        }
+      )
+      .subscribe()
+    // CASO ONDE UMA MENSAGEM EH LIDA
+    const mensagemUpdate = supabase.channel(ConstantesSupabase.CANAL_MENSAGEM_UPDATE)
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'mensagens', filter: `canal_responsavel_id=eq.${this.canalResponsavel.canal_responsavel_id}` },
+        async (payload: any) => {
+          console.log('Mensagem Change received!', payload)
+          if (payload.new.user_id === this.idUsuario) {
+            console.log(this.mensagens)
+            const mensagem = this.mensagens.find((mensagem) => {
+              return mensagem.mensagem_id === payload.old.id
+            })
+            console.log(mensagem)
+            if (mensagem !== undefined) {
+              mensagem.lida = true
             }
-          // CASO ONDE UMA MENSAGEM EH LIDA
-          } else if (payload.eventType = 'UPDATE') {
-            if (payload.new.canal_responsavel_id === this.canalResponsavel.canal_responsavel_id) {
-              if (payload.new.user_id === this.idUsuario) {
-                const mensagem = this.mensagens.find((mensagem) => {
-                  return mensagem.mensagem_id === payload.old.id
-                })
-                console.log(mensagem)
-                if (mensagem !== undefined){
-                  mensagem.lida = true
-                }
-                console.log(mensagem)
-              }
-            }
+            console.log(mensagem)
           }
         }
       )

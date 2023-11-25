@@ -30,7 +30,9 @@ export class Mensagem {
         if (data !== undefined) {
             if (data.mensagem_id !== undefined) {
                 this._mensagem_id = data.mensagem_id;
-            } 
+            } else if (data.id !== undefined) {
+                this._mensagem_id = data.id
+            }
             this._texto = data.texto
             this._arquivo = data.arquivo
             this._lida = data.lida
