@@ -16,6 +16,8 @@ import { PageMenuService } from '../../../../core/services/page-menu/page-menu.s
 import { AVISO_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
 import { AvisoRepository } from '../../../../core/state/aviso/aviso.repository';
 import { DataUtil } from '../../../../shared/utilities/data/data.utility';
+import { MensagemRepository } from '../../../../core/state/mensagem/mensagem.repository';
+import { CanalResponsavelInterface } from '../../../../core/state/gerenciamento/canal/canal.entity';
 
 @Component({
   selector: 'app-aviso',
@@ -39,6 +41,7 @@ export class AvisoPage extends Pagina implements OnInit {
     private canalService: CanalService,
     private pageMenuService: PageMenuService,
     private avisoRepository: AvisoRepository,
+    private mensagemRepository: MensagemRepository,
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP;
     super(router, ROTA_BASE);
@@ -116,17 +119,29 @@ export class AvisoPage extends Pagina implements OnInit {
       });
     } else if (role === 'duvidaAviso') {
       if (this.idResponsavel !== undefined) {
-        const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(
-          aviso.canal.canal_id,
-          this.idResponsavel
-        );
-        const caminho =
-          ConstantesRotas.ROTA_MENSAGEM +
-          ConstantesRotas.BARRA +
-          idCanalResponsavel +
-          ConstantesRotas.ROTA_MENSAGEM_CANAL;
+        var rota = ConstantesRotas.ROTA_MENSAGEM + ConstantesRotas.BARRA
+        const canalMensagem = this.mensagemRepository.canais().find((canal) => {
+          return canal.canal?.canal_id === aviso.canal.canal_id && canal.responsavel?.responsavel_id === this.idResponsavel
+        })
 
-        this.navegarPara(caminho);
+        if (canalMensagem === undefined) {
+          var novoCanalResponsavel: CanalResponsavelInterface = {
+            canal_id: aviso.canal.canal_id,
+            responsavel_id: this.idResponsavel
+          }
+          this.canalService.incluirCanalResponsavel(novoCanalResponsavel).subscribe({
+            next: () => {
+              if (novoCanalResponsavel.canal_responsavel_id !== undefined) {
+                rota = rota + novoCanalResponsavel.canal_responsavel_id + ConstantesRotas.ROTA_MENSAGEM_CANAL
+                this.navegarPara(rota);
+              }
+            }
+          })
+        } else {
+          rota = rota + canalMensagem.canal_responsavel_id + ConstantesRotas.ROTA_MENSAGEM_CANAL;
+          console.log(rota)
+          this.navegarPara(rota);
+        }
       } else {
         throw new Error('Aviso: responsavel nao encontrado');
       }

@@ -27,12 +27,9 @@
   </div>
 
   <div>
-    <ng-container *ngIf="isModoVisualizacao">
+    <ng-container *ngIf="!isModoVisualizacao">
       <ion-row *ngIf="isResponsavel" class="u-flex-justify--end u-padding-bottom--md">
         <app-button padding="sm" size="md" (click)="navegarCanal()">Tire suas Dúvidas</app-button>
-        <!-- <ion-button shape="round" class="ion-align-items-center u-font-weight--bold" (click)="navegarCanal()">
-          Tire suas Dúvidas <ion-icon name="chevron-forward-outline"></ion-icon
-        ></ion-button> -->
       </ion-row>
     </ng-container>
     <ng-container *ngIf="!isModoVisualizacao">
