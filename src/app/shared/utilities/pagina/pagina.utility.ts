@@ -14,9 +14,7 @@ export class Pagina {
   protected inicializarConteudo() {}
 
   protected retornarPagina() {
-    if (this.locationPagina !== undefined) {
-      this.locationPagina.back();
-    }
+    this.navegarPara('')
   }
 
   protected navegarPara(rota: string) {

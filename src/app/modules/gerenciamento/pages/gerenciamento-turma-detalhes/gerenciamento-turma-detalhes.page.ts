@@ -48,6 +48,7 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
     this.definirModo();
     this.inicializarForms();
     this.preencherListaTodosAlunos()
+    this.preencherTurma()
     this.inicializarConteudo()
   }
 
@@ -76,7 +77,6 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
   protected inicializarConteudo(): void {
 
     if (this.isModoDetalhes() && this.idTurma !== null) {
-      console.log(this.turma)
       this.form?.setValue({
         nome: this.turma.nome,
       });
