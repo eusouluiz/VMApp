@@ -10,6 +10,10 @@ import { Turma } from '../../gerenciamento/turma/turma.entity';
 import { ResponsavelService } from '../../gerenciamento/responsavel/responsavel.service';
 import { Responsavel } from '../../gerenciamento/responsavel/responsavel.entity';
 
+interface ResponseGetAviso {
+  data: AvisoInterface[]
+}
+
 interface ResponseAviso {
   msg: string,
   data: AvisoInterface,
@@ -34,10 +38,10 @@ export class AvisoService {
 
   }
 
-  buscarTodosAvisos(): Observable<AvisoInterface[]> {
+  buscarTodosAvisos(): Observable<ResponseGetAviso> {
     return this.http
-      .get<AvisoInterface[]>(`${environment.api.endpoint}/aviso`)
-      .pipe(tap((avisos) => this.saveAvisosInStorage(avisos)));
+      .get<ResponseGetAviso>(`${environment.api.endpoint}/aviso`)
+      .pipe(tap((response) => this.saveAvisosInStorage(response.data)));
   }
 
   buscarAviso(idAviso: string): Observable<AvisoInterface> {
@@ -58,7 +62,7 @@ export class AvisoService {
 
   alterarAviso(aviso: AvisoInterface, avisoId: string): Observable<AvisoInterface> {
     return this.http
-      .put<AvisoInterface>(`${environment.api.endpoint}/user/${avisoId}`, aviso);
+      .put<AvisoInterface>(`${environment.api.endpoint}/aviso/${avisoId}`, aviso);
   }
 
   deletarAviso(idAviso: string): Observable<AvisoInterface[]> {
@@ -106,19 +110,35 @@ export class AvisoService {
   }
 
   saveAvisosInStorage(avisos: AvisoInterface[]) {
-    console.log('saveAvisosInStorage')
     this.avisoRepository.update({ avisos: avisos });
   }
 
   saveAvisoInStorage(aviso: AvisoInterface): void {
-    console.log('saveAvisoInStorage')
     var avisos = this.avisoRepository.avisos()
-    const indexAviso = avisos.findIndex((aviso) => {
-      return aviso.aviso_id === aviso.aviso_id
+    const indexAviso = avisos.findIndex((avisoStorage) => {
+      return avisoStorage.aviso_id === aviso.aviso_id
     })
-    avisos[indexAviso] = aviso
+
+    if (indexAviso !== -1) {
+      avisos[indexAviso] = aviso
+    } else {
+      avisos.push(aviso)
+    }
 
     this.avisoRepository.update({ avisos: avisos });
+  }
+
+  removerAvisoInStorage(idAviso: string) {
+      var avisos = this.avisoRepository.avisos()
+      const indexAviso = avisos.findIndex((avisoStorage) => {
+          return avisoStorage.aviso_id === idAviso
+      })
+
+      if (indexAviso !== -1) {
+          avisos.splice(indexAviso, 1)
+      } 
+
+      this.avisoRepository.update({ avisos: avisos });
   }
 
   buscarIdAvisoResponsavel(idAviso: string, idResponsavel: string): string | undefined {

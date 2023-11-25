@@ -20,16 +20,6 @@ export class MensagemService {
 
   }
 
-  buscarTodosMensagems(): Mensagem[] {
-    return MENSAGEM_DATA;
-  }
-
-  buscarMensagem(idMensagem: string): Mensagem | undefined {
-    return MENSAGEM_DATA.find((m) => {
-      return m.mensagem_id === idMensagem;
-    });
-  }
-
   incluirMensagem(mensagem: MensagemInterface): Observable<MensagemInterface> {
     return this.http
       .post<MensagemInterface>(`${environment.api.endpoint}/mensagem`, mensagem);
@@ -48,43 +38,6 @@ export class MensagemService {
     return this.http
       .put<MensagemInterface>(`${environment.api.endpoint}/mensagem/${mensagem.id}`, msg);
   }
-
-  deletarMensagem(idMensagem: string) {
-    var indexA = MENSAGEM_DATA.findIndex((m) => {
-      return m.mensagem_id === idMensagem;
-    });
-    if (indexA !== -1) {
-      MENSAGEM_DATA.splice(indexA, 1);
-    } else {
-      throw new Error('mensagem nao encontrado');
-    }
-  }
-
-  buscarMensagensCanalResponsavel(idCanalResponsavel: string): Observable<MensagemInterface[]> {
-    return this.http
-      .get<MensagemInterface[]>(`${environment.api.endpoint}/mensagem`)
-      .pipe(tap((mensagens) => this.saveCanalMensagemInStorage(mensagens, idCanalResponsavel)));
-  }
-  
-  buscarUltimaMensagensCanalResponsavel(idCanalResponsavel: string): Mensagem | undefined {
-    var mensagens = MENSAGEM_DATA.slice();
-    mensagens = mensagens.filter((m) => {
-      return m.canal_responsavel_id === idCanalResponsavel;
-    }).sort((m1, m2) => {
-      if (m1.data_envio > m2.data_envio) {
-        return 1;
-      } else if (m2.data_envio > m1.data_envio) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
-    if (mensagens.length > 0) {
-      return mensagens[mensagens.length - 1];
-    } else {
-      return undefined;
-    }
-  }
   
   armazenarMensagens(mensagens: MensagemInterface[] | null, idCanalResponsavel: string) {
     if (mensagens !== null) {
@@ -102,6 +55,4 @@ export class MensagemService {
     }
   }
 
-  saveCanalMensagemInStorage(mensagens: MensagemInterface[], idCanalResponsavel: string): void {
-  }
 }

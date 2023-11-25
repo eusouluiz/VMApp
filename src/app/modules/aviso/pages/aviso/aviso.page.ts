@@ -11,7 +11,7 @@ import { AvisoModalComponent } from '../../components/aviso-modal/aviso-modal.co
 import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
 import { NovoAvisoComponent } from '../../components/novo-aviso/novo-aviso.component';
 import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
-import { Aviso } from '../../../../core/state/aviso/aviso-service/aviso.entity';
+import { Aviso, AvisoInterface } from '../../../../core/state/aviso/aviso-service/aviso.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 import { AVISO_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
 import { AvisoRepository } from '../../../../core/state/aviso/aviso.repository';
@@ -43,17 +43,20 @@ export class AvisoPage extends Pagina implements OnInit {
 
     this.inicializarConteudo();
   }
-
+  
   ngOnInit() { }
-
+  
   ionViewWillEnter() {
     this.pageMenuService.displayStatus.next(true);
+    this.inicializarConteudo();
   }
-
-  ngAfterViewInit(): void {
-    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-    //Add 'implements AfterViewInit' to the class.
-    console.log(this.avisos);
+  
+  recarregarPagina(){
+    this.avisoService.buscarTodosAvisos().subscribe({
+      next: () => {
+        this.resgatarAvisos()
+      }
+    })
   }
 
   resgatarAvisos() {
@@ -84,12 +87,27 @@ export class AvisoPage extends Pagina implements OnInit {
     const { data, role } = await modal.onWillDismiss();
 
     if (role === 'salvarAviso') {
-      aviso.titulo = data.titulo;
-      aviso.texto = data.texto;
+      // aviso.titulo = data.titulo;
+      // aviso.texto = data.texto;
 
-      // this.avisoService.alterarAviso(aviso, aviso.aviso_id);
+      // var avisoInterface: AvisoInterface = {
+      //   titulo: aviso.titulo,
+      //   texto: aviso.texto,
+      //   arquivo: aviso.arquivo,
+      //   data_publicacao: aviso.data_publicacao,
+      //   prioridade: aviso.prioridade,
+      //   funcionario_id: aviso.funcionario.funcionario_id,
+      //   canal_id: aviso.canal.canal_id,
+      // }
+
+      // this.avisoService.alterarAviso(avisoInterface, aviso.aviso_id);
     } else if (role === 'deletarAviso') {
-      this.avisoService.deletarAviso(aviso.aviso_id);
+      this.avisoService.deletarAviso(aviso.aviso_id).subscribe({
+        next: () => {
+          this.avisoService.removerAvisoInStorage(aviso.aviso_id)
+          this.resgatarAvisos()
+        }
+      });
     } else if (role === 'duvidaAviso') {
       if (this.idResponsavel !== undefined) {
         const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(

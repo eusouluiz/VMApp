@@ -9,6 +9,7 @@ import { IonInput } from '@ionic/angular';
 import { Usuario } from '../../../../core/state/gerenciamento/usuario/usuario.entity';
 import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
 import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
+import { AvisoService } from '../../../../core/state/aviso/aviso-service/aviso.service';
 
 @Component({
   selector: 'app-login',
@@ -30,8 +31,8 @@ export class LoginPage {
     private router: Router,
     private sessionService: SessionService,
     private canalService: CanalService,
+    private avisoService: AvisoService,
     private toastService: ToastService,
-    private usuarioLogado: UsuarioLogado
   ) {
     this.form = this.formBuilder.group({
       cpf: ['', [Validators.required]],
@@ -44,9 +45,6 @@ export class LoginPage {
   }
 
   submit() {
-    // const cpfForm = this.form.value.cpf;
-    // const senhaForm = this.form.value.senha;
-
     this.loading = true;
 
     const body: LoginApiBody = {
@@ -61,6 +59,7 @@ export class LoginPage {
             next: (usuario) => {
               this.canalService.buscarTodosCanaisMensagem().subscribe({
                 next: (canal) => {
+                  this.avisoService.buscarTodosAvisos().subscribe()
                   if (usuario.responsavel === null) {
                     this.form.reset();
                     this.navegaParaApp();

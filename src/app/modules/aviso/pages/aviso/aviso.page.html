@@ -1,6 +1,7 @@
 <app-header titulo="Avisos"></app-header>
 
 <ion-content class="ion-padding">
+  <app-refresher (onRecarregar)="recarregarPagina()"></app-refresher>
   <div class="u-padding-bottom--3xl">
     <div class="u-padding-bottom--md">
       <ng-container *ngFor="let aviso of avisos">

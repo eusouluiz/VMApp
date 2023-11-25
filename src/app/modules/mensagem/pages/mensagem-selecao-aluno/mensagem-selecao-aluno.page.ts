@@ -80,12 +80,13 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
     const idCanalResponsavel = this.canalService.buscarIdCanalResponsavel(this.canal.canal_id, idResponsavel);
 
     if (idCanalResponsavel !== undefined) {
-      const mensagem = this.mensagemService.buscarUltimaMensagensCanalResponsavel(idCanalResponsavel);
-      if (mensagem !== undefined) {
-        return 'Mensagem: ' + mensagem.texto;
-      } else {
-        return '';
-      }
+      // const mensagem = this.mensagemService.buscarUltimaMensagensCanalResponsavel(idCanalResponsavel);
+      // if (mensagem !== undefined) {
+      //   return 'Mensagem: ' + mensagem.texto;
+      // } else {
+      //   return '';
+      // }
+      return ''
     } else {
       return '';
     }
