@@ -2,12 +2,15 @@ import { createStore, select, withProps } from '@ngneat/elf';
 import { Injectable } from '@angular/core';
 import { localStorageStrategy, persistState } from '@ngneat/elf-persist-state';
 import { MensagemInterface } from './mensagem-service/mensagem.entity';
-import { CanalInterface } from '../gerenciamento/canal/canal.entity';
+import { Canal, CanalInterface } from '../gerenciamento/canal/canal.entity';
+import { Responsavel, ResponsavelInterface } from '../gerenciamento/responsavel/responsavel.entity';
 
 export interface CanalMensagem {
   canal_responsavel_id: string,
   responsavel_id?: string,
   canal_id?: string,
+  responsavel?: ResponsavelInterface,
+  canal?: Canal,
   mensagens?: MensagemInterface[]
 }
 
@@ -38,7 +41,6 @@ export class MensagemRepository {
   listaCanais(): CanalInterface[] {
     return store.getValue().listaCanais;
   }
-
 
   canais(): CanalMensagem[] {
     return store.getValue().canais;

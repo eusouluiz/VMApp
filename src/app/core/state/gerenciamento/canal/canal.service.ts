@@ -126,10 +126,14 @@ export class CanalService {
 
     saveCanalInStorage(canal: CanalInterface): void {
         var canais = this.gerenciamentoRepository.canais()
-        const indexCanal = canais.findIndex((canal) => {
-            return canal.canal_id === canal.canal_id
+        const indexCanal = canais.findIndex((canalStorage) => {
+            return canalStorage.canal_id === canal.canal_id
         })
-        canais[indexCanal] = canal
+        if (indexCanal !== -1) {
+            canais[indexCanal] = canal
+        } else {
+            canais.push(canal)
+        }
 
         this.gerenciamentoRepository.update({ canais: canais });
     }
@@ -151,10 +155,10 @@ export class CanalService {
             .get<CanalResponsavelInterface[]>(`${environment.api.endpoint}/canal-responsavel`)
             .pipe(tap((canaisResponsavel) => this.saveCanaisResponsavelInStorage(canaisResponsavel.filter((canal) => {
                 if (filtro !== undefined) {
-                    if (filtro.idResponsavel !== undefined) {
-                        return canal.responsavel_id === filtro.idResponsavel
-                    } else if (filtro.idCanal !== undefined) {
-                        return canal.canal_id === filtro.idCanal
+                    if (filtro.idResponsavel !== undefined && canal.responsavel !== undefined) {
+                        return canal.responsavel.responsavel_id === filtro.idResponsavel
+                    } else if (filtro.idCanal !== undefined && canal.canal !== undefined) {
+                        return canal.canal.canal_id === filtro.idCanal
                     }
                 }
             }))))
@@ -164,13 +168,15 @@ export class CanalService {
         return this.http
             .post<ResponseCanalResponsavel>(`${environment.api.endpoint}/canal-responsavel`, canalResponsavel)
             .pipe(tap((response) => {
-                if (response.data.id !== undefined) {
-                    canalResponsavel.id = response.data.id
+                if (response.data.canal_responsavel_id !== undefined) {
+                    canalResponsavel.canal_responsavel_id = response.data.canal_responsavel_id
                 }
+                this.saveCanalResponsavelInStorage(response.data)
             }));
     }
 
     async saveCanaisResponsavelInStorage(canaisResponsavel: CanalResponsavelInterface[] | undefined) {
+        console.log(canaisResponsavel)
         if (canaisResponsavel !== undefined) {
             var canalMensagem: CanalMensagem[] = await this.adequarCanaisMensagem(canaisResponsavel)
 
@@ -178,24 +184,49 @@ export class CanalService {
         }
     }
 
+    saveCanalResponsavelInStorage(canal: CanalResponsavelInterface): void {
+        // var canais: CanalMensagem[] = this.mensagemRepository.canais()
+        // const indexCanal = canais.findIndex((canalStorage) => {
+        //     return canalStorage.canal_responsavel_id === idCanalResponsavel
+        // })
+
+        // var c: CanalMensagem = {
+        //     canal_responsavel_id: idCanalResponsavel,
+        //     canal_id: canal.canal_id,
+        //     canal: canal.canal,
+        //     responsavel_id: canal.responsavel_id,
+        //     responsavel: canal.responsavel
+        // }
+
+        // if (indexCanal !== -1) {
+        //     canais[indexCanal] = c
+        // } else {
+        //     canais.push(c)
+        // }
+
+        // this.mensagemRepository.update({ canais: canais });
+    }
+
     async adequarCanaisMensagem(canaisResponsavel: CanalResponsavelInterface[]): Promise<CanalMensagem[]> {
         var canalMensagem: CanalMensagem[] = []
 
         for (let i = 0; i < canaisResponsavel.length; i++) {
             const canal = canaisResponsavel[i];
-            if (canal.id !== undefined) {
+            if (canal.canal_responsavel_id !== undefined) {
                 let { data: mensagens, error } = await supabase
                     .from('mensagens')
                     .select("*")
                     // Filters
-                    .eq('canal_responsavel_id', canal.id)
+                    .eq('canal_responsavel_id', canal.canal_responsavel_id)
                     .order('data_envio', { ascending: false })
                     .limit(1)
 
                 var c: CanalMensagem = {
-                    canal_responsavel_id: canal.id,
+                    canal_responsavel_id: canal.canal_responsavel_id,
                     canal_id: canal.canal_id,
-                    responsavel_id: canal.responsavel_id
+                    canal: canal.canal,
+                    responsavel_id: canal.responsavel_id,
+                    responsavel: canal.responsavel
                 }
 
                 if (mensagens !== null) {

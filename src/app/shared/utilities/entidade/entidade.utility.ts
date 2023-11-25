@@ -240,17 +240,17 @@ export var CANAL_DATA: Canal[] = [
 
 export var CANAL_RESPONSAVEL_DATA: CanalResponsavel[] = [
   new CanalResponsavel({
-    id: '9aad8767-42e1-4b4b-89db-f9bff6e01a7c',
+    canal_responsavel_id: '9aad8767-42e1-4b4b-89db-f9bff6e01a7c',
     canal_id: '50868b06-8680-11ee-b9d1-0242ac120002',
     responsavel_id: '9aac75fd-aa76-4482-9e44-e90e0170d912',
   }),
   new CanalResponsavel({
-    id: '1',
+    canal_responsavel_id: '1',
     canal_id: CANAL_DATA[1].canal_id,
     responsavel_id: RESPONSAVEL_DATA[0].responsavel_id,
   }),
   new CanalResponsavel({
-    id: '2',
+    canal_responsavel_id: '2',
     canal_id: CANAL_DATA[2].canal_id,
     responsavel_id: RESPONSAVEL_DATA[0].responsavel_id,
   }),

@@ -1,6 +1,6 @@
 import { CanalMensagem } from '../../mensagem/mensagem.repository';
 import { Cargo } from '../cargo/cargo.entity';
-import { Responsavel } from '../responsavel/responsavel.entity';
+import { Responsavel, ResponsavelInterface } from '../responsavel/responsavel.entity';
 
 export interface CanalInterface {
   canal_id?: string;
@@ -66,9 +66,11 @@ export class Canal {
 }
 
 export interface CanalResponsavelInterface {
-  id?: string;
-  canal_id: string;
-  responsavel_id: string;
+  canal_responsavel_id?: string;
+  canal?: Canal,
+  responsavel?: ResponsavelInterface,
+  canal_id?: string;
+  responsavel_id?: string;
 }
 
 export class CanalResponsavel {
@@ -80,11 +82,21 @@ export class CanalResponsavel {
 
   constructor(private data?: CanalResponsavelInterface) {
     if (data !== undefined) {
-      if (data.id !== undefined) {
-        this._canal_responsavel_id = data.id;
+      if (data.canal_responsavel_id !== undefined) {
+        this._canal_responsavel_id = data.canal_responsavel_id;
       }
-      this._canal.canal_id = data.canal_id;
-      this._responsavel.responsavel_id = data.responsavel_id;
+
+      if (data.canal !== undefined){
+        this._canal = data.canal
+      } else if (data.canal_id !== undefined) {
+        this._canal.canal_id = data.canal_id;
+      }
+      if (data.responsavel !== undefined){
+        this._responsavel = new Responsavel(data.responsavel)
+      } else if (data.responsavel_id !== undefined) {
+        this._responsavel.responsavel_id = data.responsavel_id;
+      }
+
     }
   }
 
@@ -113,14 +125,16 @@ export class CanalResponsavel {
   }
 
   static converterCanalMensagem(canalMensagem: CanalMensagem): CanalResponsavel{
-    console.log(canalMensagem)
-    if (canalMensagem.canal_id !== undefined && canalMensagem.responsavel_id !== undefined) {
+    if ((canalMensagem.canal_id !== undefined && canalMensagem.responsavel_id !== undefined) ||
+        ((canalMensagem.canal !== undefined && canalMensagem.responsavel !== undefined))) {
       var canal: CanalResponsavelInterface = {
         canal_id: canalMensagem.canal_id,
-        responsavel_id: canalMensagem.responsavel_id
+        responsavel_id: canalMensagem.responsavel_id,
+        canal: canalMensagem.canal,
+        responsavel: canalMensagem.responsavel,
       }
       if (canalMensagem.canal_id !== undefined) {
-        canal.id = canalMensagem.canal_responsavel_id
+        canal.canal_responsavel_id = canalMensagem.canal_responsavel_id
       }
       return new CanalResponsavel(canal)
     }

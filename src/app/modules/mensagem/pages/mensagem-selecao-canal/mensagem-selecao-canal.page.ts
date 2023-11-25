@@ -109,8 +109,8 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
           }
           this.canalService.incluirCanalResponsavel(novoCanalResponsavel).subscribe({
             next: () => {
-              if (novoCanalResponsavel.id !== undefined) {
-                rota = novoCanalResponsavel.id + ConstantesRotas.ROTA_MENSAGEM_CANAL
+              if (novoCanalResponsavel.canal_responsavel_id !== undefined) {
+                rota = novoCanalResponsavel.canal_responsavel_id + ConstantesRotas.ROTA_MENSAGEM_CANAL
                 this.navegarPara(rota);
               }
             }
@@ -125,8 +125,12 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
     } else {
       this.alunoService.buscarTodosAlunos().subscribe({
         next: () => {
-          rota = idCanal + ConstantesRotas.ROTA_MENSAGEM_SELECAO_ALUNO;
-          this.navegarPara(rota);
+          this.canalService.buscarCanalResponsavelTodos({idCanal: idCanal}).subscribe({
+            next: () => {
+              rota = idCanal + ConstantesRotas.ROTA_MENSAGEM_SELECAO_ALUNO;
+              this.navegarPara(rota);
+            },
+          })
         }
       })
     }

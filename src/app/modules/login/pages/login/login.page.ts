@@ -61,7 +61,7 @@ export class LoginPage {
             next: (usuario) => {
               this.canalService.buscarTodosCanaisMensagem().subscribe({
                 next: (canal) => {
-                  if (usuario.responsavel === undefined) {
+                  if (usuario.responsavel === null) {
                     this.form.reset();
                     this.navegaParaApp();
                   } else {
