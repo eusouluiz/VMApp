@@ -5,8 +5,9 @@ import { CanalMensagem, MensagemRepository } from '../mensagem.repository';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
-import { CanalResponsavelInterface } from '../../gerenciamento/canal/canal.entity';
+import { Canal, CanalResponsavelInterface } from '../../gerenciamento/canal/canal.entity';
 import { DataUtil } from '../../../../shared/utilities/data/data.utility';
+import { Responsavel } from '../../gerenciamento/responsavel/responsavel.entity';
 
 interface ResponseMensagem {
   msg: string,
@@ -65,7 +66,7 @@ export class MensagemService {
     }
   }
 
-  armazenarMensagem(mensagem: MensagemInterface) {
+  armazenarMensagem(mensagem: MensagemInterface, idCanal?: string, idResponsavel?: string) {
     const canais = this.mensagemRepository.canais()
 
     console.log(canais)
@@ -78,6 +79,12 @@ export class MensagemService {
 
     if (indexCanal !== -1) {
       canais[indexCanal].mensagens?.unshift(mensagem)
+    } else {
+      var novoCanalMensagem: CanalMensagem = {
+        canal_responsavel_id: mensagem.canal_responsavel_id,
+        mensagens: [mensagem]
+      }
+      canais.push(novoCanalMensagem)
     }
 
     console.log(canais)

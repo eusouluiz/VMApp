@@ -4,6 +4,10 @@ import { environment } from '../../../../environments/environment';
 import { ToastService } from '../../../core/toasts/services/toast-service/toast.service';
 import { ConstantesSupabase } from '../../utilities/constantes/constantes.utility';
 import { NavController } from '@ionic/angular';
+import { UsuarioLogado } from '../../utilities/usuario-logado/usuario-logado.utility';
+import { MensagemRepository } from '../../../core/state/mensagem/mensagem.repository';
+import { MensagemService } from '../../../core/state/mensagem/mensagem-service/mensagem.service';
+import { Router } from '@angular/router';
 
 const supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
 
@@ -17,11 +21,17 @@ export class HeaderComponent implements OnInit {
 
   @Input() botaoRetorno: boolean = false;
 
-  constructor(private toastService: ToastService, private navController: NavController) {
+  constructor(
+    private toastService: ToastService,
+    private navController: NavController,
+    private usuarioLogado: UsuarioLogado,
+    private mensagemService: MensagemService,
+    private router: Router
+  ) {
     this.inscreverNotificacao();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   // nao precisaria remover os canais, pois esses canais persistem por toda aplicacao
   ngOnDestroy() {
@@ -34,9 +44,30 @@ export class HeaderComponent implements OnInit {
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'mensagens' }, async (payload: any) => {
         console.log('Mensagem Change received!', payload);
 
-        var nome = await this.getUsuarioNome(payload.new.user_id);
-        console.log(nome);
-        this.toastService.message(nome + ': ' + payload.new.texto);
+        // verifica se a mensagem nao eh do proprio usuario
+        if (payload.new.user_id !== this.usuarioLogado.getIdUsuario()) {
+          const urlSeparada = this.router.url.split('/')
+          const idCanalResponsavelUrl = urlSeparada[urlSeparada.length - 2]
+          const idCanalResponsavel = payload.new.canal_responsavel_id
+
+          // verifica se a pessoa nao esta no proprio canal de mensagens
+          if (idCanalResponsavelUrl !== idCanalResponsavel) {
+            var nomeCanal = await this.resgatarCanalNome(idCanalResponsavel)
+            if (this.usuarioLogado.isResponsavel()) {
+              if (await this.isResponsavelPossuiAcessoCanalResponsavel(idCanalResponsavel)) {
+                this.toastService.message(`${nomeCanal}: ${payload.new.texto}`);
+                this.mensagemService.armazenarMensagem(payload.new)
+              }
+            } else {
+              if (await this.isCargoPossuiAcessoCanalResponsavel(idCanalResponsavel)) {
+                var nome = await this.getUsuarioNome(payload.new.user_id);
+                this.toastService.message(`${nomeCanal} - ${nome}: ${payload.new.texto}`);
+                this.mensagemService.armazenarMensagem(payload.new)
+              }
+            }
+          }
+        }
+
       })
       .subscribe();
     const aviso = supabase
@@ -62,5 +93,61 @@ export class HeaderComponent implements OnInit {
       return users.nome;
     }
     return '';
+  }
+
+  async resgatarCanalNome(idCanalResponsavel: string): Promise<string> {
+    let { data: canal, error } = await supabase
+      .from('canal_responsavel')
+      .select(`
+        canais (
+          nome
+        )
+      `)
+      // Filters
+      .eq('id', idCanalResponsavel)
+      .single();
+
+    const retorno: any = canal
+    if (canal !== null) {
+      return retorno.canais.nome;
+    }
+    return '';
+  }
+
+  async isCargoPossuiAcessoCanalResponsavel(idCanalResponsavel: string): Promise<boolean> {
+    let { data: canal, error } = await supabase
+      .from('canal_responsavel')
+      .select(`
+        canais (
+          canal_cargo (
+            cargo_id
+          )
+        )
+      `)
+      // Filters
+      .eq('id', idCanalResponsavel)
+      .single();
+
+    const retorno: any = canal
+    for (let i = 0; i < retorno.canais.canal_cargo.length; i++) {
+      const idCargo = retorno.canais.canal_cargo[i].cargo_id;
+      if (idCargo === this.usuarioLogado.getIdCargo()) {
+        return true
+      }
+    }
+    return false
+  }
+
+  async isResponsavelPossuiAcessoCanalResponsavel(idCanalResponsavel: string): Promise<boolean> {
+    let { data: canal, error } = await supabase
+      .from('canal_responsavel')
+      .select(`
+        responsavel_id
+      `)
+      // Filters
+      .eq('id', idCanalResponsavel)
+      .single();
+
+    return canal !== null && canal.responsavel_id === this.usuarioLogado.getIdResponsavel()
   }
 }

@@ -53,7 +53,6 @@ export class MensagemCanalPage extends Pagina implements OnInit {
   }
 
   ngOnDestroy(): void {
-    console.log('destroi')
     supabase.removeAllChannels()
   }
 
