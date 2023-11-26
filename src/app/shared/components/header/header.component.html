@@ -1,7 +1,10 @@
 <ion-header class="c-header">
   <ion-toolbar class="c-header__toolbar">
     <ion-buttons *ngIf="botaoRetorno" slot="start">
-      <ion-back-button class="c-header__button" icon="chevron-back" defaultHref="./"></ion-back-button>
+      <ion-back-button
+        class="c-header__button"
+        icon="chevron-back"
+        onclick="navController.back()"></ion-back-button>
     </ion-buttons>
     <ion-title class="c-header__toolbar__title" [ngStyle]="{ 'padding-left': botaoRetorno ? '0px' : '' }">{{
       titulo

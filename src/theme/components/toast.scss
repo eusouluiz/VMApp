@@ -54,12 +54,10 @@
   box-shadow: 0 5px 15px 0 rgba(0, 30, 92, 0.12);
   background-color: #ffffff;
   color: var(--color-font-primary);
-  animation: fadeInSlideIn var(--toast-message-duration) forwards 1
-    cubic-bezier(0.075, 0.82, 0.165, 1);
+  animation: fadeInSlideIn var(--toast-message-duration) forwards 1 cubic-bezier(0.075, 0.82, 0.165, 1);
 
   &--hidden {
-    animation: fadeOutSlideOut var(--toast-message-duration) forwards 1
-      cubic-bezier(0.075, 0.82, 0.165, 1);
+    animation: fadeOutSlideOut var(--toast-message-duration) forwards 1 cubic-bezier(0.075, 0.82, 0.165, 1);
   }
 
   &--success {
@@ -94,7 +92,7 @@
   &__icon {
     flex: 1 0 auto;
     margin-right: $size-sm;
-    color: var(--color-blue-700);
+    color: var(--color-primary);
     font-size: 1.5em;
     text-align: center;
   }
