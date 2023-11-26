@@ -2,11 +2,13 @@
 
 <ion-content class="ion-padding">
   <app-refresher (onRecarregar)="recarregarPagina()"></app-refresher>
-  <ion-searchbar class="ion-no-padding"
-    placeholder="Turma" [debounce]="500" (ionInput)="filtrarTurmaNome($event)"></ion-searchbar>
+  <ion-searchbar
+    class="custom ion-no-padding"
+    placeholder="Turma"
+    [debounce]="500"
+    (ionInput)="filtrarTurmaNome($event)"></ion-searchbar>
   <div *ngFor="let turma of listaTurmas">
-    <ion-item class="c-item"
-      lines="none" detail="true" button="true" (click)="navegarTelaTurma(turma)">
+    <ion-item class="c-item" lines="none" detail="true" button="true" (click)="navegarTelaTurma(turma)">
       <ion-label>
         <ion-row>
           <ion-text class="c-item-titulo">{{turma.nome}}</ion-text>

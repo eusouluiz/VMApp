@@ -1,12 +1,11 @@
 <div class="c-modal-backdrop"></div>
 <div class="c-modal e-aviso-modal">
   <div>
-    <ion-row *ngIf="hasAcessoGerenciamentoAviso" class="ion-justify-content-end">
+    <ion-row *ngIf="hasAcessoGerenciamentoAviso" class="ion-justify-content-end u-padding-bottom--sm">
       <app-button icon="eye" padding="sm" (click)="alterarModoVisualizacao()">{{
         isModoVisualizacao ? 'Voltar' : 'Detalhes'
       }}</app-button>
     </ion-row>
-    <hr />
     <ng-container *ngIf="isModoVisualizacao">
       <app-aviso-indicador-visualizacao
         [listaAvisoResponsavel]="listaAvisoResponsavel"></app-aviso-indicador-visualizacao>
@@ -15,13 +14,11 @@
     <ng-container *ngIf="!isModoVisualizacao">
       <form [formGroup]="form">
         <app-aviso-modal-titulo formControlName="titulo" [isEditar]="!isModoDetalhes()"></app-aviso-modal-titulo>
-        <hr />
         <ion-row>
           <ion-label>
             <app-aviso-modal-texto formControlName="texto" [isEditar]="!isModoDetalhes()"></app-aviso-modal-texto>
           </ion-label>
         </ion-row>
-        <hr />
       </form>
     </ng-container>
   </div>

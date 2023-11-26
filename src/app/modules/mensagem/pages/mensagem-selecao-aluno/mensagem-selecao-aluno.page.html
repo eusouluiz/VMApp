@@ -2,12 +2,20 @@
 
 <ion-content class="ion-padding">
   <app-refresher (onRecarregar)="recarregarPagina()"></app-refresher>
-  <ion-row>
-    <ion-searchbar class="ion-no-padding" placeholder="Procurar" [debounce]="500" (ionInput)="filtrarCanalResponsavel($event)"></ion-searchbar>
+  <ion-row class="">
+    <ion-searchbar
+      class="custom ion-no-padding"
+      placeholder="Procurar"
+      [debounce]="500"
+      (ionInput)="filtrarCanalResponsavel($event)"></ion-searchbar>
   </ion-row>
   <ng-container *ngFor="let canal of listaCanalResponsavel">
-    <ion-item class="c-item"
-      lines="none" detail="true" button="true" (click)="navegarParaCanalResponsavel(canal.idResponsavel)">
+    <ion-item
+      class="c-item"
+      lines="none"
+      detail="true"
+      button="true"
+      (click)="navegarParaCanalResponsavel(canal.idResponsavel)">
       <ion-label>
         <ion-row class="c-item-titulo" size="12">
           <ion-text>{{canal.nomeResponsavel}}</ion-text>
@@ -16,7 +24,7 @@
           <ion-text><b>{{canal.isMaisUmAluno ? 'Alunos:' : 'Aluno:'}}</b> {{canal.nomeAluno}}</ion-text>
         </ion-row>
         <ion-row class="c-item-subtitulo" size="12">
-          <ion-text color="medium" >{{resgatarUltimaMensagem(canal.idResponsavel)}}</ion-text>
+          <ion-text color="medium">{{resgatarUltimaMensagem(canal.idResponsavel)}}</ion-text>
         </ion-row>
       </ion-label>
     </ion-item>

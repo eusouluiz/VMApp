@@ -2,11 +2,18 @@
 
 <ion-content class="ion-padding">
   <app-refresher (onRecarregar)="recarregarPagina()"></app-refresher>
-  <ion-searchbar class="ion-no-padding"
-    placeholder="Funcionário" [debounce]="500" (ionInput)="filtrarFuncionarioNome($event)"></ion-searchbar>
+  <ion-searchbar
+    class="custom ion-no-padding"
+    placeholder="Funcionário"
+    [debounce]="500"
+    (ionInput)="filtrarFuncionarioNome($event)"></ion-searchbar>
   <div *ngFor="let funcionario of listaFuncionarios">
-    <ion-item class="c-item"
-      lines="none" detail="true" button="true" (click)="navegarTelaFuncionario(funcionario)">
+    <ion-item
+      class="c-item"
+      lines="none"
+      detail="true"
+      button="true"
+      (click)="navegarTelaFuncionario(funcionario)">
       <ion-label>
         <ion-row>
           <ion-text class="c-item-titulo">{{funcionario.usuario.nome}}</ion-text>

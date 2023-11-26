@@ -6,17 +6,17 @@ import { Canal, CanalInterface } from '../gerenciamento/canal/canal.entity';
 import { Responsavel, ResponsavelInterface } from '../gerenciamento/responsavel/responsavel.entity';
 
 export interface CanalMensagem {
-  canal_responsavel_id: string,
-  responsavel_id?: string,
-  canal_id?: string,
-  responsavel?: ResponsavelInterface,
-  canal?: Canal,
-  mensagens?: MensagemInterface[]
+  canal_responsavel_id: string;
+  responsavel_id?: string;
+  canal_id?: string;
+  responsavel?: ResponsavelInterface;
+  canal?: Canal;
+  mensagens?: MensagemInterface[];
 }
 
 interface MensagemState {
-  listaCanais: CanalInterface[]
-  canais: CanalMensagem[]
+  listaCanais: CanalInterface[];
+  canais: CanalMensagem[];
 }
 
 const initialState: MensagemState = {
@@ -33,7 +33,6 @@ export const persist = persistState(store, {
 
 @Injectable({ providedIn: 'root' })
 export class MensagemRepository {
-
   listaCanais$ = store.pipe(select((state) => state.listaCanais));
 
   canais$ = store.pipe(select((state) => state.canais));
@@ -48,7 +47,7 @@ export class MensagemRepository {
 
   canal(idCanalResponsavel: string): CanalMensagem | undefined {
     return store.getValue().canais.find((canal) => {
-      return canal.canal_responsavel_id === idCanalResponsavel
+      return canal.canal_responsavel_id === idCanalResponsavel;
     });
   }
 
