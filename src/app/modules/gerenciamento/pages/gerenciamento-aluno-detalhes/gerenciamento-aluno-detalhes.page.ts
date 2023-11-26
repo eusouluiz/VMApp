@@ -43,13 +43,13 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
 
     this.definirModo();
     this.inicializarForms();
-    this.preencherListaTodosResponsaveis()
-    this.preencherListaTodosTurmas()
-    this.preencherAluno()
-    this.inicializarConteudo()
+    this.preencherListaTodosResponsaveis();
+    this.preencherListaTodosTurmas();
+    this.preencherAluno();
+    this.inicializarConteudo();
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   ionViewWillEnter() {
     this.pageMenuService.displayStatus.next(false);
@@ -69,13 +69,12 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   recarregarPagina() {
-    this.buscarResponsaveis()
-    this.buscarTurmas()
-    this.buscarAluno()
+    this.buscarResponsaveis();
+    this.buscarTurmas();
+    this.buscarAluno();
   }
 
   protected inicializarConteudo(): void {
-
     if (this.isModoDetalhes() && this.idAluno !== null) {
       this.form?.setValue({
         nome: this.aluno.nome,
@@ -93,20 +92,20 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   // ---- busca aluno ----//
-  buscarAluno(){
+  buscarAluno() {
     if (this.idAluno !== null) {
       this.alunoService.buscarAluno(this.idAluno).subscribe({
         next: () => {
-          this.preencherAluno()
-          this.inicializarConteudo()
-        }
+          this.preencherAluno();
+          this.inicializarConteudo();
+        },
       });
     }
   }
 
   private preencherAluno() {
     if (this.idAluno !== null) {
-      const aluno = this.gerenciamentoRepository.aluno(this.idAluno)
+      const aluno = this.gerenciamentoRepository.aluno(this.idAluno);
       if (aluno !== undefined) {
         this.aluno = new Aluno(aluno);
       } else {
@@ -122,7 +121,7 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
   protected deletar() {
     this.alunoService.deletarAluno(this.aluno.aluno_id).subscribe({
       next: () => {
-        this.alunoService.removerAlunoInStorage(this.aluno.aluno_id)
+        this.alunoService.removerAlunoInStorage(this.aluno.aluno_id);
         this.toastService.success('Sucesso ao Remover ' + this.aluno.nome);
         this.retornarPagina();
       },
@@ -176,31 +175,30 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
   //salvar edicao
   salvar() {
     if (this.form?.valid) {
-
       var aluno: AlunoInterface = {
         nome: this.form.value.nome,
         cgm: this.form.value.cgm,
-      }
-      aluno.turma_id = this.listaTurmasTabela.length > 0 ? this.listaTurmasTabela[0].turma_id : null
+      };
+      aluno.turma_id = this.listaTurmasTabela.length > 0 ? this.listaTurmasTabela[0].turma_id : null;
 
       if (this.isModoCadastrar()) {
         this.alunoService.incluirAluno(aluno).subscribe({
           next: () => {
             if (aluno.aluno_id !== undefined && aluno.aluno_id !== null) {
-              this.aluno.aluno_id = aluno.aluno_id
+              this.aluno.aluno_id = aluno.aluno_id;
             }
-            this.atualizarAluno()
-            this.atualizarTurmas()
-            this.alunoService.saveAlunoInStorage(this.aluno.converterAlunoInterface())
-            this.alunoService.vincularResponsaveis(this.aluno, this.listaResponsaveisTabela)
-            this.atualizarResponsaveis()
-            
+            this.atualizarAluno();
+            this.atualizarTurmas();
+            this.alunoService.saveAlunoInStorage(this.aluno.converterAlunoInterface());
+            this.alunoService.vincularResponsaveis(this.aluno, this.listaResponsaveisTabela);
+            this.atualizarResponsaveis();
+
             this.toastService.success('Sucesso ao cadastrar ' + this.aluno.nome);
-            this.retornarModoDetalhes()
+            this.retornarModoDetalhes();
           },
           error: (err) => {
             this.toastService.error('Erro ao cadastrar Aluno');
-            
+
             if (err?.original?.status === 422) {
               return;
             }
@@ -209,14 +207,14 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
       } else {
         this.alunoService.alterarAluno(aluno, this.aluno.aluno_id).subscribe({
           next: () => {
-            this.atualizarAluno()
-            this.atualizarTurmas()
-            this.alunoService.saveAlunoInStorage(this.aluno.converterAlunoInterface())
-            this.alunoService.vincularResponsaveis(this.aluno, this.listaResponsaveisTabela)
-            this.atualizarResponsaveis()
+            this.atualizarAluno();
+            this.atualizarTurmas();
+            this.alunoService.saveAlunoInStorage(this.aluno.converterAlunoInterface());
+            this.alunoService.vincularResponsaveis(this.aluno, this.listaResponsaveisTabela);
+            this.atualizarResponsaveis();
 
             this.toastService.success('Sucesso ao editar ' + this.aluno.nome);
-            this.retornarModoDetalhes()
+            this.retornarModoDetalhes();
           },
           error: (err) => {
             this.toastService.error('Erro ao editar Aluno');
@@ -227,8 +225,6 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
           },
         });
       }
-
-
     } else {
       this.form?.markAllAsTouched();
     }
@@ -258,24 +254,24 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
   buscarResponsaveis() {
     this.responsavelService.buscarTodosResponsaveis().subscribe({
       next: () => {
-        this.preencherListaTodosResponsaveis()
-        this.inicializarBuscaResponsaveis()
-      }
+        this.preencherListaTodosResponsaveis();
+        this.inicializarBuscaResponsaveis();
+      },
     });
   }
 
   preencherListaTodosResponsaveis() {
-    const responsaveis = this.gerenciamentoRepository.responsaveis()
-    this.listaTodosResponsaveis = []
+    const responsaveis = this.gerenciamentoRepository.responsaveis();
+    this.listaTodosResponsaveis = [];
     responsaveis.forEach((responsavel) => {
-      this.listaTodosResponsaveis.push(new Responsavel(responsavel))
-    })
+      this.listaTodosResponsaveis.push(new Responsavel(responsavel));
+    });
   }
 
   private inicializarTabelaResponsaveis() {
-    console.log(this.aluno)
+    console.log(this.aluno);
     this.listaResponsaveisTabela = this.aluno.responsaveis.slice();
-    this.inicializarBuscaResponsaveis()
+    this.inicializarBuscaResponsaveis();
   }
 
   private inicializarBuscaResponsaveis() {
@@ -305,7 +301,7 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
 
   private resgatarNomeResponsaveisBusca(lista: Responsavel[]) {
     // esvazia lista
-    this.nomeResponsaveisBusca.splice(0, this.nomeResponsaveisBusca.length)
+    this.nomeResponsaveisBusca.splice(0, this.nomeResponsaveisBusca.length);
     lista.forEach((responsavel) => {
       this.nomeResponsaveisBusca.push(responsavel.usuario.nome);
     });
@@ -360,24 +356,28 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
       if (responsavel !== undefined) {
         this.responsavelService.buscarResponsavel(responsavel.responsavel_id).subscribe({
           next: () => {
-            rota = rota + ConstantesRotas.BARRA + responsavel.responsavel_id + ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
+            rota =
+              rota +
+              ConstantesRotas.BARRA +
+              responsavel.responsavel_id +
+              ConstantesRotas.ROTA_GERENCIAMENTO_DETALHES;
             this.navegarPara(rota);
           },
           error: (err) => {
             this.toastService.error('Erro ao carregar informações ' + responsavel.usuario.nome);
-            
+
             if (err?.original?.status === 422) {
               return;
             }
           },
-        })
+        });
       }
     } else if (responsavel === undefined) {
       rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
       this.navegarPara(rota);
     }
   }
-  
+
   deletarResponsavel(id: string) {
     const indexResponsavel = this.listaResponsaveisTabela.findIndex((responsavel) => {
       return responsavel.responsavel_id === id;
@@ -411,18 +411,18 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
   buscarTurmas() {
     this.turmaService.buscarTodosTurmas().subscribe({
       next: () => {
-        this.preencherListaTodosTurmas()
-        this.inicializarBuscaTurmas()
-      }
+        this.preencherListaTodosTurmas();
+        this.inicializarBuscaTurmas();
+      },
     });
   }
 
   preencherListaTodosTurmas() {
-    const turmas = this.gerenciamentoRepository.turmas()
-    this.listaTodosTurmas = []
+    const turmas = this.gerenciamentoRepository.turmas();
+    this.listaTodosTurmas = [];
     turmas.forEach((turma) => {
-      this.listaTodosTurmas.push(new Turma(turma))
-    })
+      this.listaTodosTurmas.push(new Turma(turma));
+    });
   }
 
   private inicializarTabelaTurmas() {
@@ -460,7 +460,7 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
 
   private resgatarNomeTurmasBusca(lista: Turma[]) {
     // esvazia lista
-    this.nomeTurmasBusca.splice(0, this.nomeTurmasBusca.length)
+    this.nomeTurmasBusca.splice(0, this.nomeTurmasBusca.length);
     lista.forEach((turma) => {
       this.nomeTurmasBusca.push(turma.nome);
     });
@@ -515,12 +515,12 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
           },
           error: (err) => {
             this.toastService.error('Erro ao carregar informações ' + turma.nome);
-            
+
             if (err?.original?.status === 422) {
               return;
             }
           },
-        })
+        });
       }
     } else if (turma === undefined) {
       rota = rota + ConstantesRotas.ROTA_GERENCIAMENTO_CADASTRO;
@@ -537,5 +537,4 @@ export class GerenciamentoAlunoDetalhesPage extends PaginaGerenciamentoDetalhes 
   }
 
   // ---- controle turmas ----//
-
 }

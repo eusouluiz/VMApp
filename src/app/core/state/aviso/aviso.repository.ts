@@ -4,8 +4,8 @@ import { localStorageStrategy, persistState } from '@ngneat/elf-persist-state';
 import { AvisoInterface, AvisoResponsavelInterface } from './aviso-service/aviso.entity';
 
 interface AvisoState {
-  avisos: AvisoInterface[]
-  vinculosAvisoResponsavel: AvisoResponsavelInterface[]
+  avisos: AvisoInterface[];
+  vinculosAvisoResponsavel: AvisoResponsavelInterface[];
 }
 
 const initialState: AvisoState = {
@@ -22,9 +22,8 @@ export const persist = persistState(store, {
 
 @Injectable({ providedIn: 'root' })
 export class AvisoRepository {
-
   avisos$ = store.pipe(select((state) => state.avisos));
-  
+
   vinculosAvisoResponsavel$ = store.pipe(select((state) => state.avisos));
 
   avisos(): AvisoInterface[] {
@@ -33,10 +32,10 @@ export class AvisoRepository {
 
   aviso(idAviso: string): AvisoInterface | undefined {
     return store.getValue().avisos.find((aviso) => {
-      return aviso.aviso_id === idAviso
+      return aviso.aviso_id === idAviso;
     });
   }
-  
+
   vinculosAvisoResponsavel(): AvisoResponsavelInterface[] {
     return store.getValue().vinculosAvisoResponsavel;
   }

@@ -11,32 +11,29 @@ import { ResponsavelService } from '../../gerenciamento/responsavel/responsavel.
 import { Responsavel } from '../../gerenciamento/responsavel/responsavel.entity';
 
 interface ResponseGetAviso {
-  data: AvisoInterface[]
+  data: AvisoInterface[];
 }
 
 interface ResponseAviso {
-  msg: string,
-  data: AvisoInterface,
+  msg: string;
+  data: AvisoInterface;
 }
 
 interface AssociacaoTurmaAviso {
-  id?: string,
-  turma_id: string,
-  aviso_id: string,
+  id?: string;
+  turma_id: string;
+  aviso_id: string;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class AvisoService {
-
   constructor(
     private responsavelService: ResponsavelService,
     private avisoRepository: AvisoRepository,
-    private http: HttpClient,
-  ) {
-
-  }
+    private http: HttpClient
+  ) {}
 
   buscarTodosAvisos(): Observable<ResponseGetAviso> {
     return this.http
@@ -51,49 +48,47 @@ export class AvisoService {
   }
 
   incluirAviso(aviso: AvisoInterface): Observable<ResponseAviso> {
-    return this.http
-      .post<ResponseAviso>(`${environment.api.endpoint}/aviso`, aviso)
-      .pipe(tap((response) => {
-        if ((response.data.aviso_id !== undefined && response.data.aviso_id !== null)) {
-          aviso.aviso_id = response.data.aviso_id
-          aviso.data_publicacao = response.data.data_publicacao
+    return this.http.post<ResponseAviso>(`${environment.api.endpoint}/aviso`, aviso).pipe(
+      tap((response) => {
+        if (response.data.aviso_id !== undefined && response.data.aviso_id !== null) {
+          aviso.aviso_id = response.data.aviso_id;
+          aviso.data_publicacao = response.data.data_publicacao;
         }
-      }));
+      })
+    );
   }
 
   alterarAviso(aviso: AvisoInterface, avisoId: string): Observable<AvisoInterface> {
-    return this.http
-      .put<AvisoInterface>(`${environment.api.endpoint}/aviso/${avisoId}`, aviso);
+    return this.http.put<AvisoInterface>(`${environment.api.endpoint}/aviso/${avisoId}`, aviso);
   }
 
   deletarAviso(idAviso: string): Observable<AvisoInterface[]> {
-    return this.http
-      .delete<AvisoInterface[]>(`${environment.api.endpoint}/aviso/${idAviso}`)
+    return this.http.delete<AvisoInterface[]>(`${environment.api.endpoint}/aviso/${idAviso}`);
   }
 
   vincularTurmas(aviso: Aviso, turmas: Turma[]) {
-    var listaIdTurmasNovos: string[] = []
+    var listaIdTurmasNovos: string[] = [];
     turmas.forEach((turma) => {
-      listaIdTurmasNovos.push(turma.turma_id)
-    })
+      listaIdTurmasNovos.push(turma.turma_id);
+    });
 
     listaIdTurmasNovos.forEach((id: string) => {
-        const associacao: AssociacaoTurmaAviso = {
-            aviso_id: aviso.aviso_id,
-            turma_id: id,
-        }
-        this.vincularTurma(associacao).subscribe()
-    })
+      const associacao: AssociacaoTurmaAviso = {
+        aviso_id: aviso.aviso_id,
+        turma_id: id,
+      };
+      this.vincularTurma(associacao).subscribe();
+    });
   }
 
   vincularTurma(associacao: AssociacaoTurmaAviso): Observable<AssociacaoTurmaAviso> {
-    return this.http
-      .post<AssociacaoTurmaAviso>(`${environment.api.endpoint}/aviso-turma`, associacao);
+    return this.http.post<AssociacaoTurmaAviso>(`${environment.api.endpoint}/aviso-turma`, associacao);
   }
 
   desvincularTurma(associacao: AssociacaoTurmaAviso): Observable<AssociacaoTurmaAviso> {
-    return this.http
-      .delete<AssociacaoTurmaAviso>(`${environment.api.endpoint}/aviso-turma/${associacao.aviso_id}/${associacao.turma_id}`)
+    return this.http.delete<AssociacaoTurmaAviso>(
+      `${environment.api.endpoint}/aviso-turma/${associacao.aviso_id}/${associacao.turma_id}`
+    );
   }
 
   saveAvisosInStorage(avisos: AvisoInterface[]) {
@@ -101,33 +96,33 @@ export class AvisoService {
   }
 
   saveAvisoInStorage(aviso: AvisoInterface): void {
-    var avisos = this.avisoRepository.avisos()
+    var avisos = this.avisoRepository.avisos();
     const indexAviso = avisos.findIndex((avisoStorage) => {
-      return avisoStorage.aviso_id === aviso.aviso_id
-    })
+      return avisoStorage.aviso_id === aviso.aviso_id;
+    });
 
     if (indexAviso !== -1) {
-      avisos[indexAviso] = aviso
+      avisos[indexAviso] = aviso;
     } else {
-      avisos.push(aviso)
+      avisos.push(aviso);
     }
 
     this.avisoRepository.update({ avisos: avisos });
   }
 
   removerAvisoInStorage(idAviso: string) {
-      var avisos = this.avisoRepository.avisos()
-      const indexAviso = avisos.findIndex((avisoStorage) => {
-          return avisoStorage.aviso_id === idAviso
-      })
+    var avisos = this.avisoRepository.avisos();
+    const indexAviso = avisos.findIndex((avisoStorage) => {
+      return avisoStorage.aviso_id === idAviso;
+    });
 
-      if (indexAviso !== -1) {
-          avisos.splice(indexAviso, 1)
-      } 
+    if (indexAviso !== -1) {
+      avisos.splice(indexAviso, 1);
+    }
 
-      this.avisoRepository.update({ avisos: avisos });
+    this.avisoRepository.update({ avisos: avisos });
   }
-  
+
   buscarTodosAvisosResponsavel(): Observable<AvisoResponsavelInterface[]> {
     return this.http
       .get<AvisoResponsavelInterface[]>(`${environment.api.endpoint}/aviso-responsavel`)
@@ -135,23 +130,24 @@ export class AvisoService {
   }
 
   incluirAvisoResponsavel(avisoResponsavel: AvisoResponsavelInterface): Observable<AvisoResponsavelInterface[]> {
-    return this.http
-      .post<AvisoResponsavelInterface[]>(`${environment.api.endpoint}/aviso-responsavel`, avisoResponsavel);
+    return this.http.post<AvisoResponsavelInterface[]>(
+      `${environment.api.endpoint}/aviso-responsavel`,
+      avisoResponsavel
+    );
   }
 
   alterarAvisoResponsavel(avisoResponsavel: AvisoResponsavel) {
     var indexA = AVISO_RESPONSAVEL_DATA.findIndex((ar) => {
-      return ar.aviso_responsavel_id === avisoResponsavel.aviso_responsavel_id
-    })
+      return ar.aviso_responsavel_id === avisoResponsavel.aviso_responsavel_id;
+    });
     if (indexA !== -1) {
-      AVISO_RESPONSAVEL_DATA[indexA] = avisoResponsavel
+      AVISO_RESPONSAVEL_DATA[indexA] = avisoResponsavel;
     } else {
-      throw new Error('aviso nao encontrado')
+      throw new Error('aviso nao encontrado');
     }
   }
 
   saveVinculosAvisoResponsavel(vinculosAvisoResponsavel: AvisoResponsavelInterface[]): void {
     this.avisoRepository.update({ vinculosAvisoResponsavel: vinculosAvisoResponsavel });
   }
-
 }

@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
 
 import { TranslationsService } from './core/services/translations-service/translations.service';
 import { BehaviorSubject } from 'rxjs';
+import { SplashScreen } from '@capacitor/splash-screen';
 import { MenuArea } from './shared/components/page-menu/page-menu.interface';
 import { PageMenuService } from './core/services/page-menu/page-menu.service';
 import { SessionRepository } from './core/state/session/session.repository';
+import { LocalNotificationsService } from './core/services/local-notifications/local-notifications.service';
 
 @Component({
   selector: 'app-root',
@@ -14,9 +16,9 @@ import { SessionRepository } from './core/state/session/session.repository';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  readonly currentTab: BehaviorSubject<MenuArea>;
+  currentTab: BehaviorSubject<MenuArea> | undefined;
 
-  readonly showPageMenu: BehaviorSubject<boolean>;
+  showPageMenu: BehaviorSubject<boolean> | undefined;
 
   userIsFuncionario = new BehaviorSubject<boolean>(false);
 
@@ -24,31 +26,53 @@ export class AppComponent {
     private translationsService: TranslationsService,
     private platform: Platform,
     private pageMenuService: PageMenuService,
-    private sessionRepository: SessionRepository
+    private sessionRepository: SessionRepository,
+    private localNotificationsService: LocalNotificationsService,
+    private navController: NavController
   ) {
     this.initializeApp();
-
-    this.sessionRepository.userInfo$.subscribe((tipoUsuario) => {
-      if (tipoUsuario?.tipo === 'R') {
-        this.userIsFuncionario = new BehaviorSubject<boolean>(false);
-      } else {
-        this.userIsFuncionario = new BehaviorSubject<boolean>(true);
-      }
-    });
-    this.showPageMenu = this.pageMenuService.displayStatus;
-    this.currentTab = this.pageMenuService.currentTab;
   }
 
   async initializeApp() {
-    await this.platform.ready();
-    this.translationsService.init();
+    await this.platform.ready().then(() => {
+      SplashScreen.hide();
 
-    // await this.localNotificationsService.init();
-    // await this.pushNotificationsService.init();
+      this.translationsService.init();
 
-    if (this.sessionRepository.isLoggedIn()) {
-      // this.startUpService.loggedStart();
-    }
+      // await this.pushNotificationsService.init();
+
+      // this.settingsQuery.notificacoesEventos$.subscribe(() => {
+      //   if (this.usuarioLogado) {
+      //     this.localNotificationService.criarNotificacoes();
+      //   }
+      // });
+
+      console.info('Inicializando notificações locais');
+
+      this.localNotificationsService.init();
+
+      this.localNotificationsService.criarNotificacoes();
+
+      console.info('Notificações locais inicializadas');
+
+      this.platform.backButton.subscribeWithPriority(-1, () => {
+        this.navController.back();
+      });
+
+      if (this.sessionRepository.isLoggedIn()) {
+        // this.startUpService.loggedStart();
+      }
+
+      this.sessionRepository.userInfo$.subscribe((tipoUsuario) => {
+        if (tipoUsuario?.tipo === 'R') {
+          this.userIsFuncionario = new BehaviorSubject<boolean>(false);
+        } else {
+          this.userIsFuncionario = new BehaviorSubject<boolean>(true);
+        }
+      });
+      this.showPageMenu = this.pageMenuService.displayStatus;
+      this.currentTab = this.pageMenuService.currentTab;
+    });
   }
 
   onTabChange(newTab: MenuArea) {

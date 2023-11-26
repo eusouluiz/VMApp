@@ -11,12 +11,12 @@ const config: CapacitorConfig = {
   plugins: {
     SplashScreen: {
       androidScaleType: 'CENTER_CROP',
-      splashFullScreen: false,
-      splashImmersive: false,
+      splashFullScreen: true,
+      splashImmersive: true,
       launchAutoHide: false,
     },
     LocalNotifications: {
-      smallIcon: 'res://icon',
+      smallIcon: 'vmapp_icon_small',
       iconColor: '#4036bd',
     },
     Keyboard: {

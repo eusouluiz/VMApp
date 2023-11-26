@@ -6,41 +6,39 @@ import { Lembrete } from './lembrete.entity';
   providedIn: 'root',
 })
 export class LembreteService {
+  buscarTodosLembretes(): Lembrete[] {
+    return LEMBRETE_DATA;
+  }
 
-    buscarTodosLembretes(): Lembrete[]{
-        return LEMBRETE_DATA
+  buscarLembrete(idLembrete: string): Lembrete | undefined {
+    return LEMBRETE_DATA.find((l) => {
+      return l.id === idLembrete;
+    });
+  }
+
+  incluirLembrete(lembrete: Lembrete) {
+    LEMBRETE_DATA.push(lembrete);
+  }
+
+  alterarLembrete(lembrete: Lembrete) {
+    var indexL = LEMBRETE_DATA.findIndex((l) => {
+      return l.id === lembrete.id;
+    });
+    if (indexL !== -1) {
+      LEMBRETE_DATA[indexL] = lembrete;
+    } else {
+      throw new Error('lembrete nao encontrado');
     }
+  }
 
-    buscarLembrete(idLembrete: string): Lembrete | undefined{
-        return LEMBRETE_DATA.find((l) => {
-            return l.id === idLembrete
-        })
+  deletarLembrete(idLembrete: string) {
+    var indexL = LEMBRETE_DATA.findIndex((l) => {
+      return l.id === idLembrete;
+    });
+    if (indexL !== -1) {
+      LEMBRETE_DATA.splice(indexL, 1);
+    } else {
+      throw new Error('lembrete nao encontrado');
     }
-
-    incluirLembrete(lembrete: Lembrete) {
-        LEMBRETE_DATA.push(lembrete)
-    }
-
-    alterarLembrete(lembrete: Lembrete) {
-        var indexL = LEMBRETE_DATA.findIndex((l) => {
-            return l.id === lembrete.id
-        })
-        if (indexL !== -1) {
-            LEMBRETE_DATA[indexL] = lembrete
-        } else {
-            throw new Error('lembrete nao encontrado')
-        }
-    }
-
-    deletarLembrete(idLembrete: string) {
-        var indexL = LEMBRETE_DATA.findIndex((l) => {
-            return l.id === idLembrete
-        })
-        if (indexL !== -1){
-            LEMBRETE_DATA.splice(indexL, 1)
-        } else {
-            throw new Error('lembrete nao encontrado')
-        }
-    }
-
+  }
 }
