@@ -98,29 +98,27 @@ export class HeaderComponent implements OnInit {
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'avisos' }, async (payload: any) => {
         console.log('Aviso Change received!', payload);
 
-        
-        if(this.usuarioLogado.isResponsavel()){
-
-          const listaTurmasAviso = await this.resgatarTurmasAviso(payload.new.id)
+        if (this.usuarioLogado.isResponsavel()) {
+          const listaTurmasAviso = await this.resgatarTurmasAviso(payload.new.id);
 
           if (this.isResponsavelRecebeAviso(listaTurmasAviso)) {
-            var novoAviso: AvisoInterface = {
-              aviso_id: payload.new.id,
-              arquivo: payload.new.arquivo,
-              canal_id: payload.new.canal_id,
-              data_publicacao: payload.new.data_publicacao,
-              funcionario_id: payload.new.funcionario_id,
-              prioridade: payload.new.prioridade,
-              texto: payload.new.texto,
-              titulo: payload.new.titulo,
-              turmas: listaTurmasAviso
-            }
+            // var novoAviso: AvisoInterface = {
+            //   aviso_id: payload.new.id,
+            //   arquivo: payload.new.arquivo,
+            //   canal_id: payload.new.canal_id,
+            //   data_publicacao: payload.new.data_publicacao,
+            //   funcionario_id: payload.new.funcionario_id,
+            //   prioridade: payload.new.prioridade,
+            //   texto: payload.new.texto,
+            //   titulo: payload.new.titulo,
+            //   turmas: listaTurmasAviso,
+            // };
 
-            this.avisoService.armazenarAviso(novoAviso)
+            // this.avisoService.armazenarAviso(novoAviso);
+            this.avisoService.buscarTodosAvisos().subscribe();
             this.toastService.message('Novo Aviso: ' + payload.new.titulo);
           }
         }
-
       })
       .subscribe();
   }
@@ -178,12 +176,12 @@ export class HeaderComponent implements OnInit {
       .eq('id', idCanalResponsavel)
       .single();
 
-    const retorno: any = canal
+    const retorno: any = canal;
     if (retorno !== null) {
       for (let i = 0; i < retorno.canais.canal_cargo.length; i++) {
         const idCargo = retorno.canais.canal_cargo[i].cargo_id;
         if (idCargo === this.usuarioLogado.getIdCargo()) {
-          return true
+          return true;
         }
       }
     }
@@ -205,47 +203,49 @@ export class HeaderComponent implements OnInit {
     return canal !== null && canal.responsavel_id === this.usuarioLogado.getIdResponsavel();
   }
 
-  async resgatarTurmasAviso(idAviso: string): Promise<any[]>{
+  async resgatarTurmasAviso(idAviso: string): Promise<any[]> {
     let { data: aviso, error } = await supabase
       .from('avisos')
-      .select(`
+      .select(
+        `
         aviso_turma (
           turmas (
             id, nome, descricao
           )
         )
-      `)
+      `
+      )
       // Filters
       .eq('id', idAviso)
       .single();
 
-    console.log(aviso)
+    console.log(aviso);
 
-    var listaTurmas: TurmaInterface[] = []
+    var listaTurmas: TurmaInterface[] = [];
 
-    const retorno: any = aviso
-    if (retorno !== null){
+    const retorno: any = aviso;
+    if (retorno !== null) {
       retorno.aviso_turma.forEach((avisoTurma: any) => {
         listaTurmas.push({
           turma_id: avisoTurma.turmas.id,
           nome: avisoTurma.turmas.nome,
-          descricao: avisoTurma.turmas.descricao
-        })
-      })
+          descricao: avisoTurma.turmas.descricao,
+        });
+      });
     }
-    return listaTurmas
+    return listaTurmas;
   }
-  
+
   isResponsavelRecebeAviso(listaTurmasAviso: Turma[]): boolean {
-    const idTurmasResponsavel = this.usuarioLogado.getListaIdTurmas()
+    const idTurmasResponsavel = this.usuarioLogado.getListaIdTurmas();
 
     for (let i = 0; i < listaTurmasAviso.length; i++) {
       const idTurmaAviso = listaTurmasAviso[i].turma_id;
-      if(idTurmasResponsavel.includes(idTurmaAviso)){
-        return true
+      if (idTurmasResponsavel.includes(idTurmaAviso)) {
+        return true;
       }
     }
 
-    return false
+    return false;
   }
 }
