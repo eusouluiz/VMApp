@@ -56,7 +56,7 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
 
   ngOnInit() { }
 
-  OnDestroy() {
+  ngOnDestroy() {
     this.userInfoSubscription?.unsubscribe();
   }
 

@@ -77,9 +77,6 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
             apresentacaoAlunos = apresentacaoAlunos + ' / ' + responsavel.alunos[i].nome.split(' ')[0]
           }
         }
-
-        console.log(responsavel.alunos)
-        console.log(apresentacaoAlunos)
         
         this.listaCanalResponsavel.push({
           nomeAluno: apresentacaoAlunos,

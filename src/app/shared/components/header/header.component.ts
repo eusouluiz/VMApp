@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {}
 
   // nao precisaria remover os canais, pois esses canais persistem por toda aplicacao
-  OnDestroy() {
+  ngOnDestroy() {
     supabase.removeAllChannels();
   }
 
