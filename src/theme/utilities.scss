@@ -197,20 +197,56 @@ $directions: 'left', 'right', 'top', 'bottom';
     margin: $size-value !important;
   }
 
+  .u-margin-neg--#{$size} {
+    margin: -$size-value !important;
+  }
+
+  .u-margin-inline--#{$size} {
+    margin-inline: $size-value !important;
+  }
+
+  .u-margin-inline-neg--#{$size} {
+    margin-inline: -$size-value !important;
+  }
+
+  .u-margin-block--#{$size} {
+    margin-block: $size-value !important;
+  }
+
   @if ($size != 'auto') {
     .u-padding--#{$size} {
       padding: $size-value !important;
+    }
+
+    .u-padding-neg--#{$size} {
+      padding: -$size-value !important;
+    }
+
+    .u-padding-inline--#{$size} {
+      padding-inline: $size-value !important;
+    }
+
+    .u-padding-block--#{$size} {
+      padding-block: $size-value !important;
     }
   }
 
   @each $direction in $directions {
     .u-margin-#{$direction}--#{$size} {
-      margin-#{$direction}: $size-value !important;
+      margin-#{$direction}: if($size == 'none', 0, $size-value) !important;
+    }
+
+    .u-margin-neg-#{$direction}--#{$size} {
+      margin-#{$direction}: -$size-value !important;
     }
 
     @if ($size != 'auto') {
       .u-padding-#{$direction}--#{$size} {
-        padding-#{$direction}: $size-value !important;
+        padding-#{$direction}: if($size == 'none', 0, $size-value) !important;
+      }
+
+      .u-padding-neg-#{$direction}--#{$size} {
+        padding-#{$direction}: -$size-value !important;
       }
     }
   }

@@ -18,6 +18,8 @@ import { AvisoRepository } from '../../../../core/state/aviso/aviso.repository';
 import { DataUtil } from '../../../../shared/utilities/data/data.utility';
 import { MensagemRepository } from '../../../../core/state/mensagem/mensagem.repository';
 import { CanalResponsavelInterface } from '../../../../core/state/gerenciamento/canal/canal.entity';
+import { Lembrete, LembreteInterface } from '../../../../core/services/lembrete-service/lembrete.entity';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-aviso',
@@ -26,7 +28,10 @@ import { CanalResponsavelInterface } from '../../../../core/state/gerenciamento/
 })
 export class AvisoPage extends Pagina implements OnInit {
   avisos: Aviso[] = [];
-  listaTurmasResponsavel: string[] = this.usuarioLogado.getListaIdTurmas()
+
+  avisoSubscription: Subscription;
+
+  listaTurmasResponsavel: string[] = this.usuarioLogado.getListaIdTurmas();
 
   //continuar restricao de avisos
   idResponsavel?: string = this.usuarioLogado.getIdResponsavel();
@@ -41,39 +46,55 @@ export class AvisoPage extends Pagina implements OnInit {
     private canalService: CanalService,
     private pageMenuService: PageMenuService,
     private avisoRepository: AvisoRepository,
-    private mensagemRepository: MensagemRepository,
+    private mensagemRepository: MensagemRepository
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP;
     super(router, ROTA_BASE);
 
-    this.inicializarConteudo();
+    // this.inicializarConteudo();
+
+    this.avisoSubscription = this.avisoRepository.avisos$.subscribe((avisos) => {
+      this.avisos = [];
+      avisos.forEach((aviso) => {
+        this.avisos.push(new Aviso(aviso));
+      });
+    });
+
+    this.avisoService.buscarTodosAvisos().subscribe();
+    if (!this.isResponsavel) {
+      this.avisoService.buscarTodosAvisosResponsavel().subscribe();
+    }
   }
-  
-  ngOnInit() { }
-  
+
+  ngOnInit() {}
+
+  ngOnDestroy() {
+    this.avisoSubscription.unsubscribe();
+  }
+
   ionViewWillEnter() {
     this.pageMenuService.displayStatus.next(true);
     this.inicializarConteudo();
   }
-  
-  recarregarPagina(){
+
+  recarregarPagina() {
     this.avisoService.buscarTodosAvisos().subscribe({
-      next: () => {
-        this.resgatarAvisos()
-      }
-    })
+      // next: () => {
+      //   this.resgatarAvisos();
+      // },
+    });
   }
 
-  resgatarAvisos() {
-    const avisos = this.avisoRepository.avisos()
-    this.avisos.splice(0, this.avisos.length)
-    avisos.forEach((aviso) => {
-      this.avisos.push(new Aviso(aviso))
-    })
-    if (!this.isResponsavel){
-      this.avisoService.buscarTodosAvisosResponsavel().subscribe()
-    }
-  }
+  // resgatarAvisos() {
+  //   const avisos = this.avisoRepository.avisos();
+  //   this.avisos.splice(0, this.avisos.length);
+  //   avisos.forEach((aviso) => {
+  //     this.avisos.push(new Aviso(aviso));
+  //   });
+  //   if (!this.isResponsavel) {
+  //     this.avisoService.buscarTodosAvisosResponsavel().subscribe();
+  //   }
+  // }
 
   async abrirModalAviso(aviso: Aviso) {
     var modal;
@@ -98,7 +119,7 @@ export class AvisoPage extends Pagina implements OnInit {
       aviso.titulo = data.titulo;
       aviso.texto = data.texto;
 
-      console.log(aviso)
+      console.log(aviso);
 
       var avisoInterface: AvisoInterface = {
         titulo: aviso.titulo,
@@ -108,41 +129,44 @@ export class AvisoPage extends Pagina implements OnInit {
         prioridade: aviso.prioridade,
         funcionario_id: aviso.funcionario.funcionario_id,
         canal_id: aviso.canal.canal_id,
-      }
+      };
 
-      console.log(avisoInterface)
+      console.log(avisoInterface);
 
       this.avisoService.alterarAviso(avisoInterface, aviso.aviso_id).subscribe();
     } else if (role === 'deletarAviso') {
       this.avisoService.deletarAviso(aviso.aviso_id).subscribe({
         next: () => {
-          this.avisoService.removerAvisoInStorage(aviso.aviso_id)
-          this.resgatarAvisos()
-        }
+          this.avisoService.removerAvisoInStorage(aviso.aviso_id);
+          this.recarregarPagina();
+        },
       });
     } else if (role === 'duvidaAviso') {
       if (this.idResponsavel !== undefined) {
-        var rota = ConstantesRotas.ROTA_MENSAGEM + ConstantesRotas.BARRA
+        var rota = ConstantesRotas.ROTA_MENSAGEM + ConstantesRotas.BARRA;
         const canalMensagem = this.mensagemRepository.canais().find((canal) => {
-          return canal.canal?.canal_id === aviso.canal.canal_id && canal.responsavel?.responsavel_id === this.idResponsavel
-        })
+          return (
+            canal.canal?.canal_id === aviso.canal.canal_id &&
+            canal.responsavel?.responsavel_id === this.idResponsavel
+          );
+        });
 
         if (canalMensagem === undefined) {
           var novoCanalResponsavel: CanalResponsavelInterface = {
             canal_id: aviso.canal.canal_id,
-            responsavel_id: this.idResponsavel
-          }
+            responsavel_id: this.idResponsavel,
+          };
           this.canalService.incluirCanalResponsavel(novoCanalResponsavel).subscribe({
             next: () => {
               if (novoCanalResponsavel.canal_responsavel_id !== undefined) {
-                rota = rota + novoCanalResponsavel.canal_responsavel_id + ConstantesRotas.ROTA_MENSAGEM_CANAL
+                rota = rota + novoCanalResponsavel.canal_responsavel_id + ConstantesRotas.ROTA_MENSAGEM_CANAL;
                 this.navegarPara(rota);
               }
-            }
-          })
+            },
+          });
         } else {
           rota = rota + canalMensagem.canal_responsavel_id + ConstantesRotas.ROTA_MENSAGEM_CANAL;
-          console.log(rota)
+          console.log(rota);
           this.navegarPara(rota);
         }
       } else {
@@ -173,7 +197,7 @@ export class AvisoPage extends Pagina implements OnInit {
     if (role === 'salvarAviso') {
       console.log(data);
 
-      const idFuncionario = this.usuarioLogado.getIdFuncionario()
+      const idFuncionario = this.usuarioLogado.getIdFuncionario();
 
       if (idFuncionario !== undefined) {
         var novoAviso: AvisoInterface = {
@@ -184,35 +208,37 @@ export class AvisoPage extends Pagina implements OnInit {
           prioridade: data.prioridade,
           funcionario_id: idFuncionario,
           canal_id: data.canal.canal_id,
-        }
+          lembrete: data.lembrete,
+        };
+
+        console.log(novoAviso);
       } else {
-        throw new Error('Funcionario nao encontrado')
+        throw new Error('Funcionario nao encontrado');
       }
 
       this.avisoService.incluirAviso(novoAviso).subscribe({
         next: () => {
-          this.avisoService.vincularTurmas(new Aviso(novoAviso), data.turmas)
-          this.avisoService.saveAvisoInStorage(novoAviso)
-          this.inicializarConteudo()
-        }
+          this.avisoService.vincularTurmas(new Aviso(novoAviso), data.turmas);
+          this.recarregarPagina();
+        },
       });
     }
   }
 
-  protected inicializarConteudo(): void {
-    this.resgatarAvisos();
-  }
+  // protected inicializarConteudo(): void {
+  //   this.resgatarAvisos();
+  // }
 
-  isVisivel(aviso: Aviso): boolean{
+  isVisivel(aviso: Aviso): boolean {
     if (this.isResponsavel) {
       for (let i = 0; i < aviso.turmas.length; i++) {
         const turma = aviso.turmas[i];
-        if (this.listaTurmasResponsavel.includes(turma.turma_id)){
-          return true
+        if (this.listaTurmasResponsavel.includes(turma.turma_id)) {
+          return true;
         }
       }
-      return false
+      return false;
     }
-    return true
+    return true;
   }
 }

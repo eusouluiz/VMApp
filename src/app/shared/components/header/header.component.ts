@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { AvisoInterface } from '../../../core/state/aviso/aviso-service/aviso.entity';
 import { Turma, TurmaInterface } from '../../../core/state/gerenciamento/turma/turma.entity';
 import { AvisoService } from '../../../core/state/aviso/aviso-service/aviso.service';
+import { AvisoRepository } from '../../../core/state/aviso/aviso.repository';
 
 const supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
 
@@ -30,12 +31,13 @@ export class HeaderComponent implements OnInit {
     private usuarioLogado: UsuarioLogado,
     private mensagemService: MensagemService,
     private avisoService: AvisoService,
+    private avisoRepository: AvisoRepository,
     private router: Router
   ) {
     this.inscreverNotificacao();
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   // nao precisaria remover os canais, pois esses canais persistem por toda aplicacao
   ngOnDestroy() {
@@ -50,28 +52,27 @@ export class HeaderComponent implements OnInit {
 
         // verifica se a mensagem nao eh do proprio usuario
         if (payload.new.user_id !== this.usuarioLogado.getIdUsuario()) {
-          const urlSeparada = this.router.url.split('/')
-          const idCanalResponsavelUrl = urlSeparada[urlSeparada.length - 2]
-          const idCanalResponsavel = payload.new.canal_responsavel_id
+          const urlSeparada = this.router.url.split('/');
+          const idCanalResponsavelUrl = urlSeparada[urlSeparada.length - 2];
+          const idCanalResponsavel = payload.new.canal_responsavel_id;
 
           // verifica se a pessoa nao esta no proprio canal de mensagens
           if (idCanalResponsavelUrl !== idCanalResponsavel) {
-            var nomeCanal = await this.resgatarCanalNome(idCanalResponsavel)
+            var nomeCanal = await this.resgatarCanalNome(idCanalResponsavel);
             if (this.usuarioLogado.isResponsavel()) {
               if (await this.isResponsavelPossuiAcessoCanalResponsavel(idCanalResponsavel)) {
                 this.toastService.message(`${nomeCanal}: ${payload.new.texto}`);
-                this.mensagemService.armazenarMensagem(payload.new)
+                this.mensagemService.armazenarMensagem(payload.new);
               }
             } else {
               if (await this.isCargoPossuiAcessoCanalResponsavel(idCanalResponsavel)) {
                 var nome = await this.getUsuarioNome(payload.new.user_id);
                 this.toastService.message(`${nomeCanal} - ${nome}: ${payload.new.texto}`);
-                this.mensagemService.armazenarMensagem(payload.new)
+                this.mensagemService.armazenarMensagem(payload.new);
               }
             }
           }
         }
-
       })
       .subscribe();
     const aviso = supabase
@@ -125,16 +126,18 @@ export class HeaderComponent implements OnInit {
   async resgatarCanalNome(idCanalResponsavel: string): Promise<string> {
     let { data: canal, error } = await supabase
       .from('canal_responsavel')
-      .select(`
+      .select(
+        `
         canais (
           nome
         )
-      `)
+      `
+      )
       // Filters
       .eq('id', idCanalResponsavel)
       .single();
 
-    const retorno: any = canal
+    const retorno: any = canal;
     if (canal !== null) {
       return retorno.canais.nome;
     }
@@ -144,13 +147,15 @@ export class HeaderComponent implements OnInit {
   async isCargoPossuiAcessoCanalResponsavel(idCanalResponsavel: string): Promise<boolean> {
     let { data: canal, error } = await supabase
       .from('canal_responsavel')
-      .select(`
+      .select(
+        `
         canais (
           canal_cargo (
             cargo_id
           )
         )
-      `)
+      `
+      )
       // Filters
       .eq('id', idCanalResponsavel)
       .single();
@@ -164,20 +169,22 @@ export class HeaderComponent implements OnInit {
         }
       }
     }
-    return false
+    return false;
   }
 
   async isResponsavelPossuiAcessoCanalResponsavel(idCanalResponsavel: string): Promise<boolean> {
     let { data: canal, error } = await supabase
       .from('canal_responsavel')
-      .select(`
+      .select(
+        `
         responsavel_id
-      `)
+      `
+      )
       // Filters
       .eq('id', idCanalResponsavel)
       .single();
 
-    return canal !== null && canal.responsavel_id === this.usuarioLogado.getIdResponsavel()
+    return canal !== null && canal.responsavel_id === this.usuarioLogado.getIdResponsavel();
   }
 
   async resgatarTurmasAviso(idAviso: string): Promise<any[]>{

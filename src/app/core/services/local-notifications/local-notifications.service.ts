@@ -7,6 +7,7 @@ import { AppNotification } from '../../state/notification/notification.interface
 import { PlatformService } from '../platform/platform.service';
 import { AvisoRepository } from '../../state/aviso/aviso.repository';
 import { SessionRepository } from '../../state/session/session.repository';
+import { DataUtil } from '../../../shared/utilities/data/data.utility';
 
 @Injectable({
   providedIn: 'root',
@@ -25,9 +26,9 @@ export class LocalNotificationsService {
   ) {}
 
   init() {
-    if (this.initialized || !this.platformService.isNative()) {
-      return;
-    }
+    // if (this.initialized || !this.platformService.isNative()) {
+    //   return;
+    // }
 
     LocalNotifications.checkPermissions().then((permission) => {
       if (permission.display !== 'granted') {
@@ -67,9 +68,9 @@ export class LocalNotificationsService {
   }
 
   async criarNotificacoes() {
-    if (!this.platformService.isNative()) {
-      return;
-    }
+    // if (!this.platformService.isNative()) {
+    //   return;
+    // }
 
     // this.notificacoes = [];
     // this.setNotificacoes(this.notificacoes);
@@ -79,12 +80,16 @@ export class LocalNotificationsService {
 
   async criarNotificacoesAvisos(): Promise<void> {
     this.avisoRepository.avisos$.subscribe((avisos) => {
-      const avisosNotificaveis = avisos.filter((aviso) => {
-        let turmas = this.sessionRepository.userInfo()?.responsavel?.alunos?.map((aluno) => {
-          return aluno.turma_id;
-        });
+      let turmas = this.sessionRepository.userInfo()?.responsavel?.alunos?.map((aluno) => {
+        return aluno.turma_id;
+      });
 
-        if (!turmas?.length) {
+      if (!turmas?.length) {
+        return;
+      }
+
+      const avisosNotificaveis = avisos.filter((aviso) => {
+        if (aviso.lembrete?.data_lembrete === undefined || new Date(aviso.lembrete?.data_lembrete) <= new Date()) {
           return;
         }
 
@@ -92,12 +97,11 @@ export class LocalNotificationsService {
       });
 
       const notificacoes = avisosNotificaveis.map((aviso, index) => {
-        const inAMoment = addSeconds(new Date(), 10);
         const notificacao: LocalNotificationSchema = {
           id: index + 1,
           title: aviso.titulo,
           body: aviso.texto,
-          schedule: { at: inAMoment },
+          schedule: { at: new Date(DataUtil.adequarDataLembrete(aviso.lembrete?.data_lembrete!)) },
           extra: {
             source: 'aviso',
           },
@@ -117,17 +121,17 @@ export class LocalNotificationsService {
   private async setNotificacoes(notificacoes: LocalNotificationSchema[]) {
     // Remove the comments below to schedule a notification for 10 seconds after the app opens
 
-    // const inAMoment = addSeconds(new Date(), 10);
-    // const debugNotification: LocalNotificationSchema = {
-    //   id: 0,
-    //   title: 'Teste',
-    //   body: 'teste',
-    //   schedule: { at: inAMoment },
-    //   extra: {
-    //     source: 'teste',
-    //   },
-    // };
-    // notificacoes.push(debugNotification);
+    const inAMoment = addSeconds(new Date(), 10);
+    const debugNotification: LocalNotificationSchema = {
+      id: 0,
+      title: inAMoment.toDateString(),
+      body: inAMoment.toTimeString(),
+      schedule: { at: inAMoment },
+      extra: {
+        source: 'teste',
+      },
+    };
+    notificacoes.push(debugNotification);
 
     try {
       const pendingNotifications = await LocalNotifications.getPending();

@@ -21,8 +21,9 @@ import { IonicModule, ModalController } from '@ionic/angular';
 import { Aviso } from '../../../../core/state/aviso/aviso-service/aviso.entity';
 import { Canal } from '../../../../core/state/gerenciamento/canal/canal.entity';
 import { Turma } from '../../../../core/state/gerenciamento/turma/turma.entity';
-import { Lembrete } from '../../../../core/services/lembrete-service/lembrete.entity';
 import { GerenciamentoRepository } from '../../../../core/state/gerenciamento/gerenciamento.repository';
+import { Lembrete, LembreteInterface } from '../../../../core/services/lembrete-service/lembrete.entity';
+import { DataUtil } from '../../../../shared/utilities/data/data.utility';
 
 @Component({
   selector: 'app-novo-aviso',
@@ -33,10 +34,15 @@ import { GerenciamentoRepository } from '../../../../core/state/gerenciamento/ge
 })
 export class NovoAvisoComponent implements OnInit {
   aviso: Aviso = new Aviso();
+
   form: UntypedFormGroup | undefined;
+
   listaTodosCanais: Canal[] = [];
+
   listaTodasTurmas: Turma[] = [];
+
   canalDuvidas?: Canal;
+
   prioridadeAviso?: any;
 
   constructor(
@@ -112,14 +118,16 @@ export class NovoAvisoComponent implements OnInit {
       });
 
       if (this.form.value.dataLembrete !== '') {
-        var lembrete: Lembrete = new Lembrete();
-        lembrete.aviso = this.aviso;
-        lembrete.titulo = 'Lembrete: ' + this.aviso.titulo;
-        lembrete.texto = this.aviso.texto.substring(0, 50);
-        lembrete.data_lembrete = this.form.value.dataLembrete;
+        let lembrete: LembreteInterface = {
+          data_lembrete: DataUtil.timezonedToUTC(this.form.value.dataLembrete),
+        };
+        this.aviso.lembrete = lembrete;
 
         // this.lembreteService.incluirLembrete(lembrete)
       }
+
+      console.log(this.aviso);
+      console.log(this.form.value.dataLembrete);
 
       return this.modalController.dismiss(this.aviso, 'salvarAviso');
     } else {
@@ -208,6 +216,7 @@ export class NovoAvisoComponent implements OnInit {
   // ---- controle turmas ---- //
 
   listaTurmasBusca: Turma[] = [];
+
   nomeTurmasBusca: string[] = [];
 
   listaTurmasTabela: Turma[] = [];

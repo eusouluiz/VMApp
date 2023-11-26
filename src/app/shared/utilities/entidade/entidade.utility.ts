@@ -22,22 +22,22 @@ export var USUARIO_DATA: Usuario[] = [
     cpf: '80798419008',
     telefone: '91984232701',
     tipo: 'F',
-    password: 'password'
+    password: 'password',
   }),
   new Usuario({
-    user_id: "9a9f8466-1760-4ed2-aa57-f691a8547d5e",
+    user_id: '9a9f8466-1760-4ed2-aa57-f691a8547d5e',
     nome: 'Gabriel Falavinha Gomes',
     cpf: '47683610054',
     telefone: '19985094994',
     tipo: 'R',
-    password: 'julho013'
+    password: 'julho013',
   }),
   new Usuario({
     user_id: '2',
     nome: 'Giacomo Vaz',
     cpf: '08918011970',
     telefone: '041988222527',
-    tipo: 'R'
+    tipo: 'R',
   }),
   new Usuario({
     user_id: 'ed232b7e-3c33-44b1-9e81-8514f6620079',
@@ -45,7 +45,7 @@ export var USUARIO_DATA: Usuario[] = [
     cpf: '35345610070',
     telefone: '98988477611',
     tipo: 'R',
-    password: 'pacoca03'
+    password: 'pacoca03',
   }),
   new Usuario({
     user_id: '4',
@@ -116,7 +116,7 @@ export var ALUNO_DATA: Aluno[] = [
 
 export var RESPONSAVEL_DATA: Responsavel[] = [
   new Responsavel({
-    responsavel_id: "9a9f8466-1bb8-46ea-8318-58b68ad8f328",
+    responsavel_id: '9a9f8466-1bb8-46ea-8318-58b68ad8f328',
     user: USUARIO_DATA[1],
   }),
   new Responsavel({
@@ -182,13 +182,11 @@ export var FUNCIONALIDADE_DATA: Funcionalidade[] = [
 ];
 
 export var CARGO_DATA: Cargo[] = [
-  new Cargo(
-    {
-      cargo_id: '9a9f8804-94e5-4f5e-a0e5-d44b67731b0f',
-      nome: 'Administração',
-      descricao: '',
-    },
-  ),
+  new Cargo({
+    cargo_id: '9a9f8804-94e5-4f5e-a0e5-d44b67731b0f',
+    nome: 'Administração',
+    descricao: '',
+  }),
   new Cargo({
     cargo_id: '1',
     nome: 'Secretaria',
@@ -225,7 +223,7 @@ export var FUNCIONARIO_DATA: Funcionario[] = [
 ];
 
 export var CANAL_DATA: Canal[] = [
-  new Canal({ canal_id: '0', nome: 'Administração', descricao: '', }),
+  new Canal({ canal_id: '0', nome: 'Administração', descricao: '' }),
   new Canal({
     canal_id: '1',
     nome: 'Secretária',
@@ -259,7 +257,8 @@ export var CANAL_RESPONSAVEL_DATA: CanalResponsavel[] = [
 export var MENSAGEM_DATA: Mensagem[] = [
   new Mensagem({
     mensagem_id: '2',
-    texto: 'Olá! Precisamos atualizar nossos registros e gostaríamos de solicitar uma cópia do comprovante de endereço atualizado. Isso nos ajudará a manter nossas informações atualizadas.',
+    texto:
+      'Olá! Precisamos atualizar nossos registros e gostaríamos de solicitar uma cópia do comprovante de endereço atualizado. Isso nos ajudará a manter nossas informações atualizadas.',
     arquivo: '',
     lida: false,
     data_envio: '1995-12-17T10:13:00',
@@ -279,7 +278,8 @@ export var MENSAGEM_DATA: Mensagem[] = [
   }),
   new Mensagem({
     mensagem_id: '0',
-    texto: 'Olá, Gabriel! Gostaríamos de confirmar a sua presença na reunião de pais e professores agendada para amanhã às 18h. É uma ótima oportunidade para discutirmos questõs importantes sobre a educação de nossos alunos',
+    texto:
+      'Olá, Gabriel! Gostaríamos de confirmar a sua presença na reunião de pais e professores agendada para amanhã às 18h. É uma ótima oportunidade para discutirmos questõs importantes sobre a educação de nossos alunos',
     arquivo: '',
     lida: false,
     data_envio: '1995-12-17T11:33:00',
@@ -293,7 +293,8 @@ export var AVISO_DATA: Aviso[] = [
   new Aviso({
     aviso_id: '0',
     titulo: 'Aula Aberta: Conectando Pais e Alunos',
-    texto: 'Convidamos todos os pais a participar de nossa Aula Aberta, uma oportunidade para vivenciar o ambiente de aprendizado de seus filhos. Conecte-se com professores, compreenda as metodologias de ensino e compartilhe momentos educativos únicos com seus filhos.',
+    texto:
+      'Convidamos todos os pais a participar de nossa Aula Aberta, uma oportunidade para vivenciar o ambiente de aprendizado de seus filhos. Conecte-se com professores, compreenda as metodologias de ensino e compartilhe momentos educativos únicos com seus filhos.',
     arquivo: '',
     prioridade: '1',
     data_publicacao: '',
@@ -304,7 +305,8 @@ export var AVISO_DATA: Aviso[] = [
   new Aviso({
     aviso_id: '1',
     titulo: 'Campanha Solidária: Espalhando o Amor',
-    texto: 'Participe de nossa campanha solidária para arrecadar itens essenciais para comunidades carentes. Juntos, podemos fazer a diferença! Contribua com alimentos não perecíveis, roupas e produtos de higiene. Vamos espalhar o amor e construir um mundo mais compassivo.',
+    texto:
+      'Participe de nossa campanha solidária para arrecadar itens essenciais para comunidades carentes. Juntos, podemos fazer a diferença! Contribua com alimentos não perecíveis, roupas e produtos de higiene. Vamos espalhar o amor e construir um mundo mais compassivo.',
     arquivo: '',
     prioridade: '2',
     data_publicacao: '',
@@ -333,7 +335,7 @@ export var AVISO_RESPONSAVEL_DATA: AvisoResponsavel[] = [
     responsavel_id: RESPONSAVEL_DATA[2].responsavel_id,
     ind_visualizacao: false,
   }),
-]
+];
 
 export var LEMBRETE_DATA: Lembrete[] = [];
 
