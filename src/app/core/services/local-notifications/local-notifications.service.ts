@@ -114,24 +114,24 @@ export class LocalNotificationsService {
   }
 
   async removeNotificacoes() {
-    return this.criarNotificacoes();
+    return this.setNotificacoes([]);
   }
 
   // eslint-disable-next-line
   private async setNotificacoes(notificacoes: LocalNotificationSchema[]) {
     // Remove the comments below to schedule a notification for 10 seconds after the app opens
 
-    const inAMoment = addSeconds(new Date(), 10);
-    const debugNotification: LocalNotificationSchema = {
-      id: 0,
-      title: inAMoment.toDateString(),
-      body: inAMoment.toTimeString(),
-      schedule: { at: inAMoment },
-      extra: {
-        source: 'teste',
-      },
-    };
-    notificacoes.push(debugNotification);
+    // const inAMoment = addSeconds(new Date(), 10);
+    // const debugNotification: LocalNotificationSchema = {
+    //   id: 0,
+    //   title: inAMoment.toDateString(),
+    //   body: inAMoment.toTimeString(),
+    //   schedule: { at: inAMoment },
+    //   extra: {
+    //     source: 'teste',
+    //   },
+    // };
+    // notificacoes.push(debugNotification);
 
     try {
       const pendingNotifications = await LocalNotifications.getPending();

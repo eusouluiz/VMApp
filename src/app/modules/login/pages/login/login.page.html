@@ -15,12 +15,14 @@
         formControlName="cpf"
         type="cpf"
         label="Usuário (CPF)"
-        placeholder="000.000.000-00"></app-login-field-input>
+        placeholder="000.000.000-00"
+        (enter)="focusPassword()"></app-login-field-input>
       <div class="u-margin-top--xl">
         <app-login-field-password
           #password
           formControlName="password"
           placeholder="Senha"
+          (enter)="submit()"
           (ionFocus)="focusin($event)"></app-login-field-password>
       </div>
     </form>

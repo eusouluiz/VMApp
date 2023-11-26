@@ -10,5 +10,12 @@
     <ion-title class="c-header__toolbar__title" [ngStyle]="{ 'padding-left': botaoRetorno ? '0px' : '' }">{{
       titulo
     }}</ion-title>
+    <app-button
+      *ngIf="botaoLogout"
+      variant="icon"
+      icon="log-out"
+      class="u-margin-right--md"
+      slot="end"
+      (click)="onLogout()"></app-button>
   </ion-toolbar>
 </ion-header>

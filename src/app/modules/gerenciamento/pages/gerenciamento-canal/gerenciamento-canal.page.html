@@ -2,11 +2,13 @@
 
 <ion-content class="ion-padding">
   <app-refresher (onRecarregar)="recarregarPagina()"></app-refresher>
-  <ion-searchbar class="ion-no-padding"
-    placeholder="Canal" [debounce]="500" (ionInput)="filtrarCanalNome($event)"></ion-searchbar>
+  <ion-searchbar
+    class="custom ion-no-padding"
+    placeholder="Canal"
+    [debounce]="500"
+    (ionInput)="filtrarCanalNome($event)"></ion-searchbar>
   <div *ngFor="let canal of listaCanais">
-    <ion-item class="c-item"
-      lines="none" detail="true" button="true" (click)="navegarTelaCanal(canal)">
+    <ion-item class="c-item" lines="none" detail="true" button="true" (click)="navegarTelaCanal(canal)">
       <ion-label>
         <ion-row>
           <ion-text class="c-item-titulo">{{canal.nome}}</ion-text>

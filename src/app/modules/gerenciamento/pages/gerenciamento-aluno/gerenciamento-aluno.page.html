@@ -2,17 +2,21 @@
 
 <ion-content class="ion-padding">
   <app-refresher (onRecarregar)="recarregarPagina()"></app-refresher>
-  <ion-searchbar class="ion-no-padding" 
-    placeholder="Aluno" [debounce]="500" (ionInput)="filtarAlunoNome($event)"></ion-searchbar>
+  <ion-searchbar
+    class="custom ion-no-padding"
+    placeholder="Aluno"
+    [debounce]="500"
+    (ionInput)="filtarAlunoNome($event)"></ion-searchbar>
   <div *ngFor="let aluno of listaAlunos">
-    <ion-item class="c-item"
-      lines="none" detail="true" button="true" (click)="navegarTelaAluno(aluno)">
+    <ion-item class="c-item" lines="none" detail="true" button="true" (click)="navegarTelaAluno(aluno)">
       <ion-label>
         <ion-row>
           <ion-text class="c-item-titulo">{{aluno.nome}}</ion-text>
         </ion-row>
         <ion-row>
-          <ion-text class="c-item-subtitulo">Turma: {{aluno.turma === null ? 'Não definida' : aluno.turma.nome}}</ion-text>
+          <ion-text class="c-item-subtitulo"
+            >Turma: {{aluno.turma === null ? 'Não definida' : aluno.turma.nome}}</ion-text
+          >
         </ion-row>
       </ion-label>
     </ion-item>

@@ -8,6 +8,11 @@ import { UsuarioLogado } from '../../utilities/usuario-logado/usuario-logado.uti
 import { MensagemRepository } from '../../../core/state/mensagem/mensagem.repository';
 import { MensagemService } from '../../../core/state/mensagem/mensagem-service/mensagem.service';
 import { Router } from '@angular/router';
+import { AvisoService } from '../../../core/state/aviso/aviso-service/aviso.service';
+import { AvisoRepository } from '../../../core/state/aviso/aviso.repository';
+import { Session } from 'inspector';
+import { SessionService } from '../../../core/state/session/session.service';
+import { LocalNotificationsService } from '../../../core/services/local-notifications/local-notifications.service';
 import { AvisoInterface } from '../../../core/state/aviso/aviso-service/aviso.entity';
 import { Turma, TurmaInterface } from '../../../core/state/gerenciamento/turma/turma.entity';
 import { AvisoService } from '../../../core/state/aviso/aviso-service/aviso.service';
@@ -25,6 +30,8 @@ export class HeaderComponent implements OnInit {
 
   @Input() botaoRetorno: boolean = false;
 
+  @Input() botaoLogout: boolean = false;
+
   constructor(
     private toastService: ToastService,
     private navController: NavController,
@@ -32,6 +39,8 @@ export class HeaderComponent implements OnInit {
     private mensagemService: MensagemService,
     private avisoService: AvisoService,
     private avisoRepository: AvisoRepository,
+    private localNotificationsService: LocalNotificationsService,
+    private sessionService: SessionService,
     private router: Router
   ) {
     this.inscreverNotificacao();
@@ -42,6 +51,15 @@ export class HeaderComponent implements OnInit {
   // nao precisaria remover os canais, pois esses canais persistem por toda aplicacao
   ngOnDestroy() {
     supabase.removeAllChannels();
+  }
+
+  onLogout(): void {
+    this.sessionService.logout().subscribe();
+    this.localNotificationsService.removeNotificacoes();
+    setTimeout(() => {
+      localStorage.clear();
+      this.navController.navigateRoot('login');
+    }, 500);
   }
 
   inscreverNotificacao() {
