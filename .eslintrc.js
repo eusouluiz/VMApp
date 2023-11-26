@@ -18,12 +18,11 @@ module.exports = {
   rules: {
     'prettier/prettier': 'error',
     'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': 'error',
+    '@typescript-eslint/no-unused-vars': 'off',
     'no-useless-constructor': 'off',
     '@typescript-eslint/no-useless-constructor': 'error',
     'import/prefer-default-export': 'off',
-    'lines-between-class-members': 'off',
-    '@typescript-eslint/member-ordering': 'error',
+    // 'lines-between-class-members': 'off',
     'class-methods-use-this': 'off',
     'comma-dangle': [
       2,

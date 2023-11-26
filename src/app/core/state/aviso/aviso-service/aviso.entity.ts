@@ -1,3 +1,4 @@
+import { Lembrete, LembreteInterface } from '../../../services/lembrete-service/lembrete.entity';
 import { Canal } from '../../gerenciamento/canal/canal.entity';
 import { Funcionario } from '../../gerenciamento/funcionario/funcionario.entity';
 import { Responsavel } from '../../gerenciamento/responsavel/responsavel.entity';
@@ -15,6 +16,7 @@ export interface AvisoInterface {
   funcionario_id: string;
   canal_id: string;
   turmas?: Turma[];
+  lembrete?: LembreteInterface;
 }
 
 export class Aviso {
@@ -37,6 +39,10 @@ export class Aviso {
   private _canal: Canal = new Canal();
 
   private _turmas: Turma[] = [];
+
+  private _lembrete: LembreteInterface = {
+    data_lembrete: '',
+  };
 
   constructor(private data?: AvisoInterface) {
     if (data !== undefined) {
@@ -61,68 +67,99 @@ export class Aviso {
       if (data.turmas !== undefined) {
         this._turmas = data.turmas;
       }
+
+      if (data.lembrete !== undefined) {
+        this._lembrete = data.lembrete;
+      }
     }
   }
 
   public get aviso_id(): string {
     return this._aviso_id;
   }
+
   public set aviso_id(value: string) {
     this._aviso_id = value;
   }
+
   public get titulo(): string {
     return this._titulo;
   }
+
   public set titulo(value: string) {
     this._titulo = value;
   }
+
   public get texto(): string {
     return this._texto;
   }
+
   public set texto(value: string) {
     this._texto = value;
   }
+
   public get arquivo(): string {
     return this._arquivo;
   }
+
   public set arquivo(value: string) {
     this._arquivo = value;
   }
+
   public get prioridade(): string {
     return this._prioridade;
   }
+
   public set prioridade(value: string) {
     this._prioridade = value;
   }
+
   public get data_publicacao(): Date {
     return this._data_publicacao;
   }
+
   public set data_publicacao(value: Date) {
     this._data_publicacao = value;
   }
+
   public get data_encerramento(): Date {
     return this._data_encerramento;
   }
+
   public set data_encerramento(value: Date) {
     this._data_encerramento = value;
   }
+
   public get funcionario(): Funcionario {
     return this._funcionario;
   }
+
   public set funcionario(value: Funcionario) {
     this._funcionario = value;
   }
+
   public get canal(): Canal {
     return this._canal;
   }
+
   public set canal(value: Canal) {
     this._canal = value;
   }
+
   public get turmas(): Turma[] {
     return this._turmas;
   }
+
   public set turmas(value: Turma[]) {
     this._turmas = value;
+  }
+
+  public get lembrete(): LembreteInterface {
+    return this._lembrete;
+  }
+
+  public set lembrete(value: LembreteInterface) {
+    this._lembrete = value;
   }
 }
 
@@ -136,8 +173,11 @@ export interface AvisoResponsavelInterface {
 
 export class AvisoResponsavel {
   private _aviso_responsavel_id: string = '';
+
   private _aviso: Aviso = new Aviso();
+
   private _responsavel: Responsavel = new Responsavel();
+
   private _ind_visualizacao: boolean = false;
 
   constructor(data?: AvisoResponsavelInterface) {
@@ -157,24 +197,31 @@ export class AvisoResponsavel {
   public get aviso_responsavel_id(): string {
     return this._aviso_responsavel_id;
   }
+
   public set aviso_responsavel_id(value: string) {
     this._aviso_responsavel_id = value;
   }
+
   public get aviso(): Aviso {
     return this._aviso;
   }
+
   public set aviso(value: Aviso) {
     this._aviso = value;
   }
+
   public get responsavel(): Responsavel {
     return this._responsavel;
   }
+
   public set responsavel(value: Responsavel) {
     this._responsavel = value;
   }
+
   public get ind_visualizacao(): boolean {
     return this._ind_visualizacao;
   }
+
   public set ind_visualizacao(value: boolean) {
     this._ind_visualizacao = value;
   }

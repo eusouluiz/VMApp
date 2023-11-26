@@ -20,7 +20,7 @@ export class FieldDatetimeComponent implements ControlValueAccessor, OnInit {
 
   @Input() maxDate!: string;
 
-  @Input() type!: 'date' | 'time';
+  @Input() type!: 'date' | 'time' | 'date-time';
 
   isModalOpen = false;
 

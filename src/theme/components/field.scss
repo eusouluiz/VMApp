@@ -332,8 +332,8 @@
     &-component {
       // --background: var(--color-gray-10);
       --ion-color-base: var(--color-primary) !important;
-      --ion-color-step-300: var(--color-font-secondary);
-      --ion-text-color: var(--color-font-tertiary);
+      --ion-color-step-300: var(--color-primary);
+      --ion-text-color: var(--ion-color-contrast);
       --title-color: var(--color-font-tertiary);
 
       &::part(title) {

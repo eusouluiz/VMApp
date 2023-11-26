@@ -4,14 +4,12 @@
     <span class="c-field__optional" *ngIf="optional">{{ 'FIELDS.OPTIONAL' | translate }}</span>
   </h6>
 
-  <button
-    class="c-field__datetime"
-    (click)="showModal(true)">
+  <button class="c-field__datetime" (click)="showModal(true)">
     <label class="c-field__datetime-label" *ngIf="ngControl.value === ''">
       {{ placeholder || 'FIELDS.DATE.PLACEHOLDER' | translate }}
     </label>
     <label class="c-field__datetime-label" *ngIf="ngControl.value !== ''">
-      {{ ngControl.value || ngControl.value?.seconds * 1000 | date: 'dd/MM/YYYY' }}
+      {{ ngControl.value || ngControl.value?.seconds * 1000 | date : 'dd/MM/YYYY HH:mm' }}
     </label>
   </button>
 </div>
@@ -19,8 +17,10 @@
 <ion-modal class="c-ion-modal c-ion-modal--auto" [isOpen]="isModalOpen" (didDismiss)="showModal(false)">
   <ng-template>
     <div class="c-modal">
-      <button class="c-modal__close" (click)="showModal(false)"><ion-icon size="large" name="close-outline"></ion-icon></button>
-      <hr>
+      <!-- <button class="c-modal__close" (click)="showModal(false)">
+        <ion-icon size="large" name="close-outline"></ion-icon>
+      </button>
+      <hr /> -->
       <ion-datetime
         class="c-field__datetime-component"
         size="cover"
@@ -30,7 +30,12 @@
         [value]="parsedDate"
         [min]="minDate"
         [max]="maxDate"
-        (ionChange)="setValue($event)"></ion-datetime>
+        (ionChange)="setValue($event)">
+        <span slot="time-label">Horário</span>
+      </ion-datetime>
+      <button class="c-field__datetime u-margin-top--lg u-margin-neg-bottom--lg" (click)="showModal(false)">
+        <label class="c-field__datetime-label"> SALVAR </label>
+      </button>
     </div>
   </ng-template>
 </ion-modal>
