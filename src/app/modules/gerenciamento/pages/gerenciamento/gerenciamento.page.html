@@ -1,10 +1,10 @@
-<app-header titulo="Gerenciamento"></app-header>
+<app-header titulo="Gerenciamento" botaoLogout="true"></app-header>
 
 <ion-content class="ion-padding">
   <div class="u-padding-bottom--3xl">
     <ng-container *ngFor="let opcao of opcoesGerenciamento">
       <ion-item
-        class="c-item__grande"
+        class="c-item__medium"
         *ngIf="possuiAcessoFuncionalidade(opcao.idFuncionalidade)"
         lines="none"
         detail="true"

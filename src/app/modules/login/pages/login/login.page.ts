@@ -10,6 +10,7 @@ import { Usuario } from '../../../../core/state/gerenciamento/usuario/usuario.en
 import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
 import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
 import { AvisoService } from '../../../../core/state/aviso/aviso-service/aviso.service';
+import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 
 @Component({
   selector: 'app-login',
@@ -33,6 +34,7 @@ export class LoginPage {
     private canalService: CanalService,
     private avisoService: AvisoService,
     private toastService: ToastService,
+    private pageMenuService: PageMenuService
   ) {
     this.form = this.formBuilder.group({
       cpf: ['', [Validators.required]],
@@ -41,7 +43,12 @@ export class LoginPage {
   }
 
   ionViewWillEnter() {
+    this.pageMenuService.displayStatus.next(false);
     this.loading = false;
+  }
+
+  focusPassword() {
+    this.password?.setFocus();
   }
 
   submit() {
@@ -52,19 +59,20 @@ export class LoginPage {
       password: this.form.controls.password.value,
     };
 
-    this.sessionService
-      .login(body).subscribe({
-        next: () => {
-          this.sessionService.getUserInfo().subscribe({
-            next: (usuario) => {
-              this.canalService.buscarTodosCanaisMensagem().subscribe({
-                next: (canal) => {
-                  this.avisoService.buscarTodosAvisos().subscribe()
-                  if (usuario.responsavel === null) {
-                    this.form.reset();
-                    this.navegaParaApp();
-                  } else {
-                    this.canalService.buscarCanalResponsavelTodos({idResponsavel: usuario.responsavel.responsavel_id}).subscribe({
+    this.sessionService.login(body).subscribe({
+      next: () => {
+        this.sessionService.getUserInfo().subscribe({
+          next: (usuario) => {
+            this.canalService.buscarTodosCanaisMensagem().subscribe({
+              next: (canal) => {
+                this.avisoService.buscarTodosAvisos().subscribe();
+                if (usuario.responsavel === null) {
+                  this.form.reset();
+                  this.navegaParaApp();
+                } else {
+                  this.canalService
+                    .buscarCanalResponsavelTodos({ idResponsavel: usuario.responsavel.responsavel_id })
+                    .subscribe({
                       next: () => {
                         this.form.reset();
                         this.navegaParaApp();
@@ -72,43 +80,43 @@ export class LoginPage {
                       error: (err) => {
                         this.toastService.error('Falha ao realizar o login');
                         this.loading = false;
-              
+
                         if (err?.original?.status === 422) {
                           return;
                         }
                       },
-                    })
-                  }
-                },
-                error: (err) => {
-                  this.toastService.error('Falha ao realizar o login');
-                  this.loading = false;
-        
-                  if (err?.original?.status === 422) {
-                    return;
-                  }
-                },
-              })
-            },
-            error: (err) => {
-              this.toastService.error('Falha ao realizar o login');
-              this.loading = false;
-    
-              if (err?.original?.status === 422) {
-                return;
-              }
-            },
-          })
-        },
-        error: (err) => {
-          this.toastService.error('Falha ao realizar o login');
-          this.loading = false;
+                    });
+                }
+              },
+              error: (err) => {
+                this.toastService.error('Falha ao realizar o login');
+                this.loading = false;
 
-          if (err?.original?.status === 422) {
-            return;
-          }
-        },
-      });
+                if (err?.original?.status === 422) {
+                  return;
+                }
+              },
+            });
+          },
+          error: (err) => {
+            this.toastService.error('Falha ao realizar o login');
+            this.loading = false;
+
+            if (err?.original?.status === 422) {
+              return;
+            }
+          },
+        });
+      },
+      error: (err) => {
+        this.toastService.error('Falha ao realizar o login');
+        this.loading = false;
+
+        if (err?.original?.status === 422) {
+          return;
+        }
+      },
+    });
   }
 
   focusin(ev: any) {

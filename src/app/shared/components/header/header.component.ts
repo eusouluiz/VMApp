@@ -4,6 +4,15 @@ import { environment } from '../../../../environments/environment';
 import { ToastService } from '../../../core/toasts/services/toast-service/toast.service';
 import { ConstantesSupabase } from '../../utilities/constantes/constantes.utility';
 import { NavController } from '@ionic/angular';
+import { UsuarioLogado } from '../../utilities/usuario-logado/usuario-logado.utility';
+import { MensagemRepository } from '../../../core/state/mensagem/mensagem.repository';
+import { MensagemService } from '../../../core/state/mensagem/mensagem-service/mensagem.service';
+import { Router } from '@angular/router';
+import { AvisoService } from '../../../core/state/aviso/aviso-service/aviso.service';
+import { AvisoRepository } from '../../../core/state/aviso/aviso.repository';
+import { Session } from 'inspector';
+import { SessionService } from '../../../core/state/session/session.service';
+import { LocalNotificationsService } from '../../../core/services/local-notifications/local-notifications.service';
 
 const supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
 
@@ -17,7 +26,19 @@ export class HeaderComponent implements OnInit {
 
   @Input() botaoRetorno: boolean = false;
 
-  constructor(private toastService: ToastService, private navController: NavController) {
+  @Input() botaoLogout: boolean = false;
+
+  constructor(
+    private toastService: ToastService,
+    private navController: NavController,
+    private usuarioLogado: UsuarioLogado,
+    private mensagemService: MensagemService,
+    private avisoService: AvisoService,
+    private avisoRepository: AvisoRepository,
+    private localNotificationsService: LocalNotificationsService,
+    private sessionService: SessionService,
+    private router: Router
+  ) {
     this.inscreverNotificacao();
   }
 
@@ -26,6 +47,15 @@ export class HeaderComponent implements OnInit {
   // nao precisaria remover os canais, pois esses canais persistem por toda aplicacao
   OnDestroy() {
     supabase.removeAllChannels();
+  }
+
+  onLogout(): void {
+    this.sessionService.logout().subscribe();
+    this.localNotificationsService.removeNotificacoes();
+    setTimeout(() => {
+      localStorage.clear();
+      this.navController.navigateRoot('login');
+    }, 500);
   }
 
   inscreverNotificacao() {

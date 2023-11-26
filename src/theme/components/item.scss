@@ -24,12 +24,21 @@
   @include c-item();
 
   --min-height: 75px;
+  border-radius: 1.5rem;
+}
+
+.c-item__medium {
+  @include c-item();
+
+  --min-height: 4rem;
+  border-radius: 1.5rem;
 }
 
 .c-item__grande {
   @include c-item();
 
-  --min-height: 100px;
+  --min-height: 6rem;
+  border-radius: 1.5rem;
 }
 
 .c-item-round {

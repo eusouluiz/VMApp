@@ -33,7 +33,7 @@ export class SessionService {
   logout() {
     return this.sessionApiService.postLogout().pipe(
       tap(() => {
-        this.sessionRepository.update({ session: undefined });
+        this.sessionRepository.update({ session: undefined, userInfo: undefined });
       })
     );
   }

@@ -6,7 +6,12 @@ import { Router } from '@angular/router';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { MensagemService } from '../../../../core/state/mensagem/mensagem-service/mensagem.service';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
-import { Canal, CanalInterface, CanalResponsavel, CanalResponsavelInterface } from '../../../../core/state/gerenciamento/canal/canal.entity';
+import {
+  Canal,
+  CanalInterface,
+  CanalResponsavel,
+  CanalResponsavelInterface,
+} from '../../../../core/state/gerenciamento/canal/canal.entity';
 import { SessionRepository } from '../../../../core/state/session/session.repository';
 import { CanalApiService } from '../../state/canal.api.service';
 import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
@@ -46,15 +51,15 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
     private pageMenuService: PageMenuService,
     private sessionRepository: SessionRepository,
     private gerenciamentoRepository: GerenciamentoRepository,
-    private mensagemRepository: MensagemRepository,
+    private mensagemRepository: MensagemRepository
   ) {
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_MENSAGEM;
     super(router, ROTA_BASE);
 
-    this.preencherCanais()
+    this.preencherCanais();
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   OnDestroy() {
     this.userInfoSubscription?.unsubscribe();
@@ -77,14 +82,16 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
       next: () => {
         if (!this.isResponsavel) {
         } else {
-          this.canalService.buscarCanalResponsavelTodos({ idResponsavel: this.usuarioLogado.getIdResponsavel() }).subscribe({
-            next: () => {
-              this.preencherCanais()
-            },
-          })
+          this.canalService
+            .buscarCanalResponsavelTodos({ idResponsavel: this.usuarioLogado.getIdResponsavel() })
+            .subscribe({
+              next: () => {
+                this.preencherCanais();
+              },
+            });
         }
       },
-    })
+    });
   }
 
   verificarAcesso(canal: Canal): boolean {
@@ -100,22 +107,22 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
       const idResponsavel = this.usuarioLogado.getIdResponsavel();
       if (idResponsavel !== undefined) {
         const canalMensagem = this.mensagemRepository.canais().find((canal) => {
-          return canal.canal?.canal_id === idCanal && canal.responsavel?.responsavel_id === idResponsavel
-        })
+          return canal.canal?.canal_id === idCanal && canal.responsavel?.responsavel_id === idResponsavel;
+        });
 
         if (canalMensagem === undefined) {
           var novoCanalResponsavel: CanalResponsavelInterface = {
             canal_id: idCanal,
-            responsavel_id: idResponsavel
-          }
+            responsavel_id: idResponsavel,
+          };
           this.canalService.incluirCanalResponsavel(novoCanalResponsavel).subscribe({
             next: () => {
               if (novoCanalResponsavel.canal_responsavel_id !== undefined) {
-                rota = novoCanalResponsavel.canal_responsavel_id + ConstantesRotas.ROTA_MENSAGEM_CANAL
+                rota = novoCanalResponsavel.canal_responsavel_id + ConstantesRotas.ROTA_MENSAGEM_CANAL;
                 this.navegarPara(rota);
               }
-            }
-          })
+            },
+          });
         } else {
           rota = canalMensagem.canal_responsavel_id + ConstantesRotas.ROTA_MENSAGEM_CANAL;
           this.navegarPara(rota);
@@ -126,14 +133,14 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
     } else {
       this.responsavelService.buscarTodosResponsaveis().subscribe({
         next: () => {
-          this.canalService.buscarCanalResponsavelTodos({idCanal: idCanal}).subscribe({
+          this.canalService.buscarCanalResponsavelTodos({ idCanal: idCanal }).subscribe({
             next: () => {
               rota = idCanal + ConstantesRotas.ROTA_MENSAGEM_SELECAO_ALUNO;
               this.navegarPara(rota);
             },
-          })
-        }
-      })
+          });
+        },
+      });
     }
   }
 
@@ -143,12 +150,12 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
 
       if (idResponsavel !== undefined) {
         const canalMensagem = this.mensagemRepository.canais().find((canal) => {
-          return canal.canal?.canal_id === idCanal && canal.responsavel?.responsavel_id === idResponsavel
-        })
+          return canal.canal?.canal_id === idCanal && canal.responsavel?.responsavel_id === idResponsavel;
+        });
         if (canalMensagem !== undefined) {
           if (canalMensagem.mensagens !== undefined && canalMensagem.mensagens.length > 0) {
             // ultima mensagem enviada eh a primeira da lista
-            const mensagem = canalMensagem.mensagens[0]
+            const mensagem = canalMensagem.mensagens[0];
             return 'Mensagem:' + mensagem.texto;
           } else {
             return '';
@@ -165,11 +172,11 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
   }
 
   preencherCanais() {
-    const canais = this.mensagemRepository.listaCanais()
-    this.canais = []
+    const canais = this.mensagemRepository.listaCanais();
+    this.canais = [];
     canais.forEach((canal) => {
-      this.canais.push(new Canal(canal))
-    })
+      this.canais.push(new Canal(canal));
+    });
   }
 
   private verificarListaCargo(canal: Canal, idCargo?: string | null): boolean {

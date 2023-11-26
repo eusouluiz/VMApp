@@ -9,29 +9,23 @@ import { CanalResponsavelInterface } from '../../gerenciamento/canal/canal.entit
 import { DataUtil } from '../../../../shared/utilities/data/data.utility';
 
 interface ResponseMensagem {
-  msg: string,
-  data: MensagemInterface
+  msg: string;
+  data: MensagemInterface;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class MensagemService {
-
-  constructor(
-    private mensagemRepository: MensagemRepository,
-    private http: HttpClient,
-  ) {
-
-  }
+  constructor(private mensagemRepository: MensagemRepository, private http: HttpClient) {}
 
   incluirMensagem(mensagem: MensagemInterface): Observable<ResponseMensagem> {
-    return this.http
-      .post<ResponseMensagem>(`${environment.api.endpoint}/mensagem`, mensagem)
-      .pipe(tap((response) => {
-        mensagem.mensagem_id = response.data.mensagem_id
-        this.armazenarMensagem(mensagem)
-      }));
+    return this.http.post<ResponseMensagem>(`${environment.api.endpoint}/mensagem`, mensagem).pipe(
+      tap((response) => {
+        mensagem.mensagem_id = response.data.mensagem_id;
+        this.armazenarMensagem(mensagem);
+      })
+    );
   }
 
   alterarMensagem(mensagem: MensagemInterface): Observable<MensagemInterface> {
@@ -42,50 +36,50 @@ export class MensagemService {
       lida: mensagem.lida,
       user_id: mensagem.user_id,
       canal_responsavel_id: mensagem.canal_responsavel_id,
-    }
-    
-    return this.http
-      .put<MensagemInterface>(`${environment.api.endpoint}/mensagem/${mensagem.id}`, msg);
+    };
+
+    return this.http.put<MensagemInterface>(`${environment.api.endpoint}/mensagem/${mensagem.id}`, msg);
   }
-  
+
   armazenarMensagens(mensagens: MensagemInterface[] | null, idCanalResponsavel: string) {
     if (mensagens !== null) {
-      const canais = this.mensagemRepository.canais()
+      const canais = this.mensagemRepository.canais();
 
-      console.log(canais)
-      console.log(idCanalResponsavel)
-      
       const indexCanal = canais.findIndex((canal) => {
-        return canal.canal_responsavel_id === idCanalResponsavel
-      })
-      console.log(indexCanal)
+        return canal.canal_responsavel_id === idCanalResponsavel;
+      });
 
       if (indexCanal !== -1) {
-        canais[indexCanal].mensagens = mensagens
+        canais[indexCanal].mensagens = mensagens;
       }
-  
-      this.mensagemRepository.update({canais:canais})
+
+      this.mensagemRepository.update({ canais: canais });
     }
   }
 
-  armazenarMensagem(mensagem: MensagemInterface) {
-    const canais = this.mensagemRepository.canais()
+  armazenarMensagem(mensagem: MensagemInterface, idCanal?: string, idResponsavel?: string) {
+    const canais = this.mensagemRepository.canais();
 
-    console.log(canais)
-    console.log(mensagem.canal_responsavel_id)
-    
+    console.log(canais);
+    console.log(mensagem.canal_responsavel_id);
+
     const indexCanal = canais.findIndex((canal) => {
-      return canal.canal_responsavel_id === mensagem.canal_responsavel_id
-    })
-    console.log(indexCanal)
+      return canal.canal_responsavel_id === mensagem.canal_responsavel_id;
+    });
+    console.log(indexCanal);
 
     if (indexCanal !== -1) {
-      canais[indexCanal].mensagens?.unshift(mensagem)
+      canais[indexCanal].mensagens?.unshift(mensagem);
+    } else {
+      var novoCanalMensagem: CanalMensagem = {
+        canal_responsavel_id: mensagem.canal_responsavel_id,
+        mensagens: [mensagem],
+      };
+      canais.push(novoCanalMensagem);
     }
 
-    console.log(canais)
+    console.log(canais);
 
-    this.mensagemRepository.update({canais:canais})
+    this.mensagemRepository.update({ canais: canais });
   }
-
 }

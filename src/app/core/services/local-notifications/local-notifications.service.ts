@@ -110,7 +110,7 @@ export class LocalNotificationsService {
   }
 
   async removeNotificacoes() {
-    return this.criarNotificacoes();
+    return this.setNotificacoes([]);
   }
 
   // eslint-disable-next-line
@@ -120,8 +120,8 @@ export class LocalNotificationsService {
     // const inAMoment = addSeconds(new Date(), 10);
     // const debugNotification: LocalNotificationSchema = {
     //   id: 0,
-    //   title: 'Teste',
-    //   body: 'teste',
+    //   title: inAMoment.toDateString(),
+    //   body: inAMoment.toTimeString(),
     //   schedule: { at: inAMoment },
     //   extra: {
     //     source: 'teste',
