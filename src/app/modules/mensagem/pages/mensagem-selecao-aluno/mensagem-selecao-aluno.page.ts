@@ -71,10 +71,10 @@ export class MensagemSelecaoAlunoPage extends Pagina implements OnInit {
         var apresentacaoAlunos: string = responsavel.alunos[0].nome
 
         if (responsavel.alunos.length > 1) {
-          apresentacaoAlunos = responsavel.alunos[0].nome.split(' ')[0]
+          apresentacaoAlunos = responsavel.alunos[0].nome
           for (let i = 1; i < responsavel.alunos.length; i++) {
             const aluno = responsavel.alunos[i];
-            apresentacaoAlunos = apresentacaoAlunos + ' / ' + responsavel.alunos[i].nome.split(' ')[0]
+            apresentacaoAlunos = apresentacaoAlunos + ' | ' + responsavel.alunos[i].nome
           }
         }
         
