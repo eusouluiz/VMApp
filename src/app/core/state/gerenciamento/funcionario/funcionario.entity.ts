@@ -1,62 +1,67 @@
-import { Cargo } from "../cargo/cargo.entity"
-import { Usuario } from "../usuario/usuario.entity"
+import { Cargo } from '../cargo/cargo.entity';
+import { Usuario } from '../usuario/usuario.entity';
 
 export interface FuncionarioInterface {
-    funcionario_id?: string,
-    user_id?: string, 
-    user?: Usuario,
-    cargo?: Cargo,
-    cargo_id?: string | null,
+  funcionario_id?: string;
+  user_id?: string;
+  user?: Usuario;
+  cargo?: Cargo;
+  cargo_id?: string | null;
 }
 
 export class Funcionario {
-    private _funcionario_id: string = '';
-    private _usuario: Usuario = new Usuario();
-    private _cargo: Cargo = new Cargo();
+  private _funcionario_id: string = '';
 
-    constructor(
-        private data?: FuncionarioInterface
-    ) {
-        if (data !== undefined) {
-            if (data.funcionario_id !== undefined) {
-                this._funcionario_id = data.funcionario_id
-            }
-            if (data.user !== undefined) {
-                this._usuario = data.user
-            }
+  private _usuario: Usuario = new Usuario();
 
-            if (data.cargo !== undefined) {
-                this._cargo = data.cargo
-            } else if (data.cargo_id !== undefined && data.cargo_id !== null) {
-                this._cargo.cargo_id = data.cargo_id
-            }
-        }
-    }
+  private _cargo: Cargo = new Cargo();
 
-    converterFuncionarioInterface(): FuncionarioInterface {
-        return {
-            funcionario_id: this._funcionario_id,
-            user: this._usuario,
-            cargo: this._cargo,
-        }
-    }
+  constructor(private data?: FuncionarioInterface) {
+    if (data !== undefined) {
+      if (data.funcionario_id !== undefined) {
+        this._funcionario_id = data.funcionario_id;
+      }
+      if (data.user !== undefined) {
+        this._usuario = data.user;
+      }
 
-    public get funcionario_id(): string {
-        return this._funcionario_id
+      if (data.cargo !== undefined) {
+        this._cargo = data.cargo;
+      } else if (data.cargo_id !== undefined && data.cargo_id !== null) {
+        this._cargo.cargo_id = data.cargo_id;
+      }
     }
-    public set funcionario_id(value: string) {
-        this._funcionario_id = value
-    }
-    public get usuario(): Usuario {
-        return this._usuario
-    }
-    public set usuario(value: Usuario) {
-        this._usuario = value
-    }
-    public get cargo(): Cargo {
-        return this._cargo
-    }
-    public set cargo(value: Cargo) {
-        this._cargo = value
-    }
+  }
+
+  converterFuncionarioInterface(): FuncionarioInterface {
+    return {
+      funcionario_id: this._funcionario_id,
+      user: this._usuario,
+      cargo: this._cargo,
+    };
+  }
+
+  public get funcionario_id(): string {
+    return this._funcionario_id;
+  }
+
+  public set funcionario_id(value: string) {
+    this._funcionario_id = value;
+  }
+
+  public get usuario(): Usuario {
+    return this._usuario;
+  }
+
+  public set usuario(value: Usuario) {
+    this._usuario = value;
+  }
+
+  public get cargo(): Cargo {
+    return this._cargo;
+  }
+
+  public set cargo(value: Cargo) {
+    this._cargo = value;
+  }
 }

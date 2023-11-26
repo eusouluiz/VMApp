@@ -38,6 +38,7 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     private pageMenuService: PageMenuService,
     private mensagemRepository: MensagemRepository,
   ) {
+    console.log('entra')
     const ROTA_BASE = ConstantesRotas.ROTA_APP + ConstantesRotas.ROTA_MENSAGEM;
     super(router, ROTA_BASE);
 
@@ -51,7 +52,7 @@ export class MensagemCanalPage extends Pagina implements OnInit {
     this.pageMenuService.displayStatus.next(false);
   }
 
-  OnDestroy() {
+  ngOnDestroy(): void {
     supabase.removeAllChannels()
   }
 
@@ -132,7 +133,6 @@ export class MensagemCanalPage extends Pagina implements OnInit {
 
   protected inicializarConteudo(): void {
     const id = this.activatedRoute.snapshot.paramMap.get('idCanalResponsavel');
-    console.log(id)
     if (id !== null) {
       this.resgatarCanalResponsavel(id);
       this.resgatarMensagens(id);
@@ -171,15 +171,12 @@ export class MensagemCanalPage extends Pagina implements OnInit {
         async (payload: any) => {
           console.log('Mensagem Change received!', payload)
           if (payload.new.user_id === this.idUsuario) {
-            console.log(this.mensagens)
             const mensagem = this.mensagens.find((mensagem) => {
               return mensagem.mensagem_id === payload.old.id
             })
-            console.log(mensagem)
             if (mensagem !== undefined) {
               mensagem.lida = true
             }
-            console.log(mensagem)
           }
         }
       )

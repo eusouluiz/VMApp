@@ -13,6 +13,10 @@ import { AvisoRepository } from '../../../core/state/aviso/aviso.repository';
 import { Session } from 'inspector';
 import { SessionService } from '../../../core/state/session/session.service';
 import { LocalNotificationsService } from '../../../core/services/local-notifications/local-notifications.service';
+import { AvisoInterface } from '../../../core/state/aviso/aviso-service/aviso.entity';
+import { Turma, TurmaInterface } from '../../../core/state/gerenciamento/turma/turma.entity';
+import { AvisoService } from '../../../core/state/aviso/aviso-service/aviso.service';
+import { AvisoRepository } from '../../../core/state/aviso/aviso.repository';
 
 const supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
 
@@ -45,7 +49,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {}
 
   // nao precisaria remover os canais, pois esses canais persistem por toda aplicacao
-  OnDestroy() {
+  ngOnDestroy() {
     supabase.removeAllChannels();
   }
 
@@ -64,16 +68,59 @@ export class HeaderComponent implements OnInit {
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'mensagens' }, async (payload: any) => {
         console.log('Mensagem Change received!', payload);
 
-        var nome = await this.getUsuarioNome(payload.new.user_id);
-        console.log(nome);
-        this.toastService.message(nome + ': ' + payload.new.texto);
+        // verifica se a mensagem nao eh do proprio usuario
+        if (payload.new.user_id !== this.usuarioLogado.getIdUsuario()) {
+          const urlSeparada = this.router.url.split('/');
+          const idCanalResponsavelUrl = urlSeparada[urlSeparada.length - 2];
+          const idCanalResponsavel = payload.new.canal_responsavel_id;
+
+          // verifica se a pessoa nao esta no proprio canal de mensagens
+          if (idCanalResponsavelUrl !== idCanalResponsavel) {
+            var nomeCanal = await this.resgatarCanalNome(idCanalResponsavel);
+            if (this.usuarioLogado.isResponsavel()) {
+              if (await this.isResponsavelPossuiAcessoCanalResponsavel(idCanalResponsavel)) {
+                this.toastService.message(`${nomeCanal}: ${payload.new.texto}`);
+                this.mensagemService.armazenarMensagem(payload.new);
+              }
+            } else {
+              if (await this.isCargoPossuiAcessoCanalResponsavel(idCanalResponsavel)) {
+                var nome = await this.getUsuarioNome(payload.new.user_id);
+                this.toastService.message(`${nomeCanal} - ${nome}: ${payload.new.texto}`);
+                this.mensagemService.armazenarMensagem(payload.new);
+              }
+            }
+          }
+        }
       })
       .subscribe();
     const aviso = supabase
       .channel(ConstantesSupabase.CANAL_NOTIFICACAO_AVISO)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'avisos' }, async (payload: any) => {
         console.log('Aviso Change received!', payload);
-        this.toastService.message('Novo Aviso: ' + payload.new.titulo);
+
+        
+        if(this.usuarioLogado.isResponsavel()){
+
+          const listaTurmasAviso = await this.resgatarTurmasAviso(payload.new.id)
+
+          if (this.isResponsavelRecebeAviso(listaTurmasAviso)) {
+            var novoAviso: AvisoInterface = {
+              aviso_id: payload.new.id,
+              arquivo: payload.new.arquivo,
+              canal_id: payload.new.canal_id,
+              data_publicacao: payload.new.data_publicacao,
+              funcionario_id: payload.new.funcionario_id,
+              prioridade: payload.new.prioridade,
+              texto: payload.new.texto,
+              titulo: payload.new.titulo,
+              turmas: listaTurmasAviso
+            }
+
+            this.avisoService.armazenarAviso(novoAviso)
+            this.toastService.message('Novo Aviso: ' + payload.new.titulo);
+          }
+        }
+
       })
       .subscribe();
   }
@@ -92,5 +139,113 @@ export class HeaderComponent implements OnInit {
       return users.nome;
     }
     return '';
+  }
+
+  async resgatarCanalNome(idCanalResponsavel: string): Promise<string> {
+    let { data: canal, error } = await supabase
+      .from('canal_responsavel')
+      .select(
+        `
+        canais (
+          nome
+        )
+      `
+      )
+      // Filters
+      .eq('id', idCanalResponsavel)
+      .single();
+
+    const retorno: any = canal;
+    if (canal !== null) {
+      return retorno.canais.nome;
+    }
+    return '';
+  }
+
+  async isCargoPossuiAcessoCanalResponsavel(idCanalResponsavel: string): Promise<boolean> {
+    let { data: canal, error } = await supabase
+      .from('canal_responsavel')
+      .select(
+        `
+        canais (
+          canal_cargo (
+            cargo_id
+          )
+        )
+      `
+      )
+      // Filters
+      .eq('id', idCanalResponsavel)
+      .single();
+
+    const retorno: any = canal
+    if (retorno !== null) {
+      for (let i = 0; i < retorno.canais.canal_cargo.length; i++) {
+        const idCargo = retorno.canais.canal_cargo[i].cargo_id;
+        if (idCargo === this.usuarioLogado.getIdCargo()) {
+          return true
+        }
+      }
+    }
+    return false;
+  }
+
+  async isResponsavelPossuiAcessoCanalResponsavel(idCanalResponsavel: string): Promise<boolean> {
+    let { data: canal, error } = await supabase
+      .from('canal_responsavel')
+      .select(
+        `
+        responsavel_id
+      `
+      )
+      // Filters
+      .eq('id', idCanalResponsavel)
+      .single();
+
+    return canal !== null && canal.responsavel_id === this.usuarioLogado.getIdResponsavel();
+  }
+
+  async resgatarTurmasAviso(idAviso: string): Promise<any[]>{
+    let { data: aviso, error } = await supabase
+      .from('avisos')
+      .select(`
+        aviso_turma (
+          turmas (
+            id, nome, descricao
+          )
+        )
+      `)
+      // Filters
+      .eq('id', idAviso)
+      .single();
+
+    console.log(aviso)
+
+    var listaTurmas: TurmaInterface[] = []
+
+    const retorno: any = aviso
+    if (retorno !== null){
+      retorno.aviso_turma.forEach((avisoTurma: any) => {
+        listaTurmas.push({
+          turma_id: avisoTurma.turmas.id,
+          nome: avisoTurma.turmas.nome,
+          descricao: avisoTurma.turmas.descricao
+        })
+      })
+    }
+    return listaTurmas
+  }
+  
+  isResponsavelRecebeAviso(listaTurmasAviso: Turma[]): boolean {
+    const idTurmasResponsavel = this.usuarioLogado.getListaIdTurmas()
+
+    for (let i = 0; i < listaTurmasAviso.length; i++) {
+      const idTurmaAviso = listaTurmasAviso[i].turma_id;
+      if(idTurmasResponsavel.includes(idTurmaAviso)){
+        return true
+      }
+    }
+
+    return false
   }
 }

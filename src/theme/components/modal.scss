@@ -68,6 +68,7 @@ ion-modal::part(content) {
       --border-radius: #{$size-md};
       --height: auto !important;
       --width: auto !important;
+      max-width: 90vw !important;
     }
   }
 
