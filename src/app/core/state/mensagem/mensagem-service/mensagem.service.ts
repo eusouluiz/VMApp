@@ -66,16 +66,12 @@ export class MensagemService {
     }
   }
 
-  armazenarMensagem(mensagem: MensagemInterface, idCanal?: string, idResponsavel?: string) {
+  armazenarMensagem(mensagem: MensagemInterface) {
     const canais = this.mensagemRepository.canais()
-
-    console.log(canais)
-    console.log(mensagem.canal_responsavel_id)
     
     const indexCanal = canais.findIndex((canal) => {
       return canal.canal_responsavel_id === mensagem.canal_responsavel_id
     })
-    console.log(indexCanal)
 
     if (indexCanal !== -1) {
       canais[indexCanal].mensagens?.unshift(mensagem)
@@ -86,8 +82,6 @@ export class MensagemService {
       }
       canais.push(novoCanalMensagem)
     }
-
-    console.log(canais)
 
     this.mensagemRepository.update({canais:canais})
   }

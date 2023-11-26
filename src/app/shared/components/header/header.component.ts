@@ -8,6 +8,9 @@ import { UsuarioLogado } from '../../utilities/usuario-logado/usuario-logado.uti
 import { MensagemRepository } from '../../../core/state/mensagem/mensagem.repository';
 import { MensagemService } from '../../../core/state/mensagem/mensagem-service/mensagem.service';
 import { Router } from '@angular/router';
+import { AvisoInterface } from '../../../core/state/aviso/aviso-service/aviso.entity';
+import { Turma, TurmaInterface } from '../../../core/state/gerenciamento/turma/turma.entity';
+import { AvisoService } from '../../../core/state/aviso/aviso-service/aviso.service';
 
 const supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
 
@@ -26,6 +29,7 @@ export class HeaderComponent implements OnInit {
     private navController: NavController,
     private usuarioLogado: UsuarioLogado,
     private mensagemService: MensagemService,
+    private avisoService: AvisoService,
     private router: Router
   ) {
     this.inscreverNotificacao();
@@ -74,7 +78,30 @@ export class HeaderComponent implements OnInit {
       .channel(ConstantesSupabase.CANAL_NOTIFICACAO_AVISO)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'avisos' }, async (payload: any) => {
         console.log('Aviso Change received!', payload);
-        this.toastService.message('Novo Aviso: ' + payload.new.titulo);
+
+        
+        if(this.usuarioLogado.isResponsavel()){
+
+          const listaTurmasAviso = await this.resgatarTurmasAviso(payload.new.id)
+
+          if (this.isResponsavelRecebeAviso(listaTurmasAviso)) {
+            var novoAviso: AvisoInterface = {
+              aviso_id: payload.new.id,
+              arquivo: payload.new.arquivo,
+              canal_id: payload.new.canal_id,
+              data_publicacao: payload.new.data_publicacao,
+              funcionario_id: payload.new.funcionario_id,
+              prioridade: payload.new.prioridade,
+              texto: payload.new.texto,
+              titulo: payload.new.titulo,
+              turmas: listaTurmasAviso
+            }
+
+            this.avisoService.armazenarAviso(novoAviso)
+            this.toastService.message('Novo Aviso: ' + payload.new.titulo);
+          }
+        }
+
       })
       .subscribe();
   }
@@ -129,10 +156,12 @@ export class HeaderComponent implements OnInit {
       .single();
 
     const retorno: any = canal
-    for (let i = 0; i < retorno.canais.canal_cargo.length; i++) {
-      const idCargo = retorno.canais.canal_cargo[i].cargo_id;
-      if (idCargo === this.usuarioLogado.getIdCargo()) {
-        return true
+    if (retorno !== null) {
+      for (let i = 0; i < retorno.canais.canal_cargo.length; i++) {
+        const idCargo = retorno.canais.canal_cargo[i].cargo_id;
+        if (idCargo === this.usuarioLogado.getIdCargo()) {
+          return true
+        }
       }
     }
     return false
@@ -149,5 +178,49 @@ export class HeaderComponent implements OnInit {
       .single();
 
     return canal !== null && canal.responsavel_id === this.usuarioLogado.getIdResponsavel()
+  }
+
+  async resgatarTurmasAviso(idAviso: string): Promise<any[]>{
+    let { data: aviso, error } = await supabase
+      .from('avisos')
+      .select(`
+        aviso_turma (
+          turmas (
+            id, nome, descricao
+          )
+        )
+      `)
+      // Filters
+      .eq('id', idAviso)
+      .single();
+
+    console.log(aviso)
+
+    var listaTurmas: TurmaInterface[] = []
+
+    const retorno: any = aviso
+    if (retorno !== null){
+      retorno.aviso_turma.forEach((avisoTurma: any) => {
+        listaTurmas.push({
+          turma_id: avisoTurma.turmas.id,
+          nome: avisoTurma.turmas.nome,
+          descricao: avisoTurma.turmas.descricao
+        })
+      })
+    }
+    return listaTurmas
+  }
+  
+  isResponsavelRecebeAviso(listaTurmasAviso: Turma[]): boolean {
+    const idTurmasResponsavel = this.usuarioLogado.getListaIdTurmas()
+
+    for (let i = 0; i < listaTurmasAviso.length; i++) {
+      const idTurmaAviso = listaTurmasAviso[i].turma_id;
+      if(idTurmasResponsavel.includes(idTurmaAviso)){
+        return true
+      }
+    }
+
+    return false
   }
 }

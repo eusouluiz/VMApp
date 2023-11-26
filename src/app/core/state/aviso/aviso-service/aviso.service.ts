@@ -136,18 +136,23 @@ export class AvisoService {
     );
   }
 
-  alterarAvisoResponsavel(avisoResponsavel: AvisoResponsavel) {
-    var indexA = AVISO_RESPONSAVEL_DATA.findIndex((ar) => {
-      return ar.aviso_responsavel_id === avisoResponsavel.aviso_responsavel_id;
-    });
-    if (indexA !== -1) {
-      AVISO_RESPONSAVEL_DATA[indexA] = avisoResponsavel;
-    } else {
-      throw new Error('aviso nao encontrado');
-    }
-  }
-
   saveVinculosAvisoResponsavel(vinculosAvisoResponsavel: AvisoResponsavelInterface[]): void {
     this.avisoRepository.update({ vinculosAvisoResponsavel: vinculosAvisoResponsavel });
+  }
+
+  armazenarAviso(aviso: AvisoInterface) {
+    const avisos = this.avisoRepository.avisos()
+    
+    const indexAviso = avisos.findIndex((avisoStorage) => {
+      return avisoStorage.aviso_id === aviso.aviso_id
+    })
+
+    if (indexAviso !== -1) {
+      avisos[indexAviso] = aviso
+    } else {
+      avisos.push(aviso)
+    }
+
+    this.avisoRepository.update({avisos:avisos})
   }
 }
