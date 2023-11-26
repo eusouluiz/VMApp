@@ -8,8 +8,6 @@ import { UsuarioLogado } from '../../utilities/usuario-logado/usuario-logado.uti
 import { MensagemRepository } from '../../../core/state/mensagem/mensagem.repository';
 import { MensagemService } from '../../../core/state/mensagem/mensagem-service/mensagem.service';
 import { Router } from '@angular/router';
-import { AvisoService } from '../../../core/state/aviso/aviso-service/aviso.service';
-import { AvisoRepository } from '../../../core/state/aviso/aviso.repository';
 import { Session } from 'inspector';
 import { SessionService } from '../../../core/state/session/session.service';
 import { LocalNotificationsService } from '../../../core/services/local-notifications/local-notifications.service';
