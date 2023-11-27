@@ -44,8 +44,8 @@ export class Funcionalidade {
 export var FUNCIONALIDADE_DATA: Funcionalidade[] = [
     new Funcionalidade({
       funcionalidade_id: ConstantesFuncionalidades.GERENCIAMENTO_RESPONSAVEL,
-      nome: 'Gerenciamento Responsaveis',
-      descricao: 'Gerencia todos os responsaveis',
+      nome: 'Gerenciamento Responsáveis',
+      descricao: 'Gerencia todos os responsáveis',
     }),
     new Funcionalidade({
       funcionalidade_id: ConstantesFuncionalidades.GERENCIAMENTO_ALUNO,
@@ -59,8 +59,8 @@ export var FUNCIONALIDADE_DATA: Funcionalidade[] = [
     }),
     new Funcionalidade({
       funcionalidade_id: ConstantesFuncionalidades.GERENCIAMENTO_FUNCIONARIO,
-      nome: 'Gerenciamento Funcionarios',
-      descricao: 'Gerencia todos os funcionarios',
+      nome: 'Gerenciamento Funcionários',
+      descricao: 'Gerencia todos os funcionários',
     }),
     new Funcionalidade({
       funcionalidade_id: ConstantesFuncionalidades.GERENCIAMENTO_CARGO,

@@ -7,15 +7,16 @@ import { Observable, tap } from 'rxjs';
 import { Funcionario, FuncionarioInterface } from '../funcionario/funcionario.entity';
 import { ListaUtil } from '../../../../shared/utilities/lista/lista.utility';
 import { FuncionarioService } from '../funcionario/funcionario.service';
+import { Funcionalidade, FuncionalidadeInterface } from '../funcionalidade/funcionalidade.entity';
 
 interface ResponseCargo {
     msg: string,
     data: CargoInterface,
 }
 
-interface AssociacaoFuncionarioCargo {
+interface AssociacaoFuncionalidadeCargo {
     id?: string,
-    funcionario_id: string,
+    funcionalidade_id: string,
     cargo_id: string,
 }
 
@@ -111,14 +112,43 @@ export class CargoService {
         })
     }
 
-    vincularFuncionario(associacao: AssociacaoFuncionarioCargo): Observable<AssociacaoFuncionarioCargo> {
-        return this.http
-            .post<AssociacaoFuncionarioCargo>(`${environment.api.endpoint}/funcionario-cargo`, associacao);
+    vincularFuncionalidades(cargo: Cargo, funcionalidades: Funcionalidade[]) {
+        var listaIdFuncionalidades: string[] = []
+        cargo.funcionalidades.forEach((funcionalidade) => {
+            listaIdFuncionalidades.push(funcionalidade.funcionalidade_id)
+        })
+        var listaIdFuncionalidadesNovos: string[] = []
+        funcionalidades.forEach((funcionalidade) => {
+            listaIdFuncionalidadesNovos.push(funcionalidade.funcionalidade_id)
+        })
+
+        const [idsNovos, idsDeletados, idsExistentes] = ListaUtil.retornarDiferencaListas(listaIdFuncionalidadesNovos, listaIdFuncionalidades)
+
+        idsNovos.forEach((id: string) => {
+            const associacao: AssociacaoFuncionalidadeCargo = {
+                cargo_id: cargo.cargo_id,
+                funcionalidade_id: id,
+            }
+            this.vincularFuncionalidade(associacao).subscribe()
+        })
+
+        idsDeletados.forEach((id: string) => {
+            const associacao: AssociacaoFuncionalidadeCargo = {
+                cargo_id: cargo.cargo_id,
+                funcionalidade_id: id,
+            }
+            this.desvincularFuncionalidade(associacao).subscribe()
+        })
     }
 
-    desvincularFuncionario(associacao: AssociacaoFuncionarioCargo): Observable<AssociacaoFuncionarioCargo> {
+    vincularFuncionalidade(associacao: AssociacaoFuncionalidadeCargo): Observable<AssociacaoFuncionalidadeCargo> {
         return this.http
-            .delete<AssociacaoFuncionarioCargo>(`${environment.api.endpoint}/funcionario-cargo/${associacao.funcionario_id}/${associacao.cargo_id}`)
+            .post<AssociacaoFuncionalidadeCargo>(`${environment.api.endpoint}/cargo-funcionalidade`, associacao);
+    }
+
+    desvincularFuncionalidade(associacao: AssociacaoFuncionalidadeCargo): Observable<AssociacaoFuncionalidadeCargo> {
+        return this.http
+            .delete<AssociacaoFuncionalidadeCargo>(`${environment.api.endpoint}/cargo-funcionalidade/${associacao.cargo_id}/${associacao.funcionalidade_id}`)
     }
 
     saveCargosInStorage(cargos: CargoInterface[]) {

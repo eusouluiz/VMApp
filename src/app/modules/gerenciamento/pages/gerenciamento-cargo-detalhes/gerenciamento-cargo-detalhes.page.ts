@@ -204,6 +204,7 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
             this.atualizarCargo()
             this.cargoService.vincularFuncionarios(this.cargo, this.listaFuncionariosTabela)
             this.atualizarFuncionarios()
+            this.cargoService.vincularFuncionalidades(this.cargo, this.listaFuncionalidadesTabela)
             this.cargoService.saveCargoInStorage(this.cargo.converterCargoInterface())
             this.toastService.success('Sucesso ao editar ' + this.cargo.nome);
             this.retornarModoDetalhes()

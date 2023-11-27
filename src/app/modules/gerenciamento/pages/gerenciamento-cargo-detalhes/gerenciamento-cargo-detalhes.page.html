@@ -62,12 +62,12 @@
             <ion-col size="12">
               <form [formGroup]="formBuscaFuncionario">
                 <app-autocomplete
-                  placeholder="Insira o nome do funcionario"
+                  placeholder="Insira o nome do funcionário"
                   formControlName="buscaFuncionario"
                   idBusca="busca-funcionario"
                   [listaItens]="nomeFuncionariosBusca"
                   (onBusca)="adicionarFuncionario($event)"
-                  textoSemResultado="Cadastrar novo funcionario"
+                  textoSemResultado="Cadastrar novo funcionário"
                   icone="add"></app-autocomplete>
               </form>
             </ion-col>
