@@ -75,6 +75,7 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
     this.canalService.buscarTodosCanaisMensagem().subscribe({
       next: () => {
         if (!this.isResponsavel) {
+          this.preencherCanais()
         } else {
           this.canalService
             .buscarCanalResponsavelTodos({ idResponsavel: this.usuarioLogado.getIdResponsavel() })
