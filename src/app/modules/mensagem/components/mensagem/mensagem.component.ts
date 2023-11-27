@@ -26,7 +26,7 @@ export class MensagemComponent implements OnInit {
 
   resgatarHorario() {
     const dia = this.formatarNumero(this.mensagem.data_envio.getDate())
-    const mes = this.formatarNumero(this.mensagem.data_envio.getMonth())
+    const mes = this.formatarNumero(this.mensagem.data_envio.getMonth() + 1)
     const hora = this.formatarNumero(this.mensagem.data_envio.getHours());
     const minuto = this.formatarNumero(this.mensagem.data_envio.getMinutes());
 
