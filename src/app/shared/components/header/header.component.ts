@@ -5,13 +5,10 @@ import { ToastService } from '../../../core/toasts/services/toast-service/toast.
 import { ConstantesSupabase } from '../../utilities/constantes/constantes.utility';
 import { NavController } from '@ionic/angular';
 import { UsuarioLogado } from '../../utilities/usuario-logado/usuario-logado.utility';
-import { MensagemRepository } from '../../../core/state/mensagem/mensagem.repository';
 import { MensagemService } from '../../../core/state/mensagem/mensagem/mensagem.service';
 import { Router } from '@angular/router';
-import { Session } from 'inspector';
 import { SessionService } from '../../../core/state/session/session.service';
 import { LocalNotificationsService } from '../../../core/services/local-notifications/local-notifications.service';
-import { AvisoInterface } from '../../../core/state/aviso/aviso/aviso.entity';
 import { Turma, TurmaInterface } from '../../../core/state/gerenciamento/turma/turma.entity';
 import { AvisoService } from '../../../core/state/aviso/aviso/aviso.service';
 import { AvisoRepository } from '../../../core/state/aviso/aviso.repository';
@@ -100,19 +97,6 @@ export class HeaderComponent implements OnInit {
           const listaTurmasAviso = await this.resgatarTurmasAviso(payload.new.id);
 
           if (this.isResponsavelRecebeAviso(listaTurmasAviso)) {
-            // var novoAviso: AvisoInterface = {
-            //   aviso_id: payload.new.id,
-            //   arquivo: payload.new.arquivo,
-            //   canal_id: payload.new.canal_id,
-            //   data_publicacao: payload.new.data_publicacao,
-            //   funcionario_id: payload.new.funcionario_id,
-            //   prioridade: payload.new.prioridade,
-            //   texto: payload.new.texto,
-            //   titulo: payload.new.titulo,
-            //   turmas: listaTurmasAviso,
-            // };
-
-            // this.avisoService.armazenarAviso(novoAviso);
             this.avisoService.buscarTodosAvisos().subscribe();
             this.toastService.message('Novo Aviso: ' + payload.new.titulo);
           }

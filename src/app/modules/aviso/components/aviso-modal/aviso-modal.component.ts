@@ -51,6 +51,7 @@ export class AvisoModalComponent implements OnInit {
       titulo: ['', Validators.required],
       texto: ['', Validators.required],
     })
+    this.buscarAvisoResponsavel()
   }
 
   ngOnInit() { }
@@ -141,12 +142,16 @@ export class AvisoModalComponent implements OnInit {
   }
 
   buscarAvisoResponsavel() {
-    const listaVinculo = this.avisoRepository.vinculosAvisoResponsavel().filter((vinculo) => {
-      return this.aviso.aviso_id === vinculo.aviso_id
-    })
-    this.listaAvisoResponsavel.splice(0, this.listaAvisoResponsavel.length)
-    listaVinculo.forEach((vinculo) => {
-      this.listaAvisoResponsavel.push(new AvisoResponsavel(vinculo))
+    this.avisoService.buscarTodosAvisosResponsavel().subscribe({
+      next: () => {
+        const listaVinculo = this.avisoRepository.vinculosAvisoResponsavel().filter((vinculo) => {
+          return this.aviso.aviso_id === vinculo.aviso_id
+        })
+        this.listaAvisoResponsavel.splice(0, this.listaAvisoResponsavel.length)
+        listaVinculo.forEach((vinculo) => {
+          this.listaAvisoResponsavel.push(new AvisoResponsavel(vinculo))
+        })
+      }
     })
   }
 
