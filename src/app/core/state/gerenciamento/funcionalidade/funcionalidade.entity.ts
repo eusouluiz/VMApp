@@ -1,18 +1,15 @@
+import { ConstantesFuncionalidades } from "../../../../shared/utilities/constantes/constantes.utility";
 
 export interface FuncionalidadeInterface {
     funcionalidade_id: string,
     nome: string,
     descricao: string,
-    updated_at: Date,
-    created_at: Date
 }
 
 export class Funcionalidade {
     private _funcionalidade_id: string = '';
     private _nome: string = '';
     private _descricao: string = '';
-    private _updated_at: Date = new Date();
-    private _created_at: Date = new Date();
 
     constructor (
         private data?: FuncionalidadeInterface,
@@ -21,9 +18,6 @@ export class Funcionalidade {
             this._funcionalidade_id = data.funcionalidade_id
             this._nome = data.nome
             this._descricao = data.descricao
-            this._updated_at = data.updated_at
-            this._created_at = data.created_at
-
         }
     }
     
@@ -45,16 +39,42 @@ export class Funcionalidade {
     public set descricao(value: string) {
         this._descricao = value;
     }
-    public get updated_at(): Date {
-        return this._updated_at;
-    }
-    public set updated_at(value: Date) {
-        this._updated_at = value;
-    }
-    public get created_at(): Date {
-        return this._created_at;
-    }
-    public set created_at(value: Date) {
-        this._created_at = value;
-    }
 }
+
+export var FUNCIONALIDADE_DATA: Funcionalidade[] = [
+    new Funcionalidade({
+      funcionalidade_id: ConstantesFuncionalidades.GERENCIAMENTO_RESPONSAVEL,
+      nome: 'Gerenciamento Responsaveis',
+      descricao: 'Gerencia todos os responsaveis',
+    }),
+    new Funcionalidade({
+      funcionalidade_id: ConstantesFuncionalidades.GERENCIAMENTO_ALUNO,
+      nome: 'Gerenciamento Aluno',
+      descricao: 'Gerencia todos os alunos',
+    }),
+    new Funcionalidade({
+      funcionalidade_id: ConstantesFuncionalidades.GERENCIAMENTO_TURMA,
+      nome: 'Gerenciamento Turma',
+      descricao: 'Gerencia todas as turmas',
+    }),
+    new Funcionalidade({
+      funcionalidade_id: ConstantesFuncionalidades.GERENCIAMENTO_FUNCIONARIO,
+      nome: 'Gerenciamento Funcionarios',
+      descricao: 'Gerencia todos os funcionarios',
+    }),
+    new Funcionalidade({
+      funcionalidade_id: ConstantesFuncionalidades.GERENCIAMENTO_CARGO,
+      nome: 'Gerenciamento Cargo',
+      descricao: 'Gerencia todos os cargos',
+    }),
+    new Funcionalidade({
+      funcionalidade_id: ConstantesFuncionalidades.GERENCIAMENTO_CANAL,
+      nome: 'Gerenciamento Canal',
+      descricao: 'Gerencia todos os canais',
+    }),
+    new Funcionalidade({
+      funcionalidade_id: ConstantesFuncionalidades.GERENCIAMENTO_AVISO,
+      nome: 'Gerenciamento Aviso',
+      descricao: 'Gerencia todos os avisos',
+    }),
+  ];

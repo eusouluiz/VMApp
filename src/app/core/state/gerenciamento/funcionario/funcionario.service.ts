@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { FUNCIONARIO_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
 import { Funcionario, FuncionarioInterface } from './funcionario.entity';
 import { GerenciamentoRepository } from '../gerenciamento.repository';
 import { HttpClient } from '@angular/common/http';

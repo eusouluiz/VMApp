@@ -9,7 +9,7 @@ import { IonInput } from '@ionic/angular';
 import { Usuario } from '../../../../core/state/gerenciamento/usuario/usuario.entity';
 import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
 import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
-import { AvisoService } from '../../../../core/state/aviso/aviso-service/aviso.service';
+import { AvisoService } from '../../../../core/state/aviso/aviso/aviso.service';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 
 @Component({

@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
-import { MENSAGEM_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
-import { Mensagem, MensagemInterface } from './mensagem.entity';
+import { MensagemInterface } from './mensagem.entity';
 import { CanalMensagem, MensagemRepository } from '../mensagem.repository';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
-import { Canal, CanalResponsavelInterface } from '../../gerenciamento/canal/canal.entity';
 import { DataUtil } from '../../../../shared/utilities/data/data.utility';
-import { Responsavel } from '../../gerenciamento/responsavel/responsavel.entity';
 
 interface ResponseMensagem {
   msg: string;

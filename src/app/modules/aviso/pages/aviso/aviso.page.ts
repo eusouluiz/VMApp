@@ -1,5 +1,5 @@
 import { ModalController } from '@ionic/angular';
-import { AvisoService } from '../../../../core/state/aviso/aviso-service/aviso.service';
+import { AvisoService } from '../../../../core/state/aviso/aviso/aviso.service';
 import { Component, OnInit } from '@angular/core';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { Router } from '@angular/router';
@@ -11,15 +11,13 @@ import { AvisoModalComponent } from '../../components/aviso-modal/aviso-modal.co
 import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
 import { NovoAvisoComponent } from '../../components/novo-aviso/novo-aviso.component';
 import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
-import { Aviso, AvisoInterface } from '../../../../core/state/aviso/aviso-service/aviso.entity';
+import { Aviso, AvisoInterface } from '../../../../core/state/aviso/aviso/aviso.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
-import { AVISO_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
 import { AvisoRepository } from '../../../../core/state/aviso/aviso.repository';
 import { DataUtil } from '../../../../shared/utilities/data/data.utility';
 import { MensagemRepository } from '../../../../core/state/mensagem/mensagem.repository';
 import { CanalResponsavelInterface } from '../../../../core/state/gerenciamento/canal/canal.entity';
-import { Lembrete, LembreteInterface } from '../../../../core/services/lembrete-service/lembrete.entity';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-aviso',
@@ -78,23 +76,8 @@ export class AvisoPage extends Pagina implements OnInit {
   }
 
   recarregarPagina() {
-    this.avisoService.buscarTodosAvisos().subscribe({
-      // next: () => {
-      //   this.resgatarAvisos();
-      // },
-    });
+    this.avisoService.buscarTodosAvisos().subscribe({});
   }
-
-  // resgatarAvisos() {
-  //   const avisos = this.avisoRepository.avisos();
-  //   this.avisos.splice(0, this.avisos.length);
-  //   avisos.forEach((aviso) => {
-  //     this.avisos.push(new Aviso(aviso));
-  //   });
-  //   if (!this.isResponsavel) {
-  //     this.avisoService.buscarTodosAvisosResponsavel().subscribe();
-  //   }
-  // }
 
   async abrirModalAviso(aviso: Aviso) {
     var modal;

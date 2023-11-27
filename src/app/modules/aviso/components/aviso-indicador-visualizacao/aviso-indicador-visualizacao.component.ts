@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { AvisoResponsavel } from '../../../../core/state/aviso/aviso-service/aviso.entity';
+import { AvisoResponsavel } from '../../../../core/state/aviso/aviso/aviso.entity';
 
 @Component({
   selector: 'app-aviso-indicador-visualizacao',

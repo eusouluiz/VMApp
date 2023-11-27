@@ -1,6 +1,5 @@
 import { AlunoService } from './../aluno/aluno.service';
 import { Injectable } from '@angular/core';
-import { RESPONSAVEL_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
 import { Turma, TurmaInterface } from './turma.entity';
 import { GerenciamentoRepository } from '../gerenciamento.repository';
 import { HttpClient } from '@angular/common/http';

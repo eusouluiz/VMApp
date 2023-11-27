@@ -1,7 +1,7 @@
 import { createStore, select, withProps } from '@ngneat/elf';
 import { Injectable } from '@angular/core';
 import { localStorageStrategy, persistState } from '@ngneat/elf-persist-state';
-import { AvisoInterface, AvisoResponsavelInterface } from './aviso-service/aviso.entity';
+import { AvisoInterface, AvisoResponsavelInterface } from './aviso/aviso.entity';
 
 interface AvisoState {
   avisos: AvisoInterface[];

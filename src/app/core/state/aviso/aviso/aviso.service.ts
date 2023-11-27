@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
-import { AVISO_RESPONSAVEL_DATA, RESPONSAVEL_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
-import { Aviso, AvisoInterface, AvisoResponsavel, AvisoResponsavelInterface } from './aviso.entity';
+import { Aviso, AvisoInterface, AvisoResponsavelInterface } from './aviso.entity';
 import { AvisoRepository } from '../aviso.repository';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { Observable, tap } from 'rxjs';
-import { ListaUtil } from '../../../../shared/utilities/lista/lista.utility';
 import { Turma } from '../../gerenciamento/turma/turma.entity';
 import { ResponsavelService } from '../../gerenciamento/responsavel/responsavel.service';
-import { Responsavel } from '../../gerenciamento/responsavel/responsavel.entity';
 
 interface ResponseGetAviso {
   data: AvisoInterface[];

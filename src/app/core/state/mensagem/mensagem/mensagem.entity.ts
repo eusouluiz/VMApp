@@ -1,4 +1,4 @@
-import { DataUtil } from './../../../../shared/utilities/data/data.utility';
+import { DataUtil } from '../../../../shared/utilities/data/data.utility';
 
 export interface MensagemInterface {
   //id que vem do supabase

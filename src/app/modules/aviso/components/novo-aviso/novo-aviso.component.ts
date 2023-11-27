@@ -14,15 +14,13 @@ import {
 import { FieldSelectOption } from '../../../../shared/components/field-select/field-select.interface';
 import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
 import { TurmaService } from '../../../../core/state/gerenciamento/turma/turma.service';
-import { AvisoService } from '../../../../core/state/aviso/aviso-service/aviso.service';
-import { LembreteService } from '../../../../core/services/lembrete-service/lembrete.service';
 import { CommonModule } from '@angular/common';
 import { IonicModule, ModalController } from '@ionic/angular';
-import { Aviso } from '../../../../core/state/aviso/aviso-service/aviso.entity';
+import { Aviso } from '../../../../core/state/aviso/aviso/aviso.entity';
 import { Canal } from '../../../../core/state/gerenciamento/canal/canal.entity';
 import { Turma } from '../../../../core/state/gerenciamento/turma/turma.entity';
 import { GerenciamentoRepository } from '../../../../core/state/gerenciamento/gerenciamento.repository';
-import { Lembrete, LembreteInterface } from '../../../../core/services/lembrete-service/lembrete.entity';
+import { LembreteInterface } from '../../../../core/state/aviso/lembrete/lembrete.entity';
 import { DataUtil } from '../../../../shared/utilities/data/data.utility';
 
 @Component({
@@ -48,7 +46,6 @@ export class NovoAvisoComponent implements OnInit {
   constructor(
     private formBuilder: UntypedFormBuilder,
     private modalController: ModalController,
-    private lembreteService: LembreteService,
     private canalService: CanalService,
     private turmaService: TurmaService,
     private gerenciamentoRepository: GerenciamentoRepository

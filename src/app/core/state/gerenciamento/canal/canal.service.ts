@@ -1,7 +1,5 @@
-import { filter } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { CANAL_RESPONSAVEL_DATA, RESPONSAVEL_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
-import { Canal, CanalInterface, CanalResponsavel, CanalResponsavelInterface } from './canal.entity';
+import { Canal, CanalInterface, CanalResponsavelInterface } from './canal.entity';
 import { GerenciamentoRepository } from '../gerenciamento.repository';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
@@ -153,14 +151,6 @@ export class CanalService {
 
     saveCanaisInStorageMensagem(canais: CanalInterface[]) {
         this.mensagemRepository.update({ listaCanais: canais });
-    }
-
-    buscarIdCanalResponsavel(idCanal: string, idResponsavel: string): string | undefined {
-        var idCanalResponsavel = CANAL_RESPONSAVEL_DATA.find((cr) => {
-            return cr.canal.canal_id === idCanal && cr.responsavel.responsavel_id === idResponsavel;
-        })?.canal_responsavel_id;
-
-        return idCanalResponsavel;
     }
 
     buscarCanalResponsavelTodos(filtro?: { idResponsavel?: string, idCanal?: string }): Observable<CanalResponsavelInterface[]> {

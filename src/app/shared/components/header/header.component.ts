@@ -6,14 +6,14 @@ import { ConstantesSupabase } from '../../utilities/constantes/constantes.utilit
 import { NavController } from '@ionic/angular';
 import { UsuarioLogado } from '../../utilities/usuario-logado/usuario-logado.utility';
 import { MensagemRepository } from '../../../core/state/mensagem/mensagem.repository';
-import { MensagemService } from '../../../core/state/mensagem/mensagem-service/mensagem.service';
+import { MensagemService } from '../../../core/state/mensagem/mensagem/mensagem.service';
 import { Router } from '@angular/router';
 import { Session } from 'inspector';
 import { SessionService } from '../../../core/state/session/session.service';
 import { LocalNotificationsService } from '../../../core/services/local-notifications/local-notifications.service';
-import { AvisoInterface } from '../../../core/state/aviso/aviso-service/aviso.entity';
+import { AvisoInterface } from '../../../core/state/aviso/aviso/aviso.entity';
 import { Turma, TurmaInterface } from '../../../core/state/gerenciamento/turma/turma.entity';
-import { AvisoService } from '../../../core/state/aviso/aviso-service/aviso.service';
+import { AvisoService } from '../../../core/state/aviso/aviso/aviso.service';
 import { AvisoRepository } from '../../../core/state/aviso/aviso.repository';
 
 const supabase = createClient(environment.supabaseUrl, environment.supabaseKey);

@@ -11,11 +11,8 @@ import { Turma, TurmaInterface } from '../../../../core/state/gerenciamento/turm
 import { Aluno } from '../../../../core/state/gerenciamento/aluno/aluno.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 import { GerenciamentoRepository } from '../../../../core/state/gerenciamento/gerenciamento.repository';
-import { UsuarioInterface } from '../../../../core/state/gerenciamento/usuario/usuario.entity';
 import { ToastService } from '../../../../core/toasts/services/toast-service/toast.service';
 import { Funcionalidade } from '../../../../core/state/gerenciamento/funcionalidade/funcionalidade.entity';
-import { FuncionalidadeService } from '../../../../core/state/gerenciamento/funcionalidade/funcionalidade.service';
-import { FUNCIONALIDADE_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
 
 @Component({
   selector: 'app-gerenciamento-turma-detalhes',
@@ -37,7 +34,6 @@ export class GerenciamentoTurmaDetalhesPage extends PaginaGerenciamentoDetalhes 
     private usuarioService: UsuarioService,
     private turmaService: TurmaService,
     private alunoService: AlunoService,
-    private funcionalidadeService: FuncionalidadeService,
     private pageMenuService: PageMenuService,
     private gerenciamentoRepository: GerenciamentoRepository,
     private toastService: ToastService

@@ -13,9 +13,7 @@ import { PageMenuService } from '../../../../core/services/page-menu/page-menu.s
 import { GerenciamentoRepository } from '../../../../core/state/gerenciamento/gerenciamento.repository';
 import { UsuarioInterface } from '../../../../core/state/gerenciamento/usuario/usuario.entity';
 import { ToastService } from '../../../../core/toasts/services/toast-service/toast.service';
-import { Funcionalidade } from '../../../../core/state/gerenciamento/funcionalidade/funcionalidade.entity';
-import { FuncionalidadeService } from '../../../../core/state/gerenciamento/funcionalidade/funcionalidade.service';
-import { FUNCIONALIDADE_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
+import { FUNCIONALIDADE_DATA, Funcionalidade } from '../../../../core/state/gerenciamento/funcionalidade/funcionalidade.entity';
 
 @Component({
   selector: 'app-gerenciamento-cargo-detalhes',
@@ -37,7 +35,6 @@ export class GerenciamentoCargoDetalhesPage extends PaginaGerenciamentoDetalhes 
     private usuarioService: UsuarioService,
     private cargoService: CargoService,
     private funcionarioService: FuncionarioService,
-    private funcionalidadeService: FuncionalidadeService,
     private pageMenuService: PageMenuService,
     private gerenciamentoRepository: GerenciamentoRepository,
     private toastService: ToastService

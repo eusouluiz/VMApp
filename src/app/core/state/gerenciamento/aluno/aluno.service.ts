@@ -1,6 +1,5 @@
 import { Observable, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { ALUNO_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
 import { Aluno, AlunoInterface } from './aluno.entity';
 import { GerenciamentoRepository } from '../gerenciamento.repository';
 import { HttpClient } from '@angular/common/http';

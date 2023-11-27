@@ -4,10 +4,10 @@ import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.s
 import { ConstantesRotas, ConstantesSupabase } from '../../../../shared/utilities/constantes/constantes.utility';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
-import { MensagemService } from '../../../../core/state/mensagem/mensagem-service/mensagem.service';
+import { MensagemService } from '../../../../core/state/mensagem/mensagem/mensagem.service';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 import { CanalResponsavel } from '../../../../core/state/gerenciamento/canal/canal.entity';
-import { Mensagem, MensagemInterface } from '../../../../core/state/mensagem/mensagem-service/mensagem.entity';
+import { Mensagem, MensagemInterface } from '../../../../core/state/mensagem/mensagem/mensagem.entity';
 import { MensagemRepository } from '../../../../core/state/mensagem/mensagem.repository';
 import { createClient } from '@supabase/supabase-js';
 import { environment } from '../../../../../environments/environment';

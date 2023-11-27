@@ -4,21 +4,15 @@ import { Component, OnInit } from '@angular/core';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
 import { Router } from '@angular/router';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
-import { MensagemService } from '../../../../core/state/mensagem/mensagem-service/mensagem.service';
+import { MensagemService } from '../../../../core/state/mensagem/mensagem/mensagem.service';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
 import {
   Canal,
-  CanalInterface,
-  CanalResponsavel,
   CanalResponsavelInterface,
 } from '../../../../core/state/gerenciamento/canal/canal.entity';
 import { SessionRepository } from '../../../../core/state/session/session.repository';
-import { CanalApiService } from '../../state/canal.api.service';
 import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
-import { CanalRepository } from '../../state/canal.repository';
 import { Subscription } from 'rxjs';
-import { Cargo } from '../../../../core/state/gerenciamento/cargo/cargo.entity';
-import { AlunoService } from '../../../../core/state/gerenciamento/aluno/aluno.service';
 import { MensagemRepository } from '../../../../core/state/mensagem/mensagem.repository';
 import { ResponsavelService } from '../../../../core/state/gerenciamento/responsavel/responsavel.service';
 

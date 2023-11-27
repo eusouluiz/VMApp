@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConstantesRotas } from '../../../../shared/utilities/constantes/constantes.utility';
 import { CanalService } from '../../../../core/state/gerenciamento/canal/canal.service';
 import { AlunoService } from '../../../../core/state/gerenciamento/aluno/aluno.service';
-import { MensagemService } from '../../../../core/state/mensagem/mensagem-service/mensagem.service';
+import { MensagemService } from '../../../../core/state/mensagem/mensagem/mensagem.service';
 import { Canal, CanalResponsavelInterface } from '../../../../core/state/gerenciamento/canal/canal.entity';
 import { Aluno } from '../../../../core/state/gerenciamento/aluno/aluno.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';

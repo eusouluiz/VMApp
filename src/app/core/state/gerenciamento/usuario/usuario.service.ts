@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { USUARIO_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
-import { Usuario, UsuarioInterface } from './usuario.entity';
+import { UsuarioInterface } from './usuario.entity';
 import { environment } from '../../../../../environments/environment';
 import { Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';

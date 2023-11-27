@@ -1,4 +1,4 @@
-import { AvisoService } from '../../../../core/state/aviso/aviso-service/aviso.service';
+import { AvisoService } from '../../../../core/state/aviso/aviso/aviso.service';
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { SharedModule } from '../../../../shared/shared.module';
@@ -7,11 +7,9 @@ import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup,
 import { AvisoModalTituloComponent } from '../aviso-modal-titulo/aviso-modal-titulo.component';
 import { AvisoModalTextoComponent } from '../aviso-modal-texto/aviso-modal-texto.component';
 import { Router } from '@angular/router';
-import { Aviso, AvisoResponsavel, AvisoResponsavelInterface } from '../../../../core/state/aviso/aviso-service/aviso.entity';
-import { Responsavel } from '../../../../core/state/gerenciamento/responsavel/responsavel.entity';
+import { Aviso, AvisoResponsavel, AvisoResponsavelInterface } from '../../../../core/state/aviso/aviso/aviso.entity';
 import { AvisoIndicadorVisualizacaoComponent } from '../aviso-indicador-visualizacao/aviso-indicador-visualizacao.component';
 import { UsuarioLogado } from '../../../../shared/utilities/usuario-logado/usuario-logado.utility';
-import { AVISO_RESPONSAVEL_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
 import { AvisoRepository } from '../../../../core/state/aviso/aviso.repository';
 
 @Component({

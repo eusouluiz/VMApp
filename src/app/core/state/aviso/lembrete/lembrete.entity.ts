@@ -1,4 +1,3 @@
-import { Aviso } from '../../state/aviso/aviso-service/aviso.entity';
 
 export interface LembreteInterface {
   lembrete_id?: string;

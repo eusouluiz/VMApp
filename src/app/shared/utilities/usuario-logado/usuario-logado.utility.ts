@@ -1,13 +1,12 @@
-import { FuncionalidadeService } from '../../../core/state/gerenciamento/funcionalidade/funcionalidade.service';
 import { Injectable } from '@angular/core';
 import { SessionRepository } from './../../../core/state/session/session.repository';
 import { Responsavel } from '../../../core/state/gerenciamento/responsavel/responsavel.entity';
+import { FUNCIONALIDADE_DATA } from '../../../core/state/gerenciamento/funcionalidade/funcionalidade.entity';
 
 @Injectable({ providedIn: 'root' })
 export class UsuarioLogado {
   constructor(
     private sessionRepository: SessionRepository,
-    private funcionalidadeService: FuncionalidadeService
   ) { }
 
   isResponsavel(): boolean {
@@ -22,7 +21,7 @@ export class UsuarioLogado {
     let funcionalidadesId: string[] = [];
     const cargoId = this.getIdCargo();
     if (cargoId !== null && cargoId !== undefined) {
-      this.funcionalidadeService.buscarFuncionalidadesCargo(cargoId)?.forEach((funcionalidade) => {
+      this.sessionRepository.userInfo()?.funcionario.cargo.funcionalidades.forEach((funcionalidade) => {
         funcionalidadesId.push(funcionalidade.funcionalidade_id);
       });
     } else {

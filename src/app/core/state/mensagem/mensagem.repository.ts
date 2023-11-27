@@ -1,7 +1,7 @@
 import { createStore, select, withProps } from '@ngneat/elf';
 import { Injectable } from '@angular/core';
 import { localStorageStrategy, persistState } from '@ngneat/elf-persist-state';
-import { MensagemInterface } from './mensagem-service/mensagem.entity';
+import { MensagemInterface } from './mensagem/mensagem.entity';
 import { Canal, CanalInterface } from '../gerenciamento/canal/canal.entity';
 import { Responsavel, ResponsavelInterface } from '../gerenciamento/responsavel/responsavel.entity';
 

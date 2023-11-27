@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { SharedModule } from '../../../../shared/shared.module';
-import { Mensagem } from '../../../../core/state/mensagem/mensagem-service/mensagem.entity';
+import { Mensagem } from '../../../../core/state/mensagem/mensagem/mensagem.entity';
 import { DataUtil } from '../../../../shared/utilities/data/data.utility';
 
 @Component({

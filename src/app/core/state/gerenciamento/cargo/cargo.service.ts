@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { RESPONSAVEL_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
 import { Cargo, CargoInterface } from './cargo.entity';
 import { GerenciamentoRepository } from '../gerenciamento.repository';
 import { HttpClient } from '@angular/common/http';

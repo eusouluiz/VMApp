@@ -1,4 +1,4 @@
-import { Lembrete, LembreteInterface } from '../../../services/lembrete-service/lembrete.entity';
+import { Lembrete, LembreteInterface } from '../lembrete/lembrete.entity';
 import { Canal } from '../../gerenciamento/canal/canal.entity';
 import { Funcionario } from '../../gerenciamento/funcionario/funcionario.entity';
 import { Responsavel } from '../../gerenciamento/responsavel/responsavel.entity';
