@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "author": "Gabriel F. Gomes, Giacomo V. Oliveira, Luiz G. Nascimento",
   "homepage": "",
-  "description": "Boilerplate for Carbonaut projects.",
+  "description": "Trabalho de Conclusão de Curso",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

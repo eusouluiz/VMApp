@@ -1,5 +1,5 @@
 import { GerenciamentoRepository } from './../../../../core/state/gerenciamento/gerenciamento.repository';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlunoService } from '../../../../core/state/gerenciamento/aluno/aluno.service';
 import { Pagina } from '../../../../shared/utilities/pagina/pagina.utility';
@@ -7,7 +7,6 @@ import { ConstantesRotas } from '../../../../shared/utilities/constantes/constan
 import { Location } from '@angular/common';
 import { Aluno } from '../../../../core/state/gerenciamento/aluno/aluno.entity';
 import { PageMenuService } from '../../../../core/services/page-menu/page-menu.service';
-import { ALUNO_DATA } from '../../../../shared/utilities/entidade/entidade.utility';
 import { ResponsavelService } from '../../../../core/state/gerenciamento/responsavel/responsavel.service';
 import { ToastService } from '../../../../core/toasts/services/toast-service/toast.service';
 

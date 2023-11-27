@@ -23,7 +23,6 @@ export class LoginPage {
   loading = false;
 
   usuario!: Usuario;
-  // form: UntypedFormGroup;
 
   form: FormGroup<{ cpf: FormControl; password: FormControl }>;
 

@@ -11,19 +11,19 @@
     </div>
 
     <form [formGroup]="form" class="e-login-page__form">
-      <app-login-field-input
+      <app-field-input
         formControlName="cpf"
         type="cpf"
         label="Usuário (CPF)"
         placeholder="000.000.000-00"
-        (enter)="focusPassword()"></app-login-field-input>
+        (enter)="focusPassword()"></app-field-input>
       <div class="u-margin-top--xl">
-        <app-login-field-password
+        <app-field-password
           #password
           formControlName="password"
           placeholder="Senha"
           (enter)="submit()"
-          (ionFocus)="focusin($event)"></app-login-field-password>
+          (ionFocus)="focusin($event)"></app-field-password>
       </div>
     </form>
 

@@ -24,7 +24,6 @@ import { CustomTranslationsLoaderService } from './core/services/custom-translat
 // ====================================
 
 import { ApiInterceptor } from './core/interceptors/api/api.interceptor';
-import { preencheDados } from './shared/utilities/entidade/entidade.utility';
 import { SharedModule } from './shared/shared.module';
 
 @NgModule({
@@ -60,7 +59,5 @@ import { SharedModule } from './shared/shared.module';
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor() {
-    preencheDados();
-  }
+  constructor() { }
 }

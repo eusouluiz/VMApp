@@ -39,14 +39,6 @@ export class AppComponent {
 
       this.translationsService.init();
 
-      // await this.pushNotificationsService.init();
-
-      // this.settingsQuery.notificacoesEventos$.subscribe(() => {
-      //   if (this.usuarioLogado) {
-      //     this.localNotificationService.criarNotificacoes();
-      //   }
-      // });
-
       console.info('Inicializando notificações locais');
 
       this.localNotificationsService.init();
@@ -58,10 +50,6 @@ export class AppComponent {
       this.platform.backButton.subscribeWithPriority(-1, () => {
         this.navController.back();
       });
-
-      if (this.sessionRepository.isLoggedIn()) {
-        // this.startUpService.loggedStart();
-      }
 
       this.sessionRepository.userInfo$.subscribe((tipoUsuario) => {
         if (tipoUsuario?.tipo === 'R') {
