@@ -306,7 +306,7 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
 
   private inicializarTabelaCargos() {
     this.listaCargosTabela = [];
-    if (this.funcionario.cargo !== null) {
+    if (this.funcionario.cargo !== null && this.funcionario.cargo.nome !== '') {
       this.listaCargosTabela.push(this.funcionario.cargo);
     }
     this.inicializarBuscaCargos();
