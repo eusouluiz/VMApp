@@ -24,6 +24,7 @@ export class UsuarioService {
     return this.http
       .post<ResponseUser>(`${environment.api.endpoint}/user`, usuario)
       .pipe(tap((response) => {
+        usuario.user_id = response.data.user_id
         if ((response.data.responsavel_id !== undefined && response.data.responsavel_id !== null) ||
             (response.data.funcionario_id !== undefined && response.data.funcionario_id !== null)) {
           if (usuario.tipo === 'F'){

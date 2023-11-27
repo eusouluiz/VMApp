@@ -199,6 +199,10 @@ export class GerenciamentoFuncionarioDetalhesPage extends PaginaGerenciamentoDet
         usuario.password = this.form?.value.senha
         this.usuarioService.incluirUsuario(usuario).subscribe({
           next: () => {
+            if (usuario.funcionario_id !== undefined && usuario.funcionario_id !== null && usuario.user_id !== undefined) {
+              this.funcionario.funcionario_id = usuario.funcionario_id
+              this.funcionario.usuario.user_id = usuario.user_id
+            }
             this.atualizarFuncionario()
             this.funcionarioService.saveFuncionarioInStorage(this.funcionario.converterFuncionarioInterface())
             this.funcionarioService.vincularCargo(this.funcionario, this.listaCargosTabela).subscribe({
