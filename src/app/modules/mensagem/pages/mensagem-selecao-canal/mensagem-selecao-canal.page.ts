@@ -151,7 +151,7 @@ export class MensagemSelecaoCanalPage extends Pagina implements OnInit {
           if (canalMensagem.mensagens !== undefined && canalMensagem.mensagens.length > 0) {
             // ultima mensagem enviada eh a primeira da lista
             const mensagem = canalMensagem.mensagens[0];
-            return 'Mensagem:' + mensagem.texto;
+            return 'Mensagem: ' + mensagem.texto;
           } else {
             return '';
           }
