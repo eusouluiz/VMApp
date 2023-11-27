@@ -9,6 +9,7 @@ import { MenuArea } from './shared/components/page-menu/page-menu.interface';
 import { PageMenuService } from './core/services/page-menu/page-menu.service';
 import { SessionRepository } from './core/state/session/session.repository';
 import { LocalNotificationsService } from './core/services/local-notifications/local-notifications.service';
+import { App as CapacitorApp } from '@capacitor/app';
 
 @Component({
   selector: 'app-root',
@@ -47,8 +48,12 @@ export class AppComponent {
 
       console.info('Notificações locais inicializadas');
 
-      this.platform.backButton.subscribeWithPriority(-1, () => {
-        this.navController.back();
+      CapacitorApp.addListener('backButton', ({ canGoBack }) => {
+        if (!canGoBack) {
+          CapacitorApp.exitApp();
+        } else {
+          window.history.back();
+        }
       });
 
       this.sessionRepository.userInfo$.subscribe((tipoUsuario) => {
